@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Azure\Abmes.DataCollector.Common.Azure.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj" />
+  </ItemGroup>
+
+</Project>
