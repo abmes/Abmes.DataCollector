@@ -6,7 +6,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abmes.DataCollector.Vault.Amazon.Configuration
+namespace Abmes.DataCollector.Vault.Common.Configuration
 {
     public class UsersProvider : IUsersProvider
     {
