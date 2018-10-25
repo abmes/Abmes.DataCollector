@@ -1,0 +1,31 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <RootNamespace>Abmes.DataCollector.Collector.ConsoleApp</RootNamespace>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Amazon\Abmes.DataCollector.Collector.Amazon.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Caching\Abmes.DataCollector.Collector.Caching.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Logging\Abmes.DataCollector.Collector.Logging.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Amazon\Abmes.DataCollector.Common.Amazon.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Initialization\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="4.3.0" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="2.1.1" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="2.1.1" />
+  </ItemGroup>
+
+</Project>

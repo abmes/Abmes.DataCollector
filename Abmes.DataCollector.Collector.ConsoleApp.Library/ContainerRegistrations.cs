@@ -1,0 +1,26 @@
+﻿using Abmes.DataCollector.Collector.Configuration;
+using Abmes.DataCollector.Collector.ConsoleApp.Configuration;
+using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
+using Autofac;
+using Abmes.DataCollector.ConsoleApp;
+
+namespace Abmes.DataCollector.Collector.ConsoleApp
+{
+    public static class ContainerRegistrations
+    {
+        public static void RegisterFor(ContainerBuilder builder)
+        {
+            Abmes.DataCollector.Common.Amazon.ContainerRegistrations.RegisterFor(builder);
+            Abmes.DataCollector.Collector.Amazon.ContainerRegistrations.RegisterFor(builder);
+
+            Abmes.DataCollector.Collector.Common.ContainerRegistrations.RegisterFor(builder);
+
+            builder.RegisterType<MainService>().As<IMainService>();
+            builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
+            builder.RegisterType<DataFilterProvider>().As<IDataFilterProvider>();
+
+            Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);
+            Abmes.DataCollector.Collector.Caching.ContainerRegistrations.RegisterFor(builder);
+        }
+    }
+}

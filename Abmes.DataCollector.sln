@@ -1,0 +1,141 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2003
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B6EB5572-088B-4FE8-8A3A-B274D674645F}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Collector", "Collector", "{1687A416-C25F-4BAF-BE33-F4646A08711C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vault", "Vault", "{4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common", "Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj", "{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Common", "Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj", "{55611575-C016-4A27-9301-5196C79F4F29}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Caching", "Abmes.DataCollector.Collector.Caching\Abmes.DataCollector.Collector.Caching.csproj", "{D0A0BD15-82F3-4160-AF20-20C69925FC01}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Logging", "Abmes.DataCollector.Collector.Logging\Abmes.DataCollector.Collector.Logging.csproj", "{5D2CBE49-2521-4498-832E-52A1B8313A88}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Amazon", "Abmes.DataCollector.Collector.Amazon\Abmes.DataCollector.Collector.Amazon.csproj", "{91B96DD6-3A61-436C-8C6D-B9782A6E9430}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.ConsoleApp", "Abmes.DataCollector.Collector.ConsoleApp\Abmes.DataCollector.Collector.ConsoleApp.csproj", "{008B8852-C1E7-469D-A42B-D0220A772D89}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.ConsoleApp.Library", "Abmes.DataCollector.Collector.ConsoleApp.Library\Abmes.DataCollector.Collector.ConsoleApp.Library.csproj", "{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Common", "Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj", "{C2C1C414-B5EA-4829-A5E1-882E930A58E9}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Amazon", "Abmes.DataCollector.Common.Amazon\Abmes.DataCollector.Common.Amazon.csproj", "{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Logging", "Abmes.DataCollector.Vault.Logging\Abmes.DataCollector.Vault.Logging.csproj", "{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Amazon", "Abmes.DataCollector.Vault.Amazon\Abmes.DataCollector.Vault.Amazon.csproj", "{1B611AFE-974E-48D0-B9F3-264C07C49B62}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Service.Library", "Abmes.DataCollector.Vault.Service.Library\Abmes.DataCollector.Vault.Service.Library.csproj", "{82B7438F-DFF6-472D-B704-F8C60BED092A}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{CC26CD81-5225-4FF3-9971-78075F4FFA9D}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils", "Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj", "{5CE75F34-60D7-4389-9A57-563DC897D283}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.AspNetCore", "Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj", "{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.DependancyInjection", "Abmes.DataCollector.Utils.DependancyInjection\Abmes.DataCollector.Utils.DependancyInjection.csproj", "{957384E8-CFA1-4A5E-9721-BC60B64BED01}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.AmazonLambda", "Abmes.DataCollector.Vault.AmazonLambda\Abmes.DataCollector.Vault.AmazonLambda.csproj", "{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55611575-C016-4A27-9301-5196C79F4F29}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55611575-C016-4A27-9301-5196C79F4F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55611575-C016-4A27-9301-5196C79F4F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55611575-C016-4A27-9301-5196C79F4F29}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Release|Any CPU.Build.0 = Release|Any CPU
+		{91B96DD6-3A61-436C-8C6D-B9782A6E9430}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{91B96DD6-3A61-436C-8C6D-B9782A6E9430}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{91B96DD6-3A61-436C-8C6D-B9782A6E9430}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{91B96DD6-3A61-436C-8C6D-B9782A6E9430}.Release|Any CPU.Build.0 = Release|Any CPU
+		{008B8852-C1E7-469D-A42B-D0220A772D89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{008B8852-C1E7-469D-A42B-D0220A772D89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{008B8852-C1E7-469D-A42B-D0220A772D89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{008B8852-C1E7-469D-A42B-D0220A772D89}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C2C1C414-B5EA-4829-A5E1-882E930A58E9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C2C1C414-B5EA-4829-A5E1-882E930A58E9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C2C1C414-B5EA-4829-A5E1-882E930A58E9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C2C1C414-B5EA-4829-A5E1-882E930A58E9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Release|Any CPU.Build.0 = Release|Any CPU
+		{82B7438F-DFF6-472D-B704-F8C60BED092A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{82B7438F-DFF6-472D-B704-F8C60BED092A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{82B7438F-DFF6-472D-B704-F8C60BED092A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{82B7438F-DFF6-472D-B704-F8C60BED092A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5CE75F34-60D7-4389-9A57-563DC897D283}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5CE75F34-60D7-4389-9A57-563DC897D283}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5CE75F34-60D7-4389-9A57-563DC897D283}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5CE75F34-60D7-4389-9A57-563DC897D283}.Release|Any CPU.Build.0 = Release|Any CPU
+		{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}.Release|Any CPU.Build.0 = Release|Any CPU
+		{957384E8-CFA1-4A5E-9721-BC60B64BED01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{957384E8-CFA1-4A5E-9721-BC60B64BED01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{957384E8-CFA1-4A5E-9721-BC60B64BED01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{957384E8-CFA1-4A5E-9721-BC60B64BED01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{F38B6814-FDF9-4906-BBC9-43B6C308EA6B} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
+		{55611575-C016-4A27-9301-5196C79F4F29} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{D0A0BD15-82F3-4160-AF20-20C69925FC01} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{5D2CBE49-2521-4498-832E-52A1B8313A88} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{91B96DD6-3A61-436C-8C6D-B9782A6E9430} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{008B8852-C1E7-469D-A42B-D0220A772D89} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{C2C1C414-B5EA-4829-A5E1-882E930A58E9} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
+		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{1B611AFE-974E-48D0-B9F3-264C07C49B62} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{82B7438F-DFF6-472D-B704-F8C60BED092A} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{5CE75F34-60D7-4389-9A57-563DC897D283} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
+		{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
+		{957384E8-CFA1-4A5E-9721-BC60B64BED01} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
+		{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {8AC6496B-CDC1-4994-ACE3-BEC0D616354E}
+	EndGlobalSection
+EndGlobal
