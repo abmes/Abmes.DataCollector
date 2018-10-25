@@ -1,11 +1,11 @@
 ﻿using Abmes.DataCollector.Collector.Common.Destinations;
 using System;
 using System.Collections.Generic;
-using Abmes.DataCollector.Collector.Configuration;
 using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using System.Threading;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Logging.Destinations
 {

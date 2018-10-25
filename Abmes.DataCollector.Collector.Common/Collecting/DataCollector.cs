@@ -1,5 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Configuration;
-using Abmes.DataCollector.Collector.Common.Destinations;
+﻿using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Collector.Common.Misc;
 using System;
 using System.Collections.Generic;
@@ -8,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {

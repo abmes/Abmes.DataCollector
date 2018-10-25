@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Common.Amazon.Configuration;
-using Abmes.DataCollector.Common.Amazon.Library.Storage;
+using Abmes.DataCollector.Common.Amazon.Storage;
 using Abmes.DataCollector.Common.Storage;
 using Autofac;
 

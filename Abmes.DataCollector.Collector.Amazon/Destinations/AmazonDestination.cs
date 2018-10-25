@@ -1,6 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Configuration;
-using Abmes.DataCollector.Collector.Common.Destinations;
-using Abmes.DataCollector.Common.Amazon.Library.Storage;
+﻿using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Utils;
 using Amazon.S3;
 using Amazon.S3.Model;
@@ -10,6 +8,8 @@ using System.Collections.Generic;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+using Abmes.DataCollector.Common.Amazon.Storage;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations
 {
@@ -60,7 +60,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.Root, dataCollectionName, cancellationToken);
+            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.Root, dataCollectionName, cancellationToken);
         }
     }
 }

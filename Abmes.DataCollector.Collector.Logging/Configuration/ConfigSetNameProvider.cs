@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Logging;
-using Abmes.DataCollector.Collector.Configuration;
 using System;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Logging.Configuration
 {

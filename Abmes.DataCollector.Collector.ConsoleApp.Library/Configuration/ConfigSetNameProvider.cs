@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Configuration;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using System;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration

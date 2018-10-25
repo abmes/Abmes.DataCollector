@@ -1,10 +1,8 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Configuration;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abmes.DataCollector.Collector.Amazon.Configuration
+namespace Abmes.DataCollector.Collector.Common.Configuration
 {
     public class DestinationsConfigProvider : IDestinationsConfigProvider
     {

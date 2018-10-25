@@ -1,6 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Caching.Cache;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 

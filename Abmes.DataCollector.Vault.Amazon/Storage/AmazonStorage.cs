@@ -1,13 +1,10 @@
-﻿using Abmes.DataCollector.Common.Amazon.Library.Storage;
-using Abmes.DataCollector.Common.Storage;
-using Abmes.DataCollector.Vault.Amazon.Configuration;
+﻿using Abmes.DataCollector.Common.Amazon.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Storage;
 using Amazon.S3;
 using Amazon.S3.Model;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
@@ -48,7 +45,7 @@ namespace Abmes.DataCollector.Vault.Amazon.Storage
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.Root, dataCollectionName, cancellationToken);
+            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.Root, dataCollectionName, cancellationToken);
         }
     }
 }

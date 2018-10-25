@@ -1,7 +1,5 @@
 ﻿using Autofac;
-using Microsoft.Extensions.DependencyInjection;
 using Abmes.DataCollector.Collector.Common.Collecting;
-using Abmes.DataCollector.Collector.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Collector.Common.Configuration;

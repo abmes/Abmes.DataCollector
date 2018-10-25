@@ -8,7 +8,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abmes.DataCollector.Common.Amazon.Library.Storage
+namespace Abmes.DataCollector.Common.Amazon.Storage
 {
     public class AmazonCommonStorage : IAmazonCommonStorage
     {
@@ -20,7 +20,7 @@ namespace Abmes.DataCollector.Common.Amazon.Library.Storage
             _amazonS3 = amazonS3;
         }
 
-        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string root, string dataCollectionName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string root, string dataCollectionName, CancellationToken cancellationToken)
         {
             var prefix = dataCollectionName + "/";
 

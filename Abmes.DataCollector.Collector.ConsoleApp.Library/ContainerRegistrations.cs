@@ -1,8 +1,8 @@
-﻿using Abmes.DataCollector.Collector.Configuration;
-using Abmes.DataCollector.Collector.ConsoleApp.Configuration;
+﻿using Abmes.DataCollector.Collector.ConsoleApp.Configuration;
 using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 using Autofac;
 using Abmes.DataCollector.ConsoleApp;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp
 {

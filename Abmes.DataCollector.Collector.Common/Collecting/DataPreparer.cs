@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Abmes.DataCollector.Collector.Configuration;
 using System.Net.Http;
 using Abmes.DataCollector.Collector.Common.Misc;
 using System.Threading;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {

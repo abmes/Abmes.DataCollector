@@ -1,8 +1,5 @@
 ﻿using Autofac.Features.Indexed;
-using Abmes.DataCollector.Collector.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Common.Destinations
 {

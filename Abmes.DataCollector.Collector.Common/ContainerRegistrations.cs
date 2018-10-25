@@ -1,13 +1,8 @@
 ﻿using Autofac;
-using Microsoft.Extensions.DependencyInjection;
 using Abmes.DataCollector.Collector.Common.Collecting;
-using Abmes.DataCollector.Common;
-using Abmes.DataCollector.Collector.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Common
 {
@@ -27,6 +22,8 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<Delay>().Named<IDelay>("base");
             builder.RegisterType<DateTimeFormatter>().As<IDateTimeFormatter>();
             builder.RegisterType<DateFormattedDataCollectConfigProvider>().As<IDateFormattedDataCollectConfigProvider>();
+            builder.RegisterType<DataCollectConfigsProvider>().Named<IDataCollectConfigsProvider>("base");
+            builder.RegisterType<DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("base");
 
             builder.RegisterType<FilteredDataCollectConfigsProvider>().Named<IDataCollectConfigsProvider>("FilteringDecorator");
             builder.RegisterDecorator<IDataCollectConfigsProvider>((x, inner) => x.ResolveNamed<IDataCollectConfigsProvider>("FilteringDecorator", TypedParameter.From(inner)), "base").Named<IDataCollectConfigsProvider>("filtering");

@@ -1,5 +1,4 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Configuration;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;

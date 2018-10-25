@@ -3,7 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
-namespace Abmes.DataCollector.Common.Amazon.Library.Storage
+namespace Abmes.DataCollector.Common.Amazon.Storage
 {
     public interface IAmazonCommonStorage : ICommonStorage
     {
