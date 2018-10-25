@@ -15,6 +15,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Abmes.DataCollector.Vault.WebAPI.Authorization;
+using Abmes.DataCollector.Utils.AspNetCore;
 
 namespace Abmes.DataCollector.Vault.Service
 {
@@ -87,6 +88,8 @@ namespace Abmes.DataCollector.Vault.Service
             {
                 app.UseHsts();
             }
+
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
             app.UseMvc();
