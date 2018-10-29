@@ -15,10 +15,10 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
         public DateFormattedDataCollectionsConfigProvider(
             IDateFormattedDataCollectionConfigProvider dateFormattedDataCollectionConfigProvider,
-            IDataCollectionsConfigProvider DataCollectionsConfigProvider)
+            IDataCollectionsConfigProvider dataCollectionsConfigProvider)
         {
             _dateFormattedDataCollectionConfigProvider = dateFormattedDataCollectionConfigProvider;
-            _dataCollectionsConfigProvider = DataCollectionsConfigProvider;
+            _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
         }
 
         public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)

@@ -13,10 +13,10 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         private readonly ILogger<DataCollector> _logger;
         private readonly IDataCollector _dataCollector;
 
-        public DataCollector(ILogger<DataCollector> logger, IDataCollector DataCollector)
+        public DataCollector(ILogger<DataCollector> logger, IDataCollector dataCollector)
         {
             _logger = logger;
-            _dataCollector = DataCollector;
+            _dataCollector = dataCollector;
         }
 
         public async Task CollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)

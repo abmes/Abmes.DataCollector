@@ -13,13 +13,13 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private readonly IDataCollector _dataCollector;
 
         public MainCollector(
-            IDataCollectionsConfigProvider DataCollectionsConfigProvider,
+            IDataCollectionsConfigProvider dataCollectionsConfigProvider,
             IConfigSetNameProvider configSetNameProvider,
-            IDataCollector DataCollector)
+            IDataCollector dataCollector)
         {
-            _dataCollectionsConfigProvider = DataCollectionsConfigProvider;
+            _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
             _configSetNameProvider = configSetNameProvider;
-            _dataCollector = DataCollector;
+            _dataCollector = dataCollector;
         }
 
         public async Task CollectAsync(CancellationToken cancellationToken)
@@ -31,9 +31,9 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             await Task.WhenAll(DataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DatasCollectConfig, cancellationToken)));
         }
 
-        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> DatasCollectConfig, CancellationToken cancellationToken)
+        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> datasCollectConfig, CancellationToken cancellationToken)
         {
-            foreach (var dataCollectionConfig in DatasCollectConfig)
+            foreach (var dataCollectionConfig in datasCollectConfig)
             {
                 try
                 {
