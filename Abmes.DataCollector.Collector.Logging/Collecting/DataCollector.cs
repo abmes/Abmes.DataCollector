@@ -19,42 +19,42 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _dataCollector = DataCollector;
         }
 
-        public async Task CollectDataAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        public async Task CollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Started processing data '{dataCollectionName}'", DataCollectConfig.DataCollectionName);
+                _logger.LogInformation("Started processing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
 
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
-                    await _dataCollector.CollectDataAsync(DataCollectConfig, cancellationToken);
+                    await _dataCollector.CollectDataAsync(dataCollectionConfig, cancellationToken);
                 }
                 finally
                 {
                     watch.Stop();
                 }
 
-                _logger.LogInformation("Finished processing data '{dataCollectionName}'. Elapsed time: {elapsed}", DataCollectConfig.DataCollectionName, watch.Elapsed);
+                _logger.LogInformation("Finished processing data '{dataCollectionName}'. Elapsed time: {elapsed}", dataCollectionConfig.DataCollectionName, watch.Elapsed);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error processing data '{dataCollectionName}': {errorMessage}", DataCollectConfig.DataCollectionName, e.GetAggregateMessages());
+                _logger.LogCritical("Error processing data '{dataCollectionName}': {errorMessage}", dataCollectionConfig.DataCollectionName, e.GetAggregateMessages());
                 throw;
             }
         }
 
-        public async Task GarbageCollectDataAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Started garbage collecting data '{dataCollectionName}'", DataCollectConfig.DataCollectionName);
-                await _dataCollector.GarbageCollectDataAsync(DataCollectConfig, cancellationToken);
-                _logger.LogInformation("Finished garbage collecting '{dataCollectionName}'", DataCollectConfig.DataCollectionName);
+                _logger.LogInformation("Started garbage collecting data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+                await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, cancellationToken);
+                _logger.LogInformation("Finished garbage collecting '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error garbage collecting data '{dataCollectionName}': {errorMessage}", DataCollectConfig.DataCollectionName, e.GetAggregateMessages());
+                _logger.LogCritical("Error garbage collecting data '{dataCollectionName}': {errorMessage}", dataCollectionConfig.DataCollectionName, e.GetAggregateMessages());
                 throw;
             }
         }

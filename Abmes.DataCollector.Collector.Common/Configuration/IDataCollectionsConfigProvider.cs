@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public interface IDataCollectConfigsProvider
+    public interface IDataCollectionsConfigProvider
     {
-        Task<IEnumerable<DataCollectConfig>> GetDataCollectConfigsAsync(string configSetName, CancellationToken cancellationToken);
+        Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken);
     }
 }

@@ -33,30 +33,30 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _delay = delay;
         }
 
-        public async Task CollectDataAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        public async Task CollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             // assert at least one destination before preparing
-            var destinations = await GetDestinationsAsync(DataCollectConfig.DestinationIds, cancellationToken);
+            var destinations = await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken);
 
             if (!destinations.Any())
             {
                 throw new Exception("No destinations found");
             }
 
-            if (DataCollectConfig.InitialDelay.TotalSeconds > 0)
+            if (dataCollectionConfig.InitialDelay.TotalSeconds > 0)
             {
-                await _delay.DelayAsync(DataCollectConfig.InitialDelay, $"initial delay for Data '{DataCollectConfig.DataCollectionName}'", cancellationToken);
+                await _delay.DelayAsync(dataCollectionConfig.InitialDelay, $"initial delay for Data '{dataCollectionConfig.DataCollectionName}'", cancellationToken);
             }
 
             var collectMoment = DateTimeOffset.Now;
 
-            await _dataPreparer.PrepareDataAsync(DataCollectConfig, cancellationToken);
+            await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
-            var collectUrls = _collectUrlsProvider.GetCollectUrls(DataCollectConfig.CollectFileIdentifiersUrl, DataCollectConfig.CollectFileIdentifiersHeaders, DataCollectConfig.CollectUrl).ToList();
+            var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl).ToList();
 
             if (!collectUrls.Any())
             {
-                throw new Exception($"No files to collect for Data '{DataCollectConfig.DataCollectionName}'");
+                throw new Exception($"No files to collect for Data '{dataCollectionConfig.DataCollectionName}'");
             }
 
             foreach (var destination in destinations)
@@ -65,21 +65,21 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 {
                     var destinationFileName =
                           _fileNameProvider.GenerateCollectDestinationFileName(
-                              DataCollectConfig.DataCollectionName,
+                              dataCollectionConfig.DataCollectionName,
                               collectUrl,
                               collectMoment,
-                              !string.IsNullOrEmpty(DataCollectConfig.CollectFileIdentifiersUrl)
+                              !string.IsNullOrEmpty(dataCollectionConfig.CollectFileIdentifiersUrl)
                             );
 
-                    await destination.CollectAsync(collectUrl, DataCollectConfig.CollectHeaders, DataCollectConfig.DataCollectionName, destinationFileName, DataCollectConfig.CollectTimeout, DataCollectConfig.CollectFinishWait, cancellationToken);
+                    await destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, cancellationToken);
                 }
             }
         }
 
-        public async Task GarbageCollectDataAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
-            var destinations = await GetDestinationsAsync(DataCollectConfig.DestinationIds, cancellationToken);
-            await Task.WhenAll(destinations.Select(x => GarbageCollectDestinationDataAsync(x, DataCollectConfig.DataCollectionName, cancellationToken)));
+            var destinations = await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken);
+            await Task.WhenAll(destinations.Select(x => GarbageCollectDestinationDataAsync(x, dataCollectionConfig.DataCollectionName, cancellationToken)));
         }
 
         private async Task GarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, CancellationToken cancellationToken)

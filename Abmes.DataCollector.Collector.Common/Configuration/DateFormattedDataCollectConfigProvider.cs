@@ -5,20 +5,20 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public class DateFormattedDataCollectConfigProvider : IDateFormattedDataCollectConfigProvider
+    public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataCollectionConfigProvider
     {
         private readonly IDateTimeFormatter _dateTimeFormatter;
 
-        public DateFormattedDataCollectConfigProvider(
+        public DateFormattedDataCollectionConfigProvider(
             IDateTimeFormatter dateTimeFormatter)
         {
             _dateTimeFormatter = dateTimeFormatter;
         }
 
-        public DataCollectConfig GetConfig(DataCollectConfig config)
+        public DataCollectionConfig GetConfig(DataCollectionConfig config)
         {
             return 
-                new DataCollectConfig(
+                new DataCollectionConfig(
                     config.DataCollectionName,
                     config.DataGroupName,
                     config.InitialDelay,

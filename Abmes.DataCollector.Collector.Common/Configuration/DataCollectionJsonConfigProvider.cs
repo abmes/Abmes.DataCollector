@@ -7,9 +7,9 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 {
     public class DatasCollectJsonConfigProvider : IDataCollectJsonConfigsProvider
     {
-        public IEnumerable<DataCollectConfig> GetDataCollectConfigs(string json)
+        public IEnumerable<DataCollectionConfig> GetDataCollectionsConfig(string json)
         {
-            return JsonConvert.DeserializeObject<IEnumerable<DataCollectConfig>>(json);
+            return JsonConvert.DeserializeObject<IEnumerable<DataCollectionConfig>>(json);
         }
     }
 }

@@ -4,14 +4,14 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public class DataCollectConfigsProvider : IDataCollectConfigsProvider
+    public class DataCollectionsConfigProvider : IDataCollectionsConfigProvider
     {
-        private const string DataCollectConfigsFileName = "DataCollectConfigs.json";
+        private const string DataCollectionsConfigFileName = "DataCollectionsConfig.json";
 
         private readonly IDataCollectJsonConfigsProvider _dataCollectJsonConfigsProvider;
         private readonly IConfigProvider _configProvider;
 
-        public DataCollectConfigsProvider(
+        public DataCollectionsConfigProvider(
             IDataCollectJsonConfigsProvider dataCollectJsonConfigsProvider,
             IConfigProvider configProvider)
         {
@@ -19,11 +19,11 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             _configProvider = configProvider;
         }
 
-        public async Task<IEnumerable<DataCollectConfig>> GetDataCollectConfigsAsync(string configSetName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
         {
-            var configName = (configSetName + "/" + DataCollectConfigsFileName).TrimStart('/');
+            var configName = (configSetName + "/" + DataCollectionsConfigFileName).TrimStart('/');
             var json = await _configProvider.GetConfigContentAsync(configName, cancellationToken);
-            return _dataCollectJsonConfigsProvider.GetDataCollectConfigs(json);
+            return _dataCollectJsonConfigsProvider.GetDataCollectionsConfig(json);
         }
     }
 }

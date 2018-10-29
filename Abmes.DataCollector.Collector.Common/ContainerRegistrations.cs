@@ -21,15 +21,15 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<CollectUrlsProvider>().As<ICollectUrlsProvider>();
             builder.RegisterType<Delay>().Named<IDelay>("base");
             builder.RegisterType<DateTimeFormatter>().As<IDateTimeFormatter>();
-            builder.RegisterType<DateFormattedDataCollectConfigProvider>().As<IDateFormattedDataCollectConfigProvider>();
-            builder.RegisterType<DataCollectConfigsProvider>().Named<IDataCollectConfigsProvider>("base");
+            builder.RegisterType<DateFormattedDataCollectionConfigProvider>().As<IDateFormattedDataCollectionConfigProvider>();
+            builder.RegisterType<DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("base");
             builder.RegisterType<DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("base");
 
-            builder.RegisterType<FilteredDataCollectConfigsProvider>().Named<IDataCollectConfigsProvider>("FilteringDecorator");
-            builder.RegisterDecorator<IDataCollectConfigsProvider>((x, inner) => x.ResolveNamed<IDataCollectConfigsProvider>("FilteringDecorator", TypedParameter.From(inner)), "base").Named<IDataCollectConfigsProvider>("filtering");
+            builder.RegisterType<FilteredDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("FilteringDecorator");
+            builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("FilteringDecorator", TypedParameter.From(inner)), "base").Named<IDataCollectionsConfigProvider>("filtering");
 
-            builder.RegisterType<DateFormattedDataCollectConfigsProvider>().Named<IDataCollectConfigsProvider>("DateFormattingDecorator");
-            builder.RegisterDecorator<IDataCollectConfigsProvider>((x, inner) => x.ResolveNamed<IDataCollectConfigsProvider>("DateFormattingDecorator", TypedParameter.From(inner)), "filtering").Named<IDataCollectConfigsProvider>("dateFormatting");
+            builder.RegisterType<DateFormattedDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("DateFormattingDecorator");
+            builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("DateFormattingDecorator", TypedParameter.From(inner)), "filtering").Named<IDataCollectionsConfigProvider>("dateFormatting");
         }
     }
 }

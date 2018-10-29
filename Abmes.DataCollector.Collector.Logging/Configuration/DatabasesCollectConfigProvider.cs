@@ -9,18 +9,18 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Logging.Configuration
 {
-    public class DataCollectConfigsProvider : IDataCollectConfigsProvider
+    public class DataCollectionsConfigProvider : IDataCollectionsConfigProvider
     {
-        private readonly ILogger<IDataCollectConfigsProvider> _logger;
-        private readonly IDataCollectConfigsProvider _dataCollectConfigsProvider;
+        private readonly ILogger<IDataCollectionsConfigProvider> _logger;
+        private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
 
-        public DataCollectConfigsProvider(ILogger<IDataCollectConfigsProvider> logger, IDataCollectConfigsProvider dataCollectConfigsProvider)
+        public DataCollectionsConfigProvider(ILogger<IDataCollectionsConfigProvider> logger, IDataCollectionsConfigProvider DataCollectionsConfigProvider)
         {
             _logger = logger;
-            _dataCollectConfigsProvider = dataCollectConfigsProvider;
+            _dataCollectionsConfigProvider = DataCollectionsConfigProvider;
         }
 
-        public async Task<IEnumerable<DataCollectConfig>> GetDataCollectConfigsAsync(string configSetName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
         {
             var displayConfigSetName = configSetName ?? "<default>";
 
@@ -28,7 +28,7 @@ namespace Abmes.DataCollector.Collector.Logging.Configuration
             {
                 _logger.LogTrace("Started getting datas collect config '{configSetName}'", displayConfigSetName);
 
-                var result = (await _dataCollectConfigsProvider.GetDataCollectConfigsAsync(configSetName, cancellationToken)).ToList();
+                var result = (await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken)).ToList();
 
                 _logger.LogTrace("Finished getting datas collect config '{configSetName}'", displayConfigSetName);
 

@@ -20,28 +20,28 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _delay = delay;
         }
 
-        public async Task PrepareDataAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        public async Task PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(DataCollectConfig.PrepareUrl))
+            if (string.IsNullOrEmpty(dataCollectionConfig.PrepareUrl))
             {
                 return;
             }
 
-            await PrepareCollectAsync(DataCollectConfig.PrepareUrl, DataCollectConfig.PrepareHeaders, DataCollectConfig.PrepareHttpMethod, cancellationToken);
+            await PrepareCollectAsync(dataCollectionConfig.PrepareUrl, dataCollectionConfig.PrepareHeaders, dataCollectionConfig.PrepareHttpMethod, cancellationToken);
 
-            if (!string.IsNullOrEmpty(DataCollectConfig.PrepareFinishedPollUrl))
+            if (!string.IsNullOrEmpty(dataCollectionConfig.PrepareFinishedPollUrl))
             {
-                await WaitPrepareToFinishAsync(DataCollectConfig.PrepareFinishedPollUrl, DataCollectConfig.PrepareFinishedPollHeaders, DataCollectConfig.PrepareFinishedPollInterval, DataCollectConfig.PrepareDuration, cancellationToken);
+                await WaitPrepareToFinishAsync(dataCollectionConfig.PrepareFinishedPollUrl, dataCollectionConfig.PrepareFinishedPollHeaders, dataCollectionConfig.PrepareFinishedPollInterval, dataCollectionConfig.PrepareDuration, cancellationToken);
             }
             else
             {
-                await WaitPrepareDurationAsync(DataCollectConfig, cancellationToken);
+                await WaitPrepareDurationAsync(dataCollectionConfig, cancellationToken);
             }
         }
 
-        private async Task WaitPrepareDurationAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        private async Task WaitPrepareDurationAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
-            await _delay.DelayAsync(DataCollectConfig.PrepareDuration, $"Data {DataCollectConfig.DataCollectionName} prepare to finish", cancellationToken);
+            await _delay.DelayAsync(dataCollectionConfig.PrepareDuration, $"Data {dataCollectionConfig.DataCollectionName} prepare to finish", cancellationToken);
         }
 
         private async Task PrepareCollectAsync(string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, CancellationToken cancellationToken)

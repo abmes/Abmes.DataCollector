@@ -4,8 +4,8 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public interface IDateFormattedDataCollectConfigProvider
+    public interface IDateFormattedDataCollectionConfigProvider
     {
-        DataCollectConfig GetConfig(DataCollectConfig config);
+        DataCollectionConfig GetConfig(DataCollectionConfig config);
     }
 }

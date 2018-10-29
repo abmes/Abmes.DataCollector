@@ -8,27 +8,27 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public class FilteredDataCollectConfigsProvider : IDataCollectConfigsProvider
+    public class FilteredDataCollectionsConfigProvider : IDataCollectionsConfigProvider
     {
         private readonly IDataFilterProvider _dataFilterProvider;
-        private readonly IDataCollectConfigsProvider _dataCollectConfigsProvider;
+        private readonly IDataCollectionsConfigProvider _DataCollectionsConfigProvider;
 
-        public FilteredDataCollectConfigsProvider(
+        public FilteredDataCollectionsConfigProvider(
             IDataFilterProvider DataFilterProvider,
-            IDataCollectConfigsProvider DataCollectConfigsProvider)
+            IDataCollectionsConfigProvider DataCollectionsConfigProvider)
         {
             _dataFilterProvider = DataFilterProvider;
-            _dataCollectConfigsProvider = DataCollectConfigsProvider;
+            _DataCollectionsConfigProvider = DataCollectionsConfigProvider;
         }
 
-        public async Task<IEnumerable<DataCollectConfig>> GetDataCollectConfigsAsync(string configSetName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
         {
             var filter = await _dataFilterProvider.GetDataFilterAsync(cancellationToken);
-            var result = await _dataCollectConfigsProvider.GetDataCollectConfigsAsync(configSetName, cancellationToken);
+            var result = await _DataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
             return result.Where(x => DataMatchesFilter(x, filter));
         }
 
-        private bool DataMatchesFilter(DataCollectConfig x, string filter)
+        private bool DataMatchesFilter(DataCollectionConfig x, string filter)
         {
             return 
                 string.IsNullOrEmpty(filter) || 

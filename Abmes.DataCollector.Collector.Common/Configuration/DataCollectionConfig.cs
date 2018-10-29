@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public class DataCollectConfig
+    public class DataCollectionConfig
     {
         public string DataCollectionName { get; }
         public string DataGroupName { get; }
@@ -25,7 +25,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public IEnumerable<string> DestinationIds { get; }
 
         // constructor needed for json deserialization
-        public DataCollectConfig(
+        public DataCollectionConfig(
             string dataCollectionName, string dataGroupName,
             TimeSpan initialDelay,
             string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, string prepareFinishedPollUrl, IEnumerable<KeyValuePair<string, string>> prepareFinishedPollHeaders, TimeSpan prepareFinishedPollInterval, TimeSpan prepareDuration,

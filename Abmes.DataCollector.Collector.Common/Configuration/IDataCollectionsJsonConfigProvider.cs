@@ -6,6 +6,6 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 {
     public interface IDataCollectJsonConfigsProvider
     {
-        IEnumerable<DataCollectConfig> GetDataCollectConfigs(string json);
+        IEnumerable<DataCollectionConfig> GetDataCollectionsConfig(string json);
     }
 }

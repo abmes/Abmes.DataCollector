@@ -8,23 +8,23 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public class DateFormattedDataCollectConfigsProvider : IDataCollectConfigsProvider
+    public class DateFormattedDataCollectionsConfigProvider : IDataCollectionsConfigProvider
     {
-        private readonly IDateFormattedDataCollectConfigProvider _dateFormattedDataCollectConfigProvider;
-        private readonly IDataCollectConfigsProvider _dataCollectConfigsProvider;
+        private readonly IDateFormattedDataCollectionConfigProvider _dateFormattedDataCollectionConfigProvider;
+        private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
 
-        public DateFormattedDataCollectConfigsProvider(
-            IDateFormattedDataCollectConfigProvider dateFormattedDataCollectConfigProvider,
-            IDataCollectConfigsProvider DataCollectConfigsProvider)
+        public DateFormattedDataCollectionsConfigProvider(
+            IDateFormattedDataCollectionConfigProvider dateFormattedDataCollectionConfigProvider,
+            IDataCollectionsConfigProvider DataCollectionsConfigProvider)
         {
-            _dateFormattedDataCollectConfigProvider = dateFormattedDataCollectConfigProvider;
-            _dataCollectConfigsProvider = DataCollectConfigsProvider;
+            _dateFormattedDataCollectionConfigProvider = dateFormattedDataCollectionConfigProvider;
+            _dataCollectionsConfigProvider = DataCollectionsConfigProvider;
         }
 
-        public async Task<IEnumerable<DataCollectConfig>> GetDataCollectConfigsAsync(string configSetName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
         {
-            var DatasCollectConfig = await _dataCollectConfigsProvider.GetDataCollectConfigsAsync(configSetName, cancellationToken);
-            return DatasCollectConfig.Select(x => _dateFormattedDataCollectConfigProvider.GetConfig(x));
+            var DatasCollectConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+            return DatasCollectConfig.Select(x => _dateFormattedDataCollectionConfigProvider.GetConfig(x));
         }
     }
 }

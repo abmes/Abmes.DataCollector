@@ -8,16 +8,16 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public class MainCollector : IMainCollector
     {
-        private readonly IDataCollectConfigsProvider _dataCollectConfigsProvider;
+        private readonly IDataCollectionsConfigProvider _DataCollectionsConfigProvider;
         private readonly IConfigSetNameProvider _configSetNameProvider;
         private readonly IDataCollector _dataCollector;
 
         public MainCollector(
-            IDataCollectConfigsProvider DataCollectConfigsProvider,
+            IDataCollectionsConfigProvider DataCollectionsConfigProvider,
             IConfigSetNameProvider configSetNameProvider,
             IDataCollector DataCollector)
         {
-            _dataCollectConfigsProvider = DataCollectConfigsProvider;
+            _DataCollectionsConfigProvider = DataCollectionsConfigProvider;
             _configSetNameProvider = configSetNameProvider;
             _dataCollector = DataCollector;
         }
@@ -25,20 +25,20 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         public async Task CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
-            var DatasCollectConfig = await _dataCollectConfigsProvider.GetDataCollectConfigsAsync(configSetName, cancellationToken);
+            var DatasCollectConfig = await _DataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
             var DataGroups = DatasCollectConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DatasCollectConfig = x });
 
             await Task.WhenAll(DataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DatasCollectConfig, cancellationToken)));
         }
 
-        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectConfig> DatasCollectConfig, CancellationToken cancellationToken)
+        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> DatasCollectConfig, CancellationToken cancellationToken)
         {
-            foreach (var DataCollectConfig in DatasCollectConfig)
+            foreach (var dataCollectionConfig in DatasCollectConfig)
             {
                 try
                 {
-                    await _dataCollector.CollectDataAsync(DataCollectConfig, cancellationToken);
-                    await _dataCollector.GarbageCollectDataAsync(DataCollectConfig, cancellationToken);
+                    await _dataCollector.CollectDataAsync(dataCollectionConfig, cancellationToken);
+                    await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, cancellationToken);
                 }
                 catch
                 {

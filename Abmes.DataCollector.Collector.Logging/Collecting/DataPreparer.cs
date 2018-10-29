@@ -19,17 +19,17 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _dataPreparer = dataPreparer;
         }
 
-        public async Task PrepareDataAsync(DataCollectConfig DataCollectConfig, CancellationToken cancellationToken)
+        public async Task PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Started preparing data '{dataCollectionName}'", DataCollectConfig.DataCollectionName);
-                await _dataPreparer.PrepareDataAsync(DataCollectConfig, cancellationToken);
-                _logger.LogInformation("Finished preparing data '{dataCollectionName}'", DataCollectConfig.DataCollectionName);
+                _logger.LogInformation("Started preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+                await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
+                _logger.LogInformation("Finished preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error preparing data '{dataCollectionName}': {errorMessage}", DataCollectConfig.DataCollectionName, e.GetAggregateMessages());
+                _logger.LogCritical("Error preparing data '{dataCollectionName}': {errorMessage}", dataCollectionConfig.DataCollectionName, e.GetAggregateMessages());
                 throw;
             }
         }
