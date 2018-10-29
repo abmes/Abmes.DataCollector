@@ -7,12 +7,12 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Logging.Configuration
 {
-    public class StorageConfigProvider : IStorageConfigsProvider
+    public class StorageConfigProvider : IStoragesConfigProvider
     {
-        private readonly ILogger<IStorageConfigsProvider> _logger;
-        private readonly IStorageConfigsProvider _destinationsConfigProvider;
+        private readonly ILogger<IStoragesConfigProvider> _logger;
+        private readonly IStoragesConfigProvider _destinationsConfigProvider;
 
-        public StorageConfigProvider(ILogger<IStorageConfigsProvider> logger, IStorageConfigsProvider destinationsConfigProvider)
+        public StorageConfigProvider(ILogger<IStoragesConfigProvider> logger, IStoragesConfigProvider destinationsConfigProvider)
         {
             _logger = logger;
             _destinationsConfigProvider = destinationsConfigProvider;

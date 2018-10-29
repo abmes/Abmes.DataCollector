@@ -9,11 +9,11 @@ namespace Abmes.DataCollector.Vault.Storage
 {
     public class StoragesProvider : IStoragesProvider
     {
-        private readonly IStorageConfigsProvider _storageConfigProvider;
+        private readonly IStoragesConfigProvider _storageConfigProvider;
         private readonly IStorageFactory _storageFactory;
 
         public StoragesProvider(
-            IStorageConfigsProvider storageConfigProvider,
+            IStoragesConfigProvider storageConfigProvider,
             IStorageFactory storageFactory)
         {
             _storageConfigProvider = storageConfigProvider;

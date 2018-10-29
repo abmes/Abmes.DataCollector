@@ -8,15 +8,15 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Common.Configuration
 {
-    public class StorageConfigsProvider : IStorageConfigsProvider
+    public class StoragesConfigProvider : IStoragesConfigProvider
     {
         private const string StorageConfigName = "StorageConfig.json";
 
-        private readonly IStorageJsonConfigsProvider _storageJsonConfigProvider;
+        private readonly IStoragesJsonConfigProvider _storageJsonConfigProvider;
         private readonly IConfigProvider _configProvider;
 
-        public StorageConfigsProvider(
-            IStorageJsonConfigsProvider storageJsonConfigProvider,
+        public StoragesConfigProvider(
+            IStoragesJsonConfigProvider storageJsonConfigProvider,
             IConfigProvider configProvider)
         {
             _storageJsonConfigProvider = storageJsonConfigProvider;

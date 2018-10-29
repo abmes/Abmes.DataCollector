@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Abmes.DataCollector.Vault.Configuration
 {
-    public interface IStorageJsonConfigsProvider
+    public interface IStoragesJsonConfigProvider
     {
         IEnumerable<StorageConfig> GetStorageConfigs(string json);
     }

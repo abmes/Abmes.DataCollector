@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Configuration
 {
-    public class StorageJsonConfigsProvider : IStorageJsonConfigsProvider
+    public class StoragesJsonConfigProvider : IStoragesJsonConfigProvider
     {
         public IEnumerable<StorageConfig> GetStorageConfigs(string json)
         {

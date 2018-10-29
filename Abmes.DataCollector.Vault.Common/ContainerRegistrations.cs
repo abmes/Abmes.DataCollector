@@ -10,10 +10,10 @@ namespace Abmes.DataCollector.Vault
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<StorageConfigsProvider>().Named<IStorageConfigsProvider>("base");
+            builder.RegisterType<StoragesConfigProvider>().Named<IStoragesConfigProvider>("base");
             builder.RegisterType<UsersProvider>().As<IUsersProvider>();
             builder.RegisterType<UsersJsonProvider>().As<IUsersJsonProvider>();
-            builder.RegisterType<StorageJsonConfigsProvider>().As<IStorageJsonConfigsProvider>();
+            builder.RegisterType<StoragesJsonConfigProvider>().As<IStoragesJsonConfigProvider>();
             builder.RegisterType<StoragesProvider>().As<IStoragesProvider>();
             builder.RegisterType<StorageFactory>().As<IStorageFactory>();
             builder.RegisterType<DataCollectionFiles>().Named<IDataCollectionFiles>("base");

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Configuration
 {
-    public interface IStorageConfigsProvider
+    public interface IStoragesConfigProvider
     {
         Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken);
     }
