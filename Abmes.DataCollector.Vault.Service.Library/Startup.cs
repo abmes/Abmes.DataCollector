@@ -16,6 +16,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using Abmes.DataCollector.Vault.WebAPI.Authorization;
 using Abmes.DataCollector.Utils.AspNetCore;
+using Abmes.DataCollector.Vault.Service.Configuration;
 
 namespace Abmes.DataCollector.Vault.Service
 {
@@ -39,13 +40,18 @@ namespace Abmes.DataCollector.Vault.Service
             services.AddOptions();
             services.AddLogging();
 
+            var identityServerAuthenticationSettings = 
+                    Configuration
+                    .GetSection("IdentityServerAuthenticationSettings")
+                    .Get<IdentityServerAuthenticationSettings>();
+
             services
                 .AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
                 .AddIdentityServerAuthentication(x =>
                 {
-                    x.Authority = "https://identityservice.abmes.org";  // config
-                    x.ApiName = "abmes_data_collector_vault";
-                    x.ApiSecret = "AbmesDataCollectorVaultApiSecret323423-aesdfklj323_moi908";
+                    x.Authority = identityServerAuthenticationSettings.Authority;
+                    x.ApiName = identityServerAuthenticationSettings.ApiName;
+                    x.ApiSecret = identityServerAuthenticationSettings.ApiSecret;
                     x.RequireHttpsMetadata = false;
                 });
 
