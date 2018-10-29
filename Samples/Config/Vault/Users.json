@@ -1,0 +1,7 @@
+[
+    {
+        "_comments_": "backupoperator",
+        "IdentityUserId": "asdl-r34sre-kll39-kllqj3",
+        "DataCollectionNames": ["somedb", "somefile"]
+    }
+]

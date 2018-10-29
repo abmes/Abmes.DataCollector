@@ -1,0 +1,29 @@
+[
+    {
+        "DatabaseName": "somedb",
+        "DatabaseGroupName": "main",
+        "InitialDelay": "0:10:0",
+        "PrepareUrl": "https://datapumper.mydomain.com/api/datapumper/StartExportSchema?schemaName=somedb&dumpFileName=somedb&logFileName=somedb-export.log&directoryName=SOME_DIR&DataSource=some.oraclehost.com:1521/orc123",
+        "PrepareHeaders": [{"Key": "DataPumperUserId", "Value": "SomeUser"}, {"Key": "DataPumperUserPassword", "Value": "SomePass"}],
+        "PrepareHttpMethod": "POST",
+        "PrepareFinishedPollUrl": "https://datapumper.mydomain.com/api/datapumper/GetExportLogData?schemaName=somedb&logFileName=somedb-export.log&directoryName=SOME_DIR&DataSource=some.oraclehost.com:1521/orc123",
+        "PrepareFinishedPollHeaders": [{"Key": "DataPumperUserId", "Value": "SomeUser"}, {"Key": "DataPumperUserPassword", "Value": "SomePass"}],
+        "PrepareFinishedPollInterval": "0:0:30",
+        "PrepareDuration": "0:15:0",
+        "CollectUrl": "https://datapumper.mydomain.com/api/datapumper/GetZipFile/somedb.zip?sourceFileName=somedb.dmp&directoryName=SOME_DIR&DataSource=some.oraclehost.com:1521/orc123",
+        "CollectHeaders": [{"Key": "DataPumperUserId", "Value": "SomeUser"}, {"Key": "DataPumperUserPassword", "Value": "SomePass"}],
+        "CollectTimeout": "0:30:0",
+        "CollectFinishWait": "true",
+        "DestinationIds": ["MyDestination"]
+    },
+    {
+        "DatabaseName": "somefile",
+        "DatabaseGroupName": "main",
+        "InitialDelay": "0:0:0",
+        "CollectUrl": "https://datapumper.mydomain.com/somedir/somefile.zip",
+        "CollectHeaders": [],
+        "CollectTimeout": "1:30:0",
+        "CollectFinishWait": "true",
+        "DestinationIds": ["MyDestination"]
+    }
+]

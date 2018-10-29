@@ -10,7 +10,7 @@ namespace Abmes.DataCollector.Vault.Common.Configuration
 {
     public class StoragesConfigProvider : IStoragesConfigProvider
     {
-        private const string StorageConfigName = "StorageConfig.json";
+        private const string StorageConfigName = "StoragesConfig.json";
 
         private readonly IStoragesJsonConfigProvider _storageJsonConfigProvider;
         private readonly IConfigProvider _configProvider;

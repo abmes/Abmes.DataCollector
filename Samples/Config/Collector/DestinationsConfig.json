@@ -1,0 +1,9 @@
+[
+    {
+        "DestinationId": "MyDestination",
+        "DestinationType": "Amazon",
+        "LoginName": "",
+        "LoginSecret": "",
+        "Root": "MyFiles"
+    }
+]
