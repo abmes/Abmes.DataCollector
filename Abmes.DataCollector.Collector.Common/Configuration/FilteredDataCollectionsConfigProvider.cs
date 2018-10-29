@@ -11,20 +11,20 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
     public class FilteredDataCollectionsConfigProvider : IDataCollectionsConfigProvider
     {
         private readonly IDataFilterProvider _dataFilterProvider;
-        private readonly IDataCollectionsConfigProvider _DataCollectionsConfigProvider;
+        private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
 
         public FilteredDataCollectionsConfigProvider(
-            IDataFilterProvider DataFilterProvider,
-            IDataCollectionsConfigProvider DataCollectionsConfigProvider)
+            IDataFilterProvider dataFilterProvider,
+            IDataCollectionsConfigProvider dataCollectionsConfigProvider)
         {
-            _dataFilterProvider = DataFilterProvider;
-            _DataCollectionsConfigProvider = DataCollectionsConfigProvider;
+            _dataFilterProvider = dataFilterProvider;
+            _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
         }
 
         public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
         {
             var filter = await _dataFilterProvider.GetDataFilterAsync(cancellationToken);
-            var result = await _DataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+            var result = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
             return result.Where(x => DataMatchesFilter(x, filter));
         }
 

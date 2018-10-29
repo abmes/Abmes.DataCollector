@@ -8,7 +8,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public class MainCollector : IMainCollector
     {
-        private readonly IDataCollectionsConfigProvider _DataCollectionsConfigProvider;
+        private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
         private readonly IConfigSetNameProvider _configSetNameProvider;
         private readonly IDataCollector _dataCollector;
 
@@ -17,7 +17,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             IConfigSetNameProvider configSetNameProvider,
             IDataCollector DataCollector)
         {
-            _DataCollectionsConfigProvider = DataCollectionsConfigProvider;
+            _dataCollectionsConfigProvider = DataCollectionsConfigProvider;
             _configSetNameProvider = configSetNameProvider;
             _dataCollector = DataCollector;
         }
@@ -25,7 +25,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         public async Task CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
-            var DatasCollectConfig = await _DataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+            var DatasCollectConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
             var DataGroups = DatasCollectConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DatasCollectConfig = x });
 
             await Task.WhenAll(DataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DatasCollectConfig, cancellationToken)));
