@@ -18,6 +18,7 @@
     "Abmes.DataCollector.Vault.AmazonLambda": {
       "commandName": "Project",
       "launchBrowser": true,
+      "launchUrl": "http://localhost:61019/health",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },
