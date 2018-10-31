@@ -11,11 +11,7 @@ namespace Abmes.DataCollector.Vault.Service
         {
             return
                 builder
-                    .UseStartup<Startup>()
-                    .UseKestrel(options =>
-                    {
-                        options.Limits.MinResponseDataRate = null;
-                    });
+                    .UseStartup<Startup>();
         }
     }
 }
