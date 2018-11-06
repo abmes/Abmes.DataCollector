@@ -18,7 +18,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
 
             builder.RegisterType<MainService>().As<IMainService>();
             builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
-            builder.RegisterType<DataFilterProvider>().As<IDataFilterProvider>();
+            builder.RegisterType<DataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
 
             Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Caching.ContainerRegistrations.RegisterFor(builder);

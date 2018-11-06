@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.ConsoleApp
 {
-    public class DataFilterProvider : IDataFilterProvider
+    public class DataCollectionsFilterProvider : IDataCollectionsFilterProvider
     {
-        public async Task<string> GetDataFilterAsync(CancellationToken cancellationToken)
+        public async Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken)
         {
             var args = Environment.GetCommandLineArgs();
 

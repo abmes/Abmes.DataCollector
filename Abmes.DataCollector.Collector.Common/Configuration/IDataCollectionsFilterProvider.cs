@@ -3,8 +3,8 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public interface IDataFilterProvider
+    public interface IDataCollectionsFilterProvider
     {
-        Task<string> GetDataFilterAsync(CancellationToken cancellationToken);
+        Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken);
     }
 }

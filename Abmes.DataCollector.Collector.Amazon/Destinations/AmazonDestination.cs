@@ -16,37 +16,37 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
     public class AmazonDestination : IDestination
     {
         private readonly IAmazonS3 _amazonS3;
-        private readonly ITransferUtility _transferUtility;
         private readonly IAmazonCommonStorage _amazonCommonStorage;
 
         public DestinationConfig DestinationConfig { get; set; }
 
         public AmazonDestination(
             IAmazonS3 amazonS3,
-            ITransferUtility transferUtility,
             IAmazonCommonStorage amazonCommonStorage)
         {
             _amazonS3 = amazonS3;
-            _transferUtility = transferUtility;
             _amazonCommonStorage = amazonCommonStorage;
         }
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
+            using (var transferUtility = new TransferUtility(_amazonS3))
             {
-                httpClient.DefaultRequestHeaders.AddValues(collectHeaders);
-
-                httpClient.Timeout = timeout;
-
-                using (var response = await httpClient.GetAsync(collectUrl, HttpCompletionOption.ResponseHeadersRead))
+                using (var httpClient = new HttpClient())
                 {
-                    await response.CheckSuccessAsync();
+                    httpClient.DefaultRequestHeaders.AddValues(collectHeaders);
 
-                    using (var sourceStream = await response.Content.ReadAsStreamAsync())
+                    httpClient.Timeout = timeout;
+
+                    using (var response = await httpClient.GetAsync(collectUrl, HttpCompletionOption.ResponseHeadersRead))
                     {
-                        var key = dataCollectionName + '/' + fileName;
-                        await _transferUtility.UploadAsync(sourceStream, DestinationConfig.Root, key, cancellationToken);
+                        await response.CheckSuccessAsync();
+
+                        using (var sourceStream = await response.Content.ReadAsStreamAsync())
+                        {
+                            var key = dataCollectionName + '/' + fileName;
+                            await transferUtility.UploadAsync(sourceStream, DestinationConfig.Root, key, cancellationToken);
+                        }
                     }
                 }
             }
