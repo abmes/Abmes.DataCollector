@@ -23,8 +23,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
         public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
         {
-            var DatasCollectConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
-            return DatasCollectConfig.Select(x => _dateFormattedDataCollectionConfigProvider.GetConfig(x));
+            var dataCollectionsConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+            return dataCollectionsConfig.Select(x => _dateFormattedDataCollectionConfigProvider.GetConfig(x));
         }
     }
 }

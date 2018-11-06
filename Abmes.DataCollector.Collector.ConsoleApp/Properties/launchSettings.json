@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Abmes.DataCollector.Collector.ConsoleApp": {
+      "commandName": "Project",
+      "commandLineArgs": "production"
+    }
+  }
+}

@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public interface IDataCollectJsonConfigsProvider
+    public interface IDataCollectionsJsonConfigsProvider
     {
         IEnumerable<DataCollectionConfig> GetDataCollectionsConfig(string json);
     }

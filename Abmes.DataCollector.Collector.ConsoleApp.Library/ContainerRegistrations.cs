@@ -10,6 +10,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
+            Abmes.DataCollector.Common.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Common.Amazon.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Amazon.ContainerRegistrations.RegisterFor(builder);
 

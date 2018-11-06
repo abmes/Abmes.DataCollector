@@ -25,15 +25,15 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         public async Task CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
-            var DatasCollectConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
-            var DataGroups = DatasCollectConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DatasCollectConfig = x });
+            var dataCollectionsConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+            var dataGroups = dataCollectionsConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DataCollectionsConfig = x });
 
-            await Task.WhenAll(DataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DatasCollectConfig, cancellationToken)));
+            await Task.WhenAll(dataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DataCollectionsConfig, cancellationToken)));
         }
 
-        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> datasCollectConfig, CancellationToken cancellationToken)
+        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> dataCollectionsConfig, CancellationToken cancellationToken)
         {
-            foreach (var dataCollectionConfig in datasCollectConfig)
+            foreach (var dataCollectionConfig in dataCollectionsConfig)
             {
                 try
                 {
@@ -42,7 +42,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 }
                 catch
                 {
-                    // Give other Datas a chance
+                    // Give other DataCollections a chance
                 }
             }
         }

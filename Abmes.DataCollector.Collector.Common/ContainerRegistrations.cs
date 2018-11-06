@@ -11,7 +11,7 @@ namespace Abmes.DataCollector.Collector.Common
         public static void RegisterFor(ContainerBuilder builder)
         {
             builder.RegisterType<DestinationsJsonConfigProvider>().As<IDestinationsJsonConfigProvider>();
-            builder.RegisterType<DatasCollectJsonConfigProvider>().As<IDataCollectJsonConfigsProvider>();
+            builder.RegisterType<DataCollectionsJsonConfigProvider>().As<IDataCollectionsJsonConfigsProvider>();
             builder.RegisterType<DestinationProvider>().As<IDestinationProvider>();
             builder.RegisterType<DestinationFactory>().As<IDestinationFactory>();
             builder.RegisterType<MainCollector>().Named<IMainCollector>("base");

@@ -8,11 +8,11 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
     {
         private const string DataCollectionsConfigFileName = "DataCollectionsConfig.json";
 
-        private readonly IDataCollectJsonConfigsProvider _dataCollectJsonConfigsProvider;
+        private readonly IDataCollectionsJsonConfigsProvider _dataCollectJsonConfigsProvider;
         private readonly IConfigProvider _configProvider;
 
         public DataCollectionsConfigProvider(
-            IDataCollectJsonConfigsProvider dataCollectJsonConfigsProvider,
+            IDataCollectionsJsonConfigsProvider dataCollectJsonConfigsProvider,
             IConfigProvider configProvider)
         {
             _dataCollectJsonConfigsProvider = dataCollectJsonConfigsProvider;

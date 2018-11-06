@@ -22,7 +22,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         {
             try
             {
-                _logger.LogInformation("Started collecting datas.");
+                _logger.LogInformation("Started collecting data collections.");
 
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
@@ -34,11 +34,11 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                     watch.Stop();
                 }
 
-                _logger.LogInformation("Finished collecting datas. Elapsed time: {elapsed}", watch.Elapsed);
+                _logger.LogInformation("Finished collecting data collections. Elapsed time: {elapsed}", watch.Elapsed);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error collecting datas: {errorMessage}", e.GetAggregateMessages());
+                _logger.LogCritical("Error collecting data collections: {errorMessage}", e.GetAggregateMessages());
                 throw;
             }
         }

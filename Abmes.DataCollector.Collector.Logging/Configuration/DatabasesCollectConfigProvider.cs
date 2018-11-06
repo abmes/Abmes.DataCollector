@@ -26,19 +26,19 @@ namespace Abmes.DataCollector.Collector.Logging.Configuration
 
             try
             {
-                _logger.LogTrace("Started getting datas collect config '{configSetName}'", displayConfigSetName);
+                _logger.LogTrace("Started getting data collections config '{configSetName}'", displayConfigSetName);
 
                 var result = (await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken)).ToList();
 
-                _logger.LogTrace("Finished getting datas collect config '{configSetName}'", displayConfigSetName);
+                _logger.LogTrace("Finished getting data collections config '{configSetName}'", displayConfigSetName);
 
-                _logger.LogInformation("Found {count} datas to collect", result.Count());
+                _logger.LogInformation("Found {count} data collections to collect", result.Count());
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error getting datas collect config '{configSetName}': {errorMessage}", displayConfigSetName, e.GetAggregateMessages());
+                _logger.LogCritical("Error getting data collections config '{configSetName}': {errorMessage}", displayConfigSetName, e.GetAggregateMessages());
                 throw;
             }
         }
