@@ -1,7 +1,7 @@
 [
     {
-        "DatabaseName": "somedb",
-        "DatabaseGroupName": "main",
+        "DataCollectionName": "somedb",
+        "DataGroupName": "main",
         "InitialDelay": "0:10:0",
         "PrepareUrl": "https://datapumper.mydomain.com/api/datapumper/StartExportSchema?schemaName=somedb&dumpFileName=somedb&logFileName=somedb-export.log&directoryName=SOME_DIR&DataSource=some.oraclehost.com:1521/orc123",
         "PrepareHeaders": [{"Key": "DataPumperUserId", "Value": "SomeUser"}, {"Key": "DataPumperUserPassword", "Value": "SomePass"}],
@@ -17,8 +17,8 @@
         "DestinationIds": ["MyDestination"]
     },
     {
-        "DatabaseName": "somefile",
-        "DatabaseGroupName": "main",
+        "DataCollectionName": "somefile",
+        "DataGroupName": "main",
         "InitialDelay": "0:0:0",
         "CollectUrl": "https://datapumper.mydomain.com/somedir/somefile.zip",
         "CollectHeaders": [],
