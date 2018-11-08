@@ -26,6 +26,8 @@ namespace Abmes.DataCollector.Collector.Logging.Configuration
 
                 _logger.LogTrace("Finished getting config set name");
 
+                _logger.LogInformation($"Using config set name '{result}'");
+
                 return result;
             }
             catch (Exception e)
