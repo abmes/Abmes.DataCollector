@@ -44,17 +44,6 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             return databaseName + "/" + fileName;
         }
 
-        private async Task<int> ReadStreamMaxBufferAsync(byte[] buffer, Stream stream, CancellationToken cancellationToken)
-        {
-            return await CopyUtils.FillBufferAsync(buffer,
-                    async (buf, offset, ct) =>
-                    {
-                        return await stream.ReadAsync(buf, offset, buf.Length - offset, ct);
-                    },
-                    cancellationToken
-                );
-        }
-
         private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
         {
             if (await GetContentLengthHeaderAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
@@ -87,7 +76,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                         var blockNumber = 0;
 
                         await CopyUtils.CopyAsync(
-                                (buffer, ct) => ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                                (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
                                 async (buffer, count, cancellationToken2) =>
                                 {
                                     var blockId = GetBlockId(blockNumber);

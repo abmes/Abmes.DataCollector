@@ -2,6 +2,7 @@
 using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -65,5 +66,17 @@ namespace Abmes.DataCollector.Utils
 
             return totalBytesRead;
         }
+
+        public static async Task<int> ReadStreamMaxBufferAsync(byte[] buffer, Stream stream, CancellationToken cancellationToken)
+        {
+            return await CopyUtils.FillBufferAsync(buffer,
+                    async (buf, offset, ct) =>
+                    {
+                        return await stream.ReadAsync(buf, offset, buf.Length - offset, ct);
+                    },
+                    cancellationToken
+                );
+        }
+
     }
 }
