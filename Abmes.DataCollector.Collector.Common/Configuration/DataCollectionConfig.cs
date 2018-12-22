@@ -20,6 +20,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; }
         public string CollectUrl { get; }
         public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; }
+        public int CollectParallelFileCount { get; }
         public TimeSpan CollectTimeout { get; }
         public bool CollectFinishWait { get; }
         public IEnumerable<string> DestinationIds { get; }
@@ -29,7 +30,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             string dataCollectionName, string dataGroupName,
             TimeSpan initialDelay,
             string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, string prepareFinishedPollUrl, IEnumerable<KeyValuePair<string, string>> prepareFinishedPollHeaders, TimeSpan prepareFinishedPollInterval, TimeSpan prepareDuration,
-            string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, TimeSpan collectTimeout, bool collectFinishWait,
+            string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int collectParallelFileCount, TimeSpan collectTimeout, bool collectFinishWait,
             IEnumerable<string> destinationIds)
         {
             DataCollectionName = dataCollectionName;
@@ -46,6 +47,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             CollectFileIdentifiersHeaders = collectFileIdentifiersHeaders;
             CollectUrl = collectUrl;
             CollectHeaders = collectHeaders;
+            CollectParallelFileCount = collectParallelFileCount;
             CollectTimeout = collectTimeout;
             CollectFinishWait = collectFinishWait;
             DestinationIds = destinationIds;

@@ -59,12 +59,13 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 throw new Exception($"No files to collect for Data '{dataCollectionConfig.DataCollectionName}'");
             }
 
+            var parallelOptions = new ParallelOptions { MaxDegreeOfParallelism = Math.Max(1, dataCollectionConfig.CollectParallelFileCount) };
+
             foreach (var destination in destinations)
             {
-                foreach (var collectUrl in collectUrls)
-                {
-                    await CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, cancellationToken);
-                }
+                Parallel.ForEach(collectUrls, parallelOptions,
+                    (collectUrl) => CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, cancellationToken).Wait()
+                );
             }
         }
 

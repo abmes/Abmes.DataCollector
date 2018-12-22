@@ -27,7 +27,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
                     FormatDateTime(config.CollectFileIdentifiersUrl),
                     config.CollectFileIdentifiersHeaders,
                     FormatDateTime(config.CollectUrl.Replace("[filename]", "(filename)")).Replace("(filename)", "[filename]"),
-                    config.CollectHeaders, config.CollectTimeout, config.CollectFinishWait, 
+                    config.CollectHeaders, config.CollectParallelFileCount, config.CollectTimeout, config.CollectFinishWait, 
                     config.DestinationIds
                 );
         }
