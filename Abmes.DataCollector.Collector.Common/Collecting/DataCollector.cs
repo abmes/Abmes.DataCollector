@@ -63,17 +63,22 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 foreach (var collectUrl in collectUrls)
                 {
-                    var destinationFileName =
-                          _fileNameProvider.GenerateCollectDestinationFileName(
-                              dataCollectionConfig.DataCollectionName,
-                              collectUrl,
-                              collectMoment,
-                              !string.IsNullOrEmpty(dataCollectionConfig.CollectFileIdentifiersUrl)
-                            );
-
-                    await destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, cancellationToken);
+                    await CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, cancellationToken);
                 }
             }
+        }
+
+        private async Task CollectToDestinationAsync(string collectUrl, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        {
+            var destinationFileName =
+                  _fileNameProvider.GenerateCollectDestinationFileName(
+                      dataCollectionConfig.DataCollectionName,
+                      collectUrl,
+                      collectMoment,
+                      !string.IsNullOrEmpty(dataCollectionConfig.CollectFileIdentifiersUrl)
+                    );
+
+            await destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, cancellationToken);
         }
 
         public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
