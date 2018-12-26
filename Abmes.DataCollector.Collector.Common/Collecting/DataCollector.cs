@@ -52,7 +52,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
-            var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl).ToList();
+            var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders).ToList();
 
             if (!collectUrls.Any())
             {

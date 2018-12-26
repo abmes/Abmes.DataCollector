@@ -6,6 +6,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public interface ICollectUrlsProvider
     {
-        IEnumerable<string> GetCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl);
+        IEnumerable<string> GetCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders);
     }
 }
