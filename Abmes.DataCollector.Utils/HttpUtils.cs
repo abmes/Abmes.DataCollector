@@ -58,11 +58,13 @@ namespace Abmes.DataCollector.Utils
 
         public static void AddValues(this HttpRequestHeaders httpRequestHeaders, IEnumerable<KeyValuePair<string, string>> values)
         {
-            foreach (var value in values)
+            if (values != null)
             {
-                httpRequestHeaders.Add(value.Key, value.Value);
+                foreach (var value in values)
+                {
+                    httpRequestHeaders.Add(value.Key, value.Value);
+                }
             }
         }
-
     }
 }
