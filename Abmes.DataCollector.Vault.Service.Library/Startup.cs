@@ -98,6 +98,7 @@ namespace Abmes.DataCollector.Vault.Service
             app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
+            app.UseAuthentication();
             app.UseMvc();
 
             LoggingConfigurator.Configure(loggerFactory);
