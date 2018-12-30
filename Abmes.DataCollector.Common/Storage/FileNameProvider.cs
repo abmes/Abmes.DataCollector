@@ -19,7 +19,7 @@ namespace Abmes.DataCollector.Common.Storage
 
             if (preserveFileName)
             {
-                return time + "/" + fileName;
+                return $"{dataCollectionName}-{time}/{fileName}";
             }
             else
             {
