@@ -59,15 +59,17 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 throw new Exception($"No files to collect for Data '{dataCollectionConfig.DataCollectionName}'");
             }
 
+            var dataflowBlockOptions = new System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = Math.Max(1, dataCollectionConfig.CollectParallelFileCount),
+                CancellationToken = cancellationToken
+            };
+
             foreach (var destination in destinations)
             {
                 var workerBlock = new System.Threading.Tasks.Dataflow.ActionBlock<string>(
                    collectUrl => CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, cancellationToken),
-                   new System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions
-                   {
-                       MaxDegreeOfParallelism = Math.Max(1, dataCollectionConfig.CollectParallelFileCount),
-                       CancellationToken = cancellationToken
-                   });
+                   dataflowBlockOptions);
 
                 foreach (var collectUrl in collectUrls)
                 {
