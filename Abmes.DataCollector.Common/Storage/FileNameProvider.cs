@@ -41,7 +41,7 @@ namespace Abmes.DataCollector.Common.Storage
 
             if (nameParts.Count() > 1)
             {
-                return nameParts[0];
+                return ExtractDateTimeString(nameParts[0]);
             }
 
             try
