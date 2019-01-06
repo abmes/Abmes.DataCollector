@@ -16,10 +16,11 @@ namespace Abmes.DataCollector.Vault.Logging
             builder.RegisterType<Logging.Storage.Storage>().Named<IStorage>("LoggingDecorator");
             builder.RegisterType<Logging.Services.DataCollectionFiles>().Named<IDataCollectionFiles>("LoggingDecorator");
 
-            builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IConfigProvider>();
+            builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "baseAmazon").As<IConfigProvider>();
             builder.RegisterDecorator<IStoragesConfigProvider>((x, inner) => x.ResolveNamed<IStoragesConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IStoragesConfigProvider>();
             builder.RegisterDecorator<IDataCollectionNameProvider>((x, inner) => x.ResolveNamed<IDataCollectionNameProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollectionNameProvider>();
             builder.RegisterDecorator<IStorage>((x, inner) => x.ResolveNamed<IStorage>("LoggingDecorator", TypedParameter.From(inner)), "baseAmazon").Keyed<IStorage>("Amazon");
+            builder.RegisterDecorator<IStorage>((x, inner) => x.ResolveNamed<IStorage>("LoggingDecorator", TypedParameter.From(inner)), "baseAzure").Keyed<IStorage>("Azure");
             builder.RegisterDecorator<IDataCollectionFiles>((x, inner) => x.ResolveNamed<IDataCollectionFiles>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollectionFiles>();
         }
     }

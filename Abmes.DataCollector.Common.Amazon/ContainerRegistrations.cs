@@ -10,7 +10,7 @@ namespace Abmes.DataCollector.Common.Amazon
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("base");
+            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("baseAmazon");
             builder.RegisterType<AmazonCommonStorage>().As<IAmazonCommonStorage>();
         }
     }

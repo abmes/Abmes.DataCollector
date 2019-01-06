@@ -11,6 +11,7 @@ namespace Abmes.DataCollector.Vault.Service
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
             Abmes.DataCollector.Common.Amazon.ServicesConfiguration.Configure(services, configuration);
+            Abmes.DataCollector.Common.Azure.ServicesConfiguration.Configure(services, configuration);
             Abmes.DataCollector.Vault.ServicesConfiguration.Configure(services, configuration);
         }
     }

@@ -11,9 +11,11 @@ namespace Abmes.DataCollector.Vault.Service
         {
             Abmes.DataCollector.Common.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Common.Amazon.ContainerRegistrations.RegisterFor(builder);
+            Abmes.DataCollector.Common.Azure.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Vault.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Vault.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Vault.Amazon.ContainerRegistrations.RegisterFor(builder);
+            Abmes.DataCollector.Vault.Azure.ContainerRegistrations.RegisterFor(builder);
         }
     }
 }

@@ -12,7 +12,8 @@ namespace Abmes.DataCollector.Collector.Caching
 
             builder.RegisterType<Caching.Configuration.ConfigFileProvider>().Named<IConfigProvider>("CachingDecorator");
 
-            builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "logging").As<IConfigProvider>();
+            builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "loggingAmazon").As<IConfigProvider>();
+            //builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "loggingAzure").As<IConfigProvider>();
         }
     }
 }

@@ -10,7 +10,7 @@ namespace Abmes.DataCollector.Common.Azure
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("base");
+            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("baseAzure");
             builder.RegisterType<AzureCommonStorage>().As<IAzureCommonStorage>();
         }
     }
