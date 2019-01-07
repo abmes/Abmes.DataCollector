@@ -156,7 +156,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             {
                 using (var headRequest = new HttpRequestMessage(HttpMethod.Head, url))
                 {
-                    headers = headers.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
+                    headers = headers?.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
 
                     headRequest.Headers.AddValues(headers);
 
