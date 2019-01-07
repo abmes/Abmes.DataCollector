@@ -14,22 +14,11 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
     {
         private static readonly string[] DefaultIdentifierPropertyNames = { "name", "fileName", "identifier" };
 
-        public IEnumerable<string> GetCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        private IEnumerable<string> GenerateCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
         {
             if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
             {
-                if (collectUrl.StartsWith('@'))
-                {
-                    var collectUrlsJson = HttpUtils.GetString(collectUrl.TrimStart('@'), collectHeaders, "application/json").Result;
-                    foreach (var url in GetCollectUrls(collectUrlsJson))
-                    {
-                        yield return url;
-                    }
-                }
-                else
-                {
-                    yield return collectUrl;
-                }
+                yield return collectUrl;
             }
             else
             {
@@ -69,6 +58,29 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     }
                 }
             }
+        }
+
+        private IEnumerable<string> GetCollectUrlsFrom(string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers)
+        {
+            var collectUrlsJson = HttpUtils.GetString(sourceUrl, headers, "application/json").Result;
+            foreach (var url in GetCollectUrls(collectUrlsJson))
+            {
+                yield return url;
+            }
+        }
+
+        public IEnumerable<string> GetCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        {
+            var collectUrls = GenerateCollectUrls(collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders).ToList();
+
+            return
+                collectUrls
+                .Where(x => !x.StartsWith('@'))
+                .Concat(
+                    collectUrls
+                    .Where(x => x.StartsWith('@'))
+                    .SelectMany(x => GetCollectUrlsFrom(x.TrimStart('@'), collectHeaders))
+                );
         }
 
         private IEnumerable<string> GetCollectFileIdentifiers(string collectFileIdentifiersJson, IEnumerable<string> identifierPropertyNames)
