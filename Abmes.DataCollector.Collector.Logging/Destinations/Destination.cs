@@ -29,19 +29,21 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
             }
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Started collecting file '{fileName}' from data '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
+                var actionName = (tryNo == 1) ? "Started" : "Retrying";
 
-                await _destination.CollectAsync(collectUrl, collectHeaders, dataCollectionName, fileName, timeout, finishWait, cancellationToken);
+                _logger.LogInformation(actionName + " collecting file '{fileName}' from data '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
+
+                await _destination.CollectAsync(collectUrl, collectHeaders, dataCollectionName, fileName, timeout, finishWait, tryNo, cancellationToken);
 
                 _logger.LogInformation("Finished collecting file '{fileName}' from data '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error collecting data file '{fileName}' from data '{dataCollectionName}' to destination '{destinationId}': {errorMessage}", fileName, dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
+                _logger.LogCritical("Error collecting file '{fileName}' from data '{dataCollectionName}' to destination '{destinationId}': {errorMessage}", fileName, dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
                 throw;
             }
         }

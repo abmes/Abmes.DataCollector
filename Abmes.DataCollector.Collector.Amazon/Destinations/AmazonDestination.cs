@@ -29,7 +29,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
             _amazonCommonStorage = amazonCommonStorage;
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {

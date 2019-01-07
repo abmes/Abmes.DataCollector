@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
+using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {
@@ -52,8 +53,13 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
-            var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders).ToList();
+            var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders);
 
+            await CollectUrlsAsync(collectUrls.ToList(), destinations, dataCollectionConfig, collectMoment, cancellationToken);
+        }
+
+        private async Task CollectUrlsAsync(IEnumerable<string> collectUrls, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        {
             if (!collectUrls.Any())
             {
                 throw new Exception($"No files to collect for Data '{dataCollectionConfig.DataCollectionName}'");
@@ -67,22 +73,35 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             foreach (var destination in destinations)
             {
+                var completeFileNames = new ConcurrentBag<string>();
+
                 var workerBlock = new System.Threading.Tasks.Dataflow.ActionBlock<string>(
-                   collectUrl => CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, cancellationToken),
+                   collectUrl => CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken),
                    dataflowBlockOptions);
 
-                foreach (var collectUrl in collectUrls)
+                try
                 {
-                    workerBlock.Post(collectUrl);
+                    foreach (var collectUrl in collectUrls)
+                    {
+                        workerBlock.Post(collectUrl);
+                    }
+
+                    workerBlock.Complete();
+
+                    await workerBlock.Completion;
                 }
-
-                workerBlock.Complete();
-
-                await workerBlock.Completion;
+                finally
+                {
+                    if (workerBlock.Completion.Status != TaskStatus.RanToCompletion)
+                    {
+                        // clear partial collection
+                        await GarbageCollectDestinationFilesAsync(destination, dataCollectionConfig.DataCollectionName, completeFileNames, cancellationToken);
+                    }
+                }
             }
         }
 
-        private async Task CollectToDestinationAsync(string collectUrl, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        private async Task CollectToDestinationAsync(string collectUrl, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<string> completeFileNames, CancellationToken cancellationToken)
         {
             var destinationFileName =
                   _fileNameProvider.GenerateCollectDestinationFileName(
@@ -92,7 +111,22 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                       !string.IsNullOrEmpty(dataCollectionConfig.CollectFileIdentifiersUrl)
                     );
 
-            await destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, cancellationToken);
+
+            await TaskUtils.TryTaskAsync(
+                    (tryNo) => destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, cancellationToken),
+                    (e) => IsRetryableCollectError(e, dataCollectionConfig),
+                    3,
+                    TimeSpan.FromSeconds(5)
+                );
+
+            completeFileNames.Add(destinationFileName);
+        }
+
+        private bool IsRetryableCollectError(Exception e, DataCollectionConfig dataCollectionConfig)
+        {
+            string[] RetryableErrorMessages = { "Gateway Timeout 504", "The request timed out" };
+
+            return RetryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
         }
 
         public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
@@ -103,23 +137,28 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task GarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, CancellationToken cancellationToken)
         {
-            var DataCollectionFileNames = await destination.GetDataCollectionFileNamesAsync(dataCollectionName, cancellationToken);
-            var garbageDataCollectionFileNames = GetGarbageDataCollectionFileNames(DataCollectionFileNames);
+            var dataCollectionFileNames = await destination.GetDataCollectionFileNamesAsync(dataCollectionName, cancellationToken);
+            var garbageDataCollectionFileNames = GetGarbageDataCollectionFileNames(dataCollectionFileNames);
 
-            await Task.WhenAll(garbageDataCollectionFileNames.Select(x => destination.GarbageCollectDataCollectionFileAsync(dataCollectionName, x, cancellationToken)));
+            await GarbageCollectDestinationFilesAsync(destination, dataCollectionName, garbageDataCollectionFileNames, cancellationToken);
         }
-    
+
+        private async Task GarbageCollectDestinationFilesAsync(IDestination destination, string dataCollectionName, IEnumerable<string> fileNames, CancellationToken cancellationToken)
+        {
+            await Task.WhenAll(fileNames.Select(x => destination.GarbageCollectDataCollectionFileAsync(dataCollectionName, x, cancellationToken)));
+        }
+
         private async Task<IEnumerable<IDestination>> GetDestinationsAsync(IEnumerable<string> destinationIds, CancellationToken cancellationToken)
         {
             return await Task.WhenAll(destinationIds.Select(x => _destinationProvider.GetDestinationAsync(x, cancellationToken)));
         }
 
-        private IEnumerable<string> GetGarbageDataCollectionFileNames(IEnumerable<string> DataCollectionFileNames)
+        private IEnumerable<string> GetGarbageDataCollectionFileNames(IEnumerable<string> dataCollectionFileNames)
         {
             var now = DateTimeOffset.UtcNow;
 
             var files =
-                    DataCollectionFileNames
+                    dataCollectionFileNames
                     .Select(x => new { FileName = x, FileDateTime = _fileNameProvider.DataCollectionFileNameToDateTime(x) })
                     .GroupBy(x => x.FileDateTime)
                     .Select(x => new { FileNames = x.Select(y => y.FileName), FilesDateTime = x.Key })
@@ -164,7 +203,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     .Union(quaterlyFileNames)
                     .Distinct();
 
-            return DataCollectionFileNames.Except(preserveFileNames);
+            return dataCollectionFileNames.Except(preserveFileNames);
         }
     }
 }

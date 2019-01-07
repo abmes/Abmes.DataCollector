@@ -27,7 +27,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             _azureCommonStorage = azureCommonStorage;
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string databaseName, string fileName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string databaseName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             var container = await GetContainerAsync(cancellationToken);
 
