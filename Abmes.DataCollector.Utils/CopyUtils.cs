@@ -3,6 +3,7 @@ using System.Buffers;
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
 using System.IO;
+using System.Security.Cryptography;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -78,5 +79,28 @@ namespace Abmes.DataCollector.Utils
                 );
         }
 
+        public static string GetMD5Hash(byte[] buffer, int offset, int count)
+        {
+            var hasher = GetMD5Hasher();
+            AppendHasherData(hasher, buffer, offset, count);
+            return GetMD5Hash(hasher);
+        }
+
+        public static IncrementalHash GetMD5Hasher()
+        {
+            return IncrementalHash.CreateHash(HashAlgorithmName.MD5);
+        }
+
+        public static void AppendHasherData(IncrementalHash hasher, byte[] buffer, int offset, int count)
+        {
+            hasher.AppendData(buffer, offset, count);
+        }
+
+        public static string GetMD5Hash(IncrementalHash hasher)
+        {
+            var blockHash = hasher.GetHashAndReset();
+            var md5Hash = Convert.ToBase64String(blockHash, 0, 16);
+            return md5Hash;
+        }
     }
 }

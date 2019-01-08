@@ -72,7 +72,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                     {
                         var blob = container.GetBlockBlobReference(blobName);
 
-                        var blobHasher = GetMD5Hasher();
+                        var blobHasher = CopyUtils.GetMD5Hasher();
 
                         var blockIDs = new List<string>();
                         var blockNumber = 0;
@@ -84,8 +84,8 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                                     var blockId = GetBlockId(blockNumber);
                                     blockIDs.Add(blockId);
 
-                                    var blockMD5Hash = GetMD5Hash(buffer, 0, count);
-                                    AppendHasherData(blobHasher, buffer, 0, count);
+                                    var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
+                                    CopyUtils.AppendHasherData(blobHasher, buffer, 0, count);
 
                                     using (var ms = new MemoryStream(buffer, 0, count))
                                     {
@@ -98,7 +98,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                                 cancellationToken
                             );
 
-                        blob.Properties.ContentMD5 = GetMD5Hash(blobHasher);
+                        blob.Properties.ContentMD5 = CopyUtils.GetMD5Hash(blobHasher);
                         await blob.PutBlockListAsync(blockIDs, null, null, null, cancellationToken);
                     }
                 }
@@ -144,30 +144,6 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         private static string GetBlockId(int blockNumber)
         {
             return Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("BlockId{0}", blockNumber.ToString("0000000"))));
-        }
-
-        private static string GetMD5Hash(byte[] buffer, int offset, int count)
-        {
-            var hasher = GetMD5Hasher();
-            AppendHasherData(hasher, buffer, offset, count);
-            return GetMD5Hash(hasher);
-        }
-
-        private static IncrementalHash GetMD5Hasher()
-        {
-            return IncrementalHash.CreateHash(HashAlgorithmName.MD5);
-        }
-
-        private static void AppendHasherData(IncrementalHash hasher, byte[] buffer, int offset, int count)
-        {
-            hasher.AppendData(buffer, offset, count);
-        }
-
-        private static string GetMD5Hash(IncrementalHash hasher)
-        {
-            var blockHash = hasher.GetHashAndReset();
-            var md5Hash = Convert.ToBase64String(blockHash, 0, 16);
-            return md5Hash;
         }
 
         private async Task<long> GetContentLengthHeaderAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
