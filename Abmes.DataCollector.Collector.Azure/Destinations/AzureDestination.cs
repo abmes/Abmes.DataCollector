@@ -85,7 +85,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                                     blockIDs.Add(blockId);
 
                                     var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
-                                    CopyUtils.AppendHasherData(blobHasher, buffer, 0, count);
+                                    CopyUtils.AppendMDHasherData(blobHasher, buffer, 0, count);
 
                                     using (var ms = new MemoryStream(buffer, 0, count))
                                     {

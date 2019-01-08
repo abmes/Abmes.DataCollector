@@ -82,7 +82,7 @@ namespace Abmes.DataCollector.Utils
         public static string GetMD5Hash(byte[] buffer, int offset, int count)
         {
             var hasher = GetMD5Hasher();
-            AppendHasherData(hasher, buffer, offset, count);
+            AppendMDHasherData(hasher, buffer, offset, count);
             return GetMD5Hash(hasher);
         }
 
@@ -91,7 +91,7 @@ namespace Abmes.DataCollector.Utils
             return IncrementalHash.CreateHash(HashAlgorithmName.MD5);
         }
 
-        public static void AppendHasherData(IncrementalHash hasher, byte[] buffer, int offset, int count)
+        public static void AppendMDHasherData(IncrementalHash hasher, byte[] buffer, int offset, int count)
         {
             hasher.AppendData(buffer, offset, count);
         }
