@@ -77,9 +77,6 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                         using (var ms = new MemoryStream(buffer, 0, count))
                         {
                             ms.Position = 0;
-                            File.WriteAllBytes(@"d:\test.zip", ms.ToArray());
-
-                            ms.Position = 0;
 
                             partNo++;
 
