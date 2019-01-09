@@ -48,7 +48,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                     {
                         var key = dataCollectionName + '/' + fileName;
 
-                        await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.Root, key, cancellationToken);
+                        await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
                     }
                 }
             }
@@ -158,13 +158,13 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
 
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
-            var request = new DeleteObjectRequest { BucketName = DestinationConfig.Root, Key = dataCollectionName + '/' + fileName };
+            var request = new DeleteObjectRequest { BucketName = DestinationConfig.RootBase(), Key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName };
             await _amazonS3.DeleteObjectAsync(request, cancellationToken);
         }
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.Root, dataCollectionName, cancellationToken);
+            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, cancellationToken);
         }
     }
 }

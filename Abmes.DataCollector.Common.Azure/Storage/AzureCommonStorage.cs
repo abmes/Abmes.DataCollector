@@ -40,9 +40,9 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             return $"DefaultEndpointsProtocol=https;AccountName={loginName};AccountKey={loginSecret};EndpointSuffix=core.windows.net";
         }
 
-        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string root, string dataCollectionName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, CancellationToken cancellationToken)
         {
-            var container = await GetContainerAsync(loginName, loginSecret, root, false, cancellationToken);
+            var container = await GetContainerAsync(loginName, loginSecret, rootBase, false, cancellationToken);
 
             var containerExists = await container.ExistsAsync();
             if (!containerExists)
@@ -51,7 +51,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             }
 
             BlobContinuationToken continuationToken = null;
-            var prefix = dataCollectionName + "/";
+            var prefix = rootDir + dataCollectionName + "/";
 
             var resultList = new List<string>();
 

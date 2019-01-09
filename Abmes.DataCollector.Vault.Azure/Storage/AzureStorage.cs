@@ -27,9 +27,9 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
 
         public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
-            var container = await _azureCommonStorage.GetContainerAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.Root, false, cancellationToken);
+            var container = await _azureCommonStorage.GetContainerAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), false, cancellationToken);
 
-            var blobName = dataCollectionName + '/' + fileName;
+            var blobName = StorageConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
             var blob = container.GetBlobReference(blobName);
 
             var sasConstraints = new SharedAccessBlobPolicy();
@@ -44,7 +44,7 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.Root, dataCollectionName, cancellationToken);
+            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, cancellationToken);
         }
     }
 }

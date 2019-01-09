@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 
 namespace Abmes.DataCollector.Vault.Configuration
@@ -18,6 +19,23 @@ namespace Abmes.DataCollector.Vault.Configuration
             LoginName = loginName;
             LoginSecret = loginSecret;
             Root = root;
+        }
+
+        public string RootBase()
+        {
+            return Root?.Split('/', '\\').FirstOrDefault();
+        }
+
+        public string RootDir(char separator, bool includeTrailingSeparator)
+        {
+            var result = string.Join(separator, Root?.Split('/', '\\').Skip(1));
+
+            if (includeTrailingSeparator && (!string.IsNullOrEmpty(result)))
+            {
+                result = result + separator;
+            }
+
+            return result;
         }
     }
 }

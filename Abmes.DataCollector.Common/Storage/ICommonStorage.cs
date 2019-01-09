@@ -8,6 +8,6 @@ namespace Abmes.DataCollector.Common.Storage
 {
     public interface ICommonStorage
     {
-        Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string root, string dataCollectionName, CancellationToken cancellationToken);
+        Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, CancellationToken cancellationToken);
     }
 }

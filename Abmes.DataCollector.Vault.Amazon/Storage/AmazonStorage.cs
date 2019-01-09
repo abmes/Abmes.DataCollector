@@ -32,8 +32,8 @@ namespace Abmes.DataCollector.Vault.Amazon.Storage
         {
             var request = new GetPreSignedUrlRequest
             {
-                BucketName = StorageConfig.Root,
-                Key = fileName,
+                BucketName = StorageConfig.RootBase(),
+                Key = StorageConfig.RootDir('/', true) + fileName,
                 Verb = HttpVerb.GET,
                 Expires = DateTime.Now.Add(_vaultAppSettings.DownloadUrlExpiry)
             };
@@ -45,7 +45,7 @@ namespace Abmes.DataCollector.Vault.Amazon.Storage
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.Root, dataCollectionName, cancellationToken);
+            return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, cancellationToken);
         }
     }
 }
