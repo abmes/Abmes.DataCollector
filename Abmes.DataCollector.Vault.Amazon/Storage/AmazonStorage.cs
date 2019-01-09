@@ -33,9 +33,9 @@ namespace Abmes.DataCollector.Vault.Amazon.Storage
             var request = new GetPreSignedUrlRequest
             {
                 BucketName = StorageConfig.RootBase(),
-                Key = StorageConfig.RootDir('/', true) + fileName,
+                Key = StorageConfig.RootDir('/', true) + dataCollectionName + "/" + fileName,
                 Verb = HttpVerb.GET,
-                Expires = DateTime.Now.Add(_vaultAppSettings.DownloadUrlExpiry)
+                Expires = DateTime.UtcNow.Add(_vaultAppSettings.DownloadUrlExpiry)
             };
 
             string result = _amazonS3.GetPreSignedURL(request);

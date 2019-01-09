@@ -2,6 +2,7 @@
 using Abmes.DataCollector.Vault.Configuration;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -26,7 +27,14 @@ namespace Abmes.DataCollector.Vault.Common.Configuration
         public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
         {
             var json = await _configProvider.GetConfigContentAsync(StorageConfigName, cancellationToken);
-            return _storageJsonConfigProvider.GetStorageConfigs(json);
+            var result = _storageJsonConfigProvider.GetStorageConfigs(json);
+
+            if (result.Any(x => string.IsNullOrEmpty(x.StorageType)))
+            {
+                throw new Exception("Invalid StorageType");
+            }
+
+            return result;
         }
     }
 }
