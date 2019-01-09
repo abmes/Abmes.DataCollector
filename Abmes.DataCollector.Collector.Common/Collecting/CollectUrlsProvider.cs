@@ -63,7 +63,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private IEnumerable<string> GetCollectUrlsFrom(string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers)
         {
             var collectUrlsJson = HttpUtils.GetString(sourceUrl, headers, "application/json").Result;
-            foreach (var url in GetCollectUrls(collectUrlsJson))
+            foreach (var url in GetCollectUrlsFromJson(collectUrlsJson))
             {
                 yield return url;
             }
@@ -117,15 +117,15 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return s;
         }
 
-        private IEnumerable<string> GetCollectUrls(string collectUrlsJson)
+        private IEnumerable<string> GetCollectUrlsFromJson(string json)
         {
             try
             {
-                return JsonConvert.DeserializeObject<IEnumerable<string>>(collectUrlsJson).Select(x => TrimPseudoNewLine(x?.Trim()));
+                return JsonConvert.DeserializeObject<IEnumerable<string>>(json).Select(x => TrimPseudoNewLine(x?.Trim()));
             }
             catch
             {
-                return new[] { TrimPseudoNewLine(collectUrlsJson.Trim('"').Trim()) };
+                return new[] { TrimPseudoNewLine(json.Trim('"').Trim()) };
             }
         }
     }

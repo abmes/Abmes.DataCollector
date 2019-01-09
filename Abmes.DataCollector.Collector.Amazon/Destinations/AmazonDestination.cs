@@ -11,6 +11,7 @@ using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Amazon.Storage;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using System.IO;
+using System.Linq;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations
 {
@@ -41,17 +42,19 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                 {
                     await response.CheckSuccessAsync();
 
+                    var sourceMD5 = response.ContentMD5();
+
                     using (var sourceStream = await response.Content.ReadAsStreamAsync())
                     {
                         var key = dataCollectionName + '/' + fileName;
 
-                        await MultiPartUploadAsync(sourceStream, DestinationConfig.Root, key, cancellationToken);
+                        await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.Root, key, cancellationToken);
                     }
                 }
             }
         }
 
-        private async Task MultiPartUploadAsync(Stream sourceStream, string bucketName, string keyName, CancellationToken cancellationToken)
+        private async Task MultiPartUploadAsync(Stream sourceStream, string sourceMD5, string bucketName, string keyName, CancellationToken cancellationToken)
         {
             // Create list to store upload part responses.
             var uploadResponses = new List<UploadPartResponse>();
@@ -63,10 +66,19 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                 Key = keyName
             };
 
+            var validateMD5 = !string.IsNullOrEmpty(sourceMD5);
+
+            if (validateMD5)
+            {
+                initiateRequest.Metadata.Add("Content-MD5", sourceMD5);
+            }
+
             // Initiate the upload.
             var initResponse = await _amazonS3.InitiateMultipartUploadAsync(initiateRequest, cancellationToken);
             try
             {
+                var blobHasher = validateMD5 ? CopyUtils.GetMD5Hasher() : null;
+
                 var partSize = 10 * 1024 * 1024;  // todo: config
                 var partNo = 1;
 
@@ -74,6 +86,13 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                     (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
                     async (buffer, count, cancellationToken2) =>
                     {
+                        var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
+
+                        if (validateMD5)
+                        {
+                            CopyUtils.AppendMDHasherData(blobHasher, buffer, 0, count);
+                        }
+
                         using (var ms = new MemoryStream(buffer, 0, count))
                         {
                             ms.Position = 0;
@@ -87,7 +106,8 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                                 UploadId = initResponse.UploadId,
                                 PartNumber = partNo,
                                 PartSize = count,
-                                InputStream = ms
+                                InputStream = ms,
+                                MD5Digest = blockMD5Hash
                             };
 
                             // Upload a part and add the response to our list.
@@ -98,6 +118,16 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                     partSize,
                     cancellationToken
                 );
+
+                if (validateMD5)
+                {
+                    var blobHash = CopyUtils.GetMD5Hash(blobHasher);
+
+                    if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
+                    {
+                        throw new Exception("Invalid destination MD5");
+                    }
+                }
 
                 // Setup to complete the upload.
                 var completeRequest = new CompleteMultipartUploadRequest

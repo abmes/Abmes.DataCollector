@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
 using System.Threading;
@@ -65,6 +66,13 @@ namespace Abmes.DataCollector.Utils
                     httpRequestHeaders.Add(value.Key, value.Value);
                 }
             }
+        }
+
+        public static string ContentMD5(this HttpResponseMessage response)
+        {
+            return
+                CopyUtils.GetMD5Hash(response.Content.Headers.ContentMD5) ??
+                response.Headers.Where(x => x.Key.Equals("x-amz-meta-content-md5", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.Value.FirstOrDefault()).FirstOrDefault();
         }
     }
 }

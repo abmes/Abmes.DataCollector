@@ -46,11 +46,11 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
         {
-            if (await GetContentLengthHeaderAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
-            {
-                await AzureCopyToBlob(sourceUrl, container, blobName, finishWait, cancellationToken);
-            }
-            else
+            //if (await GetContentLengthAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
+            //{
+            //    await AzureCopyToBlob(sourceUrl, container, blobName, finishWait, cancellationToken);
+            //}
+            //else
             {
                 await CopyFromUrlToBlob(sourceUrl, sourceHeaders, container, blobName, 1 * 1024 * 1024, timeout, cancellationToken);
             }
@@ -67,6 +67,8 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                 using (var response = await httpClient.GetAsync(sourceUrl, HttpCompletionOption.ResponseHeadersRead))
                 {
                     await response.CheckSuccessAsync();
+
+                    var sourceMD5 = response.ContentMD5();
 
                     using (var sourceStream = await response.Content.ReadAsStreamAsync())
                     {
@@ -98,7 +100,14 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                                 cancellationToken
                             );
 
-                        blob.Properties.ContentMD5 = CopyUtils.GetMD5Hash(blobHasher);
+                        var blobHash = CopyUtils.GetMD5Hash(blobHasher);
+
+                        if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
+                        {
+                            throw new Exception("Invalid destination MD5");
+                        }
+
+                        blob.Properties.ContentMD5 = blobHash;
                         await blob.PutBlockListAsync(blockIDs, null, null, null, cancellationToken);
                     }
                 }
@@ -120,7 +129,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         {
             while (true)
             {
-                await Task.Delay(TimeSpan.FromSeconds(15), cancellationToken);
+                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);  // todo: config
 
                 var blobs = container.ListBlobsSegmentedAsync(blobName, true, BlobListingDetails.Copy, 1, null, null, null, cancellationToken);
 
@@ -146,7 +155,21 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             return Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("BlockId{0}", blockNumber.ToString("0000000"))));
         }
 
-        private async Task<long> GetContentLengthHeaderAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+        private async Task<long> GetContentLengthAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+        {
+            var headContentLength = await GetContentLengthFromHeadAsync(url, headers, cancellationToken);
+
+            if (headContentLength == -1)
+            {
+                return await GetGetContentLengthFromGetAsync(url, headers, cancellationToken);
+            }
+            else
+            {
+                return headContentLength;
+            }
+        }
+
+        private async Task<long> GetContentLengthFromHeadAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
         {
             using (var httpClient = new HttpClient())
             {
@@ -164,6 +187,24 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
                     }
 
                     return headResult.Content.Headers.ContentLength ?? -1;
+                }
+            }
+        }
+
+        private async Task<long> GetGetContentLengthFromGetAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+        {
+            using (var httpClient = new HttpClient())
+            {
+                httpClient.DefaultRequestHeaders.AddValues(headers);
+
+                using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
+                {
+                    if (!response.IsSuccessStatusCode)
+                    {
+                        return -1;
+                    }
+
+                    return response.Content.Headers.ContentLength ?? -1;
                 }
             }
         }

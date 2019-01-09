@@ -98,9 +98,19 @@ namespace Abmes.DataCollector.Utils
 
         public static string GetMD5Hash(IncrementalHash hasher)
         {
-            var blockHash = hasher.GetHashAndReset();
-            var md5Hash = Convert.ToBase64String(blockHash, 0, 16);
+            var byteHash = hasher.GetHashAndReset();
+            var md5Hash = GetMD5Hash(byteHash);
             return md5Hash;
+        }
+
+        public static string GetMD5Hash(byte[] md5Hash)
+        {
+            if ((md5Hash == null) || (md5Hash.Length == 0))
+            {
+                return null;
+            }
+
+            return Convert.ToBase64String(md5Hash, 0, 16);
         }
     }
 }
