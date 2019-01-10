@@ -38,13 +38,32 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetFileNamesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Started getting download urls for file name prefix'{fileNamePrefix}'", fileNamePrefix);
+
+                var result = await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, cancellationToken);
+
+                _logger.LogInformation("Finished getting download urls for file name prefix '{fileNamePrefix}'", fileNamePrefix);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("Error getting download urls for file name prefix '{fileNamePrefix}': {errorMessage}", fileNamePrefix, e.GetAggregateMessages());
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting file names");
 
-                var result = await _dataCollectionFiles.GetFileNamesAsync(cancellationToken);
+                var result = await _dataCollectionFiles.GetFileNamesAsync(prefix, cancellationToken);
 
                 _logger.LogInformation("Finished getting file names");
 
@@ -57,7 +76,7 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<List<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken)
         {
             try
             {
@@ -76,7 +95,7 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<List<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
         {
             try
             {

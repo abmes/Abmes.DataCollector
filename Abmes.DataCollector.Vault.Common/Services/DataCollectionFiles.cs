@@ -27,35 +27,85 @@ namespace Abmes.DataCollector.Vault.Services
             _fileNameProvider = fileNameProvider;
         }
 
-        public async Task<IEnumerable<string>> GetFileNamesAsync(CancellationToken cancellationToken)
+        private async Task<IEnumerable<(IStorage Storage, IEnumerable<string> FileNames)>> InternalGetStorageFileNamesAsync(string fileNamePrefix, CancellationToken cancellationToken)
         {
             var storages = await _storageProvider.GetStoragesAsync(cancellationToken);
 
-            var results = await Task.WhenAll(storages.Select(x => x.GetDataCollectionFileNamesAsync(_dataCollectionName, cancellationToken)));
-            return results.SelectMany(x => x).Distinct();
+            var result = new List<(IStorage Storage, IEnumerable<string> FileNames)>();
+
+            foreach (var storage in storages)
+            {
+                var fileNames = await storage.GetDataCollectionFileNamesAsync(_dataCollectionName, fileNamePrefix, cancellationToken);
+                result.Add((storage, fileNames));
+            }
+
+            return result;
         }
 
-        public async Task<List<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        private async Task<(IStorage Storage, IEnumerable<string> FileNames)> InternalGetLatestFileNamesAsync(CancellationToken cancellationToken)
         {
-            var fileNames = await GetFileNamesAsync(cancellationToken);
-            return fileNames.GroupBy(x => _fileNameProvider.DataCollectionFileNameToDateTime(x)).OrderBy(x => x.Key).LastOrDefault().Select(x => x).ToList();
+            var storageFileNames = await InternalGetStorageFileNamesAsync(null, cancellationToken);
+
+            return
+                storageFileNames
+                .Where(x => x.FileNames.Any())
+                .Select(x =>
+                    ( x.Storage,
+                      x.FileNames
+                          .GroupBy(z => _fileNameProvider.DataCollectionFileNameToDateTime(z))
+                          .OrderBy(z => z.Key)
+                          .LastOrDefault()
+                    )
+                )
+                .FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, CancellationToken cancellationToken)
+        {
+            var storageFileNames = await InternalGetStorageFileNamesAsync(prefix, cancellationToken);
+            return 
+                storageFileNames
+                .Where(x => x.FileNames.Any())
+                .Select(x => x.FileNames)
+                .FirstOrDefault();
+        }
+
+        public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        {
+            return (await InternalGetLatestFileNamesAsync(cancellationToken)).FileNames;
         }
 
         public async Task<string> GetDownloadUrlAsync(string fileName, CancellationToken cancellationToken)
         {
-            var storages = await _storageProvider.GetStoragesAsync(cancellationToken);
+            var storageFileNames = await InternalGetStorageFileNamesAsync(fileName, cancellationToken);
 
-            var results = await Task.WhenAll(storages.Select(x => x.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, fileName, cancellationToken)));
-            return results.FirstOrDefault();
+            var storage = 
+                    storageFileNames
+                    .Where(x => x.FileNames.Any())
+                    .Select(x => x.Storage)
+                    .FirstOrDefault();
+
+            return await storage?.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, fileName, cancellationToken);
         }
 
-        public async Task<List<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, CancellationToken cancellationToken)
         {
-            var latestFileNames = await GetLatestFileNamesAsync(cancellationToken);
-            var tasks = latestFileNames.Select(x => GetDownloadUrlAsync(x, cancellationToken));
+            var storageFileNames = await InternalGetStorageFileNamesAsync(fileNamePrefix, cancellationToken);
+
+            var (storage, fileNames) = storageFileNames.Where(x => x.FileNames.Any()).FirstOrDefault();
+
+            var tasks = fileNames.Select(x => storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, x, cancellationToken));
             await Task.WhenAll(tasks);
-            return tasks.Select(x => x.Result).ToList();
+            return tasks.Select(x => x.Result);
         }
 
+        public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken)
+        {
+            var (storage, fileNames) = await InternalGetLatestFileNamesAsync(cancellationToken);
+
+            var tasks = fileNames.Select(x => storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, x, cancellationToken));
+            await Task.WhenAll(tasks);
+            return tasks.Select(x => x.Result);
+        }
     }
 }

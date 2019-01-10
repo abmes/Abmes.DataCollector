@@ -8,9 +8,10 @@ namespace Abmes.DataCollector.Vault.Services
 {
     public interface IDataCollectionFiles
     {
-        Task<IEnumerable<string>> GetFileNamesAsync(CancellationToken cancellationToken);
-        Task<List<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<string>> GetFileNamesAsync(string prefix, CancellationToken cancellationToken);
+        Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken);
         Task<string> GetDownloadUrlAsync(string fileName, CancellationToken cancellationToken);
-        Task<List<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken);
+        Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, CancellationToken cancellationToken);
+        Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken);
     }
 }

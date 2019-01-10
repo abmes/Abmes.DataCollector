@@ -20,18 +20,18 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
             _dataCollectionFiles = dataCollectionFiles;
         }
 
-        // GET DataCollectionFiles/GetFiles
+        // GET DataCollectionFiles/GetFiles?prefix=xyz
         [Route("GetFiles")]
         [HttpGet]
-        public async Task<IEnumerable<string>> GetFileNamesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetFileNamesAsync([FromQuery] string prefix, CancellationToken cancellationToken)
         {
-            return await _dataCollectionFiles.GetFileNamesAsync(cancellationToken);
+            return await _dataCollectionFiles.GetFileNamesAsync(prefix, cancellationToken);
         }
 
         // GET DataCollectionFiles/GetFiles/latest
         [Route("GetFiles/latest")]
         [HttpGet]
-        public async Task<List<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
         {
             return await _dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
         }
@@ -47,7 +47,7 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
         // GET DataCollectionFiles/GetDownloadUrl/latest
         [Route("GetLatestDownloadUrls")]
         [HttpGet]
-        public async Task<List<string>> GetLatestDownloadUrls(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetLatestDownloadUrls(CancellationToken cancellationToken)
         {
             return await _dataCollectionFiles.GetLatestDownloadUrlsAsync(cancellationToken);
         }

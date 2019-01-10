@@ -29,13 +29,13 @@ namespace Abmes.DataCollector.Vault.Logging.Storage
             }
         }
 
-        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting data '{dataCollectionName}' file names", dataCollectionName);
 
-                var result =  await _storage.GetDataCollectionFileNamesAsync(dataCollectionName, cancellationToken);
+                var result =  await _storage.GetDataCollectionFileNamesAsync(dataCollectionName, fileNamePrefix, cancellationToken);
 
                 _logger.LogInformation("Finished getting data '{dataCollectionName}' file names", dataCollectionName);
 
