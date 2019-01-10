@@ -20,13 +20,13 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
             _amazonS3 = amazonS3;
         }
 
-        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             var prefix = rootDir + dataCollectionName + "/";
 
             var resultList = new List<string>();
 
-            var request = new ListObjectsV2Request { BucketName = rootBase, Prefix = prefix };
+            var request = new ListObjectsV2Request { BucketName = rootBase, Prefix = prefix + fileNamePrefix };
 
             while (true)
             {

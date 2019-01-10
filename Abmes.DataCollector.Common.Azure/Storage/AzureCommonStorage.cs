@@ -40,7 +40,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             return $"DefaultEndpointsProtocol=https;AccountName={loginName};AccountKey={loginSecret};EndpointSuffix=core.windows.net";
         }
 
-        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             var container = await GetContainerAsync(loginName, loginSecret, rootBase, false, cancellationToken);
 
@@ -57,7 +57,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
 
             while (true)
             {
-                var result = await container.ListBlobsSegmentedAsync(prefix, true, BlobListingDetails.None, null, continuationToken, null, null, cancellationToken);
+                var result = await container.ListBlobsSegmentedAsync(prefix + fileNamePrefix, true, BlobListingDetails.None, null, continuationToken, null, null, cancellationToken);
 
                 foreach (var x in result.Results)
                 {
