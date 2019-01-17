@@ -9,6 +9,7 @@ using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using System.Collections.Concurrent;
+using Polly;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {
@@ -111,12 +112,22 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                       !string.IsNullOrEmpty(dataCollectionConfig.CollectFileIdentifiersUrl)
                     );
 
-
-            await TaskUtils.TryTaskAsync(
-                    (tryNo) => destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, cancellationToken),
-                    (e) => IsRetryableCollectError(e, dataCollectionConfig),
-                    3,
-                    TimeSpan.FromSeconds(5)
+            var tryNo = 1;
+            await Policy
+                .Handle<Exception>(e => IsRetryableCollectError(e, dataCollectionConfig))
+                .WaitAndRetryAsync(
+                    2,
+                    (x) => TimeSpan.FromSeconds(5),
+                    (exception, timeSpan) =>
+                    {
+                        tryNo++;   
+                    }
+                )
+                .ExecuteAsync((ct) =>
+                    {
+                        return destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, ct);
+                    },
+                    cancellationToken
                 );
 
             completeFileNames.Add(destinationFileName);
