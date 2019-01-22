@@ -22,17 +22,22 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _dataCollector = dataCollector;
         }
 
-        public async Task CollectAsync(CancellationToken cancellationToken)
+        public async Task<bool> CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
             var dataCollectionsConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
             var dataGroups = dataCollectionsConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DataCollectionsConfig = x });
 
-            await Task.WhenAll(dataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DataCollectionsConfig, cancellationToken)));
+            var tasks = dataGroups.Select(x => CollectGroupAsync(x.DataGroupName, x.DataCollectionsConfig, cancellationToken));
+
+            await Task.WhenAll(tasks);
+
+            return tasks.Select(x => x.Result).Min();
         }
 
-        private async Task CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> dataCollectionsConfig, CancellationToken cancellationToken)
+        private async Task<bool> CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> dataCollectionsConfig, CancellationToken cancellationToken)
         {
+            var result = true;
             foreach (var dataCollectionConfig in dataCollectionsConfig)
             {
                 try
@@ -42,9 +47,12 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 }
                 catch
                 {
+                    result = false;
                     // Give other DataCollections a chance
                 }
             }
+
+            return result;
         }
     }
 }
