@@ -94,7 +94,7 @@ namespace Abmes.DataCollector.Vault.Services
 
             var (storage, fileNames) = storageFileNames.Where(x => x.FileNames.Any()).FirstOrDefault();
 
-            var tasks = fileNames.Select(x => storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, x, cancellationToken));
+            var tasks = fileNames.Select(x => storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, x, cancellationToken)).ToList();
             await Task.WhenAll(tasks);
             return tasks.Select(x => x.Result);
         }
@@ -103,7 +103,7 @@ namespace Abmes.DataCollector.Vault.Services
         {
             var (storage, fileNames) = await InternalGetLatestFileNamesAsync(cancellationToken);
 
-            var tasks = fileNames.Select(x => storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, x, cancellationToken));
+            var tasks = fileNames.Select(x => storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, x, cancellationToken)).ToList();
             await Task.WhenAll(tasks);
             return tasks.Select(x => x.Result);
         }
