@@ -12,13 +12,21 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public class CollectUrlsProvider : ICollectUrlsProvider
     {
+        private readonly ICollectUrlExtractor _collectUrlExtractor;
+
+        public CollectUrlsProvider(
+            ICollectUrlExtractor collectUrlsExtractor)
+        {
+            _collectUrlExtractor = collectUrlsExtractor;
+        }
+
         private static readonly string[] DefaultIdentifierPropertyNames = { "name", "fileName", "identifier" };
 
-        private IEnumerable<string> GenerateCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        private IEnumerable<(string CollectFileIdentifier, string CollectUrl)> GenerateCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
         {
             if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
             {
-                yield return collectUrl;
+                yield return (null, collectUrl);
             }
             else
             {
@@ -43,7 +51,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     {
                         if (HttpUtils.IsUrl(collectFileIdentifier))
                         {
-                            yield return collectFileIdentifier;
+                            yield return (null, collectFileIdentifier);
                         }
                         else
                         {
@@ -52,7 +60,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                             if ((string.IsNullOrEmpty(queryFilter)) ||
                                 (FileMaskUtils.FileNameMatchesFilter(collectFileIdentifier, queryFilter)))
                             {
-                                yield return collectUrl.Replace("[filename]", collectFileIdentifier, StringComparison.InvariantCultureIgnoreCase);
+                                yield return (collectFileIdentifier, collectUrl.Replace("[filename]", collectFileIdentifier, StringComparison.InvariantCultureIgnoreCase));
                             }
                         }
                     }
@@ -60,27 +68,20 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        private IEnumerable<string> GetCollectUrlsFrom(string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers)
-        {
-            var collectUrlsJson = HttpUtils.GetString(sourceUrl, headers, "application/json").Result;
-            foreach (var url in GetCollectUrlsFromJson(collectUrlsJson))
-            {
-                yield return url;
-            }
-        }
-
-        public IEnumerable<string> GetCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        public IEnumerable<string> GetCollectUrls(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
         {
             var collectUrls = GenerateCollectUrls(collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders).ToList();
 
             return
                 collectUrls
-                .Where(x => !x.StartsWith('@'))
+                .Where(x => !x.CollectUrl.StartsWith('@'))
+                .Select(x => x.CollectUrl)
                 .Concat(
                     collectUrls
-                    .Where(x => x.StartsWith('@'))
-                    .SelectMany(x => GetCollectUrlsFrom(x.TrimStart('@'), collectHeaders))
-                );
+                    .Where(x => x.CollectUrl.StartsWith('@'))
+                    .Select(x => _collectUrlExtractor.ExtractCollectUrl(dataCollectionName, x.CollectFileIdentifier, x.CollectUrl.TrimStart('@'), collectHeaders))
+                )
+                .ToList();
         }
 
         private IEnumerable<string> GetCollectFileIdentifiers(string collectFileIdentifiersJson, IEnumerable<string> identifierPropertyNames)
@@ -105,28 +106,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             var displayPropertyNames = string.Join("|", identifierPropertyNames);
             throw new Exception($"Could not parse collect file identifiers list as JSON array of strings or objects with property '{displayPropertyNames}'");
-        }
-
-        private string TrimPseudoNewLine(string s)
-        {
-            while ((!string.IsNullOrEmpty(s)) && (s.EndsWith(@"\n") || s.EndsWith(@"\r")))
-            {
-                s = s.Remove(s.Length - 2);
-            }
-
-            return s;
-        }
-
-        private IEnumerable<string> GetCollectUrlsFromJson(string json)
-        {
-            try
-            {
-                return JsonConvert.DeserializeObject<IEnumerable<string>>(json).Select(x => TrimPseudoNewLine(x?.Trim()));
-            }
-            catch
-            {
-                return new[] { TrimPseudoNewLine(json.Trim('"').Trim()) };
-            }
         }
     }
 }

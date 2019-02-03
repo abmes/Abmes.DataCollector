@@ -14,6 +14,8 @@ namespace Abmes.DataCollector.Collector.Logging
             builder.RegisterType<Collecting.DataCollector>().Named<IDataCollector>("LoggingDecorator");
             builder.RegisterType<Collecting.DataPreparer>().Named<IDataPreparer>("LoggingDecorator");
             builder.RegisterType<Collecting.DatabPreparePoller>().Named<IDataPreparePoller>("LoggingDecorator");
+            builder.RegisterType<Collecting.CollectUrlsProvider>().Named<ICollectUrlsProvider>("LoggingDecorator");
+            builder.RegisterType<Collecting.CollectUrlExtractor>().Named<ICollectUrlExtractor>("LoggingDecorator");
             builder.RegisterType<Configuration.ConfigProvider>().Named<IConfigProvider>("LoggingDecorator");
             builder.RegisterType<Configuration.ConfigSetNameProvider>().Named<IConfigSetNameProvider>("LoggingDecorator");
             builder.RegisterType<Configuration.DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("LoggingDecorator");
@@ -25,7 +27,9 @@ namespace Abmes.DataCollector.Collector.Logging
             builder.RegisterDecorator<IDataCollector>((x, inner) => x.ResolveNamed<IDataCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollector>();
             builder.RegisterDecorator<IDataPreparer>((x, inner) => x.ResolveNamed<IDataPreparer>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataPreparer>();
             builder.RegisterDecorator<IDataPreparePoller>((x, inner) => x.ResolveNamed<IDataPreparePoller>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataPreparePoller>();
-            builder.RegisterDecorator<IConfigSetNameProvider>((x, inner) => x.ResolveNamed<IConfigSetNameProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IConfigSetNameProvider>();
+            builder.RegisterDecorator<ICollectUrlsProvider>((x, inner) => x.ResolveNamed<ICollectUrlsProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectUrlsProvider>();
+            builder.RegisterDecorator<ICollectUrlExtractor>((x, inner) => x.ResolveNamed<ICollectUrlExtractor>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectUrlExtractor>();
+            builder.RegisterDecorator<IConfigSetNameProvider>((x, inner) => x.ResolveNamed<IConfigSetNameProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").Named<IConfigSetNameProvider>("logging");
             builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "dateFormatting").As<IDataCollectionsConfigProvider>();
             builder.RegisterDecorator<IDestinationsConfigProvider>((x, inner) => x.ResolveNamed<IDestinationsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDestinationsConfigProvider>();
             builder.RegisterDecorator<IDelay>((x, inner) => x.ResolveNamed<IDelay>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDelay>();
