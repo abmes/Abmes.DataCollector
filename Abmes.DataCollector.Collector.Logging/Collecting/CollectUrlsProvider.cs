@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting
 {
@@ -20,13 +21,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _collectUrlsProvider = collectUrlsProvider;
         }
 
-        public IEnumerable<string> GetCollectUrls(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        public IEnumerable<string> GetCollectUrls(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting collect urls for data collection '{dataCollectionName}'", dataCollectionName);
 
-                var result = _collectUrlsProvider.GetCollectUrls(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders);
+                var result = _collectUrlsProvider.GetCollectUrls(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, maxDegreeOfParallelism, cancellationToken);
 
                 _logger.LogInformation("Finished getting collect urls for data collection '{dataCollectionName}'", dataCollectionName);
 

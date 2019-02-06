@@ -7,6 +7,8 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Text;
 using Abmes.DataCollector.Utils;
+using System.Threading;
+using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {
@@ -22,7 +24,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private static readonly string[] DefaultIdentifierPropertyNames = { "name", "fileName", "identifier" };
 
-        private IEnumerable<(string CollectFileIdentifier, string CollectUrl)> GenerateCollectUrls(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        private IEnumerable<(string CollectFileIdentifier, string CollectUrl)> GenerateCollectInfos(string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
         {
             if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
             {
@@ -68,20 +70,42 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        public IEnumerable<string> GetCollectUrls(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders)
+        public IEnumerable<string> GetCollectUrls(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
-            var collectUrls = GenerateCollectUrls(collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders).ToList();
+            var collectInfos = GenerateCollectInfos(collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders).ToList();
 
             return
-                collectUrls
+                collectInfos
                 .Where(x => !x.CollectUrl.StartsWith('@'))
                 .Select(x => x.CollectUrl)
-                .Concat(
-                    collectUrls
-                    .Where(x => x.CollectUrl.StartsWith('@'))
-                    .Select(x => _collectUrlExtractor.ExtractCollectUrl(dataCollectionName, x.CollectFileIdentifier, x.CollectUrl.TrimStart('@'), collectHeaders))
-                )
+                .Concat(ExtractUrls(collectInfos.Where(x => x.CollectUrl.StartsWith('@')), dataCollectionName, collectHeaders, maxDegreeOfParallelism, cancellationToken))
                 .ToList();
+        }
+
+        private IEnumerable<string> ExtractUrls(IEnumerable<(string CollectFileIdentifier, string CollectUrl)> extractInfos, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+        {
+            var dataflowBlockOptions = new System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions
+            {
+                MaxDegreeOfParallelism = Math.Max(1, maxDegreeOfParallelism),
+                CancellationToken = cancellationToken
+            };
+
+            var result = new ConcurrentBag<string>();
+
+            var workerBlock = new System.Threading.Tasks.Dataflow.ActionBlock<(string CollectFileIdentifier, string CollectUrl)>(
+                extractInfo => result.Add(_collectUrlExtractor.ExtractCollectUrl(dataCollectionName, extractInfo.CollectFileIdentifier, extractInfo.CollectUrl.TrimStart('@'), collectHeaders)),
+                dataflowBlockOptions);
+
+            foreach (var extractInfo in extractInfos)
+            {
+                workerBlock.Post(extractInfo);
+            }
+
+            workerBlock.Complete();
+
+            workerBlock.Completion.Wait();
+
+            return result;
         }
 
         private IEnumerable<string> GetCollectFileIdentifiers(string collectFileIdentifiersJson, IEnumerable<string> identifierPropertyNames)
