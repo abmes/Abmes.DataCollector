@@ -93,7 +93,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             var result = new ConcurrentBag<string>();
 
             var workerBlock = new System.Threading.Tasks.Dataflow.ActionBlock<(string CollectFileIdentifier, string CollectUrl)>(
-                extractInfo => result.Add(_collectUrlExtractor.ExtractCollectUrl(dataCollectionName, extractInfo.CollectFileIdentifier, extractInfo.CollectUrl.TrimStart('@'), collectHeaders)),
+                extractInfo => result.Add(_collectUrlExtractor.ExtractCollectUrl(dataCollectionName, extractInfo.CollectFileIdentifier, extractInfo.CollectUrl.TrimStart('@'), collectHeaders, cancellationToken)),
                 dataflowBlockOptions);
 
             foreach (var extractInfo in extractInfos)

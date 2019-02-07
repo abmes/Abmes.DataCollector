@@ -4,6 +4,7 @@ using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Threading;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting
 {
@@ -20,13 +21,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _collectUrlExtractor = collectUrlExtractor;
         }
 
-        public string ExtractCollectUrl(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers)
+        public string ExtractCollectUrl(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'", collectFileIdentifier, dataCollectionName);
 
-                var result = _collectUrlExtractor.ExtractCollectUrl(dataCollectionName, collectFileIdentifier, sourceUrl, headers);
+                var result = _collectUrlExtractor.ExtractCollectUrl(dataCollectionName, collectFileIdentifier, sourceUrl, headers, cancellationToken);
 
                 _logger.LogInformation("Finished getting collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'", collectFileIdentifier, dataCollectionName);
 
