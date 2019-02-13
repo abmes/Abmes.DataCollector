@@ -39,9 +39,17 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
         // GET DataCollectionFiles/GetDownloadUrl/some-file.zip
         [Route("GetDownloadUrl")]
         [HttpGet]
-        public async Task<string> GetDownloadUrl([FromQuery] string fileName, CancellationToken cancellationToken)
+        public async Task<string> GetDownloadUrlAsync([FromQuery] string fileName, CancellationToken cancellationToken)
         {
             return await _dataCollectionFiles.GetDownloadUrlAsync(fileName, cancellationToken);
+        }
+
+        // GET DataCollectionFiles/GetDownloadUrls?fileNamePrefix=xyz
+        [Route("GetDownloadUrls")]
+        [HttpGet]
+        public async Task<IEnumerable<string>> GetDownloadUrlsAsync([FromQuery] string fileNamePrefix, CancellationToken cancellationToken)
+        {
+            return await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, cancellationToken);
         }
 
         // GET DataCollectionFiles/GetDownloadUrl/latest
