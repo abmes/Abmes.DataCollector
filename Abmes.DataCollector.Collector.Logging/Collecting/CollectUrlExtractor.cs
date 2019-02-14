@@ -23,6 +23,11 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
 
         public string ExtractCollectUrl(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
         {
+            if (collectFileIdentifier == null)
+            {
+                collectFileIdentifier = "default";
+            }
+
             try
             {
                 _logger.LogInformation("Started getting collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'", collectFileIdentifier, dataCollectionName);
