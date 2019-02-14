@@ -27,9 +27,10 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
 
         public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
-            var container = await _azureCommonStorage.GetContainerAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), false, cancellationToken);
+            var root = string.IsNullOrEmpty(StorageConfig.Root) ? dataCollectionName : StorageConfig.RootBase();
+            var container = await _azureCommonStorage.GetContainerAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, root, false, cancellationToken);
 
-            var blobName = StorageConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
+            var blobName = GetBlobName(dataCollectionName, fileName);
             var blob = container.GetBlobReference(blobName);
 
             var sasConstraints = new SharedAccessBlobPolicy();
@@ -42,9 +43,15 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
             return blob.Uri + sasToken;
         }
 
+        private string GetBlobName(string dataCollectionName, string fileName)
+        {
+            return string.IsNullOrEmpty(StorageConfig.Root) ? fileName : (StorageConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
+        }
+
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
-            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+            var root = string.IsNullOrEmpty(StorageConfig.Root) ? dataCollectionName : StorageConfig.RootBase();
+            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), root, dataCollectionName, fileNamePrefix, cancellationToken);
         }
     }
 }

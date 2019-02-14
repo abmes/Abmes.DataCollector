@@ -27,21 +27,22 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             _azureCommonStorage = azureCommonStorage;
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string databaseName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
-            var container = await GetContainerAsync(cancellationToken);
+            var container = await GetContainerAsync(dataCollectionName, cancellationToken);
 
-            await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(databaseName, fileName), timeout, finishWait, cancellationToken);
+            await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(dataCollectionName, fileName), timeout, finishWait, cancellationToken);
         }
 
-        private async Task<CloudBlobContainer> GetContainerAsync(CancellationToken cancellationToken)
+        private async Task<CloudBlobContainer> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, DestinationConfig.RootBase(), true, cancellationToken);
+            var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
+            return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
         }
 
-        private string GetBlobName(string databaseName, string fileName)
+        private string GetBlobName(string dataCollectionName, string fileName)
         {
-            return DestinationConfig.RootDir('/', true) + databaseName + "/" + fileName;
+            return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
         }
 
         private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
@@ -211,14 +212,15 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
-            var container = await GetContainerAsync(cancellationToken);
+            var container = await GetContainerAsync(dataCollectionName, cancellationToken);
             var blob = container.GetBlobReference(GetBlobName(dataCollectionName, fileName));
             await blob.DeleteAsync(DeleteSnapshotsOption.None, null, null, null, cancellationToken);
         }
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
-            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
+            var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
+            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
         }
     }
 }
