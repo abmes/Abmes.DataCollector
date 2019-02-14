@@ -42,7 +42,8 @@ namespace Abmes.DataCollector.Common.Azure.Storage
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
-            var container = await GetContainerAsync(loginName, loginSecret, rootBase, false, cancellationToken);
+            var root = string.IsNullOrEmpty(rootBase) ? dataCollectionName : rootBase;
+            var container = await GetContainerAsync(loginName, loginSecret, root, false, cancellationToken);
 
             var containerExists = await container.ExistsAsync();
             if (!containerExists)
@@ -51,7 +52,9 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             }
 
             BlobContinuationToken continuationToken = null;
-            var prefix = rootDir + dataCollectionName + "/";
+            var prefix = string.IsNullOrEmpty(rootBase) ? null : (rootDir + dataCollectionName + "/");
+
+            var prefixSections = string.IsNullOrEmpty(prefix) ? 0 : (prefix.TrimEnd('/').Split('/').Length);
 
             var resultList = new List<string>();
 
@@ -61,7 +64,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
 
                 foreach (var x in result.Results)
                 {
-                    var relativeFileName = string.Join("/", x.Uri.AbsolutePath.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(2));
+                    var relativeFileName = string.Join("/", x.Uri.AbsolutePath.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(1 + prefixSections));
                     resultList.Add(relativeFileName);
                 }
 

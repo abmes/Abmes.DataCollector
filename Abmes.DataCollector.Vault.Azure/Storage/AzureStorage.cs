@@ -50,8 +50,7 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
-            var root = string.IsNullOrEmpty(StorageConfig.Root) ? dataCollectionName : StorageConfig.RootBase();
-            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), root, dataCollectionName, fileNamePrefix, cancellationToken);
+            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
         }
     }
 }
