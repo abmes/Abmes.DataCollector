@@ -10,20 +10,20 @@ namespace Abmes.DataCollector.Vault.Storage
     public class StoragesProvider : IStoragesProvider
     {
         private readonly IStoragesConfigProvider _storageConfigProvider;
-        private readonly IStorageProvider _storageFactory;
+        private readonly IStorageProvider _storageProvider;
 
         public StoragesProvider(
             IStoragesConfigProvider storageConfigProvider,
-            IStorageProvider storageFactory)
+            IStorageProvider storageProvider)
         {
             _storageConfigProvider = storageConfigProvider;
-            _storageFactory = storageFactory;
+            _storageProvider = storageProvider;
         }
 
         public async Task<IEnumerable<IStorage>> GetStoragesAsync(CancellationToken cancellationToken)
         {
             var storageConfig = await _storageConfigProvider.GetStorageConfigsAsync(cancellationToken);
-            return storageConfig.Select(x => _storageFactory.GetStorage(x));
+            return storageConfig.Select(x => _storageProvider.GetStorage(x));
         }
     }
 }
