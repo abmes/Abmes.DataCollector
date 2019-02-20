@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Azure.Storage
 {
-    public class AzureStorage : IStorage
+    public class AzureStorage : IAzureStorage
     {
         private readonly IVaultAppSettings _vaultAppSettings;
         private readonly IAzureCommonStorage _azureCommonStorage;

@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Amazon.Storage
 {
-    public class AmazonStorage : IStorage
+    public class AmazonStorage : IAmazonStorage
     {
         private readonly IVaultAppSettings _vaultAppSettings;
         private readonly IAmazonS3 _amazonS3;
