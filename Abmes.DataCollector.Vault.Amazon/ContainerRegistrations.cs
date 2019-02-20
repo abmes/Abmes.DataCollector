@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Vault.Amazon
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<AmazonStorage>().Named<IStorage>("baseAmazon");
+            builder.RegisterType<AmazonStorage>().As<IAmazonStorage>();
+            builder.RegisterType<AmazonStorageResolver>().Named<IStorageResolver>("base");
         }
     }
 }

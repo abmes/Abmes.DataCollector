@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Collector.Azure
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<AzureDestination>().Named<IDestination>("baseAzure");
+            builder.RegisterType<AzureDestination>().As<IAzureDestination>();
+            builder.RegisterType<AzureDestinationResolver>().Named<IDestinationResolver>("base");
         }
     }
 }

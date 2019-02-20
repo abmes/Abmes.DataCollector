@@ -9,24 +9,20 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Logging.Destinations
 {
-    public class Destination : IDestination
+    public class Destination : ILoggingDestination
     {
-        private readonly ILogger<Destination> _logger;
         private readonly IDestination _destination;
+        private readonly ILogger<Destination> _logger;
 
-        public Destination(ILogger<Destination> logger, IDestination destination)
+        public Destination(IDestination destination, ILogger<Destination> logger)
         {
-            _logger = logger;
             _destination = destination;
+            _logger = logger;
         }
 
         public DestinationConfig DestinationConfig
         {
             get => _destination.DestinationConfig;
-            set
-            {
-                _destination.DestinationConfig = value;
-            }
         }
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)

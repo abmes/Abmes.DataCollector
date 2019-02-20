@@ -15,7 +15,8 @@ namespace Abmes.DataCollector.Vault
             builder.RegisterType<UsersJsonProvider>().As<IUsersJsonProvider>();
             builder.RegisterType<StoragesJsonConfigProvider>().As<IStoragesJsonConfigProvider>();
             builder.RegisterType<StoragesProvider>().As<IStoragesProvider>();
-            builder.RegisterType<StorageFactory>().As<IStorageFactory>();
+            builder.RegisterType<StorageResolverProvider>().As<IStorageResolverProvider>();
+            builder.RegisterType<StorageProvider>().As<IStorageProvider>();
             builder.RegisterType<DataCollectionFiles>().Named<IDataCollectionFiles>("base");
         }
     }

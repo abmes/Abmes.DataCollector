@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Collector.Amazon
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<AmazonDestination>().Named<IDestination>("baseAmazon");
+            builder.RegisterType<AmazonDestination>().As<IAmazonDestination>();
+            builder.RegisterType<AmazonDestinationResolver>().Named<IDestinationResolver>("base");
         }
     }
 }

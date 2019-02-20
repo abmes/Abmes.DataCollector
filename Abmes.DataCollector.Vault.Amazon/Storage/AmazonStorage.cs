@@ -16,13 +16,15 @@ namespace Abmes.DataCollector.Vault.Amazon.Storage
         private readonly IAmazonS3 _amazonS3;
         private readonly IAmazonCommonStorage _amazonCommonStorage;
 
-        public StorageConfig StorageConfig { get; set; }
+        public StorageConfig StorageConfig { get; }
 
         public AmazonStorage(
+            StorageConfig storageConfig,
             IVaultAppSettings vaultAppSettings,
             IAmazonS3 amazonS3,
             IAmazonCommonStorage amazonCommonStorage) 
         {
+            StorageConfig = storageConfig;
             _vaultAppSettings = vaultAppSettings;
             _amazonS3 = amazonS3;
             _amazonCommonStorage = amazonCommonStorage;

@@ -15,17 +15,19 @@ using System.Linq;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations
 {
-    public class AmazonDestination : IDestination
+    public class AmazonDestination : IAmazonDestination
     {
         private readonly IAmazonS3 _amazonS3;
         private readonly IAmazonCommonStorage _amazonCommonStorage;
 
-        public DestinationConfig DestinationConfig { get; set; }
+        public DestinationConfig DestinationConfig { get; }
 
         public AmazonDestination(
+            DestinationConfig destinationConfig,
             IAmazonS3 amazonS3,
             IAmazonCommonStorage amazonCommonStorage)
         {
+            DestinationConfig = destinationConfig;
             _amazonS3 = amazonS3;
             _amazonCommonStorage = amazonCommonStorage;
         }

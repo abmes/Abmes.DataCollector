@@ -10,22 +10,23 @@ namespace Abmes.DataCollector.Collector.Common.Destinations
     {
         private readonly IDestinationsConfigProvider _destinationsConfigProvider;
         private readonly IConfigSetNameProvider _configSetNameProvider;
-        private readonly IDestinationFactory _destinationFactory;
+        private readonly IDestinationResolverProvider _destinationResolverProvider;
 
         public DestinationProvider(
             IDestinationsConfigProvider destinationsConfigProvider,
             IConfigSetNameProvider configSetNameProvider,
-            IDestinationFactory destinationFactory)
+            IDestinationResolverProvider destinationResolverProvider)
         {
             _destinationsConfigProvider = destinationsConfigProvider;
             _configSetNameProvider = configSetNameProvider;
-            _destinationFactory = destinationFactory;
+            _destinationResolverProvider = destinationResolverProvider;
         }
 
         public async Task<IDestination> GetDestinationAsync(string destinationId, CancellationToken cancellationToken)
         {
             var destinationConfig = await GetDestinationConfigAsync(destinationId, cancellationToken);
-            return _destinationFactory.GetDestination(destinationConfig);
+            var resolver = _destinationResolverProvider.GetResolver(destinationConfig);
+            return resolver.GetDestination(destinationConfig);
         }
 
         private async Task<DestinationConfig> GetDestinationConfigAsync(string destinationId, CancellationToken cancellationToken)

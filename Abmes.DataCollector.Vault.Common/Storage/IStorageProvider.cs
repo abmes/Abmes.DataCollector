@@ -5,7 +5,7 @@ using System.Text;
 
 namespace Abmes.DataCollector.Vault.Storage
 {
-    public interface IStorageFactory
+    public interface IStorageProvider
     {
         IStorage GetStorage(StorageConfig storageConfig);
     }

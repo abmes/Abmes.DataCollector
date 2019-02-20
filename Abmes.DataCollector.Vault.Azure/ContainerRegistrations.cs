@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Vault.Azure
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<AzureStorage>().Named<IStorage>("baseAzure");
+            builder.RegisterType<AzureStorage>().As<IAzureStorage>();
+            builder.RegisterType<AzureStorageResolver>().Named<IStorageResolver>("base");
         }
     }
 }

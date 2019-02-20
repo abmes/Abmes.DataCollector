@@ -9,24 +9,20 @@ using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Vault.Logging.Storage
 {
-    public class Storage : IStorage
+    public class Storage : ILoggingStorage
     {
-        private readonly ILogger<Storage> _logger;
         private readonly IStorage _storage;
+        private readonly ILogger<Storage> _logger;
 
-        public Storage(ILogger<Storage> logger, IStorage storage)
+        public Storage(IStorage storage, ILogger<Storage> logger)
         {
-            _logger = logger;
             _storage = storage;
+            _logger = logger;
         }
 
         public StorageConfig StorageConfig
         {
             get => _storage.StorageConfig;
-            set
-            {
-                _storage.StorageConfig = value;
-            }
         }
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)

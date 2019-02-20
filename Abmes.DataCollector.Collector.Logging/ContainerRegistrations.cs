@@ -20,8 +20,9 @@ namespace Abmes.DataCollector.Collector.Logging
             builder.RegisterType<Configuration.ConfigSetNameProvider>().Named<IConfigSetNameProvider>("LoggingDecorator");
             builder.RegisterType<Configuration.DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("LoggingDecorator");
             builder.RegisterType<Configuration.DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("LoggingDecorator");
-            builder.RegisterType<Destinations.Destination>().Named<IDestination>("LoggingDecorator");
+            builder.RegisterType<Destinations.Destination>().As<Destinations.ILoggingDestination>();
             builder.RegisterType<Misc.Delay>().Named<IDelay>("LoggingDecorator");
+            builder.RegisterType<Destinations.LoggingDestinationResolver>().Named<IDestinationResolver>("LoggingDestinationResolver");
 
             builder.RegisterDecorator<IMainCollector>((x, inner) => x.ResolveNamed<IMainCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IMainCollector>();
             builder.RegisterDecorator<IDataCollector>((x, inner) => x.ResolveNamed<IDataCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollector>();
@@ -33,12 +34,10 @@ namespace Abmes.DataCollector.Collector.Logging
             builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "dateFormatting").As<IDataCollectionsConfigProvider>();
             builder.RegisterDecorator<IDestinationsConfigProvider>((x, inner) => x.ResolveNamed<IDestinationsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDestinationsConfigProvider>();
             builder.RegisterDecorator<IDelay>((x, inner) => x.ResolveNamed<IDelay>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDelay>();
+            builder.RegisterDecorator<IDestinationResolver>((x, inner) => x.ResolveNamed<IDestinationResolver>("LoggingDestinationResolver", TypedParameter.From(inner)), "base").As<IDestinationResolver>();
 
             builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "baseAmazon").Named<IConfigProvider>("loggingAmazon");
             builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "baseAzure").Named<IConfigProvider>("loggingAzure");
-
-            builder.RegisterDecorator<IDestination>((x, inner) => x.ResolveNamed<IDestination>("LoggingDecorator", TypedParameter.From(inner)), "baseAmazon").Keyed<IDestination>("Amazon");
-            builder.RegisterDecorator<IDestination>((x, inner) => x.ResolveNamed<IDestination>("LoggingDecorator", TypedParameter.From(inner)), "baseAzure").Keyed<IDestination>("Azure");
         }
     }
 }

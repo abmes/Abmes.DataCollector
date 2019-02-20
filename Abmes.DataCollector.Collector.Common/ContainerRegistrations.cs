@@ -13,7 +13,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<DestinationsJsonConfigProvider>().As<IDestinationsJsonConfigProvider>();
             builder.RegisterType<DataCollectionsJsonConfigProvider>().As<IDataCollectionsJsonConfigsProvider>();
             builder.RegisterType<DestinationProvider>().As<IDestinationProvider>();
-            builder.RegisterType<DestinationFactory>().As<IDestinationFactory>();
+            builder.RegisterType<DestinationResolverProvider>().As<IDestinationResolverProvider>();
             builder.RegisterType<MainCollector>().Named<IMainCollector>("base");
             builder.RegisterType<Collecting.DataCollector>().Named<IDataCollector>("base");
             builder.RegisterType<DataPreparer>().Named<IDataPreparer>("base");

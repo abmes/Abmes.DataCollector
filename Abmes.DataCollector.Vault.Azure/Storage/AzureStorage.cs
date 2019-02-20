@@ -15,12 +15,14 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
         private readonly IVaultAppSettings _vaultAppSettings;
         private readonly IAzureCommonStorage _azureCommonStorage;
 
-        public StorageConfig StorageConfig { get; set; }
+        public StorageConfig StorageConfig { get; }
 
         public AzureStorage(
+            StorageConfig storageConfig,
             IVaultAppSettings vaultAppSettings,
             IAzureCommonStorage azureCommonStorage)
         {
+            StorageConfig = storageConfig;
             _vaultAppSettings = vaultAppSettings;
             _azureCommonStorage = azureCommonStorage;
         }
