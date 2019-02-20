@@ -24,6 +24,7 @@
         "Policies": [ "AWSLambdaFullAccess" ],
         "Environment" : {
           "Variables" : {
+            "AppSettings__ConfigStorageType": "Amazon|Azure",
             "AppSettings__DownloadUrlExpiry": "24:0:0",
             "AppSettings__AmazonS3ConfigStorageBucketName": "abmes-datacollectorvault-config",
             "IdentityServerAuthenticationSettings__Authority": "https://identity.mydomain.com",

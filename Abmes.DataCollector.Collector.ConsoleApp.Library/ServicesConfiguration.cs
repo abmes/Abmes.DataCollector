@@ -10,6 +10,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
     {
         public static void Configure(IServiceCollection services, IConfigurationRoot configuration)
         {
+            Abmes.DataCollector.Common.ServicesConfiguration.Configure(services, configuration);
             Abmes.DataCollector.Common.Amazon.ServicesConfiguration.Configure(services, configuration);
             Abmes.DataCollector.Common.Azure.ServicesConfiguration.Configure(services, configuration);
         }
