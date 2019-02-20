@@ -15,15 +15,17 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Azure.Destinations
 {
-    public class AzureDestination : IDestination
+    public class AzureDestination : IAzureDestination
     {
         private readonly IAzureCommonStorage _azureCommonStorage;
 
-        public DestinationConfig DestinationConfig { get; set; }
+        public DestinationConfig DestinationConfig { get; }
 
         public AzureDestination(
+            DestinationConfig destinationConfig,
             IAzureCommonStorage azureCommonStorage)
         {
+            DestinationConfig = destinationConfig;
             _azureCommonStorage = azureCommonStorage;
         }
 
