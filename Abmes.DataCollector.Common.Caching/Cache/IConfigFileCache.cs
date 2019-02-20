@@ -1,8 +1,8 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Configuration;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abmes.DataCollector.Collector.Caching.Cache
+namespace Abmes.DataCollector.Common.Caching.Cache
 {
     public interface IConfigFileCache
     {

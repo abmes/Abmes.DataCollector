@@ -1,6 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Common.Amazon.Configuration;
+﻿using Abmes.DataCollector.Common.Amazon.Configuration;
 using Abmes.DataCollector.Common.Amazon.Storage;
+using Abmes.DataCollector.Common.Configuration;
 using Abmes.DataCollector.Common.Storage;
 using Autofac;
 
@@ -10,7 +10,7 @@ namespace Abmes.DataCollector.Common.Amazon
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
-            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("baseAmazon");
+            builder.RegisterType<ConfigLoader>().As<IConfigLoader>();
             builder.RegisterType<AmazonCommonStorage>().As<IAmazonCommonStorage>();
         }
     }

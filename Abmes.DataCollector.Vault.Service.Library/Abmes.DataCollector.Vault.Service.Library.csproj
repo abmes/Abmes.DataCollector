@@ -15,6 +15,8 @@
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Common.Amazon\Abmes.DataCollector.Common.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Azure\Abmes.DataCollector.Common.Azure.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Caching\Abmes.DataCollector.Common.Caching.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Logging\Abmes.DataCollector.Common.Logging.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Amazon\Abmes.DataCollector.Vault.Amazon.csproj" />

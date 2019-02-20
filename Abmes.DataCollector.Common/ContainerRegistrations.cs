@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Common.Storage;
+﻿using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Common.Storage;
 using Autofac;
 
 namespace Abmes.DataCollector.Common
@@ -7,6 +8,7 @@ namespace Abmes.DataCollector.Common
     {
         public static void RegisterFor(ContainerBuilder builder)
         {
+            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("base");
             builder.RegisterType<FileNameProvider>().As<IFileNameProvider>();
         }
     }

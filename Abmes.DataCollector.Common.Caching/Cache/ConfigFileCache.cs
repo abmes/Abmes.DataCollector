@@ -1,9 +1,9 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Configuration;
 using System.Collections.Concurrent;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abmes.DataCollector.Collector.Caching.Cache
+namespace Abmes.DataCollector.Common.Caching.Cache
 {
     public class ConfigFileCache : IConfigFileCache
     {

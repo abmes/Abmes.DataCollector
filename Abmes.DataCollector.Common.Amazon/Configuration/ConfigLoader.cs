@@ -1,23 +1,29 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Configuration;
 using Amazon.S3;
 using Amazon.S3.Model;
+using System;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Common.Amazon.Configuration
 {
-    public class ConfigProvider : IConfigProvider
+    public class ConfigLoader : IConfigLoader
     {
         private readonly IAmazonAppSettings _commonAppSettings;
         private readonly IAmazonS3 _amazonS3;
 
-        public ConfigProvider(
+        public ConfigLoader(
             IAmazonAppSettings commonAppSettings,
             IAmazonS3 amazonS3)
         {
             _commonAppSettings = commonAppSettings;
             _amazonS3 = amazonS3;
+        }
+
+        public bool CanLoadFrom(string storageType)
+        {
+            return string.Equals(storageType, "Amazon", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)

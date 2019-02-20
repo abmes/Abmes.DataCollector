@@ -19,7 +19,10 @@ namespace Abmes.DataCollector.Vault.Service
 
             builder.RegisterType<Abmes.DataCollector.Vault.WebAPI.Configuration.DataCollectionNameProvider>().Named<IDataCollectionNameProvider>("base");
 
+            Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Vault.Logging.ContainerRegistrations.RegisterFor(builder);
+
+            Abmes.DataCollector.Common.Caching.ContainerRegistrations.RegisterFor(builder);
         }
     }
 }

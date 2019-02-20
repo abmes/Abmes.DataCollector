@@ -1,5 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Configuration;
 using Microsoft.Extensions.Configuration;
+using System;
 using System.Diagnostics.Contracts;
 using System.IO;
 using System.Text;
@@ -8,19 +9,24 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Common.Azure.Configuration
 {
-    public class ConfigProvider : IConfigProvider
+    public class ConfigLoader : IConfigLoader
     {
         private const string AzureConfigStorageConnectionStringName = "AzureConfigStorage";
 
         private readonly IConfiguration _configuration;
         private readonly IAzureAppSettings _commonAppSettings;
 
-        public ConfigProvider(
+        public ConfigLoader(
             IConfiguration configuration,
             IAzureAppSettings commonAppSettings)
         {
             _configuration = configuration;
             _commonAppSettings = commonAppSettings;
+        }
+
+        public bool CanLoadFrom(string storageType)
+        {
+            return string.Equals(storageType, "Azure", StringComparison.InvariantCultureIgnoreCase);
         }
 
         public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)

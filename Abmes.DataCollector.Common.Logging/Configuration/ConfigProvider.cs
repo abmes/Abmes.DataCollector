@@ -1,11 +1,13 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Utils;
+using Microsoft.Extensions.Logging;
 using System;
+using System.Collections.Generic;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Utils;
 
-namespace Abmes.DataCollector.Vault.Logging.Configuration
+namespace Abmes.DataCollector.Common.Logging.Configuration
 {
     public class ConfigProvider : IConfigProvider
     {

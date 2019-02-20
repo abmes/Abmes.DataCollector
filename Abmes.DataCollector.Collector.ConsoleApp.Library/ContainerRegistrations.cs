@@ -22,7 +22,10 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
             builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
             builder.RegisterType<DataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
 
+            Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);
+
+            Abmes.DataCollector.Common.Caching.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Caching.ContainerRegistrations.RegisterFor(builder);
         }
     }
