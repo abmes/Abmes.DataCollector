@@ -17,15 +17,15 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public string GarbageCollectFilePostEndpoint { get; }
         public string FileNamesGetEndpoint { get; }
 
-        public string IdentityServerUrl { get; }
-        public string IdentityServerClientId { get; }
-        public string IdentityServerClientSecret { get; }
-        public string IdentityServerScope { get; }
+        public string IdentityServiceUrl { get; }
+        public string IdentityServiceClientId { get; }
+        public string IdentityServiceClientSecret { get; }
+        public string IdentityServiceScope { get; }
 
         // constructor needed for json deserialization
         public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root,
             string collectPostEndpoint, string garbageCollectFilePostEndpoint, string fileNamesGetEndpoint,
-            string identityServerTokenEndpoint, string identityServerClientId, string identityServerClientSecret, string identityServerScope)
+            string identityServiceTokenEndpoint, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope)
         {
             DestinationId = destinationId;
             DestinationType = destinationType;
@@ -37,10 +37,10 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             GarbageCollectFilePostEndpoint = garbageCollectFilePostEndpoint;
             FileNamesGetEndpoint = fileNamesGetEndpoint;
 
-            IdentityServerUrl = identityServerTokenEndpoint;
-            IdentityServerClientId = identityServerClientId;
-            IdentityServerClientSecret = identityServerClientSecret;
-            IdentityServerScope = identityServerScope;
+            IdentityServiceUrl = identityServiceTokenEndpoint;
+            IdentityServiceClientId = identityServiceClientId;
+            IdentityServiceClientSecret = identityServiceClientSecret;
+            IdentityServiceScope = identityServiceScope;
         }
 
         public string RootBase()

@@ -110,7 +110,7 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
 
         private async Task SetRequestAuthorizationAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var accessToken = await GetIdentityServerAccessTokenAsync(cancellationToken);
+            var accessToken = await GetIdentityServiceAccessTokenAsync(cancellationToken);
 
             if (!string.IsNullOrEmpty(accessToken))
             {
@@ -118,20 +118,20 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
             }
         }
 
-        private async Task<string> GetIdentityServerAccessTokenAsync(CancellationToken cancellationToken)
+        private async Task<string> GetIdentityServiceAccessTokenAsync(CancellationToken cancellationToken)
         {
-            if (string.IsNullOrEmpty(DestinationConfig.IdentityServerUrl))
+            if (string.IsNullOrEmpty(DestinationConfig.IdentityServiceUrl))
             {
                 return null;
             }
 
             var tokenRequest = new PasswordTokenRequest
             {
-                Address = DestinationConfig.IdentityServerUrl.TrimEnd('/') + "/connect/token",
+                Address = DestinationConfig.IdentityServiceUrl.TrimEnd('/') + "/connect/token",
 
-                ClientId = DestinationConfig.IdentityServerClientId,
-                ClientSecret = DestinationConfig.IdentityServerClientSecret,
-                Scope = DestinationConfig.IdentityServerScope,
+                ClientId = DestinationConfig.IdentityServiceClientId,
+                ClientSecret = DestinationConfig.IdentityServiceClientSecret,
+                Scope = DestinationConfig.IdentityServiceScope,
 
                 UserName = DestinationConfig.LoginName,
                 Password = DestinationConfig.LoginSecret
