@@ -20,6 +20,8 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
 
         static async Task<int> Main(string[] args)
         {
+            int exitCode;
+
             try
             {
                 await 
@@ -27,13 +29,21 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
                     .GetMainService()
                     .MainAsync(CancellationToken.None);
 
-                return DelayedExitCode(0, 5);
+                exitCode = DelayedExitCode(0, 5);
             }
             catch (Exception e)
             {
                 Console.WriteLine(e.Message);
-                return DelayedExitCode(1, 5);
+                exitCode = DelayedExitCode(1, 5);
             }
+
+            #if DEBUG
+            Task.Delay(500).Wait();
+            Console.WriteLine("Press any key to quit...");
+            Console.ReadKey();
+            #endif
+
+            return exitCode;
         }
     }
 }
