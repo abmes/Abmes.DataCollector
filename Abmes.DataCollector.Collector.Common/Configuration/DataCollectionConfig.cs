@@ -24,7 +24,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public TimeSpan CollectTimeout { get; }
         public bool CollectFinishWait { get; }
         public IEnumerable<string> DestinationIds { get; }
-        public bool ParallelDestinations { get; }
+        public int ParallelDestinationCount { get; }
 
         // constructor needed for json deserialization
         public DataCollectionConfig(
@@ -32,7 +32,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             TimeSpan initialDelay,
             string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, string prepareFinishedPollUrl, IEnumerable<KeyValuePair<string, string>> prepareFinishedPollHeaders, TimeSpan prepareFinishedPollInterval, TimeSpan prepareDuration,
             string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int collectParallelFileCount, TimeSpan collectTimeout, bool collectFinishWait,
-            IEnumerable<string> destinationIds, bool parallelDestinations)
+            IEnumerable<string> destinationIds, int parallelDestinationCount)
         {
             DataCollectionName = dataCollectionName;
             DataGroupName = dataGroupName;
@@ -52,7 +52,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             CollectTimeout = collectTimeout;
             CollectFinishWait = collectFinishWait;
             DestinationIds = destinationIds;
-            ParallelDestinations = parallelDestinations;
+            ParallelDestinationCount = parallelDestinationCount;
         }
     }
 }

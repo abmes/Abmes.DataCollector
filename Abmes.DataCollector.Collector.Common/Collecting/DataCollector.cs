@@ -63,7 +63,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         {
             var routes = collectUrls.Select(x => (CollectUrl: x, Destinations: destinations));
 
-            if (dataCollectionConfig.ParallelDestinations)
+            if (dataCollectionConfig.ParallelDestinationCount > 1)
             {
                 routes = routes.SelectMany(x => x.Destinations.Select(y => (CollectUrl: x.CollectUrl, Destinations: (IEnumerable<IDestination>)(new[] { y }))));
             }
@@ -72,7 +72,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             var failedDestinations = new ConcurrentBag<IDestination>();
 
             var workerBlock =
-                    await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.CollectParallelFileCount),
+                    await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
                     (route, ct) => CollectRouteAsync(route, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, ct));
 
             if (failedDestinations.IsEmpty && completeFileNames.IsEmpty)
@@ -149,7 +149,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     .Distinct()
                     .Select(x => (Destination: x, CompleteFileNames: completeFileNames.Where(y => y.Destination == x).Select(y => y.FileName)));
 
-            await ParallelUtils.ParallelEnumerateAsync(failures, cancellationToken, (dataCollectionConfig.ParallelDestinations ? 2 : 1),
+            await ParallelUtils.ParallelEnumerateAsync(failures, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
                 (failure, ct) => GarbageCollectDestinationFilesAsync(failure.Destination, dataCollectionConfig.DataCollectionName, failure.CompleteFileNames, ct));
         }
 

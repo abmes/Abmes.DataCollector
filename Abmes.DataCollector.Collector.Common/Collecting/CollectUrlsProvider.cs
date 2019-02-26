@@ -86,9 +86,17 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task<IEnumerable<string>> ExtractUrlsAsync(IEnumerable<(string CollectFileIdentifier, string CollectUrl)> extractInfos, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
-            var result = extractInfos.Select(x => _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, x.CollectFileIdentifier, x.CollectUrl.TrimStart('@'), collectHeaders, cancellationToken).Result);
+            var result = new ConcurrentBag<string>();
 
-            return await Task.FromResult(result);
+            await ParallelUtils.ParallelEnumerateAsync(extractInfos, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
+                async (extractInfo, ct) =>
+                {
+                    var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, extractInfo.CollectFileIdentifier, extractInfo.CollectUrl.TrimStart('@'), collectHeaders, ct);
+                    result.Add(url);
+                }
+            );
+
+            return result;
         }
 
         private IEnumerable<string> GetCollectFileIdentifiers(string collectFileIdentifiersJson, IEnumerable<string> identifierPropertyNames)
