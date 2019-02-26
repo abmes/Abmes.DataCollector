@@ -30,5 +30,16 @@ namespace Abmes.DataCollector.Utils
 
             return workerBlock;
         }
+
+        public static async Task<ActionBlock<T>> ParallelEnumerateAsync<T>(IEnumerable<T> items, CancellationToken cancellationToken, int maxDegreeOfParallelism, Action<T, CancellationToken> action)
+        {
+            return
+                await ParallelEnumerateAsync(items, cancellationToken, maxDegreeOfParallelism,
+                (item, ct) =>
+                {
+                    action(item, ct);
+                    return Task.CompletedTask;
+                });
+        }
     }
 }

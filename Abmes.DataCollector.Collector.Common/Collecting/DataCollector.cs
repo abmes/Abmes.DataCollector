@@ -54,7 +54,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
-            var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, cancellationToken);
+            var collectUrls = await _collectUrlsProvider.GetCollectUrlsAsync(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, cancellationToken);
 
             await CollectUrlsAsync(collectUrls, destinations, dataCollectionConfig, collectMoment, cancellationToken);
         }

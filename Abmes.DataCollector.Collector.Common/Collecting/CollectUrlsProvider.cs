@@ -9,6 +9,7 @@ using System.Text;
 using Abmes.DataCollector.Utils;
 using System.Threading;
 using System.Collections.Concurrent;
+using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {
@@ -70,40 +71,30 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        public IEnumerable<string> GetCollectUrls(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetCollectUrlsAsync(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
             var collectInfos = GenerateCollectInfos(collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders).ToList();
+
+            var extractedUrls = await ExtractUrlsAsync(collectInfos.Where(x => x.CollectUrl.StartsWith('@')), dataCollectionName, collectHeaders, maxDegreeOfParallelism, cancellationToken);
 
             return
                 collectInfos
                 .Where(x => !x.CollectUrl.StartsWith('@'))
                 .Select(x => x.CollectUrl)
-                .Concat(ExtractUrls(collectInfos.Where(x => x.CollectUrl.StartsWith('@')), dataCollectionName, collectHeaders, maxDegreeOfParallelism, cancellationToken))
-                .ToList();
+                .Concat(extractedUrls);
         }
 
-        private IEnumerable<string> ExtractUrls(IEnumerable<(string CollectFileIdentifier, string CollectUrl)> extractInfos, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+        private async Task<IEnumerable<string>> ExtractUrlsAsync(IEnumerable<(string CollectFileIdentifier, string CollectUrl)> extractInfos, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
-            var dataflowBlockOptions = new System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions
-            {
-                MaxDegreeOfParallelism = Math.Max(1, maxDegreeOfParallelism),
-                CancellationToken = cancellationToken
-            };
-
             var result = new ConcurrentBag<string>();
 
-            var workerBlock = new System.Threading.Tasks.Dataflow.ActionBlock<(string CollectFileIdentifier, string CollectUrl)>(
-                extractInfo => result.Add(_collectUrlExtractor.ExtractCollectUrl(dataCollectionName, extractInfo.CollectFileIdentifier, extractInfo.CollectUrl.TrimStart('@'), collectHeaders, cancellationToken)),
-                dataflowBlockOptions);
-
-            foreach (var extractInfo in extractInfos)
-            {
-                workerBlock.Post(extractInfo);
-            }
-
-            workerBlock.Complete();
-
-            workerBlock.Completion.Wait();
+            await ParallelUtils.ParallelEnumerateAsync(extractInfos, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
+                async (extractInfo, ct) =>
+                {
+                    var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, extractInfo.CollectFileIdentifier, extractInfo.CollectUrl.TrimStart('@'), collectHeaders, ct);
+                    result.Add(url);
+                }
+            );
 
             return result;
         }
