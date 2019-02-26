@@ -56,53 +56,55 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             var collectUrls = _collectUrlsProvider.GetCollectUrls(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, cancellationToken);
 
-            await CollectUrlsAsync(collectUrls.ToList(), destinations, dataCollectionConfig, collectMoment, cancellationToken);
+            await CollectUrlsAsync(collectUrls, destinations, dataCollectionConfig, collectMoment, cancellationToken);
         }
 
         private async Task CollectUrlsAsync(IEnumerable<string> collectUrls, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
         {
-            if (!collectUrls.Any())
+            var routes = collectUrls.Select(x => (CollectUrl: x, Destinations: destinations));
+
+            if (dataCollectionConfig.ParallelDestinations)
+            {
+                routes = routes.SelectMany(x => x.Destinations.Select(y => (CollectUrl: x.CollectUrl, Destinations: (IEnumerable<IDestination>)(new[] { y }))));
+            }
+
+            var completeFileNames = new ConcurrentBag<(IDestination Destination, string FileName)>();
+            var failedDestinations = new ConcurrentBag<IDestination>();
+
+            var workerBlock =
+                    await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.CollectParallelFileCount),
+                    (route, ct) => CollectRouteAsync(route, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, ct));
+
+            if (failedDestinations.IsEmpty && completeFileNames.IsEmpty)
             {
                 throw new Exception($"No files to collect for Data '{dataCollectionConfig.DataCollectionName}'");
             }
 
-            var dataflowBlockOptions = new System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions
+            if (failedDestinations.Any())
             {
-                MaxDegreeOfParallelism = Math.Max(1, dataCollectionConfig.CollectParallelFileCount),
-                CancellationToken = cancellationToken
-            };
+                // clear partial collection
+                await GarbageCollectFailedDestinationsAsync(failedDestinations, completeFileNames, dataCollectionConfig, cancellationToken);
+            }
+        }
 
-            foreach (var destination in destinations)
+        private async Task CollectRouteAsync((string CollectUrl, IEnumerable<IDestination> Destinations) route, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, 
+            ConcurrentBag<(IDestination, string)> completeFileNames, ConcurrentBag<IDestination> failedDestinations, CancellationToken cancellationToken)
+        {
+            foreach (var destination in route.Destinations)
             {
-                var completeFileNames = new ConcurrentBag<string>();
-
-                var workerBlock = new System.Threading.Tasks.Dataflow.ActionBlock<string>(
-                   collectUrl => CollectToDestinationAsync(collectUrl, destination, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken),
-                   dataflowBlockOptions);
-
                 try
                 {
-                    foreach (var collectUrl in collectUrls)
-                    {
-                        workerBlock.Post(collectUrl);
-                    }
-
-                    workerBlock.Complete();
-
-                    await workerBlock.Completion;
+                    await CollectToDestinationAsync(route.CollectUrl, destination, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken);
                 }
-                finally
+                catch
                 {
-                    if (workerBlock.Completion.Status != TaskStatus.RanToCompletion)
-                    {
-                        // clear partial collection
-                        await GarbageCollectDestinationFilesAsync(destination, dataCollectionConfig.DataCollectionName, completeFileNames, cancellationToken);
-                    }
+                    failedDestinations.Add(destination);
+                    // do not throw exception, give other destinations a chance
                 }
             }
         }
 
-        private async Task CollectToDestinationAsync(string collectUrl, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<string> completeFileNames, CancellationToken cancellationToken)
+        private async Task CollectToDestinationAsync(string collectUrl, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination, string)> completeFileNames, CancellationToken cancellationToken)
         {
             var destinationFileName =
                   _fileNameProvider.GenerateCollectDestinationFileName(
@@ -130,7 +132,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     cancellationToken
                 );
 
-            completeFileNames.Add(destinationFileName);
+            completeFileNames.Add((destination, destinationFileName));
         }
 
         private bool IsRetryableCollectError(Exception e, DataCollectionConfig dataCollectionConfig)
@@ -138,6 +140,17 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             string[] RetryableErrorMessages = { "Gateway Timeout 504", "The request timed out" };
 
             return RetryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
+        }
+
+        private async Task GarbageCollectFailedDestinationsAsync(IEnumerable<IDestination> failedDestinations, IEnumerable<(IDestination Destination, string FileName)> completeFileNames, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        {
+            var failures =
+                    failedDestinations
+                    .Distinct()
+                    .Select(x => (Destination: x, CompleteFileNames: completeFileNames.Where(y => y.Destination == x).Select(y => y.FileName)));
+
+            await ParallelUtils.ParallelEnumerateAsync(failures, cancellationToken, (dataCollectionConfig.ParallelDestinations ? 2 : 1),
+                (failure, ct) => GarbageCollectDestinationFilesAsync(failure.Destination, dataCollectionConfig.DataCollectionName, failure.CompleteFileNames, ct));
         }
 
         public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)

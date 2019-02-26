@@ -28,7 +28,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
                     config.CollectFileIdentifiersHeaders,
                     FormatDateTime(config.CollectUrl.Replace("[filename]", "(filename)")).Replace("(filename)", "[filename]"),
                     config.CollectHeaders, config.CollectParallelFileCount, config.CollectTimeout, config.CollectFinishWait, 
-                    config.DestinationIds
+                    config.DestinationIds,
+                    config.ParallelDestinations
                 );
         }
 
