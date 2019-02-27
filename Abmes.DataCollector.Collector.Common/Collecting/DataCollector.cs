@@ -155,7 +155,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
-            var destinations = await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken);
+            var destinations = (await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken)).Where(x => x.CanGarbageCollect());
             await Task.WhenAll(destinations.Select(x => GarbageCollectDestinationDataAsync(x, dataCollectionConfig.DataCollectionName, cancellationToken)));
         }
 

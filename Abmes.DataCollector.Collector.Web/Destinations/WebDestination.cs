@@ -33,10 +33,6 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
             var endpointUrl = GetEndpointUrl(DestinationConfig.FileNamesGetEndpoint, dataCollectionName, null);
-            if (string.IsNullOrEmpty(endpointUrl))
-            {
-                return Enumerable.Empty<string>();
-            }
 
             var json = await SendEndpointRequestAsync(endpointUrl, dataCollectionName, null, HttpMethod.Get, null, "application/json", null, null, cancellationToken);
 
@@ -46,10 +42,6 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
             var endpointUrl = GetEndpointUrl(DestinationConfig.GarbageCollectFilePostEndpoint, dataCollectionName, fileName);
-            if (string.IsNullOrEmpty(endpointUrl))
-            {
-                return;
-            }
 
             await SendEndpointRequestAsync(endpointUrl, dataCollectionName, fileName, HttpMethod.Post, null, null, null, null, cancellationToken);
         }
@@ -143,6 +135,14 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
 
                 return response.AccessToken;
             }
+        }
+
+        public bool CanGarbageCollect()
+        {
+            return 
+                (!string.IsNullOrEmpty(DestinationConfig.Root)) && 
+                (!string.IsNullOrEmpty(DestinationConfig.FileNamesGetEndpoint)) &&
+                (!string.IsNullOrEmpty(DestinationConfig.GarbageCollectFilePostEndpoint));
         }
     }
 }

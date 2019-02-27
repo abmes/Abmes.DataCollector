@@ -223,5 +223,10 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         {
             return await _azureCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
         }
+
+        public bool CanGarbageCollect()
+        {
+            return true;
+        }
     }
 }

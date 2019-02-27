@@ -25,6 +25,11 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
             get => _destination.DestinationConfig;
         }
 
+        public bool CanGarbageCollect()
+        {
+            return _destination.CanGarbageCollect();
+        }
+
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             try

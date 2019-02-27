@@ -168,5 +168,10 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
         {
             return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
         }
+
+        public bool CanGarbageCollect()
+        {
+            return true;
+        }
     }
 }

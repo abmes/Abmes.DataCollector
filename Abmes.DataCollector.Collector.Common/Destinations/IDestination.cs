@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Collector.Common.Destinations
 {
     public interface IDestination
     {
-        DestinationConfig DestinationConfig { get; }  
+        DestinationConfig DestinationConfig { get; }
+        bool CanGarbageCollect();
         Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken);
         Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken);
         Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken);
