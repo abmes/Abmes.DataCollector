@@ -25,6 +25,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<DateFormattedDataCollectionConfigProvider>().As<IDateFormattedDataCollectionConfigProvider>();
             builder.RegisterType<DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("base");
             builder.RegisterType<DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("base");
+            builder.RegisterType<IdentityServiceClientInfo>().As<IIdentityServiceClientInfo>();
 
             builder.RegisterType<FilteredDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("FilteringDecorator");
             builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("FilteringDecorator", TypedParameter.From(inner)), "base").Named<IDataCollectionsConfigProvider>("filtering");

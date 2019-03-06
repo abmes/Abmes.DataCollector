@@ -8,11 +8,14 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
     public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataCollectionConfigProvider
     {
         private readonly IDateTimeFormatter _dateTimeFormatter;
+        private readonly IIdentityServiceClientInfoFactory _identityServiceClientInfoFactory;
 
         public DateFormattedDataCollectionConfigProvider(
-            IDateTimeFormatter dateTimeFormatter)
+            IDateTimeFormatter dateTimeFormatter,
+            IIdentityServiceClientInfoFactory identityServiceClientInfoFactory)
         {
             _dateTimeFormatter = dateTimeFormatter;
+            _identityServiceClientInfoFactory = identityServiceClientInfoFactory;
         }
 
         public DataCollectionConfig GetConfig(DataCollectionConfig config)
@@ -29,7 +32,14 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
                     FormatDateTime(config.CollectUrl.Replace("[filename]", "(filename)")).Replace("(filename)", "[filename]"),
                     config.CollectHeaders, config.CollectParallelFileCount, config.CollectTimeout, config.CollectFinishWait, 
                     config.DestinationIds,
-                    config.ParallelDestinationCount
+                    config.ParallelDestinationCount,
+                    config.LoginName,
+                    config.LoginSecret,
+                    config.IdentityServiceUrl,
+                    config.IdentityServiceClientId,
+                    config.IdentityServiceClientSecret,
+                    config.IdentityServiceScope,
+                    _identityServiceClientInfoFactory
                 );
         }
 

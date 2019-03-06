@@ -26,13 +26,26 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public IEnumerable<string> DestinationIds { get; }
         public int ParallelDestinationCount { get; }
 
+        public string LoginName { get; }
+        public string LoginSecret { get; }
+
+        public string IdentityServiceUrl { get; }
+        public string IdentityServiceClientId { get; }
+        public string IdentityServiceClientSecret { get; }
+        public string IdentityServiceScope { get; }
+
+        public IIdentityServiceClientInfo IdentityServiceClientInfo { get; }
+
         // constructor needed for json deserialization
         public DataCollectionConfig(
             string dataCollectionName, string dataGroupName,
             TimeSpan initialDelay,
             string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, string prepareFinishedPollUrl, IEnumerable<KeyValuePair<string, string>> prepareFinishedPollHeaders, TimeSpan prepareFinishedPollInterval, TimeSpan prepareDuration,
             string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int collectParallelFileCount, TimeSpan collectTimeout, bool collectFinishWait,
-            IEnumerable<string> destinationIds, int parallelDestinationCount)
+            IEnumerable<string> destinationIds, int parallelDestinationCount,
+            string loginName, string loginSecret,
+            string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope,
+            IIdentityServiceClientInfoFactory identityServiceClientInfoFactory)
         {
             DataCollectionName = dataCollectionName;
             DataGroupName = dataGroupName;
@@ -53,6 +66,16 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             CollectFinishWait = collectFinishWait;
             DestinationIds = destinationIds;
             ParallelDestinationCount = parallelDestinationCount;
+
+            LoginName = loginName;
+            LoginSecret = loginSecret;
+
+            IdentityServiceUrl = identityServiceUrl;
+            IdentityServiceClientId = identityServiceClientId;
+            IdentityServiceClientSecret = identityServiceClientSecret;
+            IdentityServiceScope = identityServiceScope;
+
+            IdentityServiceClientInfo = identityServiceClientInfoFactory(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
         }
     }
 }
