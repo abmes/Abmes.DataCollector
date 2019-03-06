@@ -20,7 +20,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     .WaitAndRetryAsync(1, x => TimeSpan.FromSeconds(5))
                     .ExecuteAsync(async (ct) =>
                         {
-                            var collectUrlsJson = await HttpUtils.GetString(sourceUrl, headers, "application/json");
+                            var collectUrlsJson = await HttpUtils.GetStringAsync(sourceUrl, headers, "application/json");
                             return TrimPseudoNewLine(collectUrlsJson.Trim('"').Trim());
                         },
                         cancellationToken

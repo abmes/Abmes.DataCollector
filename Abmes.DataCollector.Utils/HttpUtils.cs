@@ -10,7 +10,12 @@ namespace Abmes.DataCollector.Utils
 {
     public static class HttpUtils
     {
-        public static async Task<string> GetString(string url, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<string> GetStringAsync(string url, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            return await SendAsync(url, HttpMethod.Get, null, headers, accept, timeout, null, cancellationToken);
+        }
+
+        public static async Task<string> SendAsync(string url, HttpMethod httpMethod, string body = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, CancellationToken cancellationToken = default(CancellationToken))
         {
             if (cancellationToken == default(CancellationToken))
             {
@@ -19,6 +24,11 @@ namespace Abmes.DataCollector.Utils
 
             using (var httpClient = new HttpClient())
             {
+                if (timeout.HasValue)
+                {
+                    httpClient.Timeout = timeout.Value;
+                }
+
                 using (var request = new HttpRequestMessage(HttpMethod.Get, url))
                 {
                     if (headers != null)
@@ -31,11 +41,22 @@ namespace Abmes.DataCollector.Utils
                         request.Headers.Accept.Add(new MediaTypeWithQualityHeaderValue(accept));
                     }
 
-                    var response = await httpClient.SendAsync(request, cancellationToken);
+                    if (!string.IsNullOrEmpty(body))
+                    {
+                        request.Content = new StringContent(body);
+                    }
 
-                    await response.CheckSuccessAsync();
+                    if (requestConfiguratorTask != null)
+                    {
+                        await requestConfiguratorTask(request);
+                    }
 
-                    return await response.Content.ReadAsStringAsync();
+                    using (var response = await httpClient.SendAsync(request, cancellationToken))
+                    {
+                        await response.CheckSuccessAsync();
+
+                        return await response.Content.ReadAsStringAsync();
+                    }
                 }
             }
         }

@@ -15,7 +15,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
     {
         public async Task<DataPrepareResult> GetDataPrepareResultAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, CancellationToken cancellationToken)
         {
-            var exportLogDataContent = await HttpUtils.GetString(pollUrl, pollHeaders, "application/json");
+            var exportLogDataContent = await HttpUtils.GetStringAsync(pollUrl, pollHeaders, "application/json");
 
             dynamic exportLogData = JsonConvert.DeserializeObject(exportLogDataContent);
 

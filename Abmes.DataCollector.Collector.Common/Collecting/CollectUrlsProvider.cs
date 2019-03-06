@@ -42,7 +42,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 var queryUrl = selector.First();
                 var queryIdentifierPropertyName = selector.Skip(1).FirstOrDefault();
 
-                var collectFileIdentifiersJson = HttpUtils.GetString(queryUrl, collectFileIdentifiersHeaders, "application/json").Result;
+                var collectFileIdentifiersJson = HttpUtils.GetStringAsync(queryUrl, collectFileIdentifiersHeaders, "application/json").Result;
 
                 if (!string.IsNullOrEmpty(collectFileIdentifiersJson))
                 {
