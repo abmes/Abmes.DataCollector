@@ -27,8 +27,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         // constructor needed for json deserialization
         public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root,
             string collectPostEndpoint, string garbageCollectFilePostEndpoint, string fileNamesGetEndpoint,
-            string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope,
-            IIdentityServiceClientInfoFactory identityServiceClientInfoFactory)
+            string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope)
         {
             DestinationId = destinationId;
             DestinationType = destinationType;
@@ -45,7 +44,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             IdentityServiceClientSecret = identityServiceClientSecret;
             IdentityServiceScope = identityServiceScope;
 
-            IdentityServiceClientInfo = identityServiceClientInfoFactory(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
+            IdentityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
         }
 
         public string RootBase()

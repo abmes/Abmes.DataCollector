@@ -44,8 +44,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, int collectParallelFileCount, TimeSpan collectTimeout, bool collectFinishWait,
             IEnumerable<string> destinationIds, int parallelDestinationCount,
             string loginName, string loginSecret,
-            string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope,
-            IIdentityServiceClientInfoFactory identityServiceClientInfoFactory)
+            string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope)
         {
             DataCollectionName = dataCollectionName;
             DataGroupName = dataGroupName;
@@ -75,7 +74,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             IdentityServiceClientSecret = identityServiceClientSecret;
             IdentityServiceScope = identityServiceScope;
 
-            IdentityServiceClientInfo = identityServiceClientInfoFactory(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
+            IdentityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
         }
     }
 }

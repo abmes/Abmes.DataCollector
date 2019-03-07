@@ -4,7 +4,7 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
-    public class IdentityServiceClientInfo
+    public class IdentityServiceClientInfo : IIdentityServiceClientInfo
     {
         public string Url { get; }
         public string ClientId { get; }
