@@ -12,10 +12,18 @@ namespace Abmes.DataCollector.Utils
     {
         public static async Task<string> GetStringAsync(string url, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            return await SendAsync(url, HttpMethod.Get, null, headers, accept, timeout, null, cancellationToken);
+            return await GetStringAsync(url, HttpMethod.Get, null, headers, accept, timeout, null, cancellationToken);
         }
 
-        public static async Task<string> SendAsync(string url, HttpMethod httpMethod, string body = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<string> GetStringAsync(string url, HttpMethod httpMethod, string body = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, CancellationToken cancellationToken = default(CancellationToken))
+        {
+            using (var response = await SendAsync(url, httpMethod, body, headers, accept, timeout, requestConfiguratorTask, HttpCompletionOption.ResponseContentRead, cancellationToken))
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+        }
+
+        public static async Task<HttpResponseMessage> SendAsync(string url, HttpMethod httpMethod, string body = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, HttpCompletionOption httpCompletionOption = default(HttpCompletionOption), CancellationToken cancellationToken = default(CancellationToken))
         {
             if (cancellationToken == default(CancellationToken))
             {
@@ -51,12 +59,11 @@ namespace Abmes.DataCollector.Utils
                         await requestConfiguratorTask(request);
                     }
 
-                    using (var response = await httpClient.SendAsync(request, cancellationToken))
-                    {
-                        await response.CheckSuccessAsync();
+                    var response = await httpClient.SendAsync(request, httpCompletionOption, cancellationToken);
 
-                        return await response.Content.ReadAsStringAsync();
-                    }
+                    await response.CheckSuccessAsync();
+
+                    return response;
                 }
             }
         }

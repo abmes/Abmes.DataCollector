@@ -28,14 +28,14 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
             _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             var endpointUrl = GetEndpointUrl(DestinationConfig.CollectPostEndpoint, dataCollectionName, fileName);
 
             await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
                 collectUrl, collectHeaders, null, timeout,
                 request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
@@ -43,7 +43,7 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
             var endpointUrl = GetEndpointUrl(DestinationConfig.FileNamesGetEndpoint, dataCollectionName, null);
 
             var json =
-                await HttpUtils.SendAsync(endpointUrl, HttpMethod.Get,
+                await HttpUtils.GetStringAsync(endpointUrl, HttpMethod.Get,
                     accept: "application/json",
                     requestConfiguratorTask: request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
                     cancellationToken: cancellationToken);

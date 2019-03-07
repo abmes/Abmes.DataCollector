@@ -29,7 +29,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             _azureCommonStorage = azureCommonStorage;
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             var container = await GetContainerAsync(dataCollectionName, cancellationToken);
 
@@ -61,60 +61,58 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
+            using (var response = await HttpUtils.SendAsync(sourceUrl, HttpMethod.Get, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
-                httpClient.DefaultRequestHeaders.AddValues(sourceHeaders);
+                await response.CheckSuccessAsync();
 
-                httpClient.Timeout = timeout;
+                var sourceMD5 = response.ContentMD5();
 
-                using (var response = await httpClient.GetAsync(sourceUrl, HttpCompletionOption.ResponseHeadersRead))
+                using (var sourceStream = await response.Content.ReadAsStreamAsync())
                 {
-                    await response.CheckSuccessAsync();
-
-                    var sourceMD5 = response.ContentMD5();
-
-                    using (var sourceStream = await response.Content.ReadAsStreamAsync())
-                    {
-                        var blob = container.GetBlockBlobReference(blobName);
-
-                        var blobHasher = CopyUtils.GetMD5Hasher();
-
-                        var blockIDs = new List<string>();
-                        var blockNumber = 0;
-
-                        await CopyUtils.CopyAsync(
-                                (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                                async (buffer, count, cancellationToken2) =>
-                                {
-                                    var blockId = GetBlockId(blockNumber);
-                                    blockIDs.Add(blockId);
-
-                                    var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
-                                    CopyUtils.AppendMDHasherData(blobHasher, buffer, 0, count);
-
-                                    using (var ms = new MemoryStream(buffer, 0, count))
-                                    {
-                                        await blob.PutBlockAsync(blockId, ms, blockMD5Hash, null, null, null, cancellationToken);
-                                    }
-
-                                    blockNumber++;
-                                },
-                                bufferSize,
-                                cancellationToken
-                            );
-
-                        var blobHash = CopyUtils.GetMD5Hash(blobHasher);
-
-                        if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
-                        {
-                            throw new Exception("Invalid destination MD5");
-                        }
-
-                        blob.Properties.ContentMD5 = blobHash;
-                        await blob.PutBlockListAsync(blockIDs, null, null, null, cancellationToken);
-                    }
+                    await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
                 }
             }
+        }
+
+        private static async Task CopyStreamToBlobAsync(Stream sourceStream, CloudBlobContainer container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
+        {
+            var blob = container.GetBlockBlobReference(blobName);
+
+            var blobHasher = CopyUtils.GetMD5Hasher();
+
+            var blockIDs = new List<string>();
+            var blockNumber = 0;
+
+            await CopyUtils.CopyAsync(
+                    (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                    async (buffer, count, cancellationToken2) =>
+                    {
+                        var blockId = GetBlockId(blockNumber);
+                        blockIDs.Add(blockId);
+
+                        var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
+                        CopyUtils.AppendMDHasherData(blobHasher, buffer, 0, count);
+
+                        using (var ms = new MemoryStream(buffer, 0, count))
+                        {
+                            await blob.PutBlockAsync(blockId, ms, blockMD5Hash, null, null, null, cancellationToken);
+                        }
+
+                        blockNumber++;
+                    },
+                    bufferSize,
+                    cancellationToken
+                );
+
+            var blobHash = CopyUtils.GetMD5Hash(blobHasher);
+
+            if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
+            {
+                throw new Exception("Invalid destination MD5");
+            }
+
+            blob.Properties.ContentMD5 = blobHash;
+            await blob.PutBlockListAsync(blockIDs, null, null, null, cancellationToken);
         }
 
         private async Task AzureCopyToBlob(string sourceUrl, CloudBlobContainer container, string blobName, bool finishWait, CancellationToken cancellationToken)

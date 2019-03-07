@@ -127,7 +127,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 )
                 .ExecuteAsync((ct) =>
                     {
-                        return destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, ct);
+                        return destination.CollectAsync(collectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, ct);
                     },
                     cancellationToken
                 );

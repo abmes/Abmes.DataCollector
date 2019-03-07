@@ -32,26 +32,17 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
             _amazonCommonStorage = amazonCommonStorage;
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
+            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
-                httpClient.DefaultRequestHeaders.AddValues(collectHeaders);
+                var sourceMD5 = response.ContentMD5();
 
-                httpClient.Timeout = timeout;
-
-                using (var response = await httpClient.GetAsync(collectUrl, HttpCompletionOption.ResponseHeadersRead))
+                using (var sourceStream = await response.Content.ReadAsStreamAsync())
                 {
-                    await response.CheckSuccessAsync();
+                    var key = dataCollectionName + '/' + fileName;
 
-                    var sourceMD5 = response.ContentMD5();
-
-                    using (var sourceStream = await response.Content.ReadAsStreamAsync())
-                    {
-                        var key = dataCollectionName + '/' + fileName;
-
-                        await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
-                    }
+                    await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
                 }
             }
         }

@@ -30,7 +30,7 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
             return _destination.CanGarbageCollect();
         }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
             try
             {
@@ -38,7 +38,7 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
 
                 _logger.LogInformation(actionName + " collecting file '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
 
-                await _destination.CollectAsync(collectUrl, collectHeaders, dataCollectionName, fileName, timeout, finishWait, tryNo, cancellationToken);
+                await _destination.CollectAsync(collectUrl, collectHeaders, collectIdentityServiceClientInfo, dataCollectionName, fileName, timeout, finishWait, tryNo, cancellationToken);
 
                 _logger.LogInformation("Finished collecting file '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
             }
