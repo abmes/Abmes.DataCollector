@@ -30,11 +30,11 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Logging
                     return;
                 }
 
-                Console.WriteLine($"{formatter(state, exception)}");
+                System.Console.WriteLine($"{formatter(state, exception)}");
 
                 if (exception != null)
                 {
-                    Console.WriteLine(exception.StackTrace.ToString());
+                    System.Console.WriteLine(exception.StackTrace.ToString());
                 }
             }
 

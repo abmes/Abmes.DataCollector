@@ -10,6 +10,7 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Azure\Abmes.DataCollector.Collector.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Caching\Abmes.DataCollector.Collector.Caching.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Console\Abmes.DataCollector.Collector.Console.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Logging\Abmes.DataCollector.Collector.Logging.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Web\Abmes.DataCollector.Collector.Web.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Amazon\Abmes.DataCollector.Common.Amazon.csproj" />

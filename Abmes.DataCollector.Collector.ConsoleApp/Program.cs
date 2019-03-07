@@ -2,6 +2,7 @@
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using static System.Console;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp
 {
@@ -11,7 +12,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
         {
             if (delaySeconds > 0)
             {
-                Console.WriteLine($"Exitting after {delaySeconds} seconds ...");
+                WriteLine($"Exitting after {delaySeconds} seconds ...");
                 Task.Delay(TimeSpan.FromSeconds(delaySeconds)).Wait();
             }
 
@@ -33,14 +34,14 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
             }
             catch (Exception e)
             {
-                Console.WriteLine(e.Message);
+                WriteLine(e.Message);
                 exitCode = DelayedExitCode(1, 5);
             }
 
             #if DEBUG
             Task.Delay(500).Wait();
-            Console.WriteLine("Press any key to quit...");
-            Console.ReadKey();
+            WriteLine("Press any key to quit...");
+            ReadKey();
             #endif
 
             return exitCode;
