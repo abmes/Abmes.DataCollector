@@ -28,11 +28,14 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             return result.Where(x => DataMatchesFilter(x, filter));
         }
 
-        private bool DataMatchesFilter(DataCollectionConfig x, string filter)
+        private bool DataMatchesFilter(DataCollectionConfig config, string filter)
         {
             return 
                 string.IsNullOrEmpty(filter) || 
-                filter.Split(';', ',').Contains(x.DataCollectionName, StringComparer.OrdinalIgnoreCase);
+                filter.Split(';', ',')
+                .Where(x => !string.IsNullOrEmpty(x))
+                .Select(x => x.Trim())
+                .Contains(config.DataCollectionName, StringComparer.OrdinalIgnoreCase);
         }
     }
 }

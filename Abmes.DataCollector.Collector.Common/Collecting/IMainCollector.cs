@@ -8,6 +8,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public interface IMainCollector
     {
-        Task<bool> CollectAsync(CancellationToken cancellationToken);
+        Task<bool> CollectAsync(string configSetName, CancellationToken cancellationToken);
     }
 }

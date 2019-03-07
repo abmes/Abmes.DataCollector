@@ -9,22 +9,18 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
     public class MainCollector : IMainCollector
     {
         private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
-        private readonly IConfigSetNameProvider _configSetNameProvider;
         private readonly IDataCollector _dataCollector;
 
         public MainCollector(
             IDataCollectionsConfigProvider dataCollectionsConfigProvider,
-            IConfigSetNameProvider configSetNameProvider,
             IDataCollector dataCollector)
         {
             _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
-            _configSetNameProvider = configSetNameProvider;
             _dataCollector = dataCollector;
         }
 
-        public async Task<bool> CollectAsync(CancellationToken cancellationToken)
+        public async Task<bool> CollectAsync(string configSetName, CancellationToken cancellationToken)
         {
-            var configSetName = _configSetNameProvider.GetConfigSetName();
             var dataCollectionsConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
             var dataGroups = dataCollectionsConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DataCollectionsConfig = x });
 
