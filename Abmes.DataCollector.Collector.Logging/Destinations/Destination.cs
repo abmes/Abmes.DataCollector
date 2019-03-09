@@ -36,15 +36,15 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
             {
                 var actionName = (tryNo == 1) ? "Started" : "Retrying";
 
-                _logger.LogInformation(actionName + " collecting file '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
+                _logger.LogInformation(actionName + " collecting data '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
 
                 await _destination.CollectAsync(collectUrl, collectHeaders, collectIdentityServiceClientInfo, dataCollectionName, fileName, timeout, finishWait, tryNo, cancellationToken);
 
-                _logger.LogInformation("Finished collecting file '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
+                _logger.LogInformation("Finished collecting data '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error collecting file '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}': {errorMessage}", fileName, dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
+                _logger.LogCritical("Error collecting data '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}': {errorMessage}", fileName, dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
                 throw;
             }
         }
@@ -53,15 +53,15 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
         {
             try
             {
-                _logger.LogInformation("Started garbage collecting file '{fileName}' from data collection '{dataCollectionName}' in destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
+                _logger.LogInformation("Started garbage collecting data '{fileName}' from data collection '{dataCollectionName}' in destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
 
                 await _destination.GarbageCollectDataCollectionFileAsync(dataCollectionName, fileName, cancellationToken);
 
-                _logger.LogInformation("Finished garbage collecting file '{fileName}' from data collection '{dataCollectionName}' in destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
+                _logger.LogInformation("Finished garbage collecting data '{fileName}' from data collection '{dataCollectionName}' in destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error garbage collecting file '{fileName}' from data collection '{dataCollectionName}' in destination '{destinationId}': {errorMessage}", fileName, dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
+                _logger.LogCritical("Error garbage collecting data '{fileName}' from data collection '{dataCollectionName}' in destination '{destinationId}': {errorMessage}", fileName, dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
                 throw;
             }
         }
