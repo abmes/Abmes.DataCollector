@@ -29,7 +29,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<IdentityServiceHttpRequestConfigurator>().As<IIdentityServiceHttpRequestConfigurator>();
 
             builder.RegisterType<Bootstrapper>().As<IBootstrapper>().SingleInstance();
-            builder.RegisterType<BootstrapperConfigSetNameProvider>().As<IConfigSetNameProvider>();
+            builder.RegisterType<BootstrapperConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
             builder.RegisterType<BootstrapperDataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
             
             builder.RegisterType<FilteredDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("FilteringDecorator");

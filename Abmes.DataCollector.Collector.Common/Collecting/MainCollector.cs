@@ -33,7 +33,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             await Task.WhenAll(tasks);
 
-            return tasks.Select(x => x.Result).Min();
+            return (tasks.Any() ? tasks.Select(x => x.Result).Min() : false);
         }
 
         private async Task<bool> CollectGroupAsync(string groupName, IEnumerable<DataCollectionConfig> dataCollectionsConfig, CancellationToken cancellationToken)
