@@ -1,6 +1,5 @@
 ﻿using Autofac;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Service.Configuration;
 
 namespace Abmes.DataCollector.Collector.Service
 {
@@ -17,8 +16,6 @@ namespace Abmes.DataCollector.Collector.Service
             Abmes.DataCollector.Collector.Console.ContainerRegistrations.RegisterFor(builder);
 
             Abmes.DataCollector.Collector.Common.ContainerRegistrations.RegisterFor(builder);
-
-            builder.RegisterType<DataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
 
             Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);

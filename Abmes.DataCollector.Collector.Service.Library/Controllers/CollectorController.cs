@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Abmes.DataCollector.Collector.Common.Collecting;
+using Abmes.DataCollector.Collector.Common.Configuration;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
@@ -13,17 +14,22 @@ namespace Abmes.DataCollector.Collector.Service.Controllers
     public class CollectorController : Controller
     {
         private readonly IMainCollector _mainCollector;
+        private readonly IBootstrapper _bootstrapper;
 
-        public CollectorController(IMainCollector mainCollector)
+        public CollectorController(
+            IMainCollector mainCollector,
+            IBootstrapper bootstrapper)
         {
             _mainCollector = mainCollector;
+            _bootstrapper = bootstrapper;
         }
 
-        // POST Collector/collect/configSetName
+        // POST Collector/collect/configSetName?dataCollections=name1,name2,name3
         [Route("collect/{configSetName}")]
         [HttpPost]
-        public async Task CollectAsync(string configSetName, CancellationToken cancellationToken)
+        public async Task CollectAsync(string configSetName, [FromQuery] string dataCollections, CancellationToken cancellationToken)
         {
+            _bootstrapper.SetConfig(configSetName, dataCollections);
             await _mainCollector.CollectAsync(cancellationToken);
         }
     }
