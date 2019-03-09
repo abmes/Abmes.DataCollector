@@ -12,8 +12,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
         public void SetConfig(string configSetName, string dataCollectionNames)
         {
-            ConfigSetName = configSetName;
-            DataCollectionNames = dataCollectionNames;
+            ConfigSetName = configSetName ?? "";
+            DataCollectionNames = dataCollectionNames ?? "";
         }
     }
 }

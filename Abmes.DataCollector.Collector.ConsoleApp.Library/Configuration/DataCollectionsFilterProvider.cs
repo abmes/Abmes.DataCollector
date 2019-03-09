@@ -18,7 +18,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
         {
             var args = Environment.GetCommandLineArgs();
 
-            var result = (args.Length > 2) ? args[2] : _bootstrapper.DataCollectionNames;
+            var result = _bootstrapper.DataCollectionNames ?? ((args.Length > 2) ? args[2] : null);
 
             return await Task.FromResult(result);
         }

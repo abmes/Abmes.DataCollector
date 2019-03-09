@@ -16,7 +16,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
         {
             var args = Environment.GetCommandLineArgs();
 
-            return (args.Length > 1) ? args[1] : _bootstrapper.ConfigSetName;
+            return _bootstrapper.ConfigSetName ?? ((args.Length > 1) ? args[1] : null);
         }
     }
 }
