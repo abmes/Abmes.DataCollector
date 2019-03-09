@@ -3,15 +3,22 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Abmes.DataCollector.ConsoleApp
+namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
 {
     public class DataCollectionsFilterProvider : IDataCollectionsFilterProvider
     {
+        private readonly IBootstrapper _bootstrapper;
+
+        public DataCollectionsFilterProvider(IBootstrapper bootstrapper)
+        {
+            _bootstrapper = bootstrapper;
+        }
+
         public async Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken)
         {
             var args = Environment.GetCommandLineArgs();
 
-            var result = (args.Length > 2) ? args[2] : null;
+            var result = (args.Length > 2) ? args[2] : _bootstrapper.DataCollectionNames;
 
             return await Task.FromResult(result);
         }
