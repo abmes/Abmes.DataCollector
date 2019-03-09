@@ -19,7 +19,13 @@ namespace Abmes.DataCollector.Collector.AmazonLambda
             System.Console.WriteLine(collectorParams.ConfigSetName);
             System.Console.WriteLine(collectorParams.DataCollectionNames);
 
-            //Initializer.GetMainService().MainAsync(CancellationToken.None).Wait();
+            Initializer
+                .GetMainService()
+                .MainAsync(
+                    CancellationToken.None,
+                    bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames)
+                )
+                .Wait();
 
             System.Console.WriteLine("Exitting after 5 seconds ...");
             Task.Delay(5000);
