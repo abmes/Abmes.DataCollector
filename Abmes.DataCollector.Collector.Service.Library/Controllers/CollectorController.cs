@@ -24,7 +24,7 @@ namespace Abmes.DataCollector.Collector.Service.Controllers
         [HttpPost]
         public async Task CollectAsync(string configSetName, CancellationToken cancellationToken)
         {
-            await _mainCollector.CollectAsync(configSetName, cancellationToken);
+            await _mainCollector.CollectAsync(cancellationToken);
         }
     }
 }

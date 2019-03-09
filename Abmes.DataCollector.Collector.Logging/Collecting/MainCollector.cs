@@ -30,8 +30,10 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             return (result ? "Finished" : "ERRORS occured when");
         }
 
-        public async Task<bool> CollectAsync(string configSetName, CancellationToken cancellationToken)
+        public async Task<bool> CollectAsync(CancellationToken cancellationToken)
         {
+            var configSetName = _configSetNameProvider.GetConfigSetName();
+
             try
             {
                 bool result;
@@ -41,7 +43,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
-                    result = await _collector.CollectAsync(configSetName, cancellationToken);
+                    result = await _collector.CollectAsync(cancellationToken);
                 }
                 finally
                 {
