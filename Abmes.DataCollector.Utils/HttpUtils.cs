@@ -37,7 +37,7 @@ namespace Abmes.DataCollector.Utils
                     httpClient.Timeout = timeout.Value;
                 }
 
-                using (var request = new HttpRequestMessage(HttpMethod.Get, url))
+                using (var request = new HttpRequestMessage(httpMethod, url))
                 {
                     if (headers != null)
                     {
