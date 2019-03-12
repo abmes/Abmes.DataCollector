@@ -48,9 +48,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         {
             try
             {
-                _logger.LogInformation("Started garbage collecting data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
                 await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, cancellationToken);
-                _logger.LogInformation("Finished garbage collecting '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
             }
             catch (Exception e)
             {
