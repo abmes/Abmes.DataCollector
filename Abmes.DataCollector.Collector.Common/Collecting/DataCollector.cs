@@ -77,13 +77,16 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             if (failedDestinations.IsEmpty && completeFileNames.IsEmpty)
             {
-                throw new Exception($"No files to collect for Data '{dataCollectionConfig.DataCollectionName}'");
+                throw new Exception("No data to collect");
             }
 
             if (failedDestinations.Any())
             {
-                // clear partial collection
                 await GarbageCollectFailedDestinationsAsync(failedDestinations, completeFileNames, dataCollectionConfig, cancellationToken);
+
+                var failedDestinationNames = string.Join(", ", failedDestinations.Select(x => x.DestinationConfig.DestinationId));
+
+                throw new Exception($"Failed to collect data to destinations '{failedDestinationNames}'");
             }
         }
 
