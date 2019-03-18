@@ -1,8 +1,4 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
-using System.Threading.Tasks;
 using Amazon.Lambda.Core;
 using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 
@@ -26,9 +22,6 @@ namespace Abmes.DataCollector.Collector.AmazonLambda
                     bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames)
                 )
                 .Wait();
-
-            System.Console.WriteLine("Exitting after 5 seconds ...");
-            Task.Delay(5000);
         }
     }
 }

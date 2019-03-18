@@ -19,11 +19,38 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
             _bootstrapper = bootstrapper;
         }
 
-        public async Task MainAsync(CancellationToken cancellationToken, Action<IBootstrapper> bootstrap = null)
+        public async Task<int> MainAsync(CancellationToken cancellationToken, Action<IBootstrapper> bootstrap = null)
         {
-            bootstrap?.Invoke(_bootstrapper);
+            try
+            {
+                bootstrap?.Invoke(_bootstrapper);
 
-            await _mainCollector.CollectAsync(cancellationToken);
+                await _mainCollector.CollectAsync(cancellationToken);
+
+                return DelayedExitCode(0, 5);
+            }
+            catch (Exception e)
+            {
+                System.Console.WriteLine(e.Message);
+                return DelayedExitCode(1, 5);
+            }
+        }
+
+        private int DelayedExitCode(int exitCode, int delaySeconds = 0)
+        {
+            if (delaySeconds > 0)
+            {
+                System.Console.WriteLine($"Exitting after {delaySeconds} seconds ...");
+                Task.Delay(TimeSpan.FromSeconds(delaySeconds)).Wait();
+            }
+
+#if DEBUG
+            Task.Delay(500).Wait();
+            System.Console.WriteLine("Press any key to quit...");
+            System.Console.ReadKey();
+#endif
+
+            return exitCode;
         }
     }
 }
