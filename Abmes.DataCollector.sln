@@ -57,9 +57,13 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Console", "Abmes.DataCollector.Collector.Console\Abmes.DataCollector.Collector.Console.csproj", "{92826E73-BA24-4E9D-B55A-64CAF381DF42}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Service.Library", "Abmes.DataCollector.Collector.Service.Library\Abmes.DataCollector.Collector.Service.Library.csproj", "{CCB7FC6C-270B-40D8-8BE2-B1006F4579AB}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Service.Library", "Abmes.DataCollector.Collector.Service.Library\Abmes.DataCollector.Collector.Service.Library.csproj", "{CCB7FC6C-270B-40D8-8BE2-B1006F4579AB}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.AmazonLambda", "Abmes.DataCollector.Collector.AmazonLambda\Abmes.DataCollector.Collector.AmazonLambda.csproj", "{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.FileSystem", "Abmes.DataCollector.Collector.FileSystem\Abmes.DataCollector.Collector.FileSystem.csproj", "{B568D7B9-049A-43DE-8B0B-687B85511F2D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.FileSystem", "Abmes.DataCollector.Common.FileSystem\Abmes.DataCollector.Common.FileSystem.csproj", "{90DC4BFB-8A73-4869-B00F-F497E12221B9}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -167,6 +171,14 @@ Global
 		{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B568D7B9-049A-43DE-8B0B-687B85511F2D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B568D7B9-049A-43DE-8B0B-687B85511F2D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B568D7B9-049A-43DE-8B0B-687B85511F2D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B568D7B9-049A-43DE-8B0B-687B85511F2D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -197,6 +209,8 @@ Global
 		{92826E73-BA24-4E9D-B55A-64CAF381DF42} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{CCB7FC6C-270B-40D8-8BE2-B1006F4579AB} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{B568D7B9-049A-43DE-8B0B-687B85511F2D} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{90DC4BFB-8A73-4869-B00F-F497E12221B9} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8AC6496B-CDC1-4994-ACE3-BEC0D616354E}

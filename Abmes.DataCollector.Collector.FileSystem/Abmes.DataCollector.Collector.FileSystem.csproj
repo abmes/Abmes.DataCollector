@@ -1,0 +1,12 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp2.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.FileSystem\Abmes.DataCollector.Common.FileSystem.csproj" />
+  </ItemGroup>
+
+</Project>
