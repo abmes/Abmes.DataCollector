@@ -86,6 +86,26 @@ namespace Abmes.DataCollector.Utils
             return GetMD5Hash(hasher);
         }
 
+        public static async Task<string> GetMD5HashAsync(Stream stream, int bufferSize, CancellationToken cancellationToken)
+        {
+            var hasher = GetMD5Hasher();
+
+            var buffer = new byte[bufferSize];
+            while (true)
+            {
+                var bytesRead = await ReadStreamMaxBufferAsync(buffer, stream, cancellationToken);
+
+                if (bytesRead == 0)
+                {
+                    break;
+                }
+
+                AppendMDHasherData(hasher, buffer, 0, bytesRead);
+            }
+
+            return GetMD5Hash(hasher);
+        }
+
         public static IncrementalHash GetMD5Hasher()
         {
             return IncrementalHash.CreateHash(HashAlgorithmName.MD5);
