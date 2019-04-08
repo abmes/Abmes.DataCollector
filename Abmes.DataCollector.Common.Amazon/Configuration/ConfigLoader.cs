@@ -10,14 +10,14 @@ namespace Abmes.DataCollector.Common.Amazon.Configuration
 {
     public class ConfigLoader : IConfigLoader
     {
-        private readonly IAmazonAppSettings _commonAppSettings;
+        private readonly IAmazonAppSettings _amazonAppSettings;
         private readonly IAmazonS3 _amazonS3;
 
         public ConfigLoader(
-            IAmazonAppSettings commonAppSettings,
+            IAmazonAppSettings amazonAppSettings,
             IAmazonS3 amazonS3)
         {
-            _commonAppSettings = commonAppSettings;
+            _amazonAppSettings = amazonAppSettings;
             _amazonS3 = amazonS3;
         }
 
@@ -28,7 +28,7 @@ namespace Abmes.DataCollector.Common.Amazon.Configuration
 
         public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
         {
-            var request = new GetObjectRequest { BucketName = _commonAppSettings.AmazonS3ConfigStorageBucketName, Key = configName };
+            var request = new GetObjectRequest { BucketName = _amazonAppSettings.AmazonS3ConfigStorageBucketName, Key = configName };
             var response = _amazonS3.GetObjectAsync(request).Result;
 
             using (var reader = new System.IO.StreamReader(response.ResponseStream, Encoding.UTF8))

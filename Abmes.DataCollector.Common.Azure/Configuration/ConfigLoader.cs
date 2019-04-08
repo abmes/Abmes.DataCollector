@@ -14,14 +14,14 @@ namespace Abmes.DataCollector.Common.Azure.Configuration
         private const string AzureConfigStorageConnectionStringName = "AzureConfigStorage";
 
         private readonly IConfiguration _configuration;
-        private readonly IAzureAppSettings _commonAppSettings;
+        private readonly IAzureAppSettings _azureAppSettings;
 
         public ConfigLoader(
             IConfiguration configuration,
-            IAzureAppSettings commonAppSettings)
+            IAzureAppSettings azureAppSettings)
         {
             _configuration = configuration;
-            _commonAppSettings = commonAppSettings;
+            _azureAppSettings = azureAppSettings;
         }
 
         public bool CanLoadFrom(string storageType)
@@ -37,7 +37,7 @@ namespace Abmes.DataCollector.Common.Azure.Configuration
 
             var client = account.CreateCloudBlobClient();
 
-            var container = client.GetContainerReference(_commonAppSettings.AzureConfigStorageContainerName);
+            var container = client.GetContainerReference(_azureAppSettings.AzureConfigStorageContainerName);
 
             var blob = container.GetBlobReference(configName);
 
