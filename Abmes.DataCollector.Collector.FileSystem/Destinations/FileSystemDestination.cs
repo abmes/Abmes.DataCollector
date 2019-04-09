@@ -41,6 +41,8 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
 
                 var fullFileName = GetFullFileName(dataCollectionName, fileName);
 
+                Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
+
                 using (var sourceStream = await response.Content.ReadAsStreamAsync())
                 {
                     using (var fileStream = new FileStream(fullFileName, FileMode.CreateNew))
