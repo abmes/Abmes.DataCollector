@@ -1,5 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using System;
+using System.Linq;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
 {
@@ -16,7 +17,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
         {
             var args = Environment.GetCommandLineArgs();
 
-            return _bootstrapper.ConfigSetName ?? ((args.Length > 1) ? args[1] : null);
+            return _bootstrapper.ConfigSetName ?? ((args.Length <= 1) ? null : args[1].Split('/', '\\').Last());
         }
     }
 }

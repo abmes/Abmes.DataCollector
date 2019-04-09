@@ -3,6 +3,7 @@ using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Services;
 using Abmes.DataCollector.Vault.Storage;
 using Abmes.DataCollector.Vault.Common.Configuration;
+using Abmes.DataCollector.Common.Configuration;
 
 namespace Abmes.DataCollector.Vault
 {
@@ -18,6 +19,7 @@ namespace Abmes.DataCollector.Vault
             builder.RegisterType<StorageResolverProvider>().As<IStorageResolverProvider>();
             builder.RegisterType<StorageProvider>().As<IStorageProvider>();
             builder.RegisterType<DataCollectionFiles>().Named<IDataCollectionFiles>("base");
+            builder.RegisterType<EmptyConfigLocationProvider>().As<IConfigLocationProvider>();
         }
     }
 }

@@ -2,6 +2,7 @@
 using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 using Autofac;
 using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp
 {
@@ -24,6 +25,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
             builder.RegisterType<MainService>().As<IMainService>();
             builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
             builder.RegisterType<DataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
+            builder.RegisterType<ConfigLocationProvider>().As<IConfigLocationProvider>();
 
             Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);

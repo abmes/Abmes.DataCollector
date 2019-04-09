@@ -24,9 +24,19 @@ namespace Abmes.DataCollector.Common.Azure.Configuration
             _azureAppSettings = azureAppSettings;
         }
 
-        public bool CanLoadFrom(string storageType)
+        public bool CanLoadFromStorage(string storageType)
         {
             return string.Equals(storageType, "Azure", StringComparison.InvariantCultureIgnoreCase);
+        }
+
+        public bool CanLoadFromLocation(string location)
+        {
+            return false;
+        }
+
+        public Task<string> GetConfigContentAsync(string configName, string location, CancellationToken cancellationToken)
+        {
+            throw new NotImplementedException();
         }
 
         public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
