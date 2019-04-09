@@ -1,4 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Azure.Storage;
+using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Storage;
 using Microsoft.WindowsAzure.Storage.Blob;
@@ -53,6 +54,11 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             return await _azureCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+        }
+
+        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        {
+            return await _azureCommonStorage.GetDataCollectionFileInfosAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
         }
     }
 }

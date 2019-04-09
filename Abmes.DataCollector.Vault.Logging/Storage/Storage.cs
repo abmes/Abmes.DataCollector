@@ -6,6 +6,7 @@ using System.Threading;
 using Abmes.DataCollector.Vault.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Common.Storage;
 
 namespace Abmes.DataCollector.Vault.Logging.Storage
 {
@@ -44,6 +45,25 @@ namespace Abmes.DataCollector.Vault.Logging.Storage
             }
         }
 
+        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Started getting data '{dataCollectionName}' file infos", dataCollectionName);
+
+                var result = await _storage.GetDataCollectionFileInfosAsync(dataCollectionName, fileNamePrefix, cancellationToken);
+
+                _logger.LogInformation("Finished getting data '{dataCollectionName}' file infos", dataCollectionName);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("Error getting data '{dataCollectionName}' file infos: {errorMessage}", dataCollectionName, e.GetAggregateMessages());
+                throw;
+            }
+        }
+
         public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
             try
@@ -62,6 +82,5 @@ namespace Abmes.DataCollector.Vault.Logging.Storage
                 throw;
             }
         }
-
     }
 }

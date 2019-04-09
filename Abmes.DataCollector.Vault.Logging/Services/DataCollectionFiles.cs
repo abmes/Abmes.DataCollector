@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Common.Storage;
+using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Services;
 using Microsoft.Extensions.Logging;
 using System;
@@ -57,6 +58,25 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
+        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync(string prefix, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Started getting file infos");
+
+                var result = await _dataCollectionFiles.GetFileInfosAsync(prefix, cancellationToken);
+
+                _logger.LogInformation("Finished getting file infos");
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("Error getting file infos: {errorMessage}", e.GetAggregateMessages());
+                throw;
+            }
+        }
+
         public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, CancellationToken cancellationToken)
         {
             try
@@ -95,21 +115,40 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfo>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
         {
             try
             {
-                _logger.LogInformation("Started getting latest file name");
+                _logger.LogInformation("Started getting latest file infos");
 
-                var result = await _dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
+                var result = await _dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
 
-                _logger.LogInformation("Finished getting latest file name");
+                _logger.LogInformation("Finished getting latest file infos");
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error getting latest file name: {errorMessage}", e.GetAggregateMessages());
+                _logger.LogCritical("Error getting latest file infos: {errorMessage}", e.GetAggregateMessages());
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Started getting latest file names");
+
+                var result = await _dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
+
+                _logger.LogInformation("Finished getting latest file names");
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("Error getting latest file names: {errorMessage}", e.GetAggregateMessages());
                 throw;
             }
         }

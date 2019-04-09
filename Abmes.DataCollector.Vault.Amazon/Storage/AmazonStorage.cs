@@ -1,4 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Amazon.Storage;
+using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Storage;
 using Amazon.S3;
@@ -48,6 +49,11 @@ namespace Abmes.DataCollector.Vault.Amazon.Storage
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+        }
+
+        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        {
+            return await _amazonCommonStorage.GetDataCollectionFileInfosAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
         }
     }
 }

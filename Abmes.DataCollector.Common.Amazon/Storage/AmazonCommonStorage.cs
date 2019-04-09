@@ -13,18 +13,33 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
     public class AmazonCommonStorage : IAmazonCommonStorage
     {
         private readonly IAmazonS3 _amazonS3;
+        private readonly IFileInfoFactory _fileInfoFactory;
 
         public AmazonCommonStorage(
-            IAmazonS3 amazonS3)
+            IAmazonS3 amazonS3,
+            IFileInfoFactory fileInfoFactory)
         {
             _amazonS3 = amazonS3;
+            _fileInfoFactory = fileInfoFactory;
         }
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
+            return
+                (await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
+                .Select(x => x.Name);
+        }
+
+        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        {
+            return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
+        }
+
+        private async Task<IEnumerable<IFileInfo>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
+        {
             var prefix = rootDir + dataCollectionName + "/";
 
-            var resultList = new List<string>();
+            var resultList = new List<IFileInfo>();
 
             var request = new ListObjectsV2Request { BucketName = rootBase, Prefix = prefix + fileNamePrefix };
 
@@ -32,16 +47,34 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
             {
                 var response = await _amazonS3.ListObjectsV2Async(request);
 
-                var relativeFileNames = response.S3Objects.Select(x => x.Key.Substring(prefix.Length));
-                resultList.AddRange(relativeFileNames);
+                var fileInfos = response.S3Objects.Select(x => GetFileInfoAsync(x, prefix, namesOnly, cancellationToken).Result);
+                resultList.AddRange(fileInfos);
 
                 if (!response.IsTruncated)
+                {
                     break;
+                }
 
                 request.ContinuationToken = response.NextContinuationToken;
             }
 
             return resultList;
+        }
+
+        private async Task<IFileInfo> GetFileInfoAsync(S3Object s3Object, string prefix, bool namesOnly, CancellationToken cancellationToken)
+        {
+            var name = s3Object.Key.Substring(prefix.Length);
+
+            if (namesOnly)
+            {
+                return _fileInfoFactory(name, null, null);
+            }
+
+            var request = new GetObjectMetadataRequest { BucketName = s3Object.BucketName, Key = s3Object.Key };
+
+            var response = await _amazonS3.GetObjectMetadataAsync(request, cancellationToken);
+
+            return _fileInfoFactory(name, response.Headers.ContentLength, !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"]);
         }
     }
 }
