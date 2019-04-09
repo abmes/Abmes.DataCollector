@@ -10,6 +10,8 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
     {
         private readonly IFileInfoFactory _fileInfoFactory;
 
+        public string StorageType => "FileSystem";
+
         public FileSystemCommonStorage(
             IFileInfoFactory fileInfoFactory)
         {
@@ -47,7 +49,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
         {
             if (namesOnly)
             {
-                return await Task.FromResult(_fileInfoFactory(relativeFileName, null, null));
+                return await Task.FromResult(_fileInfoFactory(relativeFileName, null, null, StorageType));
             }
 
             var fullFileName = System.IO.Path.Combine(fullDirName, relativeFileName);
@@ -56,7 +58,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
 
             var md5 = await System.IO.File.ReadAllTextAsync(fullDirName);
 
-            return await Task.FromResult(_fileInfoFactory(relativeFileName, fileSize, md5));
+            return await Task.FromResult(_fileInfoFactory(relativeFileName, fileSize, md5, StorageType));
         }
     }
 }

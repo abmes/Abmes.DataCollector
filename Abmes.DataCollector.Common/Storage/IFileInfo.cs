@@ -11,5 +11,7 @@ namespace Abmes.DataCollector.Common.Storage
         long? Size { get; }
 
         string MD5 { get; }
+
+        string StorageType { get; }
     }
 }

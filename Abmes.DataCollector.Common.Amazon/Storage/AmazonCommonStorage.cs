@@ -15,6 +15,8 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
         private readonly IAmazonS3 _amazonS3;
         private readonly IFileInfoFactory _fileInfoFactory;
 
+        public string StorageType => "Amazon";
+
         public AmazonCommonStorage(
             IAmazonS3 amazonS3,
             IFileInfoFactory fileInfoFactory)
@@ -67,14 +69,16 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
 
             if (namesOnly)
             {
-                return _fileInfoFactory(name, null, null);
+                return _fileInfoFactory(name, null, null, StorageType);
             }
 
             var request = new GetObjectMetadataRequest { BucketName = s3Object.BucketName, Key = s3Object.Key };
 
             var response = await _amazonS3.GetObjectMetadataAsync(request, cancellationToken);
 
-            return _fileInfoFactory(name, response.Headers.ContentLength, !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"]);
+            var md5 = !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"];
+
+            return _fileInfoFactory(name, response.Headers.ContentLength, md5, StorageType);
         }
     }
 }

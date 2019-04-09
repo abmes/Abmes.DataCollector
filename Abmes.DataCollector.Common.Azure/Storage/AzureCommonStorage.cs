@@ -15,6 +15,8 @@ namespace Abmes.DataCollector.Common.Azure.Storage
         private readonly IAzureAppSettings _commonAppSettings;
         private readonly IFileInfoFactory _fileInfoFactory;
 
+        public string StorageType => "Azure";
+
         public AzureCommonStorage(
             IAzureAppSettings commonAppSettings,
             IFileInfoFactory fileInfoFactory)
@@ -100,12 +102,12 @@ namespace Abmes.DataCollector.Common.Azure.Storage
 
             if (namesOnly)
             {
-                return await Task.FromResult(_fileInfoFactory(name, null, null));
+                return await Task.FromResult(_fileInfoFactory(name, null, null, StorageType));
             }
 
             //await blob.FetchAttributesAsync();
 
-            return await Task.FromResult(_fileInfoFactory(name, blob.Properties.Length, blob.Properties.ContentMD5));
+            return await Task.FromResult(_fileInfoFactory(name, blob.Properties.Length, blob.Properties.ContentMD5, StorageType));
         }
     }
 }

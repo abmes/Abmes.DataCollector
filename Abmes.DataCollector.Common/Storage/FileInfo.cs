@@ -14,11 +14,14 @@ namespace Abmes.DataCollector.Common.Storage
         [JsonProperty(PropertyName = "md5")]
         public string MD5 { get; }
 
-        public FileInfo(string name, long? size, string md5)
+        public string StorageType { get; }
+
+        public FileInfo(string name, long? size, string md5, string storageType)
         {
             Name = name;
             Size = size;
             MD5 = md5;
+            StorageType = storageType;
         }
     }
 }
