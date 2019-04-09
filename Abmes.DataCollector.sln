@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 15
-VisualStudioVersion = 15.0.28010.2003
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28729.10
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B6EB5572-088B-4FE8-8A3A-B274D674645F}"
 EndProject
@@ -61,9 +61,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.AmazonLambda", "Abmes.DataCollector.Collector.AmazonLambda\Abmes.DataCollector.Collector.AmazonLambda.csproj", "{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.FileSystem", "Abmes.DataCollector.Collector.FileSystem\Abmes.DataCollector.Collector.FileSystem.csproj", "{B568D7B9-049A-43DE-8B0B-687B85511F2D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.FileSystem", "Abmes.DataCollector.Collector.FileSystem\Abmes.DataCollector.Collector.FileSystem.csproj", "{B568D7B9-049A-43DE-8B0B-687B85511F2D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.FileSystem", "Abmes.DataCollector.Common.FileSystem\Abmes.DataCollector.Common.FileSystem.csproj", "{90DC4BFB-8A73-4869-B00F-F497E12221B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.FileSystem", "Abmes.DataCollector.Common.FileSystem\Abmes.DataCollector.Common.FileSystem.csproj", "{90DC4BFB-8A73-4869-B00F-F497E12221B9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Web", "Abmes.DataCollector.Common.Web\Abmes.DataCollector.Common.Web.csproj", "{476A2904-7846-40D6-9C4A-EC21096DCD3F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -179,6 +181,10 @@ Global
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -211,6 +217,7 @@ Global
 		{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{B568D7B9-049A-43DE-8B0B-687B85511F2D} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
+		{476A2904-7846-40D6-9C4A-EC21096DCD3F} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8AC6496B-CDC1-4994-ACE3-BEC0D616354E}

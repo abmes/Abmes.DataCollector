@@ -102,5 +102,12 @@ namespace Abmes.DataCollector.Utils
                 CopyUtils.GetMD5Hash(response.Content.Headers.ContentMD5) ??
                 response.Headers.Where(x => x.Key.Equals("x-amz-meta-content-md5", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.Value.FirstOrDefault()).FirstOrDefault();
         }
+
+        public static IEnumerable<KeyValuePair<string, string>> GetHeaders(string headers)
+        {
+            return
+                headers.Split(';', ',')
+                .Select(x => { var parts = x.Split('='); return new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim()); });
+        }
     }
 }

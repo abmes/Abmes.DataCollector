@@ -14,6 +14,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
             Abmes.DataCollector.Common.Amazon.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Common.Azure.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Common.FileSystem.ContainerRegistrations.RegisterFor(builder);
+            Abmes.DataCollector.Common.Web.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Amazon.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Azure.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.FileSystem.ContainerRegistrations.RegisterFor(builder);
