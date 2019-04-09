@@ -33,7 +33,7 @@ namespace Abmes.DataCollector.Common.Web.Configuration
         {
             var bracketPos = location.IndexOf("[");
             var headers = (bracketPos >= 0) ? GetHeaders(location.Substring(bracketPos)) : null;
-            var url = location.Substring(0, bracketPos);
+            var url = location.Substring(0, bracketPos).TrimEnd('/') + "/" + configName;
 
             return await HttpUtils.GetStringAsync(url, headers, null, null, cancellationToken);
         }
