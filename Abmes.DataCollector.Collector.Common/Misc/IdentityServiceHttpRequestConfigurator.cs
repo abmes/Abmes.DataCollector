@@ -22,7 +22,15 @@ namespace Abmes.DataCollector.Collector.Common.Misc
             }
         }
 
-        private async Task<string> GetIdentityServiceAccessTokenAsync(IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        public void Config(HttpRequestMessage request, string identityServiceAccessToken, CancellationToken cancellationToken)
+        {
+            if (!string.IsNullOrEmpty(identityServiceAccessToken))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", identityServiceAccessToken);
+            }
+        }
+
+        public async Task<string> GetIdentityServiceAccessTokenAsync(IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(identityServiceClientInfo.Url))
             {

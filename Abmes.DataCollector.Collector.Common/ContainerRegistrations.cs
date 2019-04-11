@@ -18,7 +18,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<Collecting.DataCollector>().Named<IDataCollector>("base");
             builder.RegisterType<DataPreparer>().Named<IDataPreparer>("base");
             builder.RegisterType<DataPreparePoller>().Named<IDataPreparePoller>("base");
-            builder.RegisterType<CollectUrlsProvider>().Named<ICollectUrlsProvider>("base");
+            builder.RegisterType<CollectItemsProvider>().Named<ICollectItemsProvider>("base");
             builder.RegisterType<CollectUrlExtractor>().Named<ICollectUrlExtractor>("base");
             builder.RegisterType<Delay>().Named<IDelay>("base");
             builder.RegisterType<DateTimeFormatter>().As<IDateTimeFormatter>();

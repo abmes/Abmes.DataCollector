@@ -226,5 +226,10 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         {
             return true;
         }
+
+        public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
     }
 }

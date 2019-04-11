@@ -75,13 +75,35 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             var fullFileName = GetFullFileName(dataCollectionName, fileName);
             File.Delete(fullFileName);
-            File.Delete(fullFileName + ".md5");
+            File.Delete(GetMD5FileName(fullFileName));
             await Task.CompletedTask;
+        }
+
+        private string GetMD5FileName(string fileName)
+        {
+            return fileName + ".md5";
         }
 
         private string GetFullFileName(string dataCollectionName, string fileName)
         {
             return Path.Combine(DestinationConfig.Root, dataCollectionName, fileName.Replace("/", "\\"));
+        }
+
+        private async Task<string> GetFileMD5Async(string fullFileName, CancellationToken cancellationToken)
+        {
+            var md5FileName = GetMD5FileName(fullFileName);
+
+            return File.Exists(md5FileName) ? await File.ReadAllTextAsync(md5FileName, cancellationToken) : null;
+        }
+
+        public async Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+        {
+            var fullFileName = GetFullFileName(dataCollectionName, name);
+
+            return
+                (!File.Exists(fullFileName)) ||
+                ((size.HasValue) && (size.Value != new FileInfo(fullFileName).Length)) ||
+                ((!string.IsNullOrEmpty(md5)) && (md5 != await GetFileMD5Async(fullFileName, cancellationToken)));
         }
     }
 }

@@ -86,5 +86,10 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
                 (!string.IsNullOrEmpty(DestinationConfig.FileNamesGetEndpoint)) &&
                 (!string.IsNullOrEmpty(DestinationConfig.GarbageCollectFilePostEndpoint));
         }
+
+        public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+        {
+            return Task.FromResult(true);
+        }
     }
 }

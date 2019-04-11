@@ -1,0 +1,66 @@
+﻿using Abmes.DataCollector.Collector.Common.Collecting;
+using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Common.Storage;
+using Abmes.DataCollector.Utils;
+using Microsoft.Extensions.Logging;
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
+
+namespace Abmes.DataCollector.Collector.Logging.Collecting
+{
+    public class CollectItemsProvider : ICollectItemsProvider
+    {
+        private readonly ILogger<CollectItemsProvider> _logger;
+        private readonly ICollectItemsProvider _collectItemsProvider;
+
+        public CollectItemsProvider(
+            ILogger<CollectItemsProvider> logger,
+            ICollectItemsProvider collectItemsProvider)
+        {
+            _logger = logger;
+            _collectItemsProvider = collectItemsProvider;
+        }
+
+        public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Started getting collect urls for data collection '{dataCollectionName}'", dataCollectionName);
+
+                var result = _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, identityServiceClientInfo, cancellationToken).ToList();
+
+                _logger.LogInformation("Finished getting collect urls for data collection '{dataCollectionName}'", dataCollectionName);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("Error getting collect urls for data collection '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
+                throw;
+            }
+        }
+
+        public async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        {
+            try
+            {
+                _logger.LogInformation("Started getting redirected collect urls for data collection '{dataCollectionName}'", dataCollectionName);
+
+                var result = await _collectItemsProvider.GetRedirectedCollectItemsAsync(collectItems, dataCollectionName, collectHeaders, maxDegreeOfParallelism, identityServiceClientInfo, cancellationToken);
+
+                _logger.LogInformation("Finished getting redirected collect urls for data collection '{dataCollectionName}'", dataCollectionName);
+
+                return result;
+            }
+            catch (Exception e)
+            {
+                _logger.LogCritical("Error getting collect redirected urls for data collection '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
+                throw;
+            }
+        }
+    }
+}

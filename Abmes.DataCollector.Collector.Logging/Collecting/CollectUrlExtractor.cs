@@ -22,7 +22,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _collectUrlExtractor = collectUrlExtractor;
         }
 
-        public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+        public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string identityServiceAccessToken, CancellationToken cancellationToken)
         {
             if (collectFileIdentifier == null)
             {
@@ -33,7 +33,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             {
                 _logger.LogInformation("Started getting collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'", collectFileIdentifier, dataCollectionName);
 
-                var result = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectFileIdentifier, sourceUrl, headers, cancellationToken);
+                var result = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectFileIdentifier, sourceUrl, headers, identityServiceAccessToken, cancellationToken);
 
                 _logger.LogInformation("Finished getting collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'", collectFileIdentifier, dataCollectionName);
 

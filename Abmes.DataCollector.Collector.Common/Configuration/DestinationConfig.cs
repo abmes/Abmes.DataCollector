@@ -13,6 +13,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public string LoginSecret { get; }
         public string Root { get; }
 
+        public bool OverrideFiles { get; }
+
         public string CollectPostEndpoint { get; }
         public string GarbageCollectFilePostEndpoint { get; }
         public string FileNamesGetEndpoint { get; }
@@ -25,7 +27,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public IIdentityServiceClientInfo IdentityServiceClientInfo  { get; }
 
         // constructor needed for json deserialization
-        public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root,
+        public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root, bool overrideFiles,
             string collectPostEndpoint, string garbageCollectFilePostEndpoint, string fileNamesGetEndpoint,
             string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope)
         {
@@ -34,6 +36,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             LoginName = loginName;
             LoginSecret = loginSecret;
             Root = root;
+            OverrideFiles = overrideFiles;
 
             CollectPostEndpoint = collectPostEndpoint;
             GarbageCollectFilePostEndpoint = garbageCollectFilePostEndpoint;
