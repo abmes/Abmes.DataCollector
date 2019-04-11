@@ -56,14 +56,14 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             var collectItems = _collectItemsProvider.GetCollectItems(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
 
-            var neededCollectItems = await GetNeededCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, cancellationToken);
+            var acceptedCollectItems = await GetAcceptedCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, cancellationToken);
 
-            var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(neededCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
+            var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
 
             await CollectItemsAsync(redirectedCollectItems, destinations, dataCollectionConfig, collectMoment, cancellationToken);
         }
 
-        private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetNeededCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, CancellationToken cancellationToken)
+        private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, CancellationToken cancellationToken)
         {
             var result = new List<(IFileInfo CollectFileInfo, string CollectUrl)>();
 
@@ -105,11 +105,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
                     (route, ct) => CollectRouteAsync(route, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, ct));
 
-            if (failedDestinations.IsEmpty && completeFileNames.IsEmpty)
-            {
-                throw new Exception("No data to collect");
-            }
-
             if (failedDestinations.Any())
             {
                 await GarbageCollectFailedDestinationsAsync(failedDestinations, completeFileNames, dataCollectionConfig, cancellationToken);
@@ -144,7 +139,8 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                       dataCollectionConfig.DataCollectionName,
                       collectItem.CollectUrl,
                       collectMoment,
-                      !string.IsNullOrEmpty(dataCollectionConfig.CollectFileIdentifiersUrl)
+                      destination.DestinationConfig.CollectToDirectories,
+                      destination.DestinationConfig.GenerateFileNames
                     );
 
             var tryNo = 1;

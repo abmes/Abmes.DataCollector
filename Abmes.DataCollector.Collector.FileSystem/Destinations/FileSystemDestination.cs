@@ -100,10 +100,24 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             var fullFileName = GetFullFileName(dataCollectionName, name);
 
-            return
-                (!File.Exists(fullFileName)) ||
-                ((size.HasValue) && (size.Value != new FileInfo(fullFileName).Length)) ||
-                ((!string.IsNullOrEmpty(md5)) && (md5 != await GetFileMD5Async(fullFileName, cancellationToken)));
+            if (DestinationConfig.OverrideFiles)
+                return true;
+
+            if (!(File.Exists(fullFileName)))
+                return true;
+
+            if ((size.HasValue) && (size.Value != new FileInfo(fullFileName).Length))
+                return true;
+
+            if (!string.IsNullOrEmpty(md5))
+            {
+                var destMD5 = await GetFileMD5Async(fullFileName, cancellationToken);
+
+                if (md5 != destMD5)
+                    return true;
+            }
+
+            return false;
         }
     }
 }

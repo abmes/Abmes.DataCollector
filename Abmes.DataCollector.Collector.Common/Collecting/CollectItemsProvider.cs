@@ -112,7 +112,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
                 async (collectItem, ct) =>
                 {
-                    var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo.Name, collectItem.CollectUrl.TrimStart('@'), collectHeaders, identityServiceAccessToken, ct);
+                    var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, collectItem.CollectUrl.TrimStart('@'), collectHeaders, identityServiceAccessToken, ct);
                     result.Add((collectItem.CollectFileInfo, url));
                 }
             );
