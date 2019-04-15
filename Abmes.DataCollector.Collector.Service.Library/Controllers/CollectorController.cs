@@ -24,12 +24,12 @@ namespace Abmes.DataCollector.Collector.Service.Controllers
             _bootstrapper = bootstrapper;
         }
 
-        // POST Collector/collect/configSetName?dataCollections=name1,name2,name3
+        // POST Collector/collect/configSetName?dataCollections=name1,name2,name3&mode=collect|check
         [Route("collect/{configSetName}")]
         [HttpPost]
-        public async Task CollectAsync(string configSetName, [FromQuery] string dataCollections, CancellationToken cancellationToken)
+        public async Task CollectAsync(string configSetName, [FromQuery] string dataCollections, [FromQuery] string collectorMode, CancellationToken cancellationToken)
         {
-            _bootstrapper.SetConfig(configSetName, dataCollections);
+            _bootstrapper.SetConfig(configSetName, dataCollections, collectorMode);
             await _mainCollector.CollectAsync(cancellationToken);
         }
     }

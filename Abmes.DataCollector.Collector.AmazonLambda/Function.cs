@@ -12,6 +12,7 @@ namespace Abmes.DataCollector.Collector.AmazonLambda
         [LambdaSerializer(typeof(global::Amazon.Lambda.Serialization.Json.JsonSerializer))]
         public void FunctionHandler(CollectorParams collectorParams)
         {
+            System.Console.WriteLine(collectorParams.CollectorMode);
             System.Console.WriteLine(collectorParams.ConfigSetName);
             System.Console.WriteLine(collectorParams.DataCollectionNames);
 
@@ -19,7 +20,7 @@ namespace Abmes.DataCollector.Collector.AmazonLambda
                 .GetMainService()
                 .MainAsync(
                     CancellationToken.None,
-                    bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames)
+                    bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames, collectorParams.CollectorMode)
                 )
                 .Wait();
         }

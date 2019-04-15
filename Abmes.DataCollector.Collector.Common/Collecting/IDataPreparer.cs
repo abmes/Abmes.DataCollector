@@ -6,6 +6,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public interface IDataPreparer
     {
-        Task PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken);
+        Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken);
     }
 }

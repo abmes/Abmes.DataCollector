@@ -20,11 +20,11 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _delay = delay;
         }
 
-        public async Task PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(dataCollectionConfig.PrepareUrl))
             {
-                return;
+                return false;
             }
 
             await PrepareCollectAsync(dataCollectionConfig.PrepareUrl, dataCollectionConfig.PrepareHeaders, dataCollectionConfig.PrepareHttpMethod, cancellationToken);
@@ -37,6 +37,8 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 await WaitPrepareDurationAsync(dataCollectionConfig, cancellationToken);
             }
+
+            return true;
         }
 
         private async Task WaitPrepareDurationAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)

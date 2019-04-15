@@ -12,17 +12,20 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
     {
         private readonly ILogger<MainCollector> _logger;
         private readonly IMainCollector _collector;
+        private readonly ICollectorModeProvider _collectorModeProvider;
 
         public IConfigSetNameProvider _configSetNameProvider { get; }
 
         public MainCollector(
             ILogger<MainCollector> logger, 
             IMainCollector collector,
-            IConfigSetNameProvider configSetNameProvider)
+            IConfigSetNameProvider configSetNameProvider,
+            ICollectorModeProvider collectorModeProvider)
         {
             _logger = logger;
             _collector = collector;
             _configSetNameProvider = configSetNameProvider;
+            _collectorModeProvider = collectorModeProvider;
         }
 
         private string ResultPrefix(bool result)
@@ -33,12 +36,22 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         public async Task<bool> CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
+            var collectorMode = _collectorModeProvider.GetCollectorMode();
+
+            var prefix = $"[{configSetName}]";
+
+            if (collectorMode == CollectorMode.Check)
+            {
+                prefix = prefix + $"[{collectorMode.ToString().ToLowerInvariant()}]";
+            }
+
+            var mode = collectorMode.ToString().ToLowerInvariant();
 
             try
             {
                 bool result;
 
-                _logger.LogInformation($"[{configSetName}] Started collecting data collections.");
+                _logger.LogInformation($"{prefix} Started {mode}ing data collections.");
 
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
@@ -50,13 +63,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                     watch.Stop();
                 }
 
-                _logger.LogInformation($"[{configSetName}] " + ResultPrefix(result) + " collecting data collections. Elapsed time: {elapsed}", watch.Elapsed);
+                _logger.LogInformation($"{prefix} " + ResultPrefix(result) + " {mode}ing data collections. Elapsed time: {elapsed}", mode, watch.Elapsed);
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical($"[{configSetName}] " + ResultPrefix(false) + " collecting data collections: {errorMessage}", e.GetAggregateMessages());
+                _logger.LogCritical($"{prefix} " + ResultPrefix(false) + " {mode}ing data collections: {errorMessage}", mode, e.GetAggregateMessages());
                 throw;
             }
         }

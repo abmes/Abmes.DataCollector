@@ -35,6 +35,8 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
+            int bufferSize = 1 * 1024 * 1024;
+
             using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 var sourceMD5 = response.ContentMD5();
@@ -45,15 +47,20 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
 
                 using (var sourceStream = await response.Content.ReadAsStreamAsync())
                 {
-                    using (var fileStream = new FileStream(fullFileName, FileMode.CreateNew))
+                    using (var fileStream = new FileStream(fullFileName, FileMode.Create))
                     {
-                        await sourceStream.CopyToAsync(fileStream);
+                        await CopyUtils.CopyAsync(
+                                (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                                async (buffer, count, cancellationToken2) => await fileStream.WriteAsync(buffer, 0, count, cancellationToken2),
+                                bufferSize,
+                                cancellationToken
+                            );
                     }
                 }
 
                 using (var fileStream = new FileStream(fullFileName, FileMode.Open, FileAccess.Read))
                 {
-                    var newMD5 = await CopyUtils.GetMD5HashAsync(fileStream, 4096, cancellationToken);
+                    var newMD5 = await CopyUtils.GetMD5HashAsync(fileStream, bufferSize, cancellationToken);
 
                     if ((!string.IsNullOrEmpty(sourceMD5)) &&
                         (!string.Equals(newMD5, sourceMD5, StringComparison.InvariantCultureIgnoreCase)))

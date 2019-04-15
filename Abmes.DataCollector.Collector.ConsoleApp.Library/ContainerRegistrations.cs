@@ -27,6 +27,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
             builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
             builder.RegisterType<DataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
             builder.RegisterType<ConfigLocationProvider>().As<IConfigLocationProvider>();
+            builder.RegisterType<CollectorModeProvider>().As<ICollectorModeProvider>();
 
             Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
             Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);

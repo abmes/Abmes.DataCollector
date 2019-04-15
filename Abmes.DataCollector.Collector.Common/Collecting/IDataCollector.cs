@@ -6,7 +6,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public interface IDataCollector
     {
-        Task CollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken);
+        Task CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken);
         Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken);
     }
 }

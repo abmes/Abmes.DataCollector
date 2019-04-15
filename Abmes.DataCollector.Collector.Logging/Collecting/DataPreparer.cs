@@ -19,13 +19,17 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _dataPreparer = dataPreparer;
         }
 
-        public async Task PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
-                await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
+
+                var result = await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
+
                 _logger.LogInformation("Finished preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+
+                return result;
             }
             catch (Exception e)
             {

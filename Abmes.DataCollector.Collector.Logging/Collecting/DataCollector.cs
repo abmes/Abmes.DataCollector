@@ -19,7 +19,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _dataCollector = dataCollector;
         }
 
-        public async Task CollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
@@ -28,7 +28,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
-                    await _dataCollector.CollectDataAsync(dataCollectionConfig, cancellationToken);
+                    await _dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken);
                 }
                 finally
                 {

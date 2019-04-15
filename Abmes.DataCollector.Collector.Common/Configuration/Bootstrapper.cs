@@ -10,10 +10,13 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
         public string DataCollectionNames { get; private set; }
 
-        public void SetConfig(string configSetName, string dataCollectionNames)
+        public CollectorMode CollectorMode { get; private set; }
+
+        public void SetConfig(string configSetName, string dataCollectionNames, string collectorMode)
         {
             ConfigSetName = configSetName ?? "";
             DataCollectionNames = dataCollectionNames ?? "";
+            CollectorMode = string.IsNullOrEmpty(collectorMode) ? CollectorMode.Collect : Enum.Parse<CollectorMode>(collectorMode, true);
         }
     }
 }

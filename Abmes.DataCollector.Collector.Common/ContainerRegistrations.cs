@@ -16,6 +16,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<DestinationResolverProvider>().As<IDestinationResolverProvider>();
             builder.RegisterType<MainCollector>().Named<IMainCollector>("base");
             builder.RegisterType<Collecting.DataCollector>().Named<IDataCollector>("base");
+            builder.RegisterType<CollectItemsCollector>().Named<ICollectItemsCollector>("base");
             builder.RegisterType<DataPreparer>().Named<IDataPreparer>("base");
             builder.RegisterType<DataPreparePoller>().Named<IDataPreparePoller>("base");
             builder.RegisterType<CollectItemsProvider>().Named<ICollectItemsProvider>("base");
@@ -31,7 +32,8 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<Bootstrapper>().As<IBootstrapper>().SingleInstance();
             builder.RegisterType<BootstrapperConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
             builder.RegisterType<BootstrapperDataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
-            
+            builder.RegisterType<BootstrapperCollectorModeProvider>().As<ICollectorModeProvider>();
+
             builder.RegisterType<FilteredDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("FilteringDecorator");
             builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("FilteringDecorator", TypedParameter.From(inner)), "base").Named<IDataCollectionsConfigProvider>("filtering");
 

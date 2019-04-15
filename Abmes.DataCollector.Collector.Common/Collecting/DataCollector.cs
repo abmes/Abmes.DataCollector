@@ -20,22 +20,25 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private readonly ICollectItemsProvider _collectItemsProvider;
         private readonly IFileNameProvider _fileNameProvider;
         private readonly IDelay _delay;
+        private readonly ICollectItemsCollector _collectItemsCollector;
 
         public DataCollector(
             IDestinationProvider destinationProvider,
             IDataPreparer DataPreparer,
             ICollectItemsProvider collectItemsProvider,
             IFileNameProvider fileNameProvider,
-            IDelay delay)
+            IDelay delay,
+            ICollectItemsCollector collectItemsCollector)
         {
             _destinationProvider = destinationProvider;
             _dataPreparer = DataPreparer;
             _collectItemsProvider = collectItemsProvider;
             _fileNameProvider = fileNameProvider;
             _delay = delay;
+            _collectItemsCollector = collectItemsCollector;
         }
 
-        public async Task CollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             // assert at least one destination before preparing
             var destinations = await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken);
@@ -52,134 +55,55 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             var collectMoment = DateTimeOffset.Now;
 
-            await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
+            var prepared = (collectorMode != CollectorMode.Collect) ? false : await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
             var collectItems = _collectItemsProvider.GetCollectItems(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
 
-            var acceptedCollectItems = await GetAcceptedCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, cancellationToken);
+            var acceptedCollectItems = await GetAcceptedCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig.CollectParallelFileCount, cancellationToken);
 
-            var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
+            if (collectorMode == CollectorMode.Collect)
+            {
+                if (prepared && (!acceptedCollectItems.Any()))
+                {
+                    throw new Exception("No data to collect");
+                }
 
-            await CollectItemsAsync(redirectedCollectItems, destinations, dataCollectionConfig, collectMoment, cancellationToken);
+                var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
+
+                await _collectItemsCollector.CollectItemsAsync(redirectedCollectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
+            }
+
+            if ((collectorMode == CollectorMode.Check) && acceptedCollectItems.Any())
+            {
+                throw new Exception("Found missing data");
+            }
         }
 
-        private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, CancellationToken cancellationToken)
+        private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
             var result = new List<(IFileInfo CollectFileInfo, string CollectUrl)>();
 
-            foreach (var collectItem in collectItems)  // todo: optimize with ParallelUtils.ParallelEnumerateAsync
-            {
-                if (collectItem.CollectFileInfo == null)
+            await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
+                async (collectItem, ct) =>
                 {
-                    result.Add(collectItem);
-                }
-                else
-                {
-                    foreach (var destination in destinations)
+                    if (collectItem.CollectFileInfo == null)
                     {
-                        if (await destination.AcceptsFileAsync(dataCollectionName, collectItem.CollectFileInfo.Name, collectItem.CollectFileInfo.Size, collectItem.CollectFileInfo.MD5, cancellationToken))
+                        result.Add(collectItem);
+                    }
+                    else
+                    {
+                        foreach (var destination in destinations)
                         {
-                            result.Add(collectItem);
-                            break;
+                            if (await destination.AcceptsFileAsync(dataCollectionName, collectItem.CollectFileInfo.Name, collectItem.CollectFileInfo.Size, collectItem.CollectFileInfo.MD5, cancellationToken))
+                            {
+                                result.Add(collectItem);
+                                break;
+                            }
                         }
                     }
-                }
-            }
+                });
 
             return result;
-        }
-
-        private async Task CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
-        {
-            var routes = collectItems.Select(x => (CollectItem: x, Destinations: destinations));
-
-            if (dataCollectionConfig.ParallelDestinationCount > 1)
-            {
-                routes = routes.SelectMany(x => x.Destinations.Select(y => (CollectItem: x.CollectItem, Destinations: (IEnumerable<IDestination>)(new[] { y }))));
-            }
-
-            var completeFileNames = new ConcurrentBag<(IDestination Destination, string FileName)>();
-            var failedDestinations = new ConcurrentBag<IDestination>();
-
-            var workerBlock =
-                    await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
-                    (route, ct) => CollectRouteAsync(route, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, ct));
-
-            if (failedDestinations.Any())
-            {
-                await GarbageCollectFailedDestinationsAsync(failedDestinations, completeFileNames, dataCollectionConfig, cancellationToken);
-
-                var failedDestinationNames = string.Join(", ", failedDestinations.Select(x => x.DestinationConfig.DestinationId));
-
-                throw new Exception($"Failed to collect data to destinations '{failedDestinationNames}'");
-            }
-        }
-
-        private async Task CollectRouteAsync(((IFileInfo CollectFileInfo, string CollectUrl) CollectItem, IEnumerable<IDestination> Destinations) route, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, 
-            ConcurrentBag<(IDestination, string)> completeFileNames, ConcurrentBag<IDestination> failedDestinations, CancellationToken cancellationToken)
-        {
-            foreach (var destination in route.Destinations)
-            {
-                try
-                {
-                    await CollectToDestinationAsync(route.CollectItem, destination, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken);
-                }
-                catch
-                {
-                    failedDestinations.Add(destination);
-                    // do not throw exception, give other destinations a chance
-                }
-            }
-        }
-
-        private async Task CollectToDestinationAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination, string)> completeFileNames, CancellationToken cancellationToken)
-        {
-            var destinationFileName =
-                  _fileNameProvider.GenerateCollectDestinationFileName(
-                      dataCollectionConfig.DataCollectionName,
-                      collectItem.CollectUrl,
-                      collectMoment,
-                      destination.DestinationConfig.CollectToDirectories,
-                      destination.DestinationConfig.GenerateFileNames
-                    );
-
-            var tryNo = 1;
-            await Policy
-                .Handle<Exception>(e => IsRetryableCollectError(e, dataCollectionConfig))
-                .WaitAndRetryAsync(
-                    2,
-                    (x) => TimeSpan.FromSeconds(5),
-                    (exception, timeSpan) =>
-                    {
-                        tryNo++;   
-                    }
-                )
-                .ExecuteAsync((ct) =>
-                    {
-                        return destination.CollectAsync(collectItem.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, ct);
-                    },
-                    cancellationToken
-                );
-
-            completeFileNames.Add((destination, destinationFileName));
-        }
-
-        private bool IsRetryableCollectError(Exception e, DataCollectionConfig dataCollectionConfig)
-        {
-            string[] RetryableErrorMessages = { "Gateway Timeout 504", "The request timed out" };
-
-            return RetryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
-        }
-
-        private async Task GarbageCollectFailedDestinationsAsync(IEnumerable<IDestination> failedDestinations, IEnumerable<(IDestination Destination, string FileName)> completeFileNames, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
-        {
-            var failures =
-                    failedDestinations
-                    .Distinct()
-                    .Select(x => (Destination: x, CompleteFileNames: completeFileNames.Where(y => y.Destination == x).Select(y => y.FileName)));
-
-            await ParallelUtils.ParallelEnumerateAsync(failures, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
-                (failure, ct) => GarbageCollectDestinationFilesAsync(failure.Destination, dataCollectionConfig.DataCollectionName, failure.CompleteFileNames, ct));
         }
 
         public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
@@ -247,6 +171,12 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     .Where(x => x.RelativeDateInfo.RelativeQuarterNo > 1)
                     .GroupBy(x => x.RelativeDateInfo.RelativeQuarterNo)
                     .SelectMany(x => x.OrderBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
+
+            foreach (var fn in hourlyFileNames) Console.WriteLine("Preserving hourly file: " + fn);
+            foreach (var fn in dailyFileNames) Console.WriteLine("Preserving daily file: " + fn);
+            foreach (var fn in weeklyFileNames) Console.WriteLine("Preserving weekly file: " + fn);
+            foreach (var fn in monthlyFileNames) Console.WriteLine("Preserving monthly file: " + fn);
+            foreach (var fn in quaterlyFileNames) Console.WriteLine("Preserving houquaterlyrly file: " + fn);
 
             var preserveFileNames =
                     hourlyFileNames
