@@ -32,6 +32,11 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         {
             var endpointUrl = GetEndpointUrl(DestinationConfig.CollectPostEndpoint, dataCollectionName, fileName);
 
+            if (string.IsNullOrEmpty(endpointUrl))
+            {
+                return;
+            }
+
             await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
                 collectUrl, collectHeaders, null, timeout,
                 request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
