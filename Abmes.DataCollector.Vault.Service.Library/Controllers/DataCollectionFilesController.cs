@@ -21,12 +21,17 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
             _dataCollectionFiles = dataCollectionFiles;
         }
 
-        // GET DataCollectionFiles/GetFiles?prefix=xyz
+        private TimeSpan? ParseTimeSpan(string value)
+        {
+            return string.IsNullOrEmpty(value) ? (TimeSpan?)null : TimeSpan.Parse(value);
+        }
+
+        // GET DataCollectionFiles/GetFiles?prefix=xyz&maxAge=0:2:0
         [Route("GetFiles")]
         [HttpGet]
-        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync([FromQuery] string prefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync([FromQuery] string prefix, [FromQuery] string maxAge, CancellationToken cancellationToken)
         {
-            return await _dataCollectionFiles.GetFileInfosAsync(prefix, cancellationToken);
+            return await _dataCollectionFiles.GetFileInfosAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
         }
 
         // GET DataCollectionFiles/GetFiles/latest
@@ -37,12 +42,12 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
             return await _dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
         }
 
-        // GET DataCollectionFiles/GetFiles?prefix=xyz
+        // GET DataCollectionFiles/GetFiles?prefix=xyz&maxAge=0:2:0
         [Route("GetFileNames")]
         [HttpGet]
-        public async Task<IEnumerable<string>> GetFileNamesAsync([FromQuery] string prefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetFileNamesAsync([FromQuery] string prefix, [FromQuery] string maxAge, CancellationToken cancellationToken)
         {
-            return await _dataCollectionFiles.GetFileNamesAsync(prefix, cancellationToken);
+            return await _dataCollectionFiles.GetFileNamesAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
         }
 
         // GET DataCollectionFiles/GetFiles/latest
