@@ -65,7 +65,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 if (prepared && (!acceptedCollectItems.Any()))
                 {
-                    throw new Exception("No data to collect");
+                    throw new Exception("No data prepared for collecting");
                 }
 
                 var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
