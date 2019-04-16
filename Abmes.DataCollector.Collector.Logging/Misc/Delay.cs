@@ -21,7 +21,11 @@ namespace Abmes.DataCollector.Collector.Logging.Misc
 
         public async Task DelayAsync(TimeSpan timeSpan, string reason, CancellationToken cancellationToken)
         {
-            _logger.LogInformation($"Waiting {reason} for {timeSpan.TotalSeconds} seconds ...");
+            if (timeSpan.TotalSeconds > 0)
+            {
+                _logger.LogInformation($"Waiting {reason} for {timeSpan.TotalSeconds} seconds ...");
+            }
+
             await _delay.DelayAsync(timeSpan, reason, cancellationToken);
         }
     }
