@@ -9,8 +9,9 @@ namespace Abmes.DataCollector.Collector.Logging
 {
     public static class LoggingConfigurator
     {
-        public static void Configure(ILoggerFactory loggerFactory)
+        public static void Configure(ILoggerFactory loggerFactory, IConfiguration configuration)
         {
+            Abmes.DataCollector.Collector.Amazon.LoggingConfigurator.Configure(loggerFactory, configuration);
         }
     }
 }

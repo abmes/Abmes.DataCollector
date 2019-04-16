@@ -48,7 +48,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
             loggerFactory.AddProvider(new Logging.CollectorConsoleLoggingProvider());
             loggerFactory.AddDebug();
 
-            LoggingConfigurator.Configure(loggerFactory);
+            LoggingConfigurator.Configure(loggerFactory, Configuration);
         }
     }
 }

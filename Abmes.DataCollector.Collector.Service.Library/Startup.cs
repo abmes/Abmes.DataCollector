@@ -67,7 +67,7 @@ namespace Abmes.DataCollector.Collector.Service
             app.UseAuthentication();
             app.UseMvc();
 
-            LoggingConfigurator.Configure(loggerFactory);
+            LoggingConfigurator.Configure(loggerFactory, Configuration);
         }
     }
 }

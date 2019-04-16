@@ -9,6 +9,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Amazon\Abmes.DataCollector.Collector.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
   </ItemGroup>
   
