@@ -38,20 +38,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             var configSetName = _configSetNameProvider.GetConfigSetName();
             var collectorMode = _collectorModeProvider.GetCollectorMode();
 
-            var prefix = $"[{configSetName}]";
-
-            if (collectorMode == CollectorMode.Check)
-            {
-                prefix = prefix + $"[{collectorMode.ToString().ToLowerInvariant()}]";
-            }
-
             var mode = collectorMode.ToString().ToLowerInvariant();
 
             try
             {
                 bool result;
 
-                _logger.LogInformation($"{prefix} Started {mode}ing data collections.");
+                _logger.LogInformation($"[{configSetName}] Started {mode}ing data collections.");
 
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
@@ -63,13 +56,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                     watch.Stop();
                 }
 
-                _logger.LogInformation($"{prefix} " + ResultPrefix(result) + " {mode}ing data collections. Elapsed time: {elapsed}", mode, watch.Elapsed);
+                _logger.LogInformation($"[{configSetName}] " + ResultPrefix(result) + " {mode}ing data collections. Elapsed time: {elapsed}", mode, watch.Elapsed);
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical($"{prefix} " + ResultPrefix(false) + " {mode}ing data collections: {errorMessage}", mode, e.GetAggregateMessages());
+                _logger.LogCritical($"[{configSetName}] " + ResultPrefix(false) + " {mode}ing data collections: {errorMessage}", mode, e.GetAggregateMessages());
                 throw;
             }
         }

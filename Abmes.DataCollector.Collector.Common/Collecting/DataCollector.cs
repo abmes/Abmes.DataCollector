@@ -172,11 +172,11 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     .GroupBy(x => x.RelativeDateInfo.RelativeQuarterNo)
                     .SelectMany(x => x.OrderBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
-            foreach (var fn in hourlyFileNames) Console.WriteLine("Preserving hourly file: " + fn);
-            foreach (var fn in dailyFileNames) Console.WriteLine("Preserving daily file: " + fn);
-            foreach (var fn in weeklyFileNames) Console.WriteLine("Preserving weekly file: " + fn);
-            foreach (var fn in monthlyFileNames) Console.WriteLine("Preserving monthly file: " + fn);
-            foreach (var fn in quaterlyFileNames) Console.WriteLine("Preserving houquaterlyrly file: " + fn);
+            //foreach (var fn in hourlyFileNames) Console.WriteLine("Preserving hourly file: " + fn);
+            //foreach (var fn in dailyFileNames) Console.WriteLine("Preserving daily file: " + fn);
+            //foreach (var fn in weeklyFileNames) Console.WriteLine("Preserving weekly file: " + fn);
+            //foreach (var fn in monthlyFileNames) Console.WriteLine("Preserving monthly file: " + fn);
+            //foreach (var fn in quaterlyFileNames) Console.WriteLine("Preserving houquaterlyrly file: " + fn);
 
             var preserveFileNames =
                     hourlyFileNames

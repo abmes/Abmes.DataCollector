@@ -29,17 +29,17 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         {
             try
             {
-                _logger.LogInformation("Started getting collect urls for data collection '{dataCollectionName}'", dataCollectionName);
+                _logger.LogInformation("Started getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
                 var result = _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, identityServiceClientInfo, cancellationToken).ToList();
 
-                _logger.LogInformation("Finished getting collect urls for data collection '{dataCollectionName}'", dataCollectionName);
+                _logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error getting collect urls for data collection '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
+                _logger.LogCritical("Error getting collect items for data collection '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
                 throw;
             }
         }
