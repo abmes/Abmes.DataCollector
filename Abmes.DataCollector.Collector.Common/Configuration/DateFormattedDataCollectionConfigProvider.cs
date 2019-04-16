@@ -35,7 +35,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
                     config.IdentityServiceUrl,
                     config.IdentityServiceClientId,
                     config.IdentityServiceClientSecret,
-                    config.IdentityServiceScope
+                    config.IdentityServiceScope,
+                    config.Values
                 );
         }
 

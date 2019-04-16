@@ -34,6 +34,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public string IdentityServiceClientSecret { get; }
         public string IdentityServiceScope { get; }
 
+        public IEnumerable<KeyValuePair<string, string>> Values { get; }
+
         public IIdentityServiceClientInfo IdentityServiceClientInfo { get; }
 
         // constructor needed for json deserialization
@@ -61,7 +63,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             string identityServiceUrl, 
             string identityServiceClientId, 
             string identityServiceClientSecret, 
-            string identityServiceScope)
+            string identityServiceScope,
+            IEnumerable<KeyValuePair<string, string>> values)
         {
             DataCollectionName = dataCollectionName;
             DataGroupName = dataGroupName;
@@ -90,6 +93,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             IdentityServiceClientId = identityServiceClientId;
             IdentityServiceClientSecret = identityServiceClientSecret;
             IdentityServiceScope = identityServiceScope;
+
+            Values = values;
 
             IdentityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
         }
