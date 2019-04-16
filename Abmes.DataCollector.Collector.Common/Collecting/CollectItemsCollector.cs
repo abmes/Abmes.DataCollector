@@ -35,7 +35,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             var completeFileNames = new ConcurrentBag<(IDestination Destination, string FileName)>();
             var failedDestinations = new ConcurrentBag<IDestination>();
 
-            await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
+            await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 0),
                 (route, ct) => CollectRouteAsync(route, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, ct));
 
             if (failedDestinations.Any())
@@ -89,7 +89,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 )
                 .ExecuteAsync((ct) =>
                 {
-                    return destination.CollectAsync(collectItem.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout, dataCollectionConfig.CollectFinishWait, tryNo, ct);
+                    return destination.CollectAsync(collectItem.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout ?? default, dataCollectionConfig.CollectFinishWait ?? false, tryNo, ct);
                 },
                     cancellationToken
                 );
@@ -111,7 +111,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     .Distinct()
                     .Select(x => (Destination: x, CompleteFileNames: completeFileNames.Where(y => y.Destination == x).Select(y => y.FileName)));
 
-            await ParallelUtils.ParallelEnumerateAsync(failures, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount),
+            await ParallelUtils.ParallelEnumerateAsync(failures, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 1),
                 (failure, ct) => GarbageCollectDestinationFilesAsync(failure.Destination, dataCollectionConfig.DataCollectionName, failure.CompleteFileNames, ct));
         }
 

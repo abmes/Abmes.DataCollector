@@ -43,7 +43,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task WaitPrepareDurationAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
-            await _delay.DelayAsync(dataCollectionConfig.PrepareDuration, $"Data {dataCollectionConfig.DataCollectionName} prepare to finish", cancellationToken);
+            await _delay.DelayAsync(dataCollectionConfig.PrepareDuration ?? default, $"Data {dataCollectionConfig.DataCollectionName} prepare to finish", cancellationToken);
         }
 
         private async Task PrepareCollectAsync(string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, CancellationToken cancellationToken)
@@ -66,14 +66,19 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        private async Task WaitPrepareToFinishAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, TimeSpan pollInterval, TimeSpan prepareDuration, CancellationToken cancellationToken)
+        private async Task WaitPrepareToFinishAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, TimeSpan? pollInterval, TimeSpan? prepareDuration, CancellationToken cancellationToken)
         {
+            if (!pollInterval.HasValue)
+            {
+                return;
+            }
+
             var startTime = DateTimeOffset.UtcNow;
             DataPrepareResult prepareResult;
 
             while (true)
             {
-                await Task.Delay(pollInterval, cancellationToken);
+                await Task.Delay(pollInterval.Value, cancellationToken);
 
                 try
                 {
@@ -86,10 +91,10 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 }
 
                 if ((!prepareResult.Finished) &&
-                    (prepareDuration.TotalMilliseconds > 0) && 
+                    ((prepareDuration ?? default).TotalMilliseconds > 0) && 
                     (DateTimeOffset.UtcNow.Subtract(startTime) > prepareDuration))
                 {
-                    throw new Exception($"Prepare timed out. ({prepareDuration.TotalSeconds} seconds)");
+                    throw new Exception($"Prepare timed out. ({prepareDuration.Value.TotalSeconds} seconds)");
                 }
 
                 if (prepareResult.Finished)
