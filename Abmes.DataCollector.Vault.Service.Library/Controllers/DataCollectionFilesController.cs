@@ -81,6 +81,5 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
         {
             return await _dataCollectionFiles.GetLatestDownloadUrlsAsync(cancellationToken);
         }
-
     }
 }
