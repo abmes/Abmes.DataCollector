@@ -58,13 +58,13 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync(string prefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting file infos");
 
-                var result = await _dataCollectionFiles.GetFileInfosAsync(prefix, cancellationToken);
+                var result = await _dataCollectionFiles.GetFileInfosAsync(prefix, maxAge, cancellationToken);
 
                 _logger.LogInformation("Finished getting file infos");
 
@@ -77,13 +77,13 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting file names");
 
-                var result = await _dataCollectionFiles.GetFileNamesAsync(prefix, cancellationToken);
+                var result = await _dataCollectionFiles.GetFileNamesAsync(prefix, maxAge, cancellationToken);
 
                 _logger.LogInformation("Finished getting file names");
 

@@ -27,24 +27,32 @@ namespace Abmes.DataCollector.Vault.Services
             _fileNameProvider = fileNameProvider;
         }
 
-        private async Task<IEnumerable<(IStorage Storage, IEnumerable<IFileInfo> FileInfos)>> InternalGetStorageFileInfosAsync(string fileNamePrefix, CancellationToken cancellationToken)
+        private bool FileHasMaxAge(string fileName, TimeSpan? maxAge)
+        {
+            return
+                (!maxAge.HasValue) ||
+                string.IsNullOrEmpty(fileName) ||
+                (_fileNameProvider.DataCollectionFileNameToDateTime(fileName).Add(maxAge.Value) > DateTimeOffset.UtcNow);
+        }
+
+        private async Task<IEnumerable<(IStorage Storage, IEnumerable<IFileInfo> FileInfos)>> InternalGetStorageFileInfosAsync(string fileNamePrefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
             var result =
                     await GetStorageItemsAsync<IFileInfo>(
                         fileNamePrefix,
-                        async storage => await storage.GetDataCollectionFileInfosAsync(_dataCollectionName, fileNamePrefix, cancellationToken),
+                        async storage => (await storage.GetDataCollectionFileInfosAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x.Name, maxAge)),
                         cancellationToken
                     );
 
             return await Task.FromResult(result.Select(x => (x.Storage, FileInfos: x.Items)));
         }
 
-        private async Task<IEnumerable<(IStorage Storage, IEnumerable<string> FileNames)>> InternalGetStorageFileNamesAsync(string fileNamePrefix, CancellationToken cancellationToken)
+        private async Task<IEnumerable<(IStorage Storage, IEnumerable<string> FileNames)>> InternalGetStorageFileNamesAsync(string fileNamePrefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
             return
                 await GetStorageItemsAsync<string>(
                     fileNamePrefix,
-                    async storage => await storage.GetDataCollectionFileNamesAsync(_dataCollectionName, fileNamePrefix, cancellationToken),
+                    async storage => (await storage.GetDataCollectionFileNamesAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x, maxAge)),
                     cancellationToken
                 );
         }
@@ -66,14 +74,14 @@ namespace Abmes.DataCollector.Vault.Services
 
         private async Task<(IStorage Storage, IEnumerable<string> FileNames)> InternalGetLatestFileNamesAsync(CancellationToken cancellationToken)
         {
-            var storageFileNames = await InternalGetStorageFileNamesAsync(null, cancellationToken);
+            var storageFileNames = await InternalGetStorageFileNamesAsync(null, null, cancellationToken);
 
             return InternalGetLatestItemsAsync(storageFileNames, x => _fileNameProvider.DataCollectionFileNameToDateTime(x), cancellationToken);
         }
 
         private async Task<(IStorage Storage, IEnumerable<IFileInfo> FileInfos)> InternalGetLatestFileInfosAsync(CancellationToken cancellationToken)
         {
-            var storageFileInfos = await InternalGetStorageFileInfosAsync(null, cancellationToken);
+            var storageFileInfos = await InternalGetStorageFileInfosAsync(null, null, cancellationToken);
 
             return InternalGetLatestItemsAsync(storageFileInfos, x => _fileNameProvider.DataCollectionFileNameToDateTime(x.Name), cancellationToken);
         }
@@ -94,9 +102,9 @@ namespace Abmes.DataCollector.Vault.Services
                 .FirstOrDefault();
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync(string prefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
-            var storageFileInfos = await InternalGetStorageFileInfosAsync(prefix, cancellationToken);
+            var storageFileInfos = await InternalGetStorageFileInfosAsync(prefix, maxAge, cancellationToken);
             return
                 storageFileInfos
                 .Where(x => x.FileInfos.Any())
@@ -109,9 +117,9 @@ namespace Abmes.DataCollector.Vault.Services
             return (await InternalGetLatestFileInfosAsync(cancellationToken)).FileInfos;
         }
 
-        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
-            var storageFileNames = await InternalGetStorageFileNamesAsync(prefix, cancellationToken);
+            var storageFileNames = await InternalGetStorageFileNamesAsync(prefix, maxAge, cancellationToken);
             return 
                 storageFileNames
                 .Where(x => x.FileNames.Any())
@@ -126,7 +134,7 @@ namespace Abmes.DataCollector.Vault.Services
 
         public async Task<string> GetDownloadUrlAsync(string fileName, CancellationToken cancellationToken)
         {
-            var storageFileNames = await InternalGetStorageFileNamesAsync(fileName, cancellationToken);
+            var storageFileNames = await InternalGetStorageFileNamesAsync(fileName, null, cancellationToken);
 
             var storage = 
                     storageFileNames
@@ -139,7 +147,7 @@ namespace Abmes.DataCollector.Vault.Services
 
         public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, CancellationToken cancellationToken)
         {
-            var storageFileNames = await InternalGetStorageFileNamesAsync(fileNamePrefix, cancellationToken);
+            var storageFileNames = await InternalGetStorageFileNamesAsync(fileNamePrefix, null, cancellationToken);
 
             var (storage, fileNames) = storageFileNames.Where(x => x.FileNames.Any()).FirstOrDefault();
 
