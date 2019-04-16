@@ -5,6 +5,8 @@ using System.Threading;
 using System.Threading.Tasks;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting
 {
@@ -33,7 +35,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             return (result ? "Finished" : "ERRORS occured when");
         }
 
-        public async Task<bool> CollectAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
             var collectorMode = _collectorModeProvider.GetCollectorMode();
@@ -42,7 +44,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
 
             try
             {
-                bool result;
+                IEnumerable<string> result;
 
                 _logger.LogInformation($"[{configSetName}] Started {mode}ing data collections.");
 
@@ -56,7 +58,9 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                     watch.Stop();
                 }
 
-                _logger.LogInformation($"[{configSetName}] " + ResultPrefix(result) + " {mode}ing data collections. Elapsed time: {elapsed}", mode, watch.Elapsed);
+                var failedDataCollectionNames = result.Any() ? " (" + string.Join(",", result) + ")" : null;
+
+                _logger.LogInformation($"[{configSetName}] {ResultPrefix(!result.Any())} {mode}ing data collections{failedDataCollectionNames}. Elapsed time: {watch.Elapsed}");
 
                 return result;
             }

@@ -25,7 +25,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _collectorModeProvider = collectorModeProvider;
         }
 
-        public async Task<bool> CollectAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
         {
             var configSetName = _configSetNameProvider.GetConfigSetName();
             var collectorMode = _collectorModeProvider.GetCollectorMode();
@@ -37,12 +37,12 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             await Task.WhenAll(tasks);
 
-            return (tasks.Any() ? tasks.Select(x => x.Result).Min() : false);
+            return tasks.SelectMany(x => x.Result).ToList();
         }
 
-        private async Task<bool> CollectGroupAsync(string groupName, CollectorMode collectorMode, IEnumerable<DataCollectionConfig> dataCollectionsConfig, CancellationToken cancellationToken)
+        private async Task<IEnumerable<string>> CollectGroupAsync(string groupName, CollectorMode collectorMode, IEnumerable<DataCollectionConfig> dataCollectionsConfig, CancellationToken cancellationToken)
         {
-            var result = true;
+            var result = new List<string>();
             foreach (var dataCollectionConfig in dataCollectionsConfig)
             {
                 try
@@ -56,7 +56,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 }
                 catch
                 {
-                    result = false;
+                    result.Add(dataCollectionConfig.DataCollectionName);
                     // Give other DataCollections a chance
                 }
             }
