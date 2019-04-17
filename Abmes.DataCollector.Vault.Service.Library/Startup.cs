@@ -74,7 +74,7 @@ namespace Abmes.DataCollector.Vault.Service
 
             builder.Populate(services);
 
-            ContainerRegistrations.RegisterFor(builder);
+            ContainerRegistrations.RegisterFor(builder, Configuration);
             builder.RegisterInstance(Configuration).As<IConfiguration>();
 
             this.ApplicationContainer = builder.Build();

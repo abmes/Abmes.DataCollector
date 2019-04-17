@@ -36,7 +36,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
             var builder = new ContainerBuilder();
 
             builder.Populate(services);
-            ContainerRegistrations.RegisterFor(builder);
+            ContainerRegistrations.RegisterFor(builder, Configuration);
 
             var container = builder.Build();
             return container.Resolve<IServiceProvider>();

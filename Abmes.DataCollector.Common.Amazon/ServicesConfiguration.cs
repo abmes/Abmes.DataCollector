@@ -10,7 +10,14 @@ namespace Abmes.DataCollector.Common.Amazon
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
-            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+            var awsOptions = configuration.GetAWSOptions();
+
+            if (awsOptions.Region == null)
+            {
+                return;
+            }
+
+            services.AddDefaultAWSOptions(awsOptions);
             services.AddAWSService<IAmazonS3>();
 
             services.Configure<AmazonAppSettings>(configuration.GetSection("AppSettings"));
