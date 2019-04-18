@@ -13,10 +13,9 @@ namespace Abmes.DataCollector.Collector.Amazon
         {
             var configSection = configuration.GetAWSLoggingConfigSection();
 
-            configSection.Config.ProfilesLocation = configuration.GetSection("AWS.Logging")?.GetValue<string>("ProfilesLocation");
-
             if (!string.IsNullOrEmpty(configSection?.Config?.LogGroup))
             {
+                configSection.Config.ProfilesLocation = configuration.GetSection("AWS.Logging")?.GetValue<string>("ProfilesLocation");
                 loggerFactory.AddAWSProvider(configSection);
             }
         }

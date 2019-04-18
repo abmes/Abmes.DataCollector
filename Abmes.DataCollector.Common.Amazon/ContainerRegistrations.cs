@@ -11,15 +11,18 @@ namespace Abmes.DataCollector.Common.Amazon
     {
         public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
         {
-            var awsOptions = configuration.GetAWSOptions();
-
-            if (awsOptions.Region == null)
+            if (AmazonRegistrationNeeded(configuration))
             {
-                return;
+                builder.RegisterType<ConfigLoader>().As<IConfigLoader>();
+                builder.RegisterType<AmazonCommonStorage>().As<IAmazonCommonStorage>();
             }
+        }
 
-            builder.RegisterType<ConfigLoader>().As<IConfigLoader>();
-            builder.RegisterType<AmazonCommonStorage>().As<IAmazonCommonStorage>();
+        public static bool AmazonRegistrationNeeded(IConfiguration configuration)
+        {
+            return
+                (string.Equals(configuration.GetSection("AppSettings")?.GetValue<string>("ConfigStorageType"), "Amazon") ||
+                (configuration.GetAWSOptions().Region != null));
         }
     }
 }

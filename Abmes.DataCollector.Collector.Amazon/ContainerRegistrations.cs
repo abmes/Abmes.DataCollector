@@ -9,13 +9,11 @@ namespace Abmes.DataCollector.Collector.Amazon
     {
         public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
         {
-            if (configuration.GetAWSOptions().Region == null)
+            if (Abmes.DataCollector.Common.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
             {
-                return;
+                builder.RegisterType<AmazonDestination>().As<IAmazonDestination>();
+                builder.RegisterType<AmazonDestinationResolver>().Named<IDestinationResolver>("base");
             }
-
-            builder.RegisterType<AmazonDestination>().As<IAmazonDestination>();
-            builder.RegisterType<AmazonDestinationResolver>().Named<IDestinationResolver>("base");
         }
     }
 }

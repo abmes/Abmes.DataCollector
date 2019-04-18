@@ -10,18 +10,14 @@ namespace Abmes.DataCollector.Common.Amazon
     {
         public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
-            var awsOptions = configuration.GetAWSOptions();
-
-            if (awsOptions.Region == null)
+            if (Abmes.DataCollector.Common.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
             {
-                return;
+                services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+                services.AddAWSService<IAmazonS3>();
+
+                services.Configure<AmazonAppSettings>(configuration.GetSection("AppSettings"));
+                services.AddOptionsAdapter<IAmazonAppSettings, AmazonAppSettings>();
             }
-
-            services.AddDefaultAWSOptions(awsOptions);
-            services.AddAWSService<IAmazonS3>();
-
-            services.Configure<AmazonAppSettings>(configuration.GetSection("AppSettings"));
-            services.AddOptionsAdapter<IAmazonAppSettings, AmazonAppSettings>();
         }
     }
 }
