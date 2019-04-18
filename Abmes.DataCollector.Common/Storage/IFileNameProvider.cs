@@ -6,7 +6,7 @@ namespace Abmes.DataCollector.Common.Storage
 {
     public interface IFileNameProvider
     {
-        string GenerateCollectDestinationFileName(string dataCollectionName, string collectUrl, DateTimeOffset collectMoment, bool collectToDirectories, bool generateFileNames);
+        string GenerateCollectDestinationFileName(string dataCollectionName, string collectItemName, string collectUrl, DateTimeOffset collectMoment, bool collectToDirectories, bool generateFileNames);
         DateTimeOffset DataCollectionFileNameToDateTime(string fileName);
     }
 }

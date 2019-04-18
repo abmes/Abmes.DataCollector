@@ -70,6 +70,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             var destinationFileName =
                   _fileNameProvider.GenerateCollectDestinationFileName(
                       dataCollectionConfig.DataCollectionName,
+                      collectItem.CollectFileInfo.Name,
                       collectItem.CollectUrl,
                       collectMoment,
                       destination.DestinationConfig.CollectToDirectories,

@@ -10,12 +10,11 @@ namespace Abmes.DataCollector.Common.Storage
     {
         private const string SDateFormat = "yyyy-MM-dd-HHmmss";
 
-        public string GenerateCollectDestinationFileName(string dataCollectionName, string collectUrl, DateTimeOffset collectMoment, bool collectToDirectories, bool generateFileNames)
+        public string GenerateCollectDestinationFileName(string dataCollectionName, string collectItemName, string collectUrl, DateTimeOffset collectMoment, bool collectToDirectories, bool generateFileNames)
         {
-            var u = new Uri(collectUrl);
-            var fileName = u.LocalPath.Split("/").Last();
-
             var time = collectMoment.ToUniversalTime().ToString(SDateFormat);
+
+            var fileName = !string.IsNullOrEmpty(collectItemName) ? collectItemName : new Uri(collectUrl).LocalPath.Split("/").Last();
 
             if (generateFileNames)
             {
