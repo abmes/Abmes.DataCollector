@@ -36,7 +36,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
             var searchPattern = fileNamePrefix + "*.*";
 
             var fileNames = 
-                    System.IO.Directory.GetFiles(fullDirName, searchPattern)
+                    System.IO.Directory.GetFiles(fullDirName, searchPattern, System.IO.SearchOption.AllDirectories)
                     .Select(x => x.Substring(fullDirName.Length + 1).Replace(@"\","/"))
                     .ToList();
 
