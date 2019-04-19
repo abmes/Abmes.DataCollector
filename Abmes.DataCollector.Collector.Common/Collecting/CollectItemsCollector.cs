@@ -23,7 +23,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _fileNameProvider = fileNameProvider;
         }
 
-        public async Task CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
         {
             var routes = collectItems.Select(x => (CollectItem: x, Destinations: destinations));
 
@@ -46,6 +46,8 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
                 throw new Exception($"Failed to collect data to destinations '{failedDestinationNames}'");
             }
+
+            return completeFileNames.Select(x => x.FileName).Distinct();
         }
 
         private async Task CollectRouteAsync(((IFileInfo CollectFileInfo, string CollectUrl) CollectItem, IEnumerable<IDestination> Destinations) route, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,

@@ -38,7 +38,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _collectItemsCollector = collectItemsCollector;
         }
 
-        public async Task CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             // assert at least one destination before preparing
             var destinations = await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken);
@@ -70,13 +70,15 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
                 var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount ?? 1, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
 
-                await _collectItemsCollector.CollectItemsAsync(redirectedCollectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
+                return await _collectItemsCollector.CollectItemsAsync(redirectedCollectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
             }
 
             if ((collectorMode == CollectorMode.Check) && acceptedCollectItems.Any())
             {
                 throw new Exception("Found missing data");
             }
+
+            return Enumerable.Empty<string>();
         }
 
         private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
@@ -106,16 +108,16 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return result;
         }
 
-        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, CancellationToken cancellationToken)
         {
             var destinations = (await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken)).Where(x => x.CanGarbageCollect());
-            await Task.WhenAll(destinations.Select(x => GarbageCollectDestinationDataAsync(x, dataCollectionConfig.DataCollectionName, cancellationToken)));
+            await Task.WhenAll(destinations.Select(x => GarbageCollectDestinationDataAsync(x, dataCollectionConfig.DataCollectionName, newFileNames, cancellationToken)));
         }
 
-        private async Task GarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, CancellationToken cancellationToken)
+        private async Task GarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<string> newFileNames, CancellationToken cancellationToken)
         {
             var dataCollectionFileNames = await destination.GetDataCollectionFileNamesAsync(dataCollectionName, cancellationToken);
-            var garbageDataCollectionFileNames = GetGarbageDataCollectionFileNames(dataCollectionFileNames);
+            var garbageDataCollectionFileNames = GetGarbageDataCollectionFileNames(dataCollectionFileNames, newFileNames);
 
             await GarbageCollectDestinationFilesAsync(destination, dataCollectionName, garbageDataCollectionFileNames, cancellationToken);
         }
@@ -130,47 +132,47 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return await Task.WhenAll(destinationIds.Select(x => _destinationProvider.GetDestinationAsync(x, cancellationToken)));
         }
 
-        private IEnumerable<string> GetGarbageDataCollectionFileNames(IEnumerable<string> dataCollectionFileNames)
+        private IEnumerable<string> GetGarbageDataCollectionFileNames(IEnumerable<string> dataCollectionFileNames, IEnumerable<string> newFileNames)
         {
             var now = DateTimeOffset.UtcNow;
 
             var files =
                     dataCollectionFileNames
-                    .Select(x => new { FileName = x, FileDateTime = _fileNameProvider.DataCollectionFileNameToDateTime(x) })
+                    .Select(x => new { FileName = x, FileDateTime = _fileNameProvider.DataCollectionFileNameToDateTime(x), IsNew = newFileNames.Contains(x) })
                     .GroupBy(x => x.FileDateTime)
-                    .Select(x => new { FileNames = x.Select(y => y.FileName), FilesDateTime = x.Key })
-                    .Select(x => new { x.FileNames, x.FilesDateTime, RelativeDateInfo = new RelativeDateInfo(x.FilesDateTime.Date, now.Date) })
+                    .Select(x => new { FileNames = x.Select(y => y.FileName), FilesDateTime = x.Key, IsNew = !x.Any(y => !y.IsNew) })
+                    .Select(x => new { x.FileNames, x.FilesDateTime, RelativeDateInfo = new RelativeDateInfo(x.FilesDateTime.Date, now.Date), x.IsNew })
                     .ToList();
 
             var hourlyFileNames =
                     files
                     .Where(x => (now - x.FilesDateTime).TotalHours <= 24)
-                    .OrderBy(x => x.FilesDateTime)
+                    .OrderByDescending(x => x.IsNew).ThenBy(x => x.FilesDateTime)
                     .SelectMany(x => x.FileNames);
 
             var dailyFileNames =
                     files
                     .Where(x => x.RelativeDateInfo.RelativeDayNo.InRange(1, 6))
                     .GroupBy(x => x.RelativeDateInfo.RelativeDayNo)
-                    .SelectMany(x => x.OrderBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
+                    .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
             var weeklyFileNames =
                     files
                     .Where(x => x.RelativeDateInfo.RelativeWeekNo.InRange(1, 4))
                     .GroupBy(x => x.RelativeDateInfo.RelativeWeekNo)
-                    .SelectMany(x => x.OrderBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
+                    .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
             var monthlyFileNames =
                     files
                     .Where(x => x.RelativeDateInfo.RelativeMonthNo.InRange(1, 3))
                     .GroupBy(x => x.RelativeDateInfo.RelativeMonthNo)
-                    .SelectMany(x => x.OrderBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
+                    .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
             var quaterlyFileNames =
                     files
                     .Where(x => x.RelativeDateInfo.RelativeQuarterNo > 1)
                     .GroupBy(x => x.RelativeDateInfo.RelativeQuarterNo)
-                    .SelectMany(x => x.OrderBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
+                    .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
             //foreach (var fn in hourlyFileNames) Console.WriteLine("Preserving hourly file: " + fn);
             //foreach (var fn in dailyFileNames) Console.WriteLine("Preserving daily file: " + fn);

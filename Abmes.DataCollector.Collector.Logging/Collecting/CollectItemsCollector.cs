@@ -25,13 +25,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _collectItemsCollector = collectItemsCollector;
         }
 
-        public async Task CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
         {
             collectItems = collectItems.ToList().AsEnumerable();  // enumerate
 
             _logger.LogInformation($"Found {collectItems.Count()} items to collect");
 
-            await _collectItemsCollector.CollectItemsAsync(collectItems, dataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
+            return await _collectItemsCollector.CollectItemsAsync(collectItems, dataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
         }
     }
 }

@@ -5,6 +5,8 @@ using Microsoft.Extensions.Logging;
 using System.Threading;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
+using System.Collections.Generic;
+using System.Linq;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting
 {
@@ -19,16 +21,18 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _dataCollector = dataCollector;
         }
 
-        public async Task CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
+                IEnumerable<string> result;
+
                 _logger.LogInformation("Started processing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
 
                 var watch = System.Diagnostics.Stopwatch.StartNew();
                 try
                 {
-                    await _dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken);
+                    result = (await _dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken)).ToList();
                 }
                 finally
                 {
@@ -36,6 +40,8 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
                 }
 
                 _logger.LogInformation("Finished processing data '{dataCollectionName}'. Elapsed time: {elapsed}", dataCollectionConfig.DataCollectionName, watch.Elapsed);
+
+                return result;
             }
             catch (Exception e)
             {
@@ -44,11 +50,11 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             }
         }
 
-        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, CancellationToken cancellationToken)
         {
             try
             {
-                await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, cancellationToken);
+                await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, newFileNames, cancellationToken);
             }
             catch (Exception e)
             {
