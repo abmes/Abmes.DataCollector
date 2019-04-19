@@ -14,7 +14,7 @@ namespace Abmes.DataCollector.Common.Storage
         {
             var time = collectMoment.ToUniversalTime().ToString(SDateFormat);
 
-            var fileName = !string.IsNullOrEmpty(collectItemName) ? collectItemName : new Uri(collectUrl).LocalPath.Split("/").Last();
+            var fileName = new Uri(collectUrl).LocalPath.Split("/").Last();
 
             if (generateFileNames)
             {
@@ -25,6 +25,13 @@ namespace Abmes.DataCollector.Common.Storage
             if (collectToDirectories)
             {
                 fileName = $"{dataCollectionName}-{time}/{fileName}";
+            }
+            else
+            {
+                if (!string.IsNullOrEmpty(collectItemName))
+                {
+                    fileName = string.Join("/", collectItemName.Split("/").Reverse().Skip(1).Reverse().Concat(new[] { fileName }));
+                }
             }
 
             return fileName;
