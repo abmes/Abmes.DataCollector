@@ -77,13 +77,40 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             return await _fileSystemCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('\\', false), dataCollectionName, null, cancellationToken);
         }
+        
+        private bool IsDirectoryEmpty(string path)
+        {
+            return !Directory.EnumerateFileSystemEntries(path).Any();
+        }
 
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
             var fullFileName = GetFullFileName(dataCollectionName, fileName);
+
             File.Delete(fullFileName);
             File.Delete(GetMD5FileName(fullFileName));
+
+            var fullDirName = Path.GetDirectoryName(fullFileName);
+            var dataCollectionRootFullDirName = Path.Combine(DestinationConfig.Root, dataCollectionName).TrimEnd('\\');
+
+            DeleteEmptyDirectories(fullDirName, dataCollectionRootFullDirName);
+
             await Task.CompletedTask;
+        }
+
+        private void DeleteEmptyDirectories(string fullDirName, string rootFullDirName)
+        {
+            while (fullDirName.TrimEnd('\\') != rootFullDirName)
+            {
+                if (!IsDirectoryEmpty(fullDirName))
+                {
+                    break;
+                }
+
+                Directory.Delete(fullDirName);
+
+                fullDirName = Path.GetDirectoryName(fullDirName);
+            }
         }
 
         private string GetMD5FileName(string fileName)
