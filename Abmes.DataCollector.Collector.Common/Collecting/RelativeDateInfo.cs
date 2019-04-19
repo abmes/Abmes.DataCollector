@@ -23,7 +23,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 QuarterNo = (date.Year - rootDate.Year) * 4 + (int)Math.Ceiling((double)date.Month / 3);
                 MonthNo = (date.Year - rootDate.Year) * 12 + date.Month;
                 DayNo = (date - rootDate).Days + 1;
-                WeekNo = (int)Math.Ceiling((double)DayNo / 3);
+                WeekNo = (int)Math.Ceiling((double)DayNo / 7);
             }
         }
 
