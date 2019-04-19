@@ -25,11 +25,11 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
         {
-            var routes = collectItems.Select(x => (CollectItem: x, Destinations: destinations));
+            var routes = collectItems.Select(x => (CollectItem: x, Targets: destinations.Select(y => (Destination: y, DestinationFileName: GetDestinationFileName(x, dataCollectionConfig, y, collectMoment)))));
 
             if (dataCollectionConfig.ParallelDestinationCount > 1)
             {
-                routes = routes.SelectMany(x => x.Destinations.Select(y => (CollectItem: x.CollectItem, Destinations: (IEnumerable<IDestination>)(new[] { y }))));
+                routes = routes.SelectMany(x => x.Targets.Select(y => (CollectItem: x.CollectItem, Targets: (IEnumerable<(IDestination Destination, string DestinationFileName)>)(new[] { (y.Destination, y.DestinationFileName) }))));
             }
 
             var completeFileNames = new ConcurrentBag<(IDestination Destination, string FileName)>();
@@ -50,26 +50,9 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return completeFileNames.Select(x => x.FileName).Distinct();
         }
 
-        private async Task CollectRouteAsync(((IFileInfo CollectFileInfo, string CollectUrl) CollectItem, IEnumerable<IDestination> Destinations) route, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,
-            ConcurrentBag<(IDestination, string)> completeFileNames, ConcurrentBag<IDestination> failedDestinations, CancellationToken cancellationToken)
+        private string GetDestinationFileName((IFileInfo CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
         {
-            foreach (var destination in route.Destinations)
-            {
-                try
-                {
-                    await CollectToDestinationAsync(route.CollectItem, destination, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken);
-                }
-                catch
-                {
-                    failedDestinations.Add(destination);
-                    // do not throw exception, give other destinations a chance
-                }
-            }
-        }
-
-        private async Task CollectToDestinationAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IDestination destination, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination, string)> completeFileNames, CancellationToken cancellationToken)
-        {
-            var destinationFileName =
+            return
                   _fileNameProvider.GenerateCollectDestinationFileName(
                       dataCollectionConfig.DataCollectionName,
                       collectItem.CollectFileInfo?.Name,
@@ -78,7 +61,27 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                       destination.DestinationConfig.CollectToDirectories,
                       destination.DestinationConfig.GenerateFileNames
                     );
+        }
 
+        private async Task CollectRouteAsync(((IFileInfo CollectFileInfo, string CollectUrl) CollectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> Targets) route, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,
+            ConcurrentBag<(IDestination, string)> completeFileNames, ConcurrentBag<IDestination> failedDestinations, CancellationToken cancellationToken)
+        {
+            foreach (var target in route.Targets)
+            {
+                try
+                {
+                    await CollectToDestinationAsync(route.CollectItem, target.Destination, target.DestinationFileName, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken);
+                }
+                catch
+                {
+                    failedDestinations.Add(target.Destination);
+                    // do not throw exception, give other destinations a chance
+                }
+            }
+        }
+
+        private async Task CollectToDestinationAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination, string)> completeFileNames, CancellationToken cancellationToken)
+        {
             var tryNo = 1;
             await Policy
                 .Handle<Exception>(e => IsRetryableCollectError(e, dataCollectionConfig))
