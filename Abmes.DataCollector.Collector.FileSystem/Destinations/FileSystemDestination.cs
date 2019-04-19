@@ -37,7 +37,7 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             int bufferSize = 1 * 1024 * 1024;
 
-            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 var sourceMD5 = response.ContentMD5();
 
@@ -77,7 +77,7 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             return await _fileSystemCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('\\', false), dataCollectionName, null, cancellationToken);
         }
-        
+
         private bool IsDirectoryEmpty(string path)
         {
             return !Directory.EnumerateFileSystemEntries(path).Any();
@@ -152,6 +152,16 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
             }
 
             return false;
+        }
+
+        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+        {
+            var fullFileName = GetFullFileName(dataCollectionName, fileName);
+
+            using (var fileStream = new FileStream(fullFileName, FileMode.Create))
+            {
+                await content.CopyToAsync(fileStream);
+            }
         }
     }
 }

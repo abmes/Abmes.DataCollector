@@ -35,7 +35,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
                 location = location.Substring(0, location.Length - suffix.Length);
             }
 
-            return string.Join(System.IO.Path.DirectorySeparatorChar, location.Split('/', '\\').Reverse().Skip(1).Reverse()) + suffix;
+            return string.Join(System.IO.Path.DirectorySeparatorChar, location.Split('/', '\\').SkipLast(1)) + suffix;
         }
     }
 }

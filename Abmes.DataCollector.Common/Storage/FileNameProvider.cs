@@ -30,7 +30,7 @@ namespace Abmes.DataCollector.Common.Storage
             {
                 if (!string.IsNullOrEmpty(collectItemName))
                 {
-                    fileName = string.Join("/", collectItemName.Split("/").Reverse().Skip(1).Reverse().Concat(new[] { fileName }));
+                    fileName = string.Join("/", collectItemName.Split("/").SkipLast(1).Concat(new[] { fileName }));
                 }
             }
 

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Logging;
 using System.Threading;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
+using System.IO;
 
 namespace Abmes.DataCollector.Collector.Logging.Destinations
 {
@@ -88,6 +89,11 @@ namespace Abmes.DataCollector.Collector.Logging.Destinations
                 _logger.LogCritical("Error getting data collection '{dataCollectionName}' file names in destination '{destinationId}': {errorMessage}", dataCollectionName, DestinationConfig.DestinationId, e.GetAggregateMessages());
                 throw;
             }
+        }
+
+        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+        {
+            await _destination.PutFileAsync(dataCollectionName, fileName, content, cancellationToken);
         }
     }
 }

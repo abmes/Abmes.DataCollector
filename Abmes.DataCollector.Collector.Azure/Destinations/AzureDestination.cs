@@ -61,7 +61,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            using (var response = await HttpUtils.SendAsync(sourceUrl, HttpMethod.Get, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            using (var response = await HttpUtils.SendAsync(sourceUrl, HttpMethod.Get, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 await response.CheckSuccessAsync();
 
@@ -230,6 +230,13 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
         {
             return Task.FromResult(true);
+        }
+
+        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+        {
+            var container = await GetContainerAsync(dataCollectionName, cancellationToken);
+            var blob = container.GetBlockBlobReference(GetBlobName(dataCollectionName, fileName));
+            await blob.UploadFromStreamAsync(content);
         }
     }
 }

@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -38,7 +39,7 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
             }
 
             await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
-                collectUrl, collectHeaders, null, timeout,
+                collectUrl, null, collectHeaders, null, timeout,
                 request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
                 cancellationToken: cancellationToken);
         }
@@ -95,6 +96,21 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
         {
             return Task.FromResult(true);
+        }
+
+        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+        {
+            var endpointUrl = GetEndpointUrl(DestinationConfig.CollectPostEndpoint, dataCollectionName, fileName);
+
+            if (string.IsNullOrEmpty(endpointUrl))
+            {
+                return;
+            }
+
+            await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
+                null, content, null, null, null,
+                request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
+                cancellationToken: cancellationToken);
         }
     }
 }

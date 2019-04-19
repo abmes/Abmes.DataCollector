@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -59,6 +60,24 @@ namespace Abmes.DataCollector.Collector.Console.Destinations
         public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
         {
             return Task.FromResult(true);
+        }
+
+        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+        {
+            using (var reader = new StreamReader(content))
+            {
+                while (true)
+                {
+                    var line = await reader.ReadLineAsync();
+
+                    if (line == null)
+                    {
+                        break;
+                    }
+
+                    System.Console.WriteLine(line);
+                }
+            }
         }
     }
 }

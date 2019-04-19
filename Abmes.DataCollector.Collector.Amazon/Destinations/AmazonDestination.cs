@@ -34,7 +34,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
-            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 var sourceMD5 = response.ContentMD5();
 
@@ -168,6 +168,16 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
         public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
         {
             return Task.FromResult(true);
+        }
+
+        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+        {
+            using (var fileTransferUtility = new TransferUtility(_amazonS3))
+            {
+                fileTransferUtility.Upload(content, DestinationConfig.RootBase(), dataCollectionName + '/' + fileName);
+            }
+
+            await Task.CompletedTask;
         }
     }
 }

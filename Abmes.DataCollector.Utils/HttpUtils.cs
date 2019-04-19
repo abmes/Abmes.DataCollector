@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Net.Http;
 using System.Net.Http.Headers;
@@ -17,13 +18,13 @@ namespace Abmes.DataCollector.Utils
 
         public static async Task<string> GetStringAsync(string url, HttpMethod httpMethod, string body = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, CancellationToken cancellationToken = default(CancellationToken))
         {
-            using (var response = await SendAsync(url, httpMethod, body, headers, accept, timeout, requestConfiguratorTask, HttpCompletionOption.ResponseContentRead, cancellationToken))
+            using (var response = await SendAsync(url, httpMethod, body, null, headers, accept, timeout, requestConfiguratorTask, HttpCompletionOption.ResponseContentRead, cancellationToken))
             {
                 return await response.Content.ReadAsStringAsync();
             }
         }
 
-        public static async Task<HttpResponseMessage> SendAsync(string url, HttpMethod httpMethod, string body = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, HttpCompletionOption httpCompletionOption = default(HttpCompletionOption), CancellationToken cancellationToken = default(CancellationToken))
+        public static async Task<HttpResponseMessage> SendAsync(string url, HttpMethod httpMethod, string body = null, Stream content = null, IEnumerable<KeyValuePair<string, string>> headers = null, string accept = null, TimeSpan? timeout = null, Func<HttpRequestMessage, Task> requestConfiguratorTask = null, HttpCompletionOption httpCompletionOption = default(HttpCompletionOption), CancellationToken cancellationToken = default(CancellationToken))
         {
             if (cancellationToken == default(CancellationToken))
             {
@@ -52,6 +53,11 @@ namespace Abmes.DataCollector.Utils
                     if (!string.IsNullOrEmpty(body))
                     {
                         request.Content = new StringContent(body);
+                    }
+
+                    if (content != null)
+                    {
+                        request.Content = new StreamContent(content);
                     }
 
                     if (requestConfiguratorTask != null)
