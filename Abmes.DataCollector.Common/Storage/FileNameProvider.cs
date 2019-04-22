@@ -10,6 +10,8 @@ namespace Abmes.DataCollector.Common.Storage
     {
         private const string SDateFormat = "yyyy-MM-dd-HHmmss";
 
+        public string LockFileName => "datacollector.lock";
+
         public string GenerateCollectDestinationFileName(string dataCollectionName, string collectItemName, string collectUrl, DateTimeOffset collectMoment, bool collectToDirectories, bool generateFileNames)
         {
             var time = collectMoment.ToUniversalTime().ToString(SDateFormat);

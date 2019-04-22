@@ -16,7 +16,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public class CollectItemsCollector : ICollectItemsCollector
     {
-        private const string LockFileName = "datacollector.lock";
         private readonly IFileNameProvider _fileNameProvider;
 
         public CollectItemsCollector(
@@ -78,7 +77,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 .Select(x => (x.Destination, DestinationDirName: string.Join("/", x.DestinationFileName.Split("/").SkipLast(1))))
                 .GroupBy(x => x)
                 .Where(x => x.Count() > 1)
-                .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + LockFileName));
+                .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + _fileNameProvider.LockFileName));
         }
 
         private async Task CollectRouteAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> targets, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,

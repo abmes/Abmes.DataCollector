@@ -158,6 +158,8 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             var fullFileName = GetFullFileName(dataCollectionName, fileName);
 
+            Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
+
             using (var fileStream = new FileStream(fullFileName, FileMode.Create))
             {
                 await content.CopyToAsync(fileStream);
