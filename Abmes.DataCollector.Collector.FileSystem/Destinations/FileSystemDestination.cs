@@ -68,7 +68,7 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
                         throw new Exception("Invalid destination MD5");
                     }
 
-                    File.WriteAllText(fullFileName + ".md5", newMD5);
+                    File.WriteAllText(GetMD5FileName(fullFileName), newMD5);
                 }
             }
         }
