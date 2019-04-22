@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
@@ -40,7 +41,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
                     .Select(x => x.Substring(fullDirName.Length + 1).Replace(@"\","/"))
                     .ToList();
 
-            fileNames = fileNames.Where(x => fileNames.Contains(x + ".md5")).ToList();
+            fileNames = fileNames.Where(x => !x.EndsWith(".md5", StringComparison.InvariantCultureIgnoreCase) || fileNames.Contains(x + ".md5", StringComparer.InvariantCultureIgnoreCase)).ToList();
 
             return await Task.FromResult(fileNames.Select(x => GetFileInfoAsync(x, fullDirName, namesOnly, cancellationToken).Result));
         }
