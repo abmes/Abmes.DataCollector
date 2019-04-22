@@ -40,7 +40,7 @@ namespace Abmes.DataCollector.Vault.Services
             var result =
                     await GetStorageItemsAsync<IFileInfo>(
                         fileNamePrefix,
-                        async storage => (await storage.GetDataCollectionFileInfosAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x.Name, maxAge)),
+                        async storage => GetUnlockedStorageItems((await storage.GetDataCollectionFileInfosAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x.Name, maxAge)), (x) => x.Name),
                         cancellationToken
                     );
 
@@ -52,7 +52,7 @@ namespace Abmes.DataCollector.Vault.Services
             return
                 await GetStorageItemsAsync<string>(
                     fileNamePrefix,
-                    async storage => (await storage.GetDataCollectionFileNamesAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x, maxAge)),
+                    async storage => GetUnlockedStorageItems((await storage.GetDataCollectionFileNamesAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x, maxAge)), (x) => x),
                     cancellationToken
                 );
         }
@@ -70,6 +70,25 @@ namespace Abmes.DataCollector.Vault.Services
             }
 
             return result;
+        }
+
+        private IEnumerable<T> GetUnlockedStorageItems<T>(IEnumerable<T> items, Func<T, string> getItemFileNameFunc)
+        {
+            items = items.ToList().AsEnumerable();
+
+            var lockFilePrefixes =
+                    items
+                    .Select(x => getItemFileNameFunc(x))
+                    .Where(x => !string.IsNullOrEmpty(x))
+                    .Where(x => x.EndsWith(_fileNameProvider.LockFileName))
+                    .Select(x => x.Substring(0, x.Length - _fileNameProvider.LockFileName.Length))
+                    .ToList();
+
+            return
+                items
+                .Select(x => new { Item = x, FileName = getItemFileNameFunc(x) })
+                .Where(x => !lockFilePrefixes.Any(y => string.IsNullOrEmpty(y) || x.FileName.StartsWith(y)))
+                .Select(x => x.Item);
         }
 
         private async Task<(IStorage Storage, IEnumerable<string> FileNames)> InternalGetLatestFileNamesAsync(CancellationToken cancellationToken)
