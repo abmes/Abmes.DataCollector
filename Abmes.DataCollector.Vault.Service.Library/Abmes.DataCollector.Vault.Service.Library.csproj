@@ -16,12 +16,14 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.Amazon\Abmes.DataCollector.Common.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Azure\Abmes.DataCollector.Common.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Caching\Abmes.DataCollector.Common.Caching.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.FileSystem\Abmes.DataCollector.Common.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Logging\Abmes.DataCollector.Common.Logging.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Amazon\Abmes.DataCollector.Vault.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Azure\Abmes.DataCollector.Vault.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.FileSystem\Abmes.DataCollector.Vault.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Logging\Abmes.DataCollector.Vault.Logging.csproj" />
   </ItemGroup>
 
