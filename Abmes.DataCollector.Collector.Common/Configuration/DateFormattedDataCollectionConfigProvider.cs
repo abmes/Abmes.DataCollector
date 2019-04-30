@@ -30,6 +30,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
                     config.CollectHeaders, config.CollectParallelFileCount, config.CollectTimeout, config.CollectFinishWait, 
                     config.DestinationIds,
                     config.ParallelDestinationCount,
+                    config.MaxFileCount,
                     config.LoginName,
                     config.LoginSecret,
                     config.IdentityServiceUrl,

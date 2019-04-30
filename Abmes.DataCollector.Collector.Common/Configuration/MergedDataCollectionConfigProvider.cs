@@ -31,6 +31,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
                     config.CollectFinishWait ?? template.CollectFinishWait,
                     (config.DestinationIds == null) || (!config.DestinationIds.Any()) ? template.DestinationIds : config.DestinationIds,
                     config.ParallelDestinationCount ?? template.ParallelDestinationCount,
+                    config.MaxFileCount?? template.MaxFileCount,
                     MergeStringValue(config.LoginName, template.LoginName, config),
                     MergeStringValue(config.LoginSecret, template.LoginSecret, config),
                     MergeStringValue(config.IdentityServiceUrl, template.IdentityServiceUrl, config),

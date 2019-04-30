@@ -25,6 +25,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public bool? CollectFinishWait { get; }
         public IEnumerable<string> DestinationIds { get; }
         public int? ParallelDestinationCount { get; }
+        public int? MaxFileCount { get; }
 
         public string LoginName { get; }
         public string LoginSecret { get; }
@@ -58,6 +59,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             bool? collectFinishWait,
             IEnumerable<string> destinationIds, 
             int? parallelDestinationCount,
+            int? maxFileCount,
             string loginName, 
             string loginSecret,
             string identityServiceUrl, 
@@ -85,6 +87,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             CollectFinishWait = collectFinishWait;
             DestinationIds = destinationIds;
             ParallelDestinationCount = parallelDestinationCount;
+            MaxFileCount = maxFileCount;
 
             LoginName = loginName;
             LoginSecret = loginSecret;
