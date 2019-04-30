@@ -17,8 +17,9 @@ namespace Abmes.DataCollector.Common.Storage
         [JsonProperty(PropertyName = "group")]
         public string GroupId { get; }
 
+        [JsonProperty(PropertyName = "storage")]
         public string StorageType { get; }
-        
+
         public FileInfo(string name, long? size, string md5, string groupId, string storageType)
         {
             Name = name;
