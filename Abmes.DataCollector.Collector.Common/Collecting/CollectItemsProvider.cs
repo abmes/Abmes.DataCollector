@@ -160,7 +160,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     if (!string.IsNullOrEmpty(name))
                     {
                         var size = long.TryParse(sizestr, out var outsize) ? (long?)outsize : null;
-                        groupId = !string.IsNullOrEmpty(groupId) ? groupId : new Guid().ToString();
+                        groupId = !string.IsNullOrEmpty(groupId) ? groupId : "-";
 
                         hasResult = true;
 
