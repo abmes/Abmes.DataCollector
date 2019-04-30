@@ -55,7 +55,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
         {
             if (namesOnly)
             {
-                return await Task.FromResult(_fileInfoFactory(relativeFileName, null, null, StorageType));
+                return await Task.FromResult(_fileInfoFactory(relativeFileName, null, null, null, StorageType));
             }
 
             var fullFileName = System.IO.Path.Combine(fullDirName, relativeFileName);
@@ -64,7 +64,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
 
             var md5 = System.IO.File.Exists(GetMD5FileName(fullFileName)) ? await System.IO.File.ReadAllTextAsync(GetMD5FileName(fullFileName)) : null;
 
-            return await Task.FromResult(_fileInfoFactory(relativeFileName, fileSize, md5, StorageType));
+            return await Task.FromResult(_fileInfoFactory(relativeFileName, fileSize, md5, string.Join("/", relativeFileName.Split('/').SkipLast(1)), StorageType));
         }
     }
 }

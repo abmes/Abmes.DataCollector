@@ -102,12 +102,12 @@ namespace Abmes.DataCollector.Common.Azure.Storage
 
             if (namesOnly)
             {
-                return await Task.FromResult(_fileInfoFactory(name, null, null, StorageType));
+                return await Task.FromResult(_fileInfoFactory(name, null, null, null, StorageType));
             }
 
             //await blob.FetchAttributesAsync();
 
-            return await Task.FromResult(_fileInfoFactory(name, blob.Properties.Length, blob.Properties.ContentMD5, StorageType));
+            return await Task.FromResult(_fileInfoFactory(name, blob.Properties.Length, blob.Properties.ContentMD5, string.Join("/", name.Split('/').SkipLast(1)), StorageType));
         }
     }
 }

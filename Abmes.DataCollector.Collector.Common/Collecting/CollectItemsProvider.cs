@@ -35,6 +35,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private static readonly string[] DefaultNamePropertyNames = { "name", "fileName", "identifier" };
         private static readonly string[] DefaultSizePropertyNames = { "size", "length" };
         private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
+        private static readonly string[] DefaultGroupIdPropertyNames = { "group", "groupId" };
 
         public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
@@ -56,7 +57,8 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
                 var queryNamePropertyName = queryPropertyNames.FirstOrDefault();
                 var querySizePropertyName = queryPropertyNames.Skip(1).FirstOrDefault();
-                var queryMD5PropertyName = queryPropertyNames.Skip(1).FirstOrDefault();
+                var queryMD5PropertyName = queryPropertyNames.Skip(2).FirstOrDefault();
+                var queryGroupIdPropertyName = queryPropertyNames.Skip(3).FirstOrDefault();
 
                 var collectFileIdentifiersJson = GetCollectItemsJson(queryUrl, collectFileIdentifiersHeaders, identityServiceClientInfo, cancellationToken).Result;
 
@@ -65,8 +67,9 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     var namePropertyNames = string.IsNullOrEmpty(queryNamePropertyName) ? DefaultNamePropertyNames : new[] { queryNamePropertyName };
                     var sizePropertyNames = string.IsNullOrEmpty(querySizePropertyName) ? DefaultSizePropertyNames : new[] { querySizePropertyName };
                     var md5PropertyNames = string.IsNullOrEmpty(queryMD5PropertyName) ? DefaultMD5PropertyNames : new[] { queryMD5PropertyName };
+                    var groupIdPropertyNames = string.IsNullOrEmpty(queryGroupIdPropertyName) ? DefaultGroupIdPropertyNames : new[] { queryGroupIdPropertyName };
 
-                    var collectFileInfos = GetCollectFileInfos(collectFileIdentifiersJson, namePropertyNames, sizePropertyNames, md5PropertyNames);
+                    var collectFileInfos = GetCollectFileInfos(collectFileIdentifiersJson, namePropertyNames, sizePropertyNames, md5PropertyNames, groupIdPropertyNames);
 
                     foreach (var collectFileInfo in collectFileInfos)
                     {
@@ -132,7 +135,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        private IEnumerable<IFileInfo> GetCollectFileInfos(string collectFileInfosJson, IEnumerable<string> namePropertyNames, IEnumerable<string> sizePropertyNames, IEnumerable<string> md5PropertyNames)
+        private IEnumerable<IFileInfo> GetCollectFileInfos(string collectFileInfosJson, IEnumerable<string> namePropertyNames, IEnumerable<string> sizePropertyNames, IEnumerable<string> md5PropertyNames, IEnumerable<string> groupIdPropertyNames)
         {
             var names = GetStrings(collectFileInfosJson);
 
@@ -140,7 +143,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 foreach (var name in names)
                 {
-                    yield return _fileInfoFactory(name, null, null, null);
+                    yield return _fileInfoFactory(name, null, null, null, null);
                 }
             }
             else
@@ -152,12 +155,16 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     var name = namePropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
                     var sizestr = sizePropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
                     var md5 = md5PropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                    var groupId = groupIdPropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
 
                     if (!string.IsNullOrEmpty(name))
                     {
                         var size = long.TryParse(sizestr, out var outsize) ? (long?)outsize : null;
+                        groupId = !string.IsNullOrEmpty(groupId) ? groupId : new Guid().ToString();
+
                         hasResult = true;
-                        yield return _fileInfoFactory(name, size, md5, null);
+
+                        yield return _fileInfoFactory(name, size, md5, groupId, null);
                     }
                 }
 

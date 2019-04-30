@@ -35,26 +35,26 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 routes = routes.SelectMany(x => x.Targets.Select(y => (CollectItem: x.CollectItem, Targets: (IEnumerable<(IDestination Destination, string DestinationFileName)>)(new[] { (y.Destination, y.DestinationFileName) }))));
             }
 
-            var completeFileNames = new ConcurrentBag<(IDestination Destination, string FileName)>();
-            var failedDestinations = new ConcurrentBag<IDestination>();
+            var completeDestinationFiles = new ConcurrentBag<(IDestination Destination, string FileName, string GroupId)>();
+            var failedDestinationGroups = new ConcurrentBag<(IDestination Destination, string GroupId)>();
 
-            await CollectRouteAsync(default, lockTargets, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, cancellationToken);
+            await CollectRouteAsync(default, lockTargets, dataCollectionConfig, collectMoment, completeDestinationFiles, failedDestinationGroups, cancellationToken);
 
             await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 0),
-                (route, ct) => CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, collectMoment, completeFileNames, failedDestinations, ct));
+                (route, ct) => CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, collectMoment, completeDestinationFiles, failedDestinationGroups, ct));
 
-            if (failedDestinations.Any())
+            if (failedDestinationGroups.Any())
             {
-                await GarbageCollectFailedDestinationsAsync(failedDestinations, completeFileNames, dataCollectionConfig, cancellationToken);
+                await GarbageCollectFailedDestinationsAsync(failedDestinationGroups, completeDestinationFiles, dataCollectionConfig, cancellationToken);
 
-                var failedDestinationNames = string.Join(", ", failedDestinations.Select(x => x.DestinationConfig.DestinationId));
+                var failedDestinationNames = string.Join(", ", failedDestinationGroups.Select(x => x.Destination.DestinationConfig.DestinationId)).Distinct();
 
                 throw new Exception($"Failed to collect data to destinations '{failedDestinationNames}'");
             }
 
             await GarbageCollectTargetsAsync(lockTargets.GroupBy(x => x.Destination).Select(x => (Destination: x.Key, DestinationFileNames: x.Select(y => y.DestinationFileName))), dataCollectionConfig, cancellationToken);
 
-            return completeFileNames.Select(x => x.FileName).Distinct();
+            return completeDestinationFiles.Select(x => x.FileName).Distinct();
         }
 
         private string GetDestinationFileName((IFileInfo CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
@@ -81,23 +81,26 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         }
 
         private async Task CollectRouteAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> targets, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,
-            ConcurrentBag<(IDestination, string)> completeFileNames, ConcurrentBag<IDestination> failedDestinations, CancellationToken cancellationToken)
+            ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, ConcurrentBag<(IDestination Destination, string GroupId)> failedDestinationGroups, CancellationToken cancellationToken)
         {
             foreach (var target in targets)
             {
                 try
                 {
-                    await CollectToDestinationAsync(collectItem, target.Destination, target.DestinationFileName, dataCollectionConfig, collectMoment, completeFileNames, cancellationToken);
+                    if (!failedDestinationGroups.Contains((target.Destination, collectItem.CollectFileInfo?.GroupId)))
+                    {
+                        await CollectToDestinationAsync(collectItem, target.Destination, target.DestinationFileName, dataCollectionConfig, collectMoment, completeDestinationFiles, cancellationToken);
+                    }
                 }
                 catch
                 {
-                    failedDestinations.Add(target.Destination);
+                    failedDestinationGroups.Add((target.Destination, collectItem.CollectFileInfo.GroupId));
                     // do not throw exception, give other destinations a chance
                 }
             }
         }
 
-        private async Task CollectToDestinationAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination, string)> completeFileNames, CancellationToken cancellationToken)
+        private async Task CollectToDestinationAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, CancellationToken cancellationToken)
         {
             var tryNo = 1;
             await Policy
@@ -124,7 +127,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     cancellationToken
                 );
 
-            completeFileNames.Add((destination, destinationFileName));
+            completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId));
         }
 
         private bool IsRetryableCollectError(Exception e, DataCollectionConfig dataCollectionConfig)
@@ -134,12 +137,14 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return RetryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
         }
 
-        private async Task GarbageCollectFailedDestinationsAsync(IEnumerable<IDestination> failedDestinations, IEnumerable<(IDestination Destination, string FileName)> completeFileNames, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        private async Task GarbageCollectFailedDestinationsAsync(IEnumerable<(IDestination Destination, string GroupId)> failedDestinationGroups, IEnumerable<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             var failedTargets =
-                    failedDestinations
+                    failedDestinationGroups
                     .Distinct()
-                    .Select(x => (Destination: x, DestinationFileNames: completeFileNames.Where(y => y.Destination == x).Select(y => y.FileName)));
+                    .Select(x => (Destination: x.Destination, DestinationFileNames: completeDestinationFiles.Where(y => (y.Destination == x.Destination) && (y.GroupId == x.GroupId)).Select(y => y.FileName)))
+                    .GroupBy(x => x.Destination)
+                    .Select(x => (Destination: x.Key, DestinationFileNames: x.SelectMany(y => y.DestinationFileNames)));
 
             await GarbageCollectTargetsAsync(failedTargets, dataCollectionConfig, cancellationToken);
         }

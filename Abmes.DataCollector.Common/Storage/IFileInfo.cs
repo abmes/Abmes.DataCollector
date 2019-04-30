@@ -12,6 +12,8 @@ namespace Abmes.DataCollector.Common.Storage
 
         string MD5 { get; }
 
+        string GroupId { get; }
+
         string StorageType { get; }
     }
 }

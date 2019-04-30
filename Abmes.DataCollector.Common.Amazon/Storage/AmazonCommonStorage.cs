@@ -69,7 +69,7 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
 
             if (namesOnly)
             {
-                return _fileInfoFactory(name, null, null, StorageType);
+                return _fileInfoFactory(name, null, null, null, StorageType);
             }
 
             var request = new GetObjectMetadataRequest { BucketName = s3Object.BucketName, Key = s3Object.Key };
@@ -78,7 +78,7 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
 
             var md5 = !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"];
 
-            return _fileInfoFactory(name, response.Headers.ContentLength, md5, StorageType);
+            return _fileInfoFactory(name, response.Headers.ContentLength, md5, string.Join("/", name.Split('/').SkipLast(1)), StorageType);
         }
     }
 }
