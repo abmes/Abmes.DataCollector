@@ -59,11 +59,6 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
             var collectItems = _collectItemsProvider.GetCollectItems(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
 
-            if (dataCollectionConfig.MaxFileCount.HasValue)
-            {
-                collectItems = collectItems.Take(dataCollectionConfig.MaxFileCount.Value);
-            }
-
             var acceptedCollectItems = await GetAcceptedCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig.CollectParallelFileCount ?? 1, cancellationToken);
 
             if (collectorMode == CollectorMode.Collect)
@@ -71,6 +66,11 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 if (prepared && (!acceptedCollectItems.Any()))
                 {
                     throw new Exception("No data prepared for collecting");
+                }
+
+                if (dataCollectionConfig.MaxFileCount.HasValue)
+                {
+                    acceptedCollectItems = acceptedCollectItems.Take(dataCollectionConfig.MaxFileCount.Value);
                 }
 
                 var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount ?? 1, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
