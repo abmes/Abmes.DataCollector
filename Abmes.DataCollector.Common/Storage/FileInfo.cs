@@ -14,6 +14,7 @@ namespace Abmes.DataCollector.Common.Storage
         [JsonProperty(PropertyName = "md5")]
         public string MD5 { get; }
 
+        [JsonProperty(PropertyName = "group")]
         public string GroupId { get; }
 
         public string StorageType { get; }
