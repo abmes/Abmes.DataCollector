@@ -23,11 +23,17 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         {
             try
             {
-                _logger.LogInformation("Started preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+                if (!string.IsNullOrEmpty(dataCollectionConfig.PrepareUrl))
+                {
+                    _logger.LogInformation("Started preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+                }
 
                 var result = await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
-                _logger.LogInformation("Finished preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+                if (!string.IsNullOrEmpty(dataCollectionConfig.PrepareUrl))
+                {
+                    _logger.LogInformation("Finished preparing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
+                }
 
                 return result;
             }
