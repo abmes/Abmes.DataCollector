@@ -52,16 +52,19 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 httpClient.Timeout = TimeSpan.FromMinutes(5);
 
-                using (var httpRequest = new HttpRequestMessage())
+                foreach (var url in prepareUrl.Split('|'))
                 {
-                    httpRequest.Method = new HttpMethod(prepareHttpMethod);
-                    httpRequest.RequestUri = new Uri(prepareUrl);
+                    using (var httpRequest = new HttpRequestMessage())
+                    {
+                        httpRequest.Method = new HttpMethod(prepareHttpMethod);
+                        httpRequest.RequestUri = new Uri(url);
 
-                    httpRequest.Headers.AddValues(prepareHeaders);
+                        httpRequest.Headers.AddValues(prepareHeaders);
 
-                    var httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken);
+                        var httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken);
 
-                    await httpResponse.CheckSuccessAsync();
+                        await httpResponse.CheckSuccessAsync();
+                    }
                 }
             }
         }
