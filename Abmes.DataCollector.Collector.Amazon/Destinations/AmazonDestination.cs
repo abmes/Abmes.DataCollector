@@ -151,7 +151,9 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
 
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
-            var request = new DeleteObjectRequest { BucketName = DestinationConfig.RootBase(), Key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName };
+            var key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
+
+            var request = new DeleteObjectRequest { BucketName = DestinationConfig.RootBase(), Key = key };
             await _amazonS3.DeleteObjectAsync(request, cancellationToken);
         }
 
@@ -172,9 +174,11 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
 
         public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
         {
+            var key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
+
             using (var fileTransferUtility = new TransferUtility(_amazonS3))
             {
-                fileTransferUtility.Upload(content, DestinationConfig.RootBase(), dataCollectionName + '/' + fileName);
+                fileTransferUtility.Upload(content, DestinationConfig.RootBase(), key);
             }
 
             await Task.CompletedTask;
