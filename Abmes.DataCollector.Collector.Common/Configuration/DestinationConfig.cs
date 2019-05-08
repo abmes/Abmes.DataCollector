@@ -5,6 +5,8 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
+    public enum GarbageCollectionMode { None, Waterfall, Excess }
+
     public class DestinationConfig
     {
         public string DestinationId { get; }
@@ -16,6 +18,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public bool OverrideFiles { get; }
         public bool CollectToDirectories { get; }
         public bool GenerateFileNames { get; }
+        public GarbageCollectionMode? GarbageCollectionMode { get; }
 
         public string CollectPostEndpoint { get; }
         public string GarbageCollectFilePostEndpoint { get; }
@@ -29,7 +32,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public IIdentityServiceClientInfo IdentityServiceClientInfo  { get; }
 
         // constructor needed for json deserialization
-        public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root, bool overrideFiles, bool collectToDirectories, bool generateFileNames,
+        public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root, 
+            bool overrideFiles, bool collectToDirectories, bool generateFileNames, GarbageCollectionMode? garbageCollectionMode,
             string collectPostEndpoint, string garbageCollectFilePostEndpoint, string fileNamesGetEndpoint,
             string identityServiceUrl, string identityServiceClientId, string identityServiceClientSecret, string identityServiceScope)
         {
@@ -38,9 +42,11 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             LoginName = loginName;
             LoginSecret = loginSecret;
             Root = root;
+
             OverrideFiles = overrideFiles;
             CollectToDirectories = collectToDirectories;
             GenerateFileNames = generateFileNames;
+            GarbageCollectionMode = garbageCollectionMode;
 
             CollectPostEndpoint = collectPostEndpoint;
             GarbageCollectFilePostEndpoint = garbageCollectFilePostEndpoint;

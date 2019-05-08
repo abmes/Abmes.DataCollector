@@ -47,11 +47,11 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 try
                 {
-                    var newFileNames = (await _dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken)).ToList();
+                    var (newFileNames, collectionFileInfos) = await _dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken);
 
                     if (collectorMode == CollectorMode.Collect)
                     {
-                        await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, newFileNames, cancellationToken);
+                        await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, newFileNames, collectionFileInfos, cancellationToken);
                     }
                 }
                 catch
