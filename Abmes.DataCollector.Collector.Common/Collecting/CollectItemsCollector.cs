@@ -94,7 +94,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 }
                 catch
                 {
-                    failedDestinationGroups.Add((target.Destination, collectItem.CollectFileInfo.GroupId));
+                    failedDestinationGroups.Add((target.Destination, collectItem.CollectFileInfo?.GroupId ?? "default"));
                     // do not throw exception, give other destinations a chance
                 }
             }
