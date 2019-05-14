@@ -37,11 +37,33 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
         private static readonly string[] DefaultGroupIdPropertyNames = { "group", "groupId" };
 
-        public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
             {
-                yield return (null, collectUrl);
+                if (collectUrl.StartsWith("@"))
+                {
+                    var urlsString = HttpUtils.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, cancellationToken).Result;
+
+                    if (!string.IsNullOrEmpty(urlsString))
+                    {
+                        var urls = GetStrings(urlsString);
+
+                        if (urls == null)
+                        {
+                            urls = urlsString.Split(Environment.NewLine);
+                        }
+
+                        foreach (var url in urls)
+                        {
+                            yield return (null, url);
+                        }
+                    }
+                }
+                else
+                {
+                    yield return (null, collectUrl);
+                }
             }
             else
             {

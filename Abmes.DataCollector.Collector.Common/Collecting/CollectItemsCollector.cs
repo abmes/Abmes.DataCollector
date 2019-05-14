@@ -47,7 +47,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 await GarbageCollectFailedDestinationsAsync(failedDestinationGroups, completeDestinationFiles, dataCollectionConfig, cancellationToken);
 
-                var failedDestinationNames = string.Join(", ", failedDestinationGroups.Select(x => x.Destination.DestinationConfig.DestinationId)).Distinct();
+                var failedDestinationNames = string.Join(", ", failedDestinationGroups.Select(x => x.Destination.DestinationConfig.DestinationId).Distinct());
 
                 throw new Exception($"Failed to collect data to destinations '{failedDestinationNames}'");
             }

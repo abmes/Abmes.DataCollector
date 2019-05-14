@@ -25,13 +25,13 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _collectItemsProvider = collectItemsProvider;
         }
 
-        public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
             try
             {
                 _logger.LogInformation("Started getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
-                var result = _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, identityServiceClientInfo, cancellationToken).ToList();
+                var result = _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken).ToList();
 
                 _logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
