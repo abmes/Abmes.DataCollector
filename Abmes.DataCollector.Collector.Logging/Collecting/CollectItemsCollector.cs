@@ -31,6 +31,11 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
 
             _logger.LogInformation($"Found {collectItems.Count()} items to collect");
 
+            foreach (var collectItem in collectItems)
+            {
+                _logger.LogInformation(collectItem.CollectFileInfo?.Name);
+            }
+
             return await _collectItemsCollector.CollectItemsAsync(collectItems, dataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
         }
     }
