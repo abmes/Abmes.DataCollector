@@ -16,6 +16,7 @@
   "function-runtime": "dotnetcore2.1",
   "function-memory-size": 256,
   "function-timeout": 900,
+  "function-role": "AlvectaLambdaFunction",
   "function-handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
   "environment-variables": "AppSettings__ConfigStorageType=Amazon;AppSettings__AmazonS3ConfigStorageBucketName=abmes-datacollector-config"
 }
