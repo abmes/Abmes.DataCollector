@@ -31,9 +31,19 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             {
                 _logger.LogInformation("Started getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
-                var result = _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken).ToList();
+                var result = 
+                        _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken)
+                        .OrderBy(x => x.CollectFileInfo?.Name)
+                        .ToList();
 
                 _logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
+
+                _logger.LogInformation($"Retreived {result.Count()} collect items for data collection '{dataCollectionName}'", dataCollectionName);
+
+                foreach (var collectItem in result)
+                {
+                    _logger.LogInformation(collectItem.CollectFileInfo?.Name);
+                }
 
                 return result;
             }
