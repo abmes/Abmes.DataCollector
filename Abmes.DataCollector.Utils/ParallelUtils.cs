@@ -4,6 +4,7 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Threading.Tasks.Dataflow;
+using Polly;
 
 namespace Abmes.DataCollector.Utils
 {
@@ -21,7 +22,15 @@ namespace Abmes.DataCollector.Utils
 
             foreach (var item in items)
             {
-                workerBlock.Post(item);
+                await Policy
+                    .Handle<Exception>()
+                    .WaitAndRetryAsync(new[] { TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60) })
+                    .ExecuteAsync(async (ct) =>
+                        {
+                            await workerBlock.SendAsync(item, cancellationToken);
+                        },
+                        cancellationToken
+                    );
             }
 
             workerBlock.Complete();
