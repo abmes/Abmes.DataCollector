@@ -27,7 +27,12 @@ namespace Abmes.DataCollector.Utils
                     .WaitAndRetryAsync(new[] { TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60) })
                     .ExecuteAsync(async (ct) =>
                         {
-                            await workerBlock.SendAsync(item, cancellationToken);
+                            var sent = await workerBlock.SendAsync(item, cancellationToken);
+
+                            if (!sent)
+                            {
+                                throw new Exception($"Could not process item: {item}");
+                            }
                         },
                         cancellationToken
                     );
