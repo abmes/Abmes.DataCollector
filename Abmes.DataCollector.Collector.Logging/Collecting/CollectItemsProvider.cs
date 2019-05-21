@@ -38,7 +38,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
 
                 _logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
-                _logger.LogInformation($"Retreived {result.Count()} collect items for data collection '{dataCollectionName}'", dataCollectionName);
+                _logger.LogInformation($"Retrieved {result.Count()} collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
                 foreach (var collectItem in result)
                 {
