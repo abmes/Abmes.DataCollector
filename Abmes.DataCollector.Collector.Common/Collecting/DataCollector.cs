@@ -91,7 +91,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
         {
-            var result = new List<(IFileInfo CollectFileInfo, string CollectUrl)>();
+            var result = new ConcurrentBag<(IFileInfo CollectFileInfo, string CollectUrl)>();
 
             await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
                 async (collectItem, ct) =>
