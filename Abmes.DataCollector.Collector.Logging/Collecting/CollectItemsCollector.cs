@@ -29,7 +29,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
         {
             collectItems = collectItems.ToList().AsEnumerable();  // enumerate
 
-            _logger.LogInformation($"Found {collectItems.Count()} items to collect");
+            _logger.LogInformation($"Found {collectItems.Count()} items to collect for data collection '{dataCollectionName}'");
 
             return await _collectItemsCollector.CollectItemsAsync(collectItems, dataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
         }
