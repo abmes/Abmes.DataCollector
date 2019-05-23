@@ -43,7 +43,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 if (collectUrl.StartsWith("@"))
                 {
-                    var urlsString = HttpUtils.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, cancellationToken).Result;
+                    var urlsString = HttpUtils.FixJsonResult(HttpUtils.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, cancellationToken).Result);
 
                     if (!string.IsNullOrEmpty(urlsString))
                     {

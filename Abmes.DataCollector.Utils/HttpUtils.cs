@@ -115,5 +115,17 @@ namespace Abmes.DataCollector.Utils
                 headers.Split(';', ',')
                 .Select(x => { var parts = x.Split('='); return new KeyValuePair<string, string>(parts[0].Trim(), parts[1].Trim()); });
         }
+
+        public static string FixJsonResult(string json)
+        {
+            var s = json.Trim('"').Trim();
+
+            while ((!string.IsNullOrEmpty(s)) && (s.EndsWith(@"\n") || s.EndsWith(@"\r")))
+            {
+                s = s.Remove(s.Length - 2);
+            }
+
+            return s;
+        }
     }
 }

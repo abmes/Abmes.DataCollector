@@ -37,20 +37,10 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                                     requestConfiguratorTask: request => Task.Run(() => { _identityServiceHttpRequestConfigurator.Config(request, identityServiceAccessToken, cancellationToken); }),
                                     cancellationToken: cancellationToken);
 
-                            return TrimPseudoNewLine(collectUrlsJson.Trim('"').Trim());
+                            return HttpUtils.FixJsonResult(collectUrlsJson);
                         },
                         cancellationToken
                     );
-        }
-
-        private string TrimPseudoNewLine(string s)
-        {
-            while ((!string.IsNullOrEmpty(s)) && (s.EndsWith(@"\n") || s.EndsWith(@"\r")))
-            {
-                s = s.Remove(s.Length - 2);
-            }
-
-            return s;
         }
     }
 }
