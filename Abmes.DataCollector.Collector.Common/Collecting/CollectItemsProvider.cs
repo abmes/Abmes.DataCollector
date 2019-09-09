@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using System.Net.Http;
+using Polly;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {
@@ -43,7 +44,16 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 if (collectUrl.StartsWith("@"))
                 {
-                    var urlsString = HttpUtils.FixJsonResult(HttpUtils.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, cancellationToken).Result);
+                    var jsonResult =
+                            Policy
+                            .Handle<Exception>()
+                            .WaitAndRetry(new[] { TimeSpan.FromSeconds(5) })
+                            .Execute(
+                                ct => HttpUtils.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, ct).Result, 
+                                cancellationToken
+                            );
+
+                    var urlsString = HttpUtils.FixJsonResult(jsonResult);
 
                     if (!string.IsNullOrEmpty(urlsString))
                     {
