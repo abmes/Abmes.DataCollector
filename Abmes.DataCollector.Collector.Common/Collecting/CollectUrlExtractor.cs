@@ -33,12 +33,15 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return
                 await Policy
                     .Handle<Exception>()
-                    .WaitAndRetryAsync(1, x => TimeSpan.FromSeconds(10))
+                    .WaitAndRetryAsync(2, x => TimeSpan.FromSeconds(10))
                     .ExecuteAsync(async (ct) =>
                         {
                             tryNo++;
 
-                            _logger.LogInformation($"Try No: {tryNo}");
+                            if (tryNo > 1)
+                            {
+                                _logger.LogInformation($"Retrying ({tryNo-1}) get collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'");
+                            }
 
                             var collectUrlsJson = 
                                     await HttpUtils.GetStringAsync(sourceUrl, HttpMethod.Get,
