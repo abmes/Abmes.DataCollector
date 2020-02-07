@@ -1,5 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Utils;
+using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using Polly;
 using System;
@@ -15,21 +16,30 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
     public class CollectUrlExtractor : ICollectUrlExtractor
     {
         private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
+        private readonly ILogger<CollectUrlExtractor> _logger;
 
         public CollectUrlExtractor(
-            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator)
+            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+            ILogger<CollectUrlExtractor> logger)
         {
             _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
+            _logger = logger;
         }
 
         public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string identityServiceAccessToken, CancellationToken cancellationToken)
         {
+            var tryNo = 0;
+
             return
                 await Policy
                     .Handle<Exception>()
-                    .WaitAndRetryAsync(1, x => TimeSpan.FromSeconds(5))
+                    .WaitAndRetryAsync(1, x => TimeSpan.FromSeconds(10))
                     .ExecuteAsync(async (ct) =>
                         {
+                            tryNo++;
+
+                            _logger.LogInformation($"Try No: {tryNo}");
+
                             var collectUrlsJson = 
                                     await HttpUtils.GetStringAsync(sourceUrl, HttpMethod.Get,
                                     headers: headers,
