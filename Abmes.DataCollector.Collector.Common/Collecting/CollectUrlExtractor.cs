@@ -33,7 +33,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return
                 await Policy
                     .Handle<Exception>()
-                    .WaitAndRetryAsync(2, x => TimeSpan.FromSeconds(10))
+                    .WaitAndRetryAsync(5, x => TimeSpan.FromSeconds(10))
                     .ExecuteAsync(async (ct) =>
                         {
                             tryNo++;
