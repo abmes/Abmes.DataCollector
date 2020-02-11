@@ -48,25 +48,9 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task PrepareCollectAsync(string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
-            {
-                httpClient.Timeout = TimeSpan.FromMinutes(5);
+            var deferredUrl = await HttpUtils.GetDeferredUrlAsync(prepareUrl, new HttpMethod(prepareHttpMethod), prepareHeaders, cancellationToken);
 
-                foreach (var url in prepareUrl.Split('|'))
-                {
-                    using (var httpRequest = new HttpRequestMessage())
-                    {
-                        httpRequest.Method = new HttpMethod(prepareHttpMethod);
-                        httpRequest.RequestUri = new Uri(url);
-
-                        httpRequest.Headers.AddValues(prepareHeaders);
-
-                        var httpResponse = await httpClient.SendAsync(httpRequest, cancellationToken);
-
-                        await httpResponse.CheckSuccessAsync();
-                    }
-                }
-            }
+            await HttpUtils.SendAsync(deferredUrl, new HttpMethod(prepareHttpMethod), headers: prepareHeaders, timeout: TimeSpan.FromMinutes(5), cancellationToken: cancellationToken);
         }
 
         private async Task WaitPrepareToFinishAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, TimeSpan? pollInterval, TimeSpan? prepareDuration, CancellationToken cancellationToken)

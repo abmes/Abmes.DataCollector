@@ -127,5 +127,17 @@ namespace Abmes.DataCollector.Utils
 
             return s;
         }
+
+        public static async Task<string> GetDeferredUrlAsync(string url, HttpMethod httpMethod, IEnumerable<KeyValuePair<string, string>> headers = null, CancellationToken cancellationToken = default) 
+        {
+            var urls = url.Split('|').ToList();
+
+            foreach (var u in urls.SkipLast(1))
+            {
+                await SendAsync(u, httpMethod, headers: headers, cancellationToken: cancellationToken);
+            }
+
+            return urls.Last();
+        }
     }
 }
