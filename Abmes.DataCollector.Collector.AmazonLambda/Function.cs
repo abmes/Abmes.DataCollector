@@ -3,13 +3,13 @@ using Amazon.Lambda.Core;
 using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
-[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.Json.JsonSerializer))]
+[assembly: LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
 
 namespace Abmes.DataCollector.Collector.AmazonLambda
 {
     public class Function
     {
-        [LambdaSerializer(typeof(global::Amazon.Lambda.Serialization.Json.JsonSerializer))]
+        [LambdaSerializer(typeof(global::Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
         public void FunctionHandler(CollectorParams collectorParams)
         {
             System.Console.WriteLine(collectorParams.CollectorMode);

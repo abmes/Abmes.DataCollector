@@ -9,14 +9,14 @@ namespace Abmes.DataCollector.Collector.Amazon
 {
     public static class LoggingConfigurator
     {
-        public static void Configure(ILoggerFactory loggerFactory, IConfiguration configuration)
+        public static void Configure(ILoggingBuilder loggingBuilder, IConfiguration configuration)
         {
             var configSection = configuration.GetAWSLoggingConfigSection();
 
             if (!string.IsNullOrEmpty(configSection?.Config?.LogGroup))
             {
                 configSection.Config.ProfilesLocation = configuration.GetSection("AWS.Logging")?.GetValue<string>("ProfilesLocation");
-                loggerFactory.AddAWSProvider(configSection);
+                loggingBuilder.AddAWSProvider(configSection);
             }
         }
     }

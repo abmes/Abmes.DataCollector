@@ -1,14 +1,14 @@
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <RootNamespace>Abmes.DataCollector.Collector.Amazon</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWS.Logger.AspNetCore" Version="2.1.1" />
-    <PackageReference Include="AWS.Logger.Core" Version="1.5.1" />
-    <PackageReference Include="AWSSDK.S3" Version="3.3.110.20" />
+    <PackageReference Include="AWS.Logger.AspNetCore" Version="2.2.0" />
+    <PackageReference Include="AWS.Logger.Core" Version="1.6.0" />
+    <PackageReference Include="AWSSDK.S3" Version="3.3.111.30" />
   </ItemGroup>
 
   <ItemGroup>

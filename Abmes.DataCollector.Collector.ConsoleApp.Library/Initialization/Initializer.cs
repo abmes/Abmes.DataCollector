@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Autofac;
+using Autofac.Extensions.DependencyInjection;
+using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 using System;
 using System.Collections.Generic;
@@ -11,8 +13,17 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
         public static IMainService GetMainService()
         {
             var startup = new Startup();
-            var serviceProvider = startup.ConfigureServices(new ServiceCollection());
-            startup.Configure(serviceProvider.GetService<ILoggerFactory>());
+            var services = new ServiceCollection();
+
+            startup.ConfigureServices(services);
+
+            var builder = new ContainerBuilder();
+            builder.Populate(services);
+
+            startup.ConfigureContainer(builder);
+
+            var container = builder.Build();
+            var serviceProvider = container.Resolve<IServiceProvider>();
 
             return serviceProvider.GetService<IMainService>();
         }

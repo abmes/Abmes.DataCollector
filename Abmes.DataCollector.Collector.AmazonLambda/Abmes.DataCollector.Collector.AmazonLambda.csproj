@@ -1,14 +1,22 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
     <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
     <AWSProjectType>Lambda</AWSProjectType>
   </PropertyGroup>
+  
+  <PropertyGroup>
+    <IsWebConfigTransformDisabled>true</IsWebConfigTransformDisabled>
+  </PropertyGroup>
+  
   <ItemGroup>
     <PackageReference Include="Amazon.Lambda.Core" Version="1.1.0" />
-    <PackageReference Include="Amazon.Lambda.Serialization.Json" Version="1.7.0" />
+    <PackageReference Include="Amazon.Lambda.Serialization.SystemTextJson" Version="2.0.1" />
   </ItemGroup>
+  
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Collector.ConsoleApp.Library\Abmes.DataCollector.Collector.ConsoleApp.Library.csproj" />
   </ItemGroup>
+  
 </Project>

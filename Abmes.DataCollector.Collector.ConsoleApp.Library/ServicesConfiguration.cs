@@ -8,7 +8,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp
 {
     public static class ServicesConfiguration
     {
-        public static void Configure(IServiceCollection services, IConfigurationRoot configuration)
+        public static void Configure(IServiceCollection services, IConfiguration configuration)
         {
             Abmes.DataCollector.Common.ServicesConfiguration.Configure(services, configuration);
             Abmes.DataCollector.Common.Amazon.ServicesConfiguration.Configure(services, configuration);

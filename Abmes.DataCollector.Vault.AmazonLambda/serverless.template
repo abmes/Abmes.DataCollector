@@ -16,7 +16,7 @@
       "Properties": {
         "FunctionName": "AbmesDataCollectorVault",
         "Handler": "Abmes.DataCollector.Vault.AmazonLambda::Abmes.DataCollector.Vault.AmazonLambda.LambdaEntryPoint::FunctionHandlerAsync",
-        "Runtime": "dotnetcore2.1",
+        "Runtime": "dotnetcore3.1",
         "CodeUri": "",
         "MemorySize": 512,
         "Timeout": 30,

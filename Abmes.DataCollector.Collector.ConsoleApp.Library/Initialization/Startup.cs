@@ -22,33 +22,39 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
             Configuration = builder.Build();
         }
 
-        private IConfigurationRoot Configuration { get; }
+        private IConfiguration Configuration { get; }
 
-        public IServiceProvider ConfigureServices(IServiceCollection services)
+        public void ConfigureServices(IServiceCollection services)
         {
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddOptions();
-            services.AddLogging();
+            services.AddLogging(loggingBuilder =>
+            {
+                //var loggingConfigSection = Configuration.GetSection(Configuration["Logging"]);
+                //loggingBuilder.AddConfiguration(loggingConfigSection);
+                //loggingBuilder.AddConsole();
+                loggingBuilder.AddProvider(new Logging.CollectorConsoleLoggingProvider());
+                loggingBuilder.AddDebug();
+
+                LoggingConfigurator.Configure(loggingBuilder, Configuration);
+            });
 
             ServicesConfiguration.Configure(services, Configuration);
-
-            var builder = new ContainerBuilder();
-
-            builder.Populate(services);
-            ContainerRegistrations.RegisterFor(builder, Configuration);
-
-            var container = builder.Build();
-            return container.Resolve<IServiceProvider>();
         }
 
-        public void Configure(ILoggerFactory loggerFactory)
+        // ConfigureContainer is where you can register things directly
+        // with Autofac. This runs after ConfigureServices so the things
+        // here will override registrations made in ConfigureServices.
+        // Don't build the container; that gets done for you. If you
+        // need a reference to the container, you need to use the
+        // "Without ConfigureContainer" mechanism shown later.
+        public void ConfigureContainer(ContainerBuilder builder)
         {
-            //loggerFactory.AddConsole(Configuration.GetSection("Logging"));
-            loggerFactory.AddProvider(new Logging.CollectorConsoleLoggingProvider());
-            loggerFactory.AddDebug();
-
-            LoggingConfigurator.Configure(loggerFactory, Configuration);
+            // Register your own things directly with Autofac
+            ContainerRegistrations.RegisterFor(builder, Configuration);
+            builder.RegisterInstance(Configuration).As<IConfiguration>();
+            //...
         }
     }
 }

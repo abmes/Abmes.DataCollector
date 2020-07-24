@@ -13,7 +13,7 @@ namespace Abmes.DataCollector.Collector.Logging
         {
         }
 
-        public static void Configure(ILoggerFactory loggerFactory)
+        public static void Configure(ILoggingBuilder loggingBuilder)
         {
         }
     }
