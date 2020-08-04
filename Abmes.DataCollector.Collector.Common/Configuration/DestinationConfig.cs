@@ -9,27 +9,32 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
     public class DestinationConfig
     {
-        public string DestinationId { get; }
-        public string DestinationType { get; }
-        public string LoginName { get; }
-        public string LoginSecret { get; }
-        public string Root { get; }
+        public string DestinationId { get; set;  }
+        public string DestinationType { get; set;  }
+        public string LoginName { get; set;  }
+        public string LoginSecret { get; set;  }
+        public string Root { get; set;  }
 
-        public bool OverrideFiles { get; }
-        public bool CollectToDirectories { get; }
-        public bool GenerateFileNames { get; }
-        public GarbageCollectionMode? GarbageCollectionMode { get; }
+        public bool OverrideFiles { get; set;  }
+        public bool CollectToDirectories { get; set;  }
+        public bool GenerateFileNames { get; set;  }
+        public GarbageCollectionMode? GarbageCollectionMode { get; set;  }
 
-        public string CollectPostEndpoint { get; }
-        public string GarbageCollectFilePostEndpoint { get; }
-        public string FileNamesGetEndpoint { get; }
+        public string CollectPostEndpoint { get; set;  }
+        public string GarbageCollectFilePostEndpoint { get; set;  }
+        public string FileNamesGetEndpoint { get; set;  }
 
-        public string IdentityServiceUrl { get; }
-        public string IdentityServiceClientId { get; }
-        public string IdentityServiceClientSecret { get; }
-        public string IdentityServiceScope { get; }
+        public string IdentityServiceUrl { get; set;  }
+        public string IdentityServiceClientId { get; set;  }
+        public string IdentityServiceClientSecret { get; set;  }
+        public string IdentityServiceScope { get; set;  }
 
-        public IIdentityServiceClientInfo IdentityServiceClientInfo  { get; }
+        public IIdentityServiceClientInfo IdentityServiceClientInfo  { get; set;  }
+
+        public DestinationConfig()
+        {
+            // needed for deserialization
+        }
 
         // constructor needed for json deserialization
         public DestinationConfig(string destinationId, string destinationType, string loginName, string loginSecret, string root, 

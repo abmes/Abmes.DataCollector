@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using Abmes.DataCollector.Collector.Common.Misc;
 using System;
@@ -160,7 +160,8 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         {
             try
             {
-                return JsonConvert.DeserializeObject<IEnumerable<string>>(json);
+                var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+                return JsonSerializer.Deserialize<IEnumerable<string>>(json, options);
             }
             catch
             {

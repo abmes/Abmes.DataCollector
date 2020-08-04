@@ -1,7 +1,8 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Abmes.DataCollector.Common.Storage
 {
@@ -11,13 +12,13 @@ namespace Abmes.DataCollector.Common.Storage
 
         public long? Size { get; }
 
-        [JsonProperty(PropertyName = "md5")]
+        [JsonPropertyName("md5")]
         public string MD5 { get; }
 
-        [JsonProperty(PropertyName = "group")]
+        [JsonPropertyName("group")]
         public string GroupId { get; }
 
-        [JsonProperty(PropertyName = "storage")]
+        [JsonPropertyName("storage")]
         public string StorageType { get; }
 
         public FileInfo(string name, long? size, string md5, string groupId, string storageType)

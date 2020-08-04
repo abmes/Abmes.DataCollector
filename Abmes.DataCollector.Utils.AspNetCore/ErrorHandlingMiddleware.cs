@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
+using System.Text.Json;
 using System;
 using System.Net;
 using System.Threading.Tasks;
@@ -33,7 +33,8 @@ namespace Abmes.DataCollector.Utils.AspNetCore
 
         private static Task HandleExceptionAsync(HttpContext context, Exception exception)
         {
-            var result = JsonConvert.SerializeObject(new { error = exception.GetAggregateMessages() });
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            var result = JsonSerializer.Serialize(new { error = exception.GetAggregateMessages() }, options);
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = (int)HttpStatusCode.InternalServerError;
             return context.Response.WriteAsync(result);

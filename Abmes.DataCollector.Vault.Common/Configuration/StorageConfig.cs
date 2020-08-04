@@ -7,10 +7,15 @@ namespace Abmes.DataCollector.Vault.Configuration
 {
     public class StorageConfig
     {
-        public string StorageType { get; }
-        public string LoginName { get; }
-        public string LoginSecret { get; }
-        public string Root { get; }
+        public string StorageType { get; set; }
+        public string LoginName { get; set; }
+        public string LoginSecret { get; set; }
+        public string Root { get; set; }
+
+        public StorageConfig()
+        {
+            // needed for deserialization
+        }
 
         // constructor needed for json deserialization
         public StorageConfig(string storageType, string loginName, string loginSecret, string root)

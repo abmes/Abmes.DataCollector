@@ -1,7 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
-using Newtonsoft.Json;
 using Polly;
 using System;
 using System.Collections.Generic;

@@ -11,7 +11,7 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Utils;
 using IdentityModel.Client;
-using Newtonsoft.Json;
+using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Web.Destinations
 {
@@ -54,7 +54,8 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
                     requestConfiguratorTask: request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
                     cancellationToken: cancellationToken);
 
-            return JsonConvert.DeserializeObject<IEnumerable<string>>(json);
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<IEnumerable<string>>(json, options);
         }
 
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)

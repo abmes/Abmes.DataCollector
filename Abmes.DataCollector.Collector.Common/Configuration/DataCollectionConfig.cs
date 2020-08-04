@@ -6,38 +6,43 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 {
     public class DataCollectionConfig
     {
-        public string DataCollectionName { get; }
-        public string DataGroupName { get; }
-        public TimeSpan? InitialDelay { get; }
-        public string PrepareUrl { get; }
-        public IEnumerable<KeyValuePair<string, string>> PrepareHeaders { get; }
-        public string PrepareHttpMethod { get; }
-        public string PrepareFinishedPollUrl { get; }
-        public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; }
-        public TimeSpan? PrepareFinishedPollInterval { get; }
-        public TimeSpan? PrepareDuration { get; }
-        public string CollectFileIdentifiersUrl { get; }
-        public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; }
-        public string CollectUrl { get; }
-        public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; }
-        public int? CollectParallelFileCount { get; }
-        public TimeSpan? CollectTimeout { get; }
-        public bool? CollectFinishWait { get; }
-        public IEnumerable<string> DestinationIds { get; }
-        public int? ParallelDestinationCount { get; }
-        public int? MaxFileCount { get; }
+        public string DataCollectionName { get; set;  }
+        public string DataGroupName { get; set; }
+        public TimeSpan? InitialDelay { get; set; }
+        public string PrepareUrl { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> PrepareHeaders { get; set; }
+        public string PrepareHttpMethod { get; set; }
+        public string PrepareFinishedPollUrl { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; set; }
+        public TimeSpan? PrepareFinishedPollInterval { get; set; }
+        public TimeSpan? PrepareDuration { get; set; }
+        public string CollectFileIdentifiersUrl { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; set; }
+        public string CollectUrl { get; set; }
+        public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; set; }
+        public int? CollectParallelFileCount { get; set; }
+        public TimeSpan? CollectTimeout { get; set; }
+        public bool? CollectFinishWait { get; set; }
+        public IEnumerable<string> DestinationIds { get; set; }
+        public int? ParallelDestinationCount { get; set; }
+        public int? MaxFileCount { get; set; }
 
-        public string LoginName { get; }
-        public string LoginSecret { get; }
+        public string LoginName { get; set; }
+        public string LoginSecret { get; set; }
 
-        public string IdentityServiceUrl { get; }
-        public string IdentityServiceClientId { get; }
-        public string IdentityServiceClientSecret { get; }
-        public string IdentityServiceScope { get; }
+        public string IdentityServiceUrl { get; set; }
+        public string IdentityServiceClientId { get; set; }
+        public string IdentityServiceClientSecret { get; set; }
+        public string IdentityServiceScope { get; set; }
 
-        public IEnumerable<KeyValuePair<string, string>> Values { get; }
+        public IEnumerable<KeyValuePair<string, string>> Values { get; set; }
 
-        public IIdentityServiceClientInfo IdentityServiceClientInfo { get; }
+        public IIdentityServiceClientInfo IdentityServiceClientInfo { get; set; }
+
+        public DataCollectionConfig()
+        {
+            // needed for deserialization
+        }
 
         // constructor needed for json deserialization
         public DataCollectionConfig(

@@ -11,7 +11,6 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Utils;
 using IdentityModel.Client;
-using Newtonsoft.Json;
 
 namespace Abmes.DataCollector.Collector.Console.Destinations
 {

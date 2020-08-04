@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using Abmes.DataCollector.Collector.Common.Misc;
 using System;
 using System.Collections.Generic;
@@ -17,7 +17,8 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         {
             var exportLogDataContent = await HttpUtils.GetStringAsync(pollUrl, pollHeaders, "application/json");
 
-            dynamic exportLogData = JsonConvert.DeserializeObject(exportLogDataContent);
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            var exportLogData = JsonSerializer.Deserialize<dynamic>(exportLogDataContent, options);
 
             return new DataPrepareResult { Finished = exportLogData.finished, HasErrors = exportLogData.hasErrors };
         }

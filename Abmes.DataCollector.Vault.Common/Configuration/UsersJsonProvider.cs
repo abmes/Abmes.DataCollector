@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -9,7 +9,8 @@ namespace Abmes.DataCollector.Vault.Configuration
     {
         public IEnumerable<User> GetUsers(string json)
         {
-            return JsonConvert.DeserializeObject<IEnumerable<User>>(json);
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<IEnumerable<User>>(json, options);
         }
     }
 }

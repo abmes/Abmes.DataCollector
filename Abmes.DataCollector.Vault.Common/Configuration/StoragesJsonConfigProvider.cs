@@ -1,4 +1,4 @@
-﻿using Newtonsoft.Json;
+﻿using System.Text.Json;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -11,7 +11,8 @@ namespace Abmes.DataCollector.Vault.Configuration
     {
         public IEnumerable<StorageConfig> GetStorageConfigs(string json)
         {
-            return JsonConvert.DeserializeObject<IEnumerable<StorageConfig>>(json);
+            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
+            return JsonSerializer.Deserialize<IEnumerable<StorageConfig>>(json, options);
         }
     }
 }
