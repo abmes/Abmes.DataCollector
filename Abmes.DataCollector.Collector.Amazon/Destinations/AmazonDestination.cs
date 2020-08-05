@@ -79,7 +79,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                     (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
                     async (buffer, count, cancellationToken2) =>
                     {
-                        var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
+                        var blockMD5Hash = CopyUtils.GetMD5HashString(buffer, 0, count);
 
                         if (validateMD5)
                         {
@@ -114,7 +114,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
 
                 if (validateMD5)
                 {
-                    var blobHash = CopyUtils.GetMD5Hash(blobHasher);
+                    var blobHash = CopyUtils.GetMD5HashString(blobHasher);
 
                     if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
                     {

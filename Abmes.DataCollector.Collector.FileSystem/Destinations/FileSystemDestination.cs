@@ -60,7 +60,7 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
 
                 using (var fileStream = new FileStream(fullFileName, FileMode.Open, FileAccess.Read))
                 {
-                    var newMD5 = await CopyUtils.GetMD5HashAsync(fileStream, bufferSize, cancellationToken);
+                    var newMD5 = await CopyUtils.GetMD5HashStringAsync(fileStream, bufferSize, cancellationToken);
 
                     if ((!string.IsNullOrEmpty(sourceMD5)) &&
                         (!string.Equals(newMD5, sourceMD5, StringComparison.InvariantCultureIgnoreCase)))

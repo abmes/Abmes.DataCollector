@@ -79,14 +79,19 @@ namespace Abmes.DataCollector.Utils
                 );
         }
 
-        public static string GetMD5Hash(byte[] buffer, int offset, int count)
+        public static byte[] GetMD5Hash(byte[] buffer, int offset, int count)
         {
             var hasher = GetMD5Hasher();
             AppendMDHasherData(hasher, buffer, offset, count);
             return GetMD5Hash(hasher);
         }
 
-        public static async Task<string> GetMD5HashAsync(Stream stream, int bufferSize, CancellationToken cancellationToken)
+        public static string GetMD5HashString(byte[] buffer, int offset, int count)
+        {
+            return GetMD5HashString(GetMD5Hash(buffer, offset, count));
+        }
+
+        public static async Task<string> GetMD5HashStringAsync(Stream stream, int bufferSize, CancellationToken cancellationToken)
         {
             var hasher = GetMD5Hasher();
 
@@ -103,7 +108,7 @@ namespace Abmes.DataCollector.Utils
                 AppendMDHasherData(hasher, buffer, 0, bytesRead);
             }
 
-            return GetMD5Hash(hasher);
+            return GetMD5HashString(hasher);
         }
 
         public static IncrementalHash GetMD5Hasher()
@@ -116,14 +121,17 @@ namespace Abmes.DataCollector.Utils
             hasher.AppendData(buffer, offset, count);
         }
 
-        public static string GetMD5Hash(IncrementalHash hasher)
+        public static byte[] GetMD5Hash(IncrementalHash hasher)
         {
-            var byteHash = hasher.GetHashAndReset();
-            var md5Hash = GetMD5Hash(byteHash);
-            return md5Hash;
+            return hasher.GetHashAndReset();
         }
 
-        public static string GetMD5Hash(byte[] md5Hash)
+        public static string GetMD5HashString(IncrementalHash hasher)
+        {
+            return GetMD5HashString(GetMD5Hash(hasher));
+        }
+
+        public static string GetMD5HashString(byte[] md5Hash)
         {
             if ((md5Hash == null) || (md5Hash.Length == 0))
             {
