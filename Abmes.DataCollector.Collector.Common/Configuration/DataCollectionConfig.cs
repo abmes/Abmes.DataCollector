@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
@@ -8,20 +9,31 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
     {
         public string DataCollectionName { get; set;  }
         public string DataGroupName { get; set; }
+
+        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? InitialDelay { get; set; }
+
         public string PrepareUrl { get; set; }
         public IEnumerable<KeyValuePair<string, string>> PrepareHeaders { get; set; }
         public string PrepareHttpMethod { get; set; }
         public string PrepareFinishedPollUrl { get; set; }
         public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; set; }
+        
+        [JsonConverter(typeof(JsonTimeSpanConverter))] 
         public TimeSpan? PrepareFinishedPollInterval { get; set; }
+
+        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? PrepareDuration { get; set; }
+
         public string CollectFileIdentifiersUrl { get; set; }
         public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; set; }
         public string CollectUrl { get; set; }
         public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; set; }
         public int? CollectParallelFileCount { get; set; }
+
+        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? CollectTimeout { get; set; }
+        
         public bool? CollectFinishWait { get; set; }
         public IEnumerable<string> DestinationIds { get; set; }
         public int? ParallelDestinationCount { get; set; }
