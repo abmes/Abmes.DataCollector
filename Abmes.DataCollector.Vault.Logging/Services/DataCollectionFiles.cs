@@ -20,40 +20,40 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             _dataCollectionFiles = dataCollectionFiles;
         }
 
-        public async Task<string> GetDownloadUrlAsync(string fileName, CancellationToken cancellationToken)
+        public async Task<string> GetDownloadUrlAsync(string fileName, string storageType = default, CancellationToken cancellationToken = default)
         {
             try
             {
-                _logger.LogInformation("Started getting download url for file '{fileName}'", fileName);
+                _logger.LogInformation("Started getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
 
-                var result = await _dataCollectionFiles.GetDownloadUrlAsync(fileName, cancellationToken);
+                var result = await _dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
 
-                _logger.LogInformation("Finished getting download url for file '{fileName}'", fileName);
+                _logger.LogInformation("Finished getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error getting download url for file '{fileName}': {errorMessage}", fileName, e.GetAggregateMessages());
+                _logger.LogCritical("Error getting download url" + FromStorageType(storageType) + " for file '{fileName}': {errorMessage}", fileName, e.GetAggregateMessages());
                 throw;
             }
         }
 
-        public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType = default, CancellationToken cancellationToken = default)
         {
             try
             {
-                _logger.LogInformation("Started getting download urls for file name prefix'{fileNamePrefix}'", fileNamePrefix);
+                _logger.LogInformation("Started getting download urls" + FromStorageType(storageType) + " for file name prefix'{fileNamePrefix}'", fileNamePrefix);
 
-                var result = await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, cancellationToken);
+                var result = await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
 
-                _logger.LogInformation("Finished getting download urls for file name prefix '{fileNamePrefix}'", fileNamePrefix);
+                _logger.LogInformation("Finished getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}'", fileNamePrefix);
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error getting download urls for file name prefix '{fileNamePrefix}': {errorMessage}", fileNamePrefix, e.GetAggregateMessages());
+                _logger.LogCritical("Error getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}': {errorMessage}", fileNamePrefix, e.GetAggregateMessages());
                 throw;
             }
         }
@@ -96,21 +96,21 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType = default, CancellationToken cancellationToken = default)
         {
             try
             {
-                _logger.LogInformation("Started getting latest download url");
+                _logger.LogInformation("Started getting latest download url" + FromStorageType(storageType));
 
-                var result = await _dataCollectionFiles.GetLatestDownloadUrlsAsync(cancellationToken);
+                var result = await _dataCollectionFiles.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
 
-                _logger.LogInformation("Finished getting latest download url");
+                _logger.LogInformation("Finished getting latest download url" + FromStorageType(storageType));
 
                 return result;
             }
             catch (Exception e)
             {
-                _logger.LogCritical("Error getting latest download url: {errorMessage}", e.GetAggregateMessages());
+                _logger.LogCritical("Error getting latest download url" + FromStorageType(storageType) + ": {errorMessage}", e.GetAggregateMessages());
                 throw;
             }
         }
@@ -151,6 +151,11 @@ namespace Abmes.DataCollector.Vault.Logging.Services
                 _logger.LogCritical("Error getting latest file names: {errorMessage}", e.GetAggregateMessages());
                 throw;
             }
+        }
+
+        private string FromStorageType(string storageType)
+        {
+            return (string.IsNullOrEmpty(storageType) ? null : " from " + storageType);
         }
     }
 }

@@ -13,8 +13,8 @@ namespace Abmes.DataCollector.Vault.Services
         Task<IEnumerable<IFileInfo>> GetLatestFileInfosAsync(CancellationToken cancellationToken);
         Task<IEnumerable<string>> GetFileNamesAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken);
         Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken);
-        Task<string> GetDownloadUrlAsync(string fileName, CancellationToken cancellationToken);
-        Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, CancellationToken cancellationToken);
-        Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(CancellationToken cancellationToken);
+        Task<string> GetDownloadUrlAsync(string fileName, string storageType = default, CancellationToken cancellationToken = default);
+        Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType = default, CancellationToken cancellationToken = default);
+        Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType = default, CancellationToken cancellationToken = default);
     }
 }

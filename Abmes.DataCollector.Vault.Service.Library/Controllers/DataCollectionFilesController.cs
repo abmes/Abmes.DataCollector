@@ -58,28 +58,28 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
             return await _dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
         }
 
-        // GET DataCollectionFiles/GetDownloadUrl/some-file.zip
+        // GET DataCollectionFiles/GetDownloadUrl?fileName=some-file.zip&storageType=Amazon
         [Route("GetDownloadUrl")]
         [HttpGet]
-        public async Task<string> GetDownloadUrlAsync([FromQuery] string fileName, CancellationToken cancellationToken)
+        public async Task<string> GetDownloadUrlAsync([FromQuery] string fileName, [FromQuery] string storageType, CancellationToken cancellationToken)
         {
-            return await _dataCollectionFiles.GetDownloadUrlAsync(fileName, cancellationToken);
+            return await _dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
         }
 
-        // GET DataCollectionFiles/GetDownloadUrls?fileNamePrefix=xyz
+        // GET DataCollectionFiles/GetDownloadUrls?fileNamePrefix=xyz&storageType=Amazon
         [Route("GetDownloadUrls")]
         [HttpGet]
-        public async Task<IEnumerable<string>> GetDownloadUrlsAsync([FromQuery] string fileNamePrefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetDownloadUrlsAsync([FromQuery] string fileNamePrefix, [FromQuery] string storageType, CancellationToken cancellationToken)
         {
-            return await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, cancellationToken);
+            return await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
         }
 
-        // GET DataCollectionFiles/GetDownloadUrl/latest
+        // GET DataCollectionFiles/GetDownloadUrl/latest?storageType=Amazon
         [Route("GetLatestDownloadUrls")]
         [HttpGet]
-        public async Task<IEnumerable<string>> GetLatestDownloadUrls(CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> GetLatestDownloadUrls([FromQuery] string storageType, CancellationToken cancellationToken)
         {
-            return await _dataCollectionFiles.GetLatestDownloadUrlsAsync(cancellationToken);
+            return await _dataCollectionFiles.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
         }
     }
 }
