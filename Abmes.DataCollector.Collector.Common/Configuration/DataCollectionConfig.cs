@@ -33,8 +33,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
         [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? CollectTimeout { get; set; }
-        
-        public bool? CollectFinishWait { get; set; }
+
+        public string CollectFinishWait { get; set; }
         public IEnumerable<string> DestinationIds { get; set; }
         public int? ParallelDestinationCount { get; set; }
         public int? MaxFileCount { get; set; }
@@ -73,7 +73,7 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             IEnumerable<KeyValuePair<string, string>> collectHeaders, 
             int? collectParallelFileCount, 
             TimeSpan? collectTimeout, 
-            bool? collectFinishWait,
+            string collectFinishWait,
             IEnumerable<string> destinationIds, 
             int? parallelDestinationCount,
             int? maxFileCount,

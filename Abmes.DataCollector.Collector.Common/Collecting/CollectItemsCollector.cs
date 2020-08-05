@@ -121,7 +121,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                     }
                     else
                     {
-                        await destination.CollectAsync(collectItem.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout ?? default, dataCollectionConfig.CollectFinishWait ?? false, tryNo, ct);
+                        await destination.CollectAsync(collectItem.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, dataCollectionConfig.DataCollectionName, destinationFileName, dataCollectionConfig.CollectTimeout ?? default, (dataCollectionConfig.CollectFinishWait ?? "false") == "true", tryNo, ct);
                     }
                 },
                     cancellationToken

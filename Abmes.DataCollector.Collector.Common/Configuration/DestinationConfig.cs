@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
@@ -18,6 +19,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public bool OverrideFiles { get; set;  }
         public bool CollectToDirectories { get; set;  }
         public bool GenerateFileNames { get; set;  }
+
+        [JsonConverter(typeof(JsonStringEnumMemberConverter))]
         public GarbageCollectionMode? GarbageCollectionMode { get; set;  }
 
         public string CollectPostEndpoint { get; set;  }
