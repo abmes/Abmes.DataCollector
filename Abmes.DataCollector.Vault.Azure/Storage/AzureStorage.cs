@@ -2,7 +2,9 @@
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage;
+using Azure.Storage.Blobs;
+using Azure.Storage.Sas;
 using System;
 using System.Collections.Generic;
 using System.Text;
@@ -30,20 +32,31 @@ namespace Abmes.DataCollector.Vault.Azure.Storage
 
         public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
-            var root = string.IsNullOrEmpty(StorageConfig.Root) ? dataCollectionName : StorageConfig.RootBase();
-            var container = await _azureCommonStorage.GetContainerAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, root, false, cancellationToken);
-
+            var containerName = string.IsNullOrEmpty(StorageConfig.Root) ? dataCollectionName : StorageConfig.RootBase();
             var blobName = GetBlobName(dataCollectionName, fileName);
-            var blob = container.GetBlobReference(blobName);
 
-            var sasConstraints = new SharedAccessBlobPolicy();
-            sasConstraints.SharedAccessStartTime = DateTimeOffset.Now.AddMinutes(-1);
-            sasConstraints.SharedAccessExpiryTime = DateTimeOffset.Now.Add(_vaultAppSettings.DownloadUrlExpiry);
-            sasConstraints.Permissions = SharedAccessBlobPermissions.Read;
+            var sasBuilder = new BlobSasBuilder()
+            {
+                BlobContainerName = containerName,
+                BlobName = blobName,
+                Resource = "b",
+                StartsOn = DateTimeOffset.UtcNow.AddMinutes(-1),
+                ExpiresOn = DateTimeOffset.UtcNow.Add(_vaultAppSettings.DownloadUrlExpiry)
+            };
+            sasBuilder.SetPermissions(BlobSasPermissions.Read);
 
-            var sasToken = blob.GetSharedAccessSignature(sasConstraints);
+            var credential = new StorageSharedKeyCredential(StorageConfig.LoginName, StorageConfig.LoginSecret);
+            var sasToken = sasBuilder.ToSasQueryParameters(credential).ToString();
 
-            return blob.Uri + sasToken;
+            var uriBuilder = new UriBuilder()
+            {
+                Scheme = "https",
+                Host = string.Format("{0}.blob.core.windows.net", StorageConfig.LoginName),
+                Path = string.Format("{0}/{1}", containerName, blobName),
+                Query = sasToken
+            };
+
+            return await Task.FromResult(uriBuilder.Uri.ToString());
         }
 
         private string GetBlobName(string dataCollectionName, string fileName)

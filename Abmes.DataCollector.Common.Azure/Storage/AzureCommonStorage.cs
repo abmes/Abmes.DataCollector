@@ -1,6 +1,7 @@
 ﻿using Abmes.DataCollector.Common.Azure.Configuration;
 using Abmes.DataCollector.Common.Storage;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -25,17 +26,15 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             _fileInfoFactory = fileInfoFactory;
         }
 
-        public async Task<CloudBlobContainer> GetContainerAsync(string loginName, string loginSecret, string root, bool createIfNotExists, CancellationToken cancellationToken)
+        public async Task<BlobContainerClient> GetContainerAsync(string loginName, string loginSecret, string root, bool createIfNotExists, CancellationToken cancellationToken)
         {
-            var account = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(GetAzureStorageConnectionString(loginName, loginSecret));
+            var connectionString = GetConnectionString(loginName, loginSecret);
 
-            var client = account.CreateCloudBlobClient();
-
-            var container = client.GetContainerReference(root);
+            var container = new BlobContainerClient(connectionString, root);
 
             if (createIfNotExists)
             {
-                await container.CreateIfNotExistsAsync(BlobContainerPublicAccessType.Off, null, null, cancellationToken);
+                await container.CreateIfNotExistsAsync(PublicAccessType.None, null, null, cancellationToken);
             }
 
             return container;
@@ -53,7 +52,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
         }
 
-        private string GetAzureStorageConnectionString(string loginName, string loginSecret)
+        public string GetConnectionString(string loginName, string loginSecret)
         {
             return $"DefaultEndpointsProtocol=https;AccountName={loginName};AccountKey={loginSecret};EndpointSuffix=core.windows.net";
         }
@@ -69,45 +68,27 @@ namespace Abmes.DataCollector.Common.Azure.Storage
                 return Enumerable.Empty<IFileInfo>();
             }
 
-            BlobContinuationToken continuationToken = null;
             var prefix = string.IsNullOrEmpty(rootBase) ? null : (rootDir + dataCollectionName + "/");
 
             var prefixSections = string.IsNullOrEmpty(prefix) ? 0 : (prefix.TrimEnd('/').Split('/').Length);
 
-            var resultList = new List<IFileInfo>();
+            var blobTraits = namesOnly ? BlobTraits.None : BlobTraits.Metadata;
 
-            var blobListingDetails = namesOnly ? BlobListingDetails.None : BlobListingDetails.Metadata;
+            var blobs = container.GetBlobs(blobTraits, BlobStates.None, prefix + fileNamePrefix, cancellationToken);
 
-            while (true)
-            {
-                var result = await container.ListBlobsSegmentedAsync(prefix + fileNamePrefix, true, blobListingDetails, null, continuationToken, null, null, cancellationToken);
-
-                var fileInfos = result.Results.OfType<CloudBlob>().Select(x => GetFileInfoAsync(x, prefixSections, namesOnly, cancellationToken).Result);
-                resultList.AddRange(fileInfos);
-
-                if (result.ContinuationToken == null)
-                {
-                    break;
-                }
-
-                continuationToken = result.ContinuationToken;
-            }
-
-            return resultList; 
+            return blobs.Select(x => GetFileInfoAsync(x, prefixSections, namesOnly, cancellationToken).Result).ToList();
         }
 
-        private async Task<IFileInfo> GetFileInfoAsync(CloudBlob blob, int prefixSections, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IFileInfo> GetFileInfoAsync(BlobItem blob, int prefixSections, bool namesOnly, CancellationToken cancellationToken)
         {
-            var name = string.Join("/", blob.Uri.AbsolutePath.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(1 + prefixSections));
+            var name = string.Join("/", blob.Name.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(prefixSections));
 
             if (namesOnly)
             {
                 return await Task.FromResult(_fileInfoFactory(name, null, null, null, StorageType));
             }
 
-            //await blob.FetchAttributesAsync();
-
-            return await Task.FromResult(_fileInfoFactory(name, blob.Properties.Length, blob.Properties.ContentMD5, string.Join("/", name.Split('/').SkipLast(1)), StorageType));
+            return await Task.FromResult(_fileInfoFactory(name, blob.Properties.ContentLength, Convert.ToBase64String(blob.Properties.ContentHash), string.Join("/", name.Split('/').SkipLast(1)), StorageType));
         }
     }
 }

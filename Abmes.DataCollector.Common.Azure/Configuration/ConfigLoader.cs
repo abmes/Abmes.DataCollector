@@ -1,4 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
+using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using System;
 using System.Diagnostics.Contracts;
@@ -43,17 +44,13 @@ namespace Abmes.DataCollector.Common.Azure.Configuration
         {
             string connectionString = GetAzureStorageDbCollectConfigConnectionString();
 
-            var account = Microsoft.WindowsAzure.Storage.CloudStorageAccount.Parse(connectionString);
+            var container = new BlobContainerClient(connectionString, _azureAppSettings.AzureConfigStorageContainerName);
 
-            var client = account.CreateCloudBlobClient();
-
-            var container = client.GetContainerReference(_azureAppSettings.AzureConfigStorageContainerName);
-
-            var blob = container.GetBlobReference(configName);
+            var blob = container.GetBlobClient(configName);
 
             using (var contentStream = new MemoryStream())
             {
-                await blob.DownloadToStreamAsync(contentStream, null, null, null, cancellationToken);
+                await blob.DownloadToAsync(contentStream, cancellationToken);
                 contentStream.Position = 0;
 
                 using (var reader = new StreamReader(contentStream))

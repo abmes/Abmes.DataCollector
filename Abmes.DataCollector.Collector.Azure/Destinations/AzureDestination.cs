@@ -2,7 +2,9 @@
 using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Common.Azure.Storage;
 using Abmes.DataCollector.Utils;
-using Microsoft.WindowsAzure.Storage.Blob;
+using Azure.Storage.Blobs;
+using Azure.Storage.Blobs.Models;
+using Azure.Storage.Blobs.Specialized;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -36,7 +38,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(dataCollectionName, fileName), timeout, finishWait, cancellationToken);
         }
 
-        private async Task<CloudBlobContainer> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
+        private async Task<BlobContainerClient> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
         {
             var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
             return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
@@ -47,7 +49,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
         }
 
-        private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
+        private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
         {
             //if (await GetContentLengthAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
             //{
@@ -59,7 +61,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             }
         }
 
-        private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, CloudBlobContainer container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
+        private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
         {
             using (var response = await HttpUtils.SendAsync(sourceUrl, HttpMethod.Get, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
@@ -74,9 +76,9 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             }
         }
 
-        private static async Task CopyStreamToBlobAsync(Stream sourceStream, CloudBlobContainer container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
+        private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
         {
-            var blob = container.GetBlockBlobReference(blobName);
+            var blob = container.GetBlockBlobClient(blobName);
 
             var blobHasher = CopyUtils.GetMD5Hasher();
 
@@ -95,7 +97,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
                         using (var ms = new MemoryStream(buffer, 0, count))
                         {
-                            await blob.PutBlockAsync(blockId, ms, blockMD5Hash, null, null, null, cancellationToken);
+                            await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, cancellationToken);
                         }
 
                         blockNumber++;
@@ -106,19 +108,24 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
             var blobHash = CopyUtils.GetMD5Hash(blobHasher);
 
-            if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
+            if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != CopyUtils.GetMD5HashString(blobHash)))
             {
                 throw new Exception("Invalid destination MD5");
             }
 
-            blob.Properties.ContentMD5 = blobHash;
-            await blob.PutBlockListAsync(blockIDs, null, null, null, cancellationToken);
+            var headers = new global::Azure.Storage.Blobs.Models.BlobHttpHeaders()
+            {
+                ContentHash = blobHash
+            };
+
+            await blob.CommitBlockListAsync(blockIDs, headers, null, null, null, cancellationToken);
         }
 
-        private async Task AzureCopyToBlob(string sourceUrl, CloudBlobContainer container, string blobName, bool finishWait, CancellationToken cancellationToken)
+        private async Task AzureCopyToBlob(string sourceUrl, BlobContainerClient container, string blobName, bool finishWait, CancellationToken cancellationToken)
         {
-            var blob = container.GetBlobReference(blobName);
-            var copyTaskId = await blob.StartCopyAsync(new Uri(sourceUrl), null, null, null, null, cancellationToken);
+            var blob = container.GetBlockBlobClient(blobName);
+
+            var copyTaskId = await blob.StartCopyFromUriAsync(new Uri(sourceUrl), null, null, null, null, null, cancellationToken);
 
             if (finishWait)
             {
@@ -126,24 +133,24 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             }
         }
 
-        private async Task WaitCopyTaskAsync(CloudBlobContainer container, string blobName, CancellationToken cancellationToken)
+        private async Task WaitCopyTaskAsync(BlobContainerClient container, string blobName, CancellationToken cancellationToken)
         {
             while (true)
             {
                 await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);  // todo: config
 
-                var blobs = container.ListBlobsSegmentedAsync(blobName, true, BlobListingDetails.Copy, 1, null, null, null, cancellationToken);
+                var blobs = container.GetBlobs(BlobTraits.CopyStatus, BlobStates.None, blobName, cancellationToken);
 
-                var blob = blobs.Result.Results.FirstOrDefault() as CloudBlob;
+                var blob = blobs.FirstOrDefault();
 
                 if (blob != null)
                 {
-                    if ((blob.CopyState.Status == CopyStatus.Failed) || (blob.CopyState.Status == CopyStatus.Aborted))
+                    if ((blob.Properties.CopyStatus == CopyStatus.Failed) || (blob.Properties.CopyStatus == CopyStatus.Aborted))
                     {
-                        throw new Exception($"Copy of {blobName} failed: " + blob.CopyState.StatusDescription);
+                        throw new Exception($"Copy of {blobName} failed: " + blob.Properties.CopyStatusDescription);
                     }
 
-                    if (blob.CopyState.Status == CopyStatus.Success)
+                    if (blob.Properties.CopyStatus == CopyStatus.Success)
                     {
                         break;
                     }
@@ -213,8 +220,8 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
         {
             var container = await GetContainerAsync(dataCollectionName, cancellationToken);
-            var blob = container.GetBlobReference(GetBlobName(dataCollectionName, fileName));
-            await blob.DeleteAsync(DeleteSnapshotsOption.None, null, null, null, cancellationToken);
+            var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
+            await blob.DeleteAsync(DeleteSnapshotsOption.None, null, cancellationToken);
         }
 
         public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
@@ -235,8 +242,8 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
         public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
         {
             var container = await GetContainerAsync(dataCollectionName, cancellationToken);
-            var blob = container.GetBlockBlobReference(GetBlobName(dataCollectionName, fileName));
-            await blob.UploadFromStreamAsync(content);
+            var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
+            await blob.UploadAsync(content);
         }
     }
 }
