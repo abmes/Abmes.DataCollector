@@ -32,7 +32,20 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public string IdentityServiceClientSecret { get; set;  }
         public string IdentityServiceScope { get; set;  }
 
-        public IIdentityServiceClientInfo IdentityServiceClientInfo  { get; set;  }
+
+        private IIdentityServiceClientInfo _identityServiceClientInfo;
+        public IIdentityServiceClientInfo IdentityServiceClientInfo
+        {
+            get
+            {
+                if (_identityServiceClientInfo == null)
+                {
+                    _identityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
+                }
+
+                return _identityServiceClientInfo;
+            }
+        }
 
         public DestinationConfig()
         {
@@ -64,8 +77,6 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             IdentityServiceClientId = identityServiceClientId;
             IdentityServiceClientSecret = identityServiceClientSecret;
             IdentityServiceScope = identityServiceScope;
-
-            IdentityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
         }
 
         public string RootBase()

@@ -49,7 +49,20 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
 
         public IEnumerable<KeyValuePair<string, string>> Values { get; set; }
 
-        public IIdentityServiceClientInfo IdentityServiceClientInfo { get; set; }
+
+        private IIdentityServiceClientInfo _identityServiceClientInfo;
+        public IIdentityServiceClientInfo IdentityServiceClientInfo 
+        { 
+            get
+            {
+                if (_identityServiceClientInfo == null)
+                {
+                    _identityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
+                }
+
+                return _identityServiceClientInfo;
+            }
+        }
 
         public DataCollectionConfig()
         {
@@ -115,8 +128,6 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
             IdentityServiceScope = identityServiceScope;
 
             Values = values;
-
-            IdentityServiceClientInfo = new IdentityServiceClientInfo(IdentityServiceUrl, IdentityServiceClientId, IdentityServiceClientSecret, IdentityServiceScope, LoginName, LoginSecret);
         }
     }
 }
