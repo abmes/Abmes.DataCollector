@@ -18,9 +18,9 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             var exportLogDataContent = await HttpUtils.GetStringAsync(pollUrl, pollHeaders, "application/json");
 
             var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            var exportLogData = JsonSerializer.Deserialize<dynamic>(exportLogDataContent, options);
+            var result = JsonSerializer.Deserialize<DataPrepareResult>(exportLogDataContent, options);
 
-            return new DataPrepareResult { Finished = exportLogData.finished, HasErrors = exportLogData.hasErrors };
+            return result;
         }
     }
 }
