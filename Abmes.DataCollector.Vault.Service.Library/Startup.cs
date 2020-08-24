@@ -96,7 +96,7 @@ namespace Abmes.DataCollector.Vault.Service
                 app.UseDeveloperExceptionPage();
             }
 
-            //app.UseMiddleware<ErrorHandlingMiddleware>();
+            app.UseMiddleware<ErrorHandlingMiddleware>();
 
             app.UseHttpsRedirection();
 
