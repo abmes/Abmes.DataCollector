@@ -9,9 +9,9 @@
     <PackageReference Include="Autofac" Version="5.2.0" />
     <PackageReference Include="IdentityModel" Version="4.3.1" />
     <PackageReference Include="Macross.Json.Extensions" Version="1.5.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.6" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.6" />
+    <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="3.1.7" />
+    <PackageReference Include="Microsoft.Extensions.Logging.Abstractions" Version="3.1.7" />
     <PackageReference Include="MimeKit" Version="2.9.1" />
     <PackageReference Include="Polly" Version="7.2.1" />
     <PackageReference Include="System.Diagnostics.Contracts" Version="4.3.0" />
