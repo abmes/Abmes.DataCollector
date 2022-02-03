@@ -30,7 +30,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
         {
             var connectionString = GetConnectionString(loginName, loginSecret);
 
-            var container = new BlobContainerClient(connectionString, root);
+            var container = new BlobContainerClient(connectionString, root.Replace('_', '-'));
 
             if (createIfNotExists)
             {
