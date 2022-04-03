@@ -9,5 +9,6 @@ namespace Abmes.DataCollector.Collector.AmazonLambda
         public string ConfigSetName { get; set; }
         public string DataCollectionNames { get; set; }
         public string CollectorMode { get; set; }
+        public string TimeFilter { get; set; }
     }
 }

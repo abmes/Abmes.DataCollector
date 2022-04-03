@@ -27,9 +27,9 @@ namespace Abmes.DataCollector.Collector.Service.Controllers
         // POST Collector/collect/configSetName?dataCollections=name1,name2,name3&mode=collect|check
         [Route("collect/{configSetName}")]
         [HttpPost]
-        public async Task CollectAsync(string configSetName, [FromQuery] string dataCollections, [FromQuery] string collectorMode, CancellationToken cancellationToken)
+        public async Task CollectAsync(string configSetName, [FromQuery] string dataCollections, [FromQuery] string collectorMode, [FromQuery] string timeFilter, CancellationToken cancellationToken)
         {
-            _bootstrapper.SetConfig(configSetName, dataCollections, collectorMode);
+            _bootstrapper.SetConfig(configSetName, dataCollections, collectorMode, timeFilter);
             await _mainCollector.CollectAsync(cancellationToken);
         }
     }

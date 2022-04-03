@@ -23,6 +23,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<CollectUrlExtractor>().Named<ICollectUrlExtractor>("base");
             builder.RegisterType<Delay>().Named<IDelay>("base");
             builder.RegisterType<DateTimeFormatter>().As<IDateTimeFormatter>();
+            builder.RegisterType<TimeFilterProcessor>().As<ITimeFilterProcessor>();
             builder.RegisterType<DateFormattedDataCollectionConfigProvider>().As<IDateFormattedDataCollectionConfigProvider>();
             builder.RegisterType<MergedDataCollectionConfigProvider>().As<IMergedDataCollectionConfigProvider>();
             builder.RegisterType<DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("base");
@@ -34,6 +35,7 @@ namespace Abmes.DataCollector.Collector.Common
             builder.RegisterType<BootstrapperConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
             builder.RegisterType<BootstrapperDataCollectionsFilterProvider>().As<IDataCollectionsFilterProvider>();
             builder.RegisterType<BootstrapperCollectorModeProvider>().As<ICollectorModeProvider>();
+            builder.RegisterType<BootstrapperTimeFilterProvider>().As<ITimeFilterProvider>();
 
             builder.RegisterType<MergedDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("MergingDecorator");
             builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("MergingDecorator", TypedParameter.From(inner)), "base").Named<IDataCollectionsConfigProvider>("merging");

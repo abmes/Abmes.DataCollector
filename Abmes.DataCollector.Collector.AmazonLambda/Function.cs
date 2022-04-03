@@ -15,12 +15,13 @@ namespace Abmes.DataCollector.Collector.AmazonLambda
             System.Console.WriteLine(collectorParams.CollectorMode);
             System.Console.WriteLine(collectorParams.ConfigSetName);
             System.Console.WriteLine(collectorParams.DataCollectionNames);
+            System.Console.WriteLine(collectorParams.TimeFilter);
 
             Initializer
                 .GetMainService()
                 .MainAsync(
                     CancellationToken.None,
-                    bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames, collectorParams.CollectorMode)
+                    bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames, collectorParams.CollectorMode, collectorParams.TimeFilter)
                 )
                 .Wait();
         }
