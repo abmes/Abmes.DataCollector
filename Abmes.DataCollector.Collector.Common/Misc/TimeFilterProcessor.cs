@@ -55,6 +55,12 @@ namespace Abmes.DataCollector.Collector.Common.Misc
 
             var rangeParts = range.Split('-');
 
+            if ((rangeParts.Length == 1) &&
+                (int.TryParse(rangeParts[0], out var value)))
+            {
+                return (x == value);
+            }
+
             if ((rangeParts.Length == 2) &&
                 (int.TryParse(rangeParts[0], out var start)) &&
                 (int.TryParse(rangeParts[1], out var end)))
