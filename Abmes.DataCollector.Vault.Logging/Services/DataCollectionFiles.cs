@@ -58,7 +58,7 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
         {
             try
             {
@@ -115,7 +115,7 @@ namespace Abmes.DataCollector.Vault.Logging.Services
             }
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
         {
             try
             {

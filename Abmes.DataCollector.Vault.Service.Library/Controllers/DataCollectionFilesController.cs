@@ -29,7 +29,7 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
         // GET DataCollectionFiles/GetFiles?prefix=xyz&maxAge=0:2:0
         [Route("GetFiles")]
         [HttpGet]
-        public async Task<IEnumerable<IFileInfo>> GetFileInfosAsync([FromQuery] string prefix, [FromQuery] string maxAge, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetFileInfosAsync([FromQuery] string prefix, [FromQuery] string maxAge, CancellationToken cancellationToken)
         {
             return await _dataCollectionFiles.GetFileInfosAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
         }
@@ -37,7 +37,7 @@ namespace Abmes.DataCollector.Vault.Service.Controllers
         // GET DataCollectionFiles/GetFiles/latest
         [Route("GetFiles/latest")]
         [HttpGet]
-        public async Task<IEnumerable<IFileInfo>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
         {
             return await _dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
         }

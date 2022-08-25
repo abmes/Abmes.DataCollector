@@ -9,12 +9,12 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
 {
     public class FileSystemCommonStorage : IFileSystemCommonStorage
     {
-        private readonly IFileInfoFactory _fileInfoFactory;
+        private readonly IFileInfoDataFactory _fileInfoFactory;
 
         public string StorageType => "FileSystem";
 
         public FileSystemCommonStorage(
-            IFileInfoFactory fileInfoFactory)
+            IFileInfoDataFactory fileInfoFactory)
         {
             _fileInfoFactory = fileInfoFactory;
         }
@@ -26,12 +26,12 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
                 .Select(x => x.Name);
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
         }
 
-        private async Task<IEnumerable<IFileInfo>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IEnumerable<IFileInfoData>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
         {
             var fullDirName = System.IO.Path.Combine(rootBase, rootDir, dataCollectionName);
             var searchPattern = fileNamePrefix + "*.*";
@@ -51,7 +51,7 @@ namespace Abmes.DataCollector.Common.FileSystem.Storage
             return fileName + ".md5";
         }
 
-        private async Task<IFileInfo> GetFileInfoAsync(string relativeFileName, string fullDirName, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IFileInfoData> GetFileInfoAsync(string relativeFileName, string fullDirName, bool namesOnly, CancellationToken cancellationToken)
         {
             if (namesOnly)
             {

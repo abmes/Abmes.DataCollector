@@ -25,7 +25,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _collectItemsCollector = collectItemsCollector;
         }
 
-        public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
         {
             collectItems = collectItems.ToList().AsEnumerable();  // enumerate
 

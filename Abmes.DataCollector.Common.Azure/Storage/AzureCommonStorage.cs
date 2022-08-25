@@ -14,13 +14,13 @@ namespace Abmes.DataCollector.Common.Azure.Storage
     public class AzureCommonStorage : IAzureCommonStorage
     {
         private readonly IAzureAppSettings _commonAppSettings;
-        private readonly IFileInfoFactory _fileInfoFactory;
+        private readonly IFileInfoDataFactory _fileInfoFactory;
 
         public string StorageType => "Azure";
 
         public AzureCommonStorage(
             IAzureAppSettings commonAppSettings,
-            IFileInfoFactory fileInfoFactory)
+            IFileInfoDataFactory fileInfoFactory)
         {
             _commonAppSettings = commonAppSettings;
             _fileInfoFactory = fileInfoFactory;
@@ -47,7 +47,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
                 .Select(x => x.Name);
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
         }
@@ -57,7 +57,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             return $"DefaultEndpointsProtocol=https;AccountName={loginName};AccountKey={loginSecret};EndpointSuffix=core.windows.net";
         }
 
-        private async Task<IEnumerable<IFileInfo>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IEnumerable<IFileInfoData>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
         {
             var root = string.IsNullOrEmpty(rootBase) ? dataCollectionName : rootBase;
             var container = await GetContainerAsync(loginName, loginSecret, root, false, cancellationToken);
@@ -65,7 +65,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             var containerExists = await container.ExistsAsync();
             if (!containerExists)
             {
-                return Enumerable.Empty<IFileInfo>();
+                return Enumerable.Empty<IFileInfoData>();
             }
 
             var prefix = string.IsNullOrEmpty(rootBase) ? null : (rootDir + dataCollectionName + "/");
@@ -79,7 +79,7 @@ namespace Abmes.DataCollector.Common.Azure.Storage
             return blobs.Select(x => GetFileInfoAsync(x, prefixSections, namesOnly, cancellationToken).Result).ToList();
         }
 
-        private async Task<IFileInfo> GetFileInfoAsync(BlobItem blob, int prefixSections, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IFileInfoData> GetFileInfoAsync(BlobItem blob, int prefixSections, bool namesOnly, CancellationToken cancellationToken)
         {
             var name = string.Join("/", blob.Name.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(prefixSections));
 

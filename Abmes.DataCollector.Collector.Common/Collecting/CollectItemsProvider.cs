@@ -20,12 +20,12 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
     public class CollectItemsProvider : ICollectItemsProvider
     {
         private readonly ICollectUrlExtractor _collectUrlExtractor;
-        private readonly IFileInfoFactory _fileInfoFactory;
+        private readonly IFileInfoDataFactory _fileInfoFactory;
         private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
 
         public CollectItemsProvider(
             ICollectUrlExtractor collectUrlsExtractor,
-            IFileInfoFactory fileInfoFactory,
+            IFileInfoDataFactory fileInfoFactory,
             IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator)
         {
             _collectUrlExtractor = collectUrlsExtractor;
@@ -38,7 +38,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
         private static readonly string[] DefaultGroupIdPropertyNames = { "group", "groupId" };
 
-        public IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        public IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
             if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
             {
@@ -124,7 +124,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        public async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        public async Task<IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
             var collectItemsList = collectItems.ToList();
 
@@ -140,9 +140,9 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 .Concat(redirectedCollectItems);
         }
 
-        private async Task<IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, string identityServiceAccessToken, CancellationToken cancellationToken)
+        private async Task<IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, string identityServiceAccessToken, CancellationToken cancellationToken)
         {
-            var result = new ConcurrentBag<(IFileInfo CollectFileInfo, string CollectUrl)>();
+            var result = new ConcurrentBag<(IFileInfoData CollectFileInfo, string CollectUrl)>();
 
             await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
                 async (collectItem, ct) =>
@@ -169,7 +169,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        private IEnumerable<IFileInfo> GetCollectFileInfos(string collectFileInfosJson, IEnumerable<string> namePropertyNames, IEnumerable<string> sizePropertyNames, IEnumerable<string> md5PropertyNames, IEnumerable<string> groupIdPropertyNames)
+        private IEnumerable<IFileInfoData> GetCollectFileInfos(string collectFileInfosJson, IEnumerable<string> namePropertyNames, IEnumerable<string> sizePropertyNames, IEnumerable<string> md5PropertyNames, IEnumerable<string> groupIdPropertyNames)
         {
             var names = GetStrings(collectFileInfosJson);
 

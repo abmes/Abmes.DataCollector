@@ -45,7 +45,7 @@ namespace Abmes.DataCollector.Vault.Logging.Storage
             }
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             try
             {

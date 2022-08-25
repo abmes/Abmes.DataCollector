@@ -24,7 +24,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             _fileNameProvider = fileNameProvider;
         }
 
-        public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfo CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+        public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
         {
             var routes = collectItems.Select(x => (CollectItem: x, Targets: destinations.Select(y => (Destination: y, DestinationFileName: GetDestinationFileName(x, dataCollectionConfig, y, collectMoment)))));
 
@@ -57,7 +57,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             return completeDestinationFiles.Select(x => x.FileName).Distinct();
         }
 
-        private string GetDestinationFileName((IFileInfo CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
+        private string GetDestinationFileName((IFileInfoData CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
         {
             return
                 _fileNameProvider.GenerateCollectDestinationFileName(
@@ -80,7 +80,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
                 .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + _fileNameProvider.LockFileName));
         }
 
-        private async Task CollectRouteAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> targets, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,
+        private async Task CollectRouteAsync((IFileInfoData CollectFileInfo, string CollectUrl) collectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> targets, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,
             ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, ConcurrentBag<(IDestination Destination, string GroupId)> failedDestinationGroups, CancellationToken cancellationToken)
         {
             foreach (var target in targets)
@@ -100,7 +100,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             }
         }
 
-        private async Task CollectToDestinationAsync((IFileInfo CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, CancellationToken cancellationToken)
+        private async Task CollectToDestinationAsync((IFileInfoData CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, CancellationToken cancellationToken)
         {
             var tryNo = 1;
             await Policy

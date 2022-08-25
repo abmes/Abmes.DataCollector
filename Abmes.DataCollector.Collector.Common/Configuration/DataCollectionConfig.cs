@@ -10,7 +10,6 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public string DataCollectionName { get; set;  }
         public string DataGroupName { get; set; }
 
-        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? InitialDelay { get; set; }
 
         public string PrepareUrl { get; set; }
@@ -19,10 +18,8 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public string PrepareFinishedPollUrl { get; set; }
         public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; set; }
         
-        [JsonConverter(typeof(JsonTimeSpanConverter))] 
         public TimeSpan? PrepareFinishedPollInterval { get; set; }
 
-        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? PrepareDuration { get; set; }
 
         public string CollectFileIdentifiersUrl { get; set; }
@@ -31,7 +28,6 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; set; }
         public int? CollectParallelFileCount { get; set; }
 
-        [JsonConverter(typeof(JsonTimeSpanConverter))]
         public TimeSpan? CollectTimeout { get; set; }
 
         public string CollectFinishWait { get; set; }

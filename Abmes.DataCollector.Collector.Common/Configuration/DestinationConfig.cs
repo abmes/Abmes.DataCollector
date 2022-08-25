@@ -6,6 +6,7 @@ using System.Text.Json.Serialization;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public enum GarbageCollectionMode { None, Waterfall, Excess }
 
     public class DestinationConfig
@@ -20,7 +21,6 @@ namespace Abmes.DataCollector.Collector.Common.Configuration
         public bool CollectToDirectories { get; set;  }
         public bool GenerateFileNames { get; set;  }
 
-        [JsonConverter(typeof(JsonStringEnumMemberConverter))]
         public GarbageCollectionMode? GarbageCollectionMode { get; set;  }
 
         public string CollectPostEndpoint { get; set;  }

@@ -22,11 +22,11 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             _dataCollector = dataCollector;
         }
 
-        public async Task<(IEnumerable<string> NewFileNames, IEnumerable<IFileInfo> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+        public async Task<(IEnumerable<string> NewFileNames, IEnumerable<IFileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
         {
             try
             {
-                (IEnumerable<string> NewFileNames, IEnumerable<IFileInfo> CollectionFileInfos) result;
+                (IEnumerable<string> NewFileNames, IEnumerable<IFileInfoData> CollectionFileInfos) result;
 
                 _logger.LogInformation("Started processing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
 
@@ -52,7 +52,7 @@ namespace Abmes.DataCollector.Collector.Logging.Collecting
             }
         }
 
-        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<IFileInfo> collectionFileInfos, CancellationToken cancellationToken)
+        public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<IFileInfoData> collectionFileInfos, CancellationToken cancellationToken)
         {
             try
             {

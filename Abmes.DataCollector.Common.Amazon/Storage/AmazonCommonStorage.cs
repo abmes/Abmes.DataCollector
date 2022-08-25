@@ -13,13 +13,13 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
     public class AmazonCommonStorage : IAmazonCommonStorage
     {
         private readonly IAmazonS3 _amazonS3;
-        private readonly IFileInfoFactory _fileInfoFactory;
+        private readonly IFileInfoDataFactory _fileInfoFactory;
 
         public string StorageType => "Amazon";
 
         public AmazonCommonStorage(
             IAmazonS3 amazonS3,
-            IFileInfoFactory fileInfoFactory)
+            IFileInfoDataFactory fileInfoFactory)
         {
             _amazonS3 = amazonS3;
             _fileInfoFactory = fileInfoFactory;
@@ -32,16 +32,16 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
                 .Select(x => x.Name);
         }
 
-        public async Task<IEnumerable<IFileInfo>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+        public async Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
         {
             return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
         }
 
-        private async Task<IEnumerable<IFileInfo>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IEnumerable<IFileInfoData>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
         {
             var prefix = rootDir + dataCollectionName + "/";
 
-            var resultList = new List<IFileInfo>();
+            var resultList = new List<IFileInfoData>();
 
             var request = new ListObjectsV2Request { BucketName = rootBase, Prefix = prefix + fileNamePrefix };
 
@@ -63,7 +63,7 @@ namespace Abmes.DataCollector.Common.Amazon.Storage
             return resultList;
         }
 
-        private async Task<IFileInfo> GetFileInfoAsync(S3Object s3Object, string prefix, bool namesOnly, CancellationToken cancellationToken)
+        private async Task<IFileInfoData> GetFileInfoAsync(S3Object s3Object, string prefix, bool namesOnly, CancellationToken cancellationToken)
         {
             var name = s3Object.Key.Substring(prefix.Length);
 
