@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Abmes.DataCollector.Collector.Logging;
 using Autofac;
 using Autofac.Extensions.DependencyInjection;
-using IdentityServer4.AccessTokenValidation;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -50,14 +49,19 @@ namespace Abmes.DataCollector.Vault.Service
                     .Get<IdentityServerAuthenticationSettings>();
 
             services
-                .AddAuthentication(IdentityServerAuthenticationDefaults.AuthenticationScheme)
-                .AddIdentityServerAuthentication(x =>
-                {
-                    x.Authority = identityServerAuthenticationSettings.Authority;
-                    x.ApiName = identityServerAuthenticationSettings.ApiName;
-                    x.ApiSecret = identityServerAuthenticationSettings.ApiSecret;
-                    x.RequireHttpsMetadata = false;
-                });
+                .AddAuthentication(IdentityModel.AspNetCore.OAuth2Introspection.OAuth2IntrospectionDefaults.AuthenticationScheme)
+                .AddOAuth2Introspection(
+                    IdentityModel.AspNetCore.OAuth2Introspection.OAuth2IntrospectionDefaults.AuthenticationScheme,
+                    options =>
+                    {
+                        options.Authority = identityServerAuthenticationSettings.Authority;
+
+                        // this maps to the API resource name and secret
+                        options.ClientId = identityServerAuthenticationSettings.ApiName;
+                        options.ClientSecret = identityServerAuthenticationSettings.ApiSecret;
+
+                        options.DiscoveryPolicy.AuthorityValidationStrategy = new IdentityModel.Client.StringComparisonAuthorityValidationStrategy(StringComparison.OrdinalIgnoreCase);
+                    });
 
             services.AddAuthorization(options =>
             {
