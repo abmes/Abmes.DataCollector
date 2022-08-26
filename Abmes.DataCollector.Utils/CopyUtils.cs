@@ -12,51 +12,17 @@ namespace Abmes.DataCollector.Utils
 {
     public static class CopyUtils
     {
-        public static async Task CopyAsync(Func<byte[], CancellationToken, Task<int>> copyReadTask, Func<byte[], int, CancellationToken, Task> copyWriteTask, Int32 bufferSize, CancellationToken cancellationToken)
-        {
-            Contract.Requires(copyReadTask != null);
-            Contract.Requires(copyWriteTask != null);
-            Contract.Requires(bufferSize > 0);
-
-            byte[][] buffers = { ArrayPool<byte>.Shared.Rent(bufferSize), ArrayPool<byte>.Shared.Rent(bufferSize) };
-
-            try
-            {
-                var bufferIndex = 0;
-                var writeTask = Task.CompletedTask;
-                while (true)
-                {
-                    var readTask = copyReadTask(buffers[bufferIndex], cancellationToken);
-
-                    await Task.WhenAll(readTask, writeTask);
-
-                    int bytesRead = readTask.Result;
-
-                    if (bytesRead == 0)
-                    {
-                        break;
-                    }
-
-                    writeTask = copyWriteTask(buffers[bufferIndex], bytesRead, cancellationToken);
-
-                    bufferIndex = 1 - bufferIndex;
-                }
-            }
-            finally
-            {
-                foreach (var b in buffers)
-                    ArrayPool<byte>.Shared.Return(b, clearArray: true);
-            }
-        }
-
-        public static async Task<int> FillBufferAsync(byte[] buffer, Func<byte[], int, CancellationToken, Task<int>> readTask, CancellationToken cancellationToken)
+        private static async Task<int> FillBufferAsync(
+            Memory<byte> buffer,
+            Func<Memory<byte>, CancellationToken, Task<int>> readTask,
+            CancellationToken cancellationToken)
         {
             int bytesRead;
             int totalBytesRead = 0;
 
             do
             {
-                bytesRead = await readTask(buffer, totalBytesRead, cancellationToken);
+                bytesRead = await readTask(buffer.Slice(totalBytesRead), cancellationToken);
 
                 if (bytesRead > 0)
                 {
@@ -68,34 +34,35 @@ namespace Abmes.DataCollector.Utils
             return totalBytesRead;
         }
 
-        public static async Task<int> ReadStreamMaxBufferAsync(byte[] buffer, Stream stream, CancellationToken cancellationToken)
+        public static async Task<int> ReadStreamMaxBufferAsync(
+            Memory<byte> buffer,
+            Stream stream,
+            CancellationToken cancellationToken)
         {
-            return await CopyUtils.FillBufferAsync(buffer,
-                    async (buf, offset, ct) =>
-                    {
-                        return await stream.ReadAsync(buf, offset, buf.Length - offset, ct);
-                    },
-                    cancellationToken
-                );
+            return await FillBufferAsync(
+                buffer,
+                async (buf, ct) => await stream.ReadAsync(buf, ct),
+                cancellationToken);
         }
 
-        public static byte[] GetMD5Hash(byte[] buffer, int offset, int count)
+        public static byte[] GetMD5Hash(ReadOnlyMemory<byte> buffer)
         {
             var hasher = GetMD5Hasher();
-            AppendMDHasherData(hasher, buffer, offset, count);
+            AppendMDHasherData(hasher, buffer);
             return GetMD5Hash(hasher);
         }
 
-        public static string GetMD5HashString(byte[] buffer, int offset, int count)
+        public static string? GetMD5HashString(ReadOnlyMemory<byte> buffer)
         {
-            return GetMD5HashString(GetMD5Hash(buffer, offset, count));
+            return GetMD5HashString(GetMD5Hash(buffer));
         }
 
-        public static async Task<string> GetMD5HashStringAsync(Stream stream, int bufferSize, CancellationToken cancellationToken)
+        public static async Task<string?> GetMD5HashStringAsync(Stream stream, int bufferSize, CancellationToken cancellationToken)
         {
             var hasher = GetMD5Hasher();
 
-            var buffer = new byte[bufferSize];
+            using var mem = MemoryPool<byte>.Shared.Rent(bufferSize);
+            var buffer = mem.Memory;
             while (true)
             {
                 var bytesRead = await ReadStreamMaxBufferAsync(buffer, stream, cancellationToken);
@@ -105,7 +72,7 @@ namespace Abmes.DataCollector.Utils
                     break;
                 }
 
-                AppendMDHasherData(hasher, buffer, 0, bytesRead);
+                AppendMDHasherData(hasher, buffer.Slice(0, bytesRead));
             }
 
             return GetMD5HashString(hasher);
@@ -116,9 +83,9 @@ namespace Abmes.DataCollector.Utils
             return IncrementalHash.CreateHash(HashAlgorithmName.MD5);
         }
 
-        public static void AppendMDHasherData(IncrementalHash hasher, byte[] buffer, int offset, int count)
+        public static void AppendMDHasherData(IncrementalHash hasher, ReadOnlyMemory<byte> buffer)
         {
-            hasher.AppendData(buffer, offset, count);
+            hasher.AppendData(buffer.Span);
         }
 
         public static byte[] GetMD5Hash(IncrementalHash hasher)
@@ -126,12 +93,12 @@ namespace Abmes.DataCollector.Utils
             return hasher.GetHashAndReset();
         }
 
-        public static string GetMD5HashString(IncrementalHash hasher)
+        public static string? GetMD5HashString(IncrementalHash hasher)
         {
             return GetMD5HashString(GetMD5Hash(hasher));
         }
 
-        public static string GetMD5HashString(byte[] md5Hash)
+        public static string? GetMD5HashString(byte[]? md5Hash)
         {
             if ((md5Hash == null) || (md5Hash.Length == 0))
             {

@@ -20,13 +20,16 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         public DestinationConfig DestinationConfig { get; }
 
         private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public WebDestination(
             DestinationConfig destinationConfig,
-            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator)
+            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+            IHttpClientFactory httpClientFactory)
         {
             DestinationConfig = destinationConfig;
             _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
@@ -38,9 +41,17 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
                 return;
             }
 
-            await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
-                collectUrl, null, collectHeaders, null, timeout,
-                request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
+            using var httpClient = _httpClientFactory.CreateClient();
+            using var _ = await httpClient.SendAsync(
+                endpointUrl,
+                HttpMethod.Post,
+                collectUrl,
+                null,
+                null,
+                collectHeaders,
+                null,
+                timeout,
+                (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
         }
 
@@ -48,10 +59,13 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         {
             var endpointUrl = GetEndpointUrl(DestinationConfig.FileNamesGetEndpoint, dataCollectionName, null);
 
+            using var httpClient = _httpClientFactory.CreateClient();
             var json =
-                await HttpUtils.GetStringAsync(endpointUrl, HttpMethod.Get,
+                await httpClient.GetStringAsync(
+                    endpointUrl,
+                    HttpMethod.Get,
                     accept: "application/json",
-                    requestConfiguratorTask: request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
+                    requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
                     cancellationToken: cancellationToken);
 
             var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
@@ -62,8 +76,11 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
         {
             var endpointUrl = GetEndpointUrl(DestinationConfig.GarbageCollectFilePostEndpoint, dataCollectionName, fileName);
 
-            await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
-                requestConfiguratorTask: request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
+            using var httpClient = _httpClientFactory.CreateClient();
+            using var _ = await httpClient.SendAsync(
+                endpointUrl,
+                HttpMethod.Post,
+                requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
         }
 
@@ -108,9 +125,12 @@ namespace Abmes.DataCollector.Collector.Web.Destinations
                 return;
             }
 
-            await HttpUtils.SendAsync(endpointUrl, HttpMethod.Post,
-                null, content, null, null, null,
-                request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, cancellationToken),
+            using var httpClient = _httpClientFactory.CreateClient();
+            using var _ = await httpClient.SendAsync(
+                endpointUrl,
+                HttpMethod.Post,
+                content: content,
+                requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
         }
     }

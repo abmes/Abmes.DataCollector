@@ -5,6 +5,7 @@ using Abmes.DataCollector.Utils;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 using Azure.Storage.Blobs.Specialized;
+using CommunityToolkit.HighPerformance;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -20,15 +21,18 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
     public class AzureDestination : IAzureDestination
     {
         private readonly IAzureCommonStorage _azureCommonStorage;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public DestinationConfig DestinationConfig { get; }
 
         public AzureDestination(
             DestinationConfig destinationConfig,
-            IAzureCommonStorage azureCommonStorage)
+            IAzureCommonStorage azureCommonStorage,
+            IHttpClientFactory httpClientFactory)
         {
             DestinationConfig = destinationConfig;
             _azureCommonStorage = azureCommonStorage;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
@@ -63,9 +67,10 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
         {
-            using (var response = await HttpUtils.SendAsync(sourceUrl, HttpMethod.Get, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            using var httpClient = _httpClientFactory.CreateClient();
+            using (var response = await httpClient.SendAsync(sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
-                await response.CheckSuccessAsync();
+                await response.CheckSuccessAsync(cancellationToken);
 
                 var sourceMD5 = response.ContentMD5();
 
@@ -85,26 +90,26 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
             var blockIDs = new List<string>();
             var blockNumber = 0;
 
-            await CopyUtils.CopyAsync(
-                    (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                    async (buffer, count, cancellationToken2) =>
+            await ParallelCopy.CopyAsync(
+                (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                (buffer, ct) => async () =>
+                {
+                    var blockId = GetBlockId(blockNumber);
+                    blockIDs.Add(blockId);
+
+                    var blockMD5Hash = CopyUtils.GetMD5Hash(buffer);
+                    CopyUtils.AppendMDHasherData(blobHasher, buffer);
+
+                    using (var ms = buffer.AsStream())
                     {
-                        var blockId = GetBlockId(blockNumber);
-                        blockIDs.Add(blockId);
+                        await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, ct);
+                    }
 
-                        var blockMD5Hash = CopyUtils.GetMD5Hash(buffer, 0, count);
-                        CopyUtils.AppendMDHasherData(blobHasher, buffer, 0, count);
-
-                        using (var ms = new MemoryStream(buffer, 0, count))
-                        {
-                            await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, cancellationToken);
-                        }
-
-                        blockNumber++;
-                    },
-                    bufferSize,
-                    cancellationToken
-                );
+                    blockNumber++;
+                },
+                bufferSize,
+                cancellationToken
+            );
 
             var blobHash = CopyUtils.GetMD5Hash(blobHasher);
 
@@ -179,7 +184,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         private async Task<long> GetContentLengthFromHeadAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = _httpClientFactory.CreateClient())
             {
                 using (var headRequest = new HttpRequestMessage(HttpMethod.Head, url))
                 {
@@ -187,7 +192,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
                     headRequest.Headers.AddValues(headers);
 
-                    var headResult = await httpClient.SendAsync(headRequest, cancellationToken);
+                    using var headResult = await httpClient.SendAsync(headRequest, cancellationToken);
 
                     if (!headResult.IsSuccessStatusCode)
                     {
@@ -201,7 +206,7 @@ namespace Abmes.DataCollector.Collector.Azure.Destinations
 
         private async Task<long> GetGetContentLengthFromGetAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
+            using (var httpClient = _httpClientFactory.CreateClient())
             {
                 httpClient.DefaultRequestHeaders.AddValues(headers);
 

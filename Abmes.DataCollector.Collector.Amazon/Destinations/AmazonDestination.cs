@@ -12,6 +12,7 @@ using Abmes.DataCollector.Common.Amazon.Storage;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using System.IO;
 using System.Linq;
+using CommunityToolkit.HighPerformance;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations
 {
@@ -19,22 +20,26 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
     {
         private readonly IAmazonS3 _amazonS3;
         private readonly IAmazonCommonStorage _amazonCommonStorage;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public DestinationConfig DestinationConfig { get; }
 
         public AmazonDestination(
             DestinationConfig destinationConfig,
             IAmazonS3 amazonS3,
-            IAmazonCommonStorage amazonCommonStorage)
+            IAmazonCommonStorage amazonCommonStorage,
+            IHttpClientFactory httpClientFactory)
         {
             DestinationConfig = destinationConfig;
             _amazonS3 = amazonS3;
             _amazonCommonStorage = amazonCommonStorage;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
-            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            using var httpClient = _httpClientFactory.CreateClient();
+            using (var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 var sourceMD5 = response.ContentMD5();
 
@@ -75,18 +80,18 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                 var partSize = 10 * 1024 * 1024;  // todo: config
                 var partNo = 1;
 
-                await CopyUtils.CopyAsync(
-                    (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                    async (buffer, count, cancellationToken2) =>
+                await ParallelCopy.CopyAsync(
+                    (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                    (buffer, ct) => async () =>
                     {
-                        var blockMD5Hash = CopyUtils.GetMD5HashString(buffer, 0, count);
+                        var blockMD5Hash = CopyUtils.GetMD5HashString(buffer);
 
                         if (validateMD5)
                         {
-                            CopyUtils.AppendMDHasherData(blobHasher, buffer, 0, count);
+                            CopyUtils.AppendMDHasherData(blobHasher, buffer);
                         }
 
-                        using (var ms = new MemoryStream(buffer, 0, count))
+                        using (var ms = buffer.AsStream())
                         {
                             ms.Position = 0;
 
@@ -98,9 +103,9 @@ namespace Abmes.DataCollector.Collector.Amazon.Destinations
                                 Key = keyName,
                                 UploadId = initResponse.UploadId,
                                 PartNumber = partNo,
-                                PartSize = count,
+                                PartSize = buffer.Length,
                                 InputStream = ms,
-                                MD5Digest = blockMD5Hash
+                                MD5Digest = blockMD5Hash, 
                             };
 
                             // Upload a part and add the response to our list.

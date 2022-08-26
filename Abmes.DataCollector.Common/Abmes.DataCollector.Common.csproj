@@ -3,6 +3,7 @@
   <PropertyGroup>
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
     <AssemblyName>Abmes.DataCollector.Common</AssemblyName>
     <RootNamespace>Abmes.DataCollector.Common</RootNamespace>
   </PropertyGroup>

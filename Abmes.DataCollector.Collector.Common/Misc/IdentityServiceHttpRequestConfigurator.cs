@@ -12,6 +12,13 @@ namespace Abmes.DataCollector.Collector.Common.Misc
 {
     public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpRequestConfigurator
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public IdentityServiceHttpRequestConfigurator(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         public async Task ConfigAsync(HttpRequestMessage request, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
             var accessToken = await GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
@@ -49,7 +56,7 @@ namespace Abmes.DataCollector.Collector.Common.Misc
                 Password = identityServiceClientInfo.UserPassword
             };
 
-            using (var httpClient = new HttpClient())
+            using (var httpClient = _httpClientFactory.CreateClient())
             {
                 var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
 

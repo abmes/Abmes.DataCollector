@@ -13,9 +13,17 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public class DataPreparePoller : IDataPreparePoller
     {
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public DataPreparePoller(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         public async Task<DataPrepareResult> GetDataPrepareResultAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, CancellationToken cancellationToken)
         {
-            var exportLogDataContent = await HttpUtils.GetStringAsync(pollUrl, pollHeaders, "application/json");
+            using var httpClient = _httpClientFactory.CreateClient();
+            var exportLogDataContent = await httpClient.GetStringAsync(pollUrl, pollHeaders, "application/json");
 
             var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
             var result = JsonSerializer.Deserialize<DataPrepareResult>(exportLogDataContent, options);

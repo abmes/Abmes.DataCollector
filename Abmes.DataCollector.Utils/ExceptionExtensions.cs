@@ -1,38 +1,33 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net.Http.Headers;
-using System.Text;
+﻿namespace Abmes.DataCollector.Utils;
 
-namespace Abmes.DataCollector.Utils
+public static class ExceptionExtensions
 {
-    public static class ExceptionExtensions
+    private static IEnumerable<Exception> GetInnerExceptionChain(Exception exception)
     {
-        public static string GetInnerMessages(this Exception exception)
+        // todo: functional (abstract enumerable chain)
+        var e = exception;
+        while (e is not null)
         {
-            var e = exception;
-            var result = e.Message;
-
-            while (e.InnerException != null)
-            {
-                result = result + Environment.NewLine + e.InnerException.Message;
-                e = e.InnerException;
-            }
-
-            return result;
+            yield return e;
+            e = e.InnerException;
         }
+    }
 
-        public static string GetAggregateMessages(this Exception exception)
-        {
-            if (!(exception is AggregateException))
-            {
-                return exception.GetInnerMessages();
-            }
+    public static string GetInnerMessages(this Exception exception)
+    {
+        return string.Join(Environment.NewLine, GetInnerExceptionChain(exception).Select(e => e.Message));
+    }
 
-            var aggregateMessages = (exception as AggregateException).InnerExceptions.Select(x => x.GetAggregateMessages());
-
-            return string.Join(Environment.NewLine, aggregateMessages);
-        }
+    public static string GetAggregateMessages(this Exception exception)
+    {
+        return
+            exception is AggregateException e
+            ?
+            string.Join(
+                Environment.NewLine,
+                e.InnerExceptions.Select(x => x.GetAggregateMessages())
+            )
+            :
+            exception.GetInnerMessages();
     }
 }

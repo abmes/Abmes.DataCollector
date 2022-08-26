@@ -22,15 +22,18 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         private readonly ICollectUrlExtractor _collectUrlExtractor;
         private readonly IFileInfoDataFactory _fileInfoFactory;
         private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public CollectItemsProvider(
             ICollectUrlExtractor collectUrlsExtractor,
             IFileInfoDataFactory fileInfoFactory,
-            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator)
+            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+            IHttpClientFactory httpClientFactory)
         {
             _collectUrlExtractor = collectUrlsExtractor;
             _fileInfoFactory = fileInfoFactory;
             _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
+            _httpClientFactory = httpClientFactory;
         }
 
         private static readonly string[] DefaultNamePropertyNames = { "name", "fileName", "identifier" };
@@ -44,12 +47,13 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
             {
                 if (collectUrl.StartsWith("@"))
                 {
+                    using var httpClient = _httpClientFactory.CreateClient();
                     var jsonResult =
                             Policy
                             .Handle<Exception>()
                             .WaitAndRetry(new[] { TimeSpan.FromSeconds(5) })
                             .Execute(
-                                ct => HttpUtils.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, ct).Result, 
+                                ct => httpClient.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, ct).Result, 
                                 cancellationToken
                             );
 
@@ -144,11 +148,18 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
         {
             var result = new ConcurrentBag<(IFileInfoData CollectFileInfo, string CollectUrl)>();
 
-            await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
+            await ParallelUtils.ParallelEnumerateAsync(
+                collectItems,
+                cancellationToken,
+                Math.Max(1, maxDegreeOfParallelism),
                 async (collectItem, ct) =>
                 {
-                    var deferredUrl = await HttpUtils.GetDeferredUrlAsync(collectItem.CollectUrl.TrimStart('@'), HttpMethod.Get, null, cancellationToken);
-                    var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, deferredUrl, collectHeaders, identityServiceAccessToken, ct);
+                    var urls = collectItem.CollectUrl.TrimStart('@').Split('|').ToList();
+                    var preliminaryUrls = urls.SkipLast(1);
+                    var lastUrl = urls.Last();
+                    using var httpClient = _httpClientFactory.CreateClient();
+                    await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
+                    var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
                     result.Add((collectItem.CollectFileInfo, url));
                 }
             );
@@ -212,11 +223,14 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task<string> GetCollectItemsJson(string url, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
         {
+            using var httpClient = _httpClientFactory.CreateClient();
             return
-                await HttpUtils.GetStringAsync(url, HttpMethod.Get,
+                await httpClient.GetStringAsync(
+                    url,
+                    HttpMethod.Get,
                     headers: collectFileIdentifiersHeaders,
                     accept: "application/json",
-                    requestConfiguratorTask: request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, identityServiceClientInfo, cancellationToken),
+                    requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, identityServiceClientInfo, ct),
                     cancellationToken: cancellationToken);
         }
     }

@@ -19,22 +19,32 @@ namespace Abmes.DataCollector.Collector.Console.Destinations
         public DestinationConfig DestinationConfig { get; }
 
         private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public ConsoleDestination(
             DestinationConfig destinationConfig,
-            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator)
+            IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+            IHttpClientFactory httpClientFactory)
         {
             DestinationConfig = destinationConfig;
             _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
         {
+            using var httpClient = _httpClientFactory.CreateClient();
             var content =
-                    await HttpUtils.GetStringAsync(collectUrl, HttpMethod.Get,
-                        null, collectHeaders, null, timeout,
-                        request => _identityServiceHttpRequestConfigurator.ConfigAsync(request, collectIdentityServiceClientInfo, cancellationToken),
-                        cancellationToken: cancellationToken);
+                await httpClient.GetStringAsync(
+                    collectUrl,
+                    HttpMethod.Get,
+                    null,
+                    null,
+                    collectHeaders,
+                    null,
+                    timeout,
+                    (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, collectIdentityServiceClientInfo, ct),
+                    cancellationToken: cancellationToken);
 
             System.Console.WriteLine(content);
         }

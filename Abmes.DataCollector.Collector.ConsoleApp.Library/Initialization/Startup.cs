@@ -29,6 +29,7 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
             services.AddSingleton<IConfiguration>(Configuration);
 
             services.AddOptions();
+            services.AddHttpClient();
             services.AddLogging(loggingBuilder =>
             {
                 //var loggingConfigSection = Configuration.GetSection(Configuration["Logging"]);

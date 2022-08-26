@@ -17,15 +17,18 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
     public class FileSystemDestination : IFileSystemDestination
     {
         private readonly IFileSystemCommonStorage _fileSystemCommonStorage;
+        private readonly IHttpClientFactory _httpClientFactory;
 
         public DestinationConfig DestinationConfig { get; }
 
         public FileSystemDestination(
             DestinationConfig destinationConfig,
-            IFileSystemCommonStorage FileSystemCommonStorage)
+            IFileSystemCommonStorage FileSystemCommonStorage,
+            IHttpClientFactory httpClientFactory)
         {
             DestinationConfig = destinationConfig;
             _fileSystemCommonStorage = FileSystemCommonStorage;
+            _httpClientFactory = httpClientFactory;
         }
 
         public bool CanGarbageCollect()
@@ -37,7 +40,8 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
         {
             int bufferSize = 1 * 1024 * 1024;
 
-            using (var response = await HttpUtils.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+            using var httpClient = _httpClientFactory.CreateClient();
+            using (var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
             {
                 var sourceMD5 = response.ContentMD5();
 
@@ -49,9 +53,9 @@ namespace Abmes.DataCollector.Collector.FileSystem.Destinations
                 {
                     using (var fileStream = new FileStream(fullFileName, FileMode.Create))
                     {
-                        await CopyUtils.CopyAsync(
-                                (buffer, ct) => CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                                async (buffer, count, cancellationToken2) => await fileStream.WriteAsync(buffer, 0, count, cancellationToken2),
+                        await ParallelCopy.CopyAsync(
+                                (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                                (buffer, ct) => async () => await fileStream.WriteAsync(buffer, ct),
                                 bufferSize,
                                 cancellationToken
                             );

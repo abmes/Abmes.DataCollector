@@ -38,6 +38,7 @@ namespace Abmes.DataCollector.Vault.Service
             services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 
             services.AddOptions();
+            services.AddHttpClient();
             services.AddLogging(loggingBuilder =>
             {
                 LoggingConfigurator.Configure(loggingBuilder);

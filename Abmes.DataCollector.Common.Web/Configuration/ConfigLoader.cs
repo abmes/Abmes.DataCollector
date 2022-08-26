@@ -12,6 +12,13 @@ namespace Abmes.DataCollector.Common.Web.Configuration
     {
         private const string HttpsPrefix = "https://";
 
+        private readonly IHttpClientFactory _httpClientFactory;
+
+        public ConfigLoader(IHttpClientFactory httpClientFactory)
+        {
+            _httpClientFactory = httpClientFactory;
+        }
+
         public bool CanLoadFromLocation(string location)
         {
             return
@@ -35,7 +42,8 @@ namespace Abmes.DataCollector.Common.Web.Configuration
             var headers = (bracketPos >= 0) ? GetHeaders(location.Substring(bracketPos)) : null;
             var url = location.Substring(0, bracketPos).TrimEnd('/') + "/" + configName;
 
-            return await HttpUtils.GetStringAsync(url, headers, null, null, cancellationToken);
+            using var httpClient = _httpClientFactory.CreateClient();
+            return await httpClient.GetStringAsync(url, headers, null, null, cancellationToken);
         }
 
         private IEnumerable<KeyValuePair<string, string>> GetHeaders(string headers)

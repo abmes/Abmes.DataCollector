@@ -13,11 +13,13 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
     {
         private readonly IDataPreparePoller _dataPreparePoller;
         private readonly IDelay _delay;
+        private readonly IHttpClientFactory _httpClientFactory;
 
-        public DataPreparer(IDataPreparePoller DataPreparePoller, IDelay delay)
+        public DataPreparer(IDataPreparePoller DataPreparePoller, IDelay delay, IHttpClientFactory httpClientFactory)
         {
             _dataPreparePoller = DataPreparePoller;
             _delay = delay;
+            _httpClientFactory = httpClientFactory;
         }
 
         public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
@@ -48,9 +50,12 @@ namespace Abmes.DataCollector.Collector.Common.Collecting
 
         private async Task PrepareCollectAsync(string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, CancellationToken cancellationToken)
         {
-            var deferredUrl = await HttpUtils.GetDeferredUrlAsync(prepareUrl, new HttpMethod(prepareHttpMethod), prepareHeaders, cancellationToken);
-
-            await HttpUtils.SendAsync(deferredUrl, new HttpMethod(prepareHttpMethod), headers: prepareHeaders, timeout: TimeSpan.FromMinutes(5), cancellationToken: cancellationToken);
+            var urls = prepareUrl.Split('|').ToList();
+            var preliminaryUrls = urls.SkipLast(1);
+            var lastUrl = urls.Last();
+            using var httpClient = _httpClientFactory.CreateClient();
+            await httpClient.SendManyAsync(preliminaryUrls, new HttpMethod(prepareHttpMethod), prepareHeaders, cancellationToken);
+            using var _ = await httpClient.SendAsync(lastUrl, new HttpMethod(prepareHttpMethod), headers: prepareHeaders, timeout: TimeSpan.FromMinutes(5), cancellationToken: cancellationToken);
         }
 
         private async Task WaitPrepareToFinishAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, TimeSpan? pollInterval, TimeSpan? prepareDuration, CancellationToken cancellationToken)
