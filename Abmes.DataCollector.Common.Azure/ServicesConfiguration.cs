@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Azure.Configuration;
-using Abmes.DataCollector.Utils.DependancyInjection;
+using Abmes.DataCollector.Utils.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 

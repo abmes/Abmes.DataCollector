@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.28729.10
+# Visual Studio Version 17
+VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B6EB5572-088B-4FE8-8A3A-B274D674645F}"
 EndProject
@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils",
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.AspNetCore", "Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj", "{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.DependancyInjection", "Abmes.DataCollector.Utils.DependancyInjection\Abmes.DataCollector.Utils.DependancyInjection.csproj", "{957384E8-CFA1-4A5E-9721-BC60B64BED01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.DependencyInjection", "Abmes.DataCollector.Utils.DependencyInjection\Abmes.DataCollector.Utils.DependencyInjection.csproj", "{957384E8-CFA1-4A5E-9721-BC60B64BED01}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.AmazonLambda", "Abmes.DataCollector.Vault.AmazonLambda\Abmes.DataCollector.Vault.AmazonLambda.csproj", "{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}"
 EndProject
@@ -67,7 +67,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Web", "Abmes.DataCollector.Common.Web\Abmes.DataCollector.Common.Web.csproj", "{476A2904-7846-40D6-9C4A-EC21096DCD3F}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.FileSystem", "Abmes.DataCollector.Vault.FileSystem\Abmes.DataCollector.Vault.FileSystem.csproj", "{A07B5EDF-8612-44F6-9245-D3337E64E9FF}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.FileSystem", "Abmes.DataCollector.Vault.FileSystem\Abmes.DataCollector.Vault.FileSystem.csproj", "{A07B5EDF-8612-44F6-9245-D3337E64E9FF}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

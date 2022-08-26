@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils.DependancyInjection\Abmes.DataCollector.Utils.DependancyInjection.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Utils.DependencyInjection\Abmes.DataCollector.Utils.DependencyInjection.csproj" />
   </ItemGroup>
 
   <ItemGroup>

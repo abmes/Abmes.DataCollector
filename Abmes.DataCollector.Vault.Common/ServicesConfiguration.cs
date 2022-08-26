@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Utils.DependancyInjection;
+﻿using Abmes.DataCollector.Utils.DependencyInjection;
 using Abmes.DataCollector.Vault.Configuration;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

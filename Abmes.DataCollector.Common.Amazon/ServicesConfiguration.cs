@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Amazon.Configuration;
-using Abmes.DataCollector.Utils.DependancyInjection;
+using Abmes.DataCollector.Utils.DependencyInjection;
 using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
