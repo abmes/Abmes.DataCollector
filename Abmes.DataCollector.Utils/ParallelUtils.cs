@@ -39,7 +39,7 @@ public static class ParallelUtils
 
         return workerBlock;
     }
-
+    /*
     public static async Task<ActionBlock<T>> ParallelEnumerateAsync<T>(IEnumerable<T> items, CancellationToken cancellationToken, int maxDegreeOfParallelism, Action<T, CancellationToken> action)
     {
         return
@@ -50,4 +50,5 @@ public static class ParallelUtils
                 return Task.CompletedTask;
             });
     }
+    */
 }
