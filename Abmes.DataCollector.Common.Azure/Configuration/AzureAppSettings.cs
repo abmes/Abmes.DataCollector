@@ -1,6 +1,12 @@
-﻿namespace Abmes.DataCollector.Common.Azure.Configuration;
+﻿using Abmes.DataCollector.Utils;
 
-public class AzureAppSettings : IAzureAppSettings
+namespace Abmes.DataCollector.Common.Azure.Configuration;
+
+public record AzureAppSettings : IAzureAppSettings
 {
-    public string AzureConfigStorageContainerName { get; set; }
+    // todo: .net 7 should support record types with non-nullble props for options
+    // non-nullble properties can be checked like this: https://stackoverflow.com/questions/64784374/c-sharp-9-records-validation
+    public string? AzureConfigStorageContainerName { get; init; }
+
+    string IAzureAppSettings.AzureConfigStorageContainerName => Ensure.NotNullOrEmpty(AzureConfigStorageContainerName);
 }

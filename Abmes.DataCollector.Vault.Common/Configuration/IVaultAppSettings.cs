@@ -2,5 +2,5 @@
 
 public interface IVaultAppSettings
 {
-    TimeSpan DownloadUrlExpiry { get; set; }
+    TimeSpan DownloadUrlExpiry { get; }
 }

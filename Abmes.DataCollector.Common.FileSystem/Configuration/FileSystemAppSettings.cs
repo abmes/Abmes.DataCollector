@@ -1,6 +1,12 @@
-﻿namespace Abmes.DataCollector.Common.FileSystem.Configuration;
+﻿using Abmes.DataCollector.Utils;
 
-public class FileSystemAppSettings : IFileSystemAppSettings
+namespace Abmes.DataCollector.Common.FileSystem.Configuration;
+
+public record FileSystemAppSettings : IFileSystemAppSettings
 {
-    public string FileSystemConfigStorageRoot { get; set; }
+    // todo: .net 7 should support record types with non-nullble props for options
+    // non-nullble properties can be checked like this: https://stackoverflow.com/questions/64784374/c-sharp-9-records-validation
+    public string? FileSystemConfigStorageRoot { get; init; }
+
+    string IFileSystemAppSettings.FileSystemConfigStorageRoot => Ensure.NotNullOrEmpty(FileSystemConfigStorageRoot);
 }

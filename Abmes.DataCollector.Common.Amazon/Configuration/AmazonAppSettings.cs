@@ -1,6 +1,12 @@
-﻿namespace Abmes.DataCollector.Common.Amazon.Configuration;
+﻿using Abmes.DataCollector.Utils;
 
-public class AmazonAppSettings : IAmazonAppSettings
+namespace Abmes.DataCollector.Common.Amazon.Configuration;
+
+public record AmazonAppSettings : IAmazonAppSettings
 {
-    public string AmazonS3ConfigStorageBucketName { get; set; }
+    // todo: .net 7 should support record types with non-nullble props for options
+    // non-nullble properties can be checked like this: https://stackoverflow.com/questions/64784374/c-sharp-9-records-validation
+    public string? AmazonS3ConfigStorageBucketName { get; init; }
+
+    string IAmazonAppSettings.AmazonS3ConfigStorageBucketName => Ensure.NotNullOrEmpty(AmazonS3ConfigStorageBucketName);
 }

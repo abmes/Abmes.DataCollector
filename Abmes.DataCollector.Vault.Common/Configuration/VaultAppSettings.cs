@@ -1,6 +1,12 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Utils;
 
-public class VaultAppSettings : IVaultAppSettings
+namespace Abmes.DataCollector.Vault.Configuration;
+
+public record VaultAppSettings : IVaultAppSettings
 {
-    public TimeSpan DownloadUrlExpiry { get; set; }
+    // todo: .net 7 should support record types with non-nullble props for options
+    // non-nullble properties can be checked like this: https://stackoverflow.com/questions/64784374/c-sharp-9-records-validation
+    public TimeSpan? DownloadUrlExpiry { get; init; }
+
+    TimeSpan IVaultAppSettings.DownloadUrlExpiry => Ensure.NotNull<TimeSpan>(DownloadUrlExpiry);
 }
