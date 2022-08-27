@@ -50,11 +50,9 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
             Password = identityServiceClientInfo.UserPassword
         };
 
-        using (var httpClient = _httpClientFactory.CreateClient())
-        {
-            var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
+        using var httpClient = _httpClientFactory.CreateClient();
+        var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
 
-            return response.AccessToken;
-        }
+        return response.AccessToken;
     }
 }

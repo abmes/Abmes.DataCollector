@@ -31,40 +31,35 @@ public class FileSystemDestination : IFileSystemDestination
         int bufferSize = 1 * 1024 * 1024;
 
         using var httpClient = _httpClientFactory.CreateClient();
-        using (var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+        using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        var sourceMD5 = response.ContentMD5();
+
+        var fullFileName = GetFullFileName(dataCollectionName, fileName);
+
+        Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
+
+        using (var sourceStream = await response.Content.ReadAsStreamAsync())
         {
-            var sourceMD5 = response.ContentMD5();
-
-            var fullFileName = GetFullFileName(dataCollectionName, fileName);
-
-            Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
-
-            using (var sourceStream = await response.Content.ReadAsStreamAsync())
-            {
-                using (var fileStream = new FileStream(fullFileName, FileMode.Create))
-                {
-                    await ParallelCopy.CopyAsync(
-                            (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                            (buffer, ct) => async () => await fileStream.WriteAsync(buffer, ct),
-                            bufferSize,
-                            cancellationToken
-                        );
-                }
-            }
-
-            using (var fileStream = new FileStream(fullFileName, FileMode.Open, FileAccess.Read))
-            {
-                var newMD5 = await CopyUtils.GetMD5HashStringAsync(fileStream, bufferSize, cancellationToken);
-
-                if ((!string.IsNullOrEmpty(sourceMD5)) &&
-                    (!string.Equals(newMD5, sourceMD5, StringComparison.InvariantCultureIgnoreCase)))
-                {
-                    throw new Exception("Invalid destination MD5");
-                }
-
-                File.WriteAllText(GetMD5FileName(fullFileName), newMD5);
-            }
+            using var fileStream = new FileStream(fullFileName, FileMode.Create);
+            await ParallelCopy.CopyAsync(
+                    (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                    (buffer, ct) => async () => await fileStream.WriteAsync(buffer, ct),
+                    bufferSize,
+                    cancellationToken
+                );
         }
+
+        using var fileStream2 = new FileStream(fullFileName, FileMode.Open, FileAccess.Read);
+
+        var newMD5 = await CopyUtils.GetMD5HashStringAsync(fileStream2, bufferSize, cancellationToken);
+
+        if ((!string.IsNullOrEmpty(sourceMD5)) &&
+            (!string.Equals(newMD5, sourceMD5, StringComparison.InvariantCultureIgnoreCase)))
+        {
+            throw new Exception("Invalid destination MD5");
+        }
+
+        File.WriteAllText(GetMD5FileName(fullFileName), newMD5);
     }
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
@@ -154,9 +149,7 @@ public class FileSystemDestination : IFileSystemDestination
 
         Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
 
-        using (var fileStream = new FileStream(fullFileName, FileMode.Create))
-        {
-            await content.CopyToAsync(fileStream);
-        }
+        using var fileStream = new FileStream(fullFileName, FileMode.Create);
+        await content.CopyToAsync(fileStream);
     }
 }

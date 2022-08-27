@@ -43,16 +43,12 @@ public class ConfigLoader : IConfigLoader
 
         var blob = container.GetBlobClient(configName);
 
-        using (var contentStream = new MemoryStream())
-        {
-            await blob.DownloadToAsync(contentStream, cancellationToken);
-            contentStream.Position = 0;
+        using var contentStream = new MemoryStream();
+        await blob.DownloadToAsync(contentStream, cancellationToken);
+        contentStream.Position = 0;
 
-            using (var reader = new StreamReader(contentStream))
-            {
-                return await reader.ReadToEndAsync();
-            }
-        }
+        using var reader = new StreamReader(contentStream);
+        return await reader.ReadToEndAsync();
     }
 
     private string GetAzureStorageDbCollectConfigConnectionString()

@@ -31,17 +31,13 @@ public class AmazonDestination : IAmazonDestination
     public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
-        using (var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
-        {
-            var sourceMD5 = response.ContentMD5();
+        using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        var sourceMD5 = response.ContentMD5();
 
-            using (var sourceStream = await response.Content.ReadAsStreamAsync())
-            {
-                var key = dataCollectionName + '/' + fileName;
+        using var sourceStream = await response.Content.ReadAsStreamAsync();
+        var key = dataCollectionName + '/' + fileName;
 
-                await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
-            }
-        }
+        await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
     }
 
     private async Task MultiPartUploadAsync(Stream sourceStream, string sourceMD5, string bucketName, string keyName, CancellationToken cancellationToken)
@@ -83,27 +79,25 @@ public class AmazonDestination : IAmazonDestination
                         CopyUtils.AppendMDHasherData(blobHasher, buffer);
                     }
 
-                    using (var ms = buffer.AsStream())
+                    using var ms = buffer.AsStream();
+                    ms.Position = 0;
+
+                    partNo++;
+
+                    var uploadRequest = new UploadPartRequest
                     {
-                        ms.Position = 0;
+                        BucketName = bucketName,
+                        Key = keyName,
+                        UploadId = initResponse.UploadId,
+                        PartNumber = partNo,
+                        PartSize = buffer.Length,
+                        InputStream = ms,
+                        MD5Digest = blockMD5Hash,
+                    };
 
-                        partNo++;
-
-                        var uploadRequest = new UploadPartRequest
-                        {
-                            BucketName = bucketName,
-                            Key = keyName,
-                            UploadId = initResponse.UploadId,
-                            PartNumber = partNo,
-                            PartSize = buffer.Length,
-                            InputStream = ms,
-                            MD5Digest = blockMD5Hash, 
-                        };
-
-                        // Upload a part and add the response to our list.
-                        var uploadResponse = await _amazonS3.UploadPartAsync(uploadRequest, cancellationToken);
-                        uploadResponses.Add(uploadResponse);
-                    }
+                    // Upload a part and add the response to our list.
+                    var uploadResponse = await _amazonS3.UploadPartAsync(uploadRequest, cancellationToken);
+                    uploadResponses.Add(uploadResponse);
                 },
                 partSize,
                 cancellationToken
@@ -173,10 +167,9 @@ public class AmazonDestination : IAmazonDestination
     {
         var key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
 
-        using (var fileTransferUtility = new TransferUtility(_amazonS3))
-        {
-            fileTransferUtility.Upload(content, DestinationConfig.RootBase(), key);
-        }
+        using var fileTransferUtility = new TransferUtility(_amazonS3);
+
+        fileTransferUtility.Upload(content, DestinationConfig.RootBase(), key);
 
         await Task.CompletedTask;
     }

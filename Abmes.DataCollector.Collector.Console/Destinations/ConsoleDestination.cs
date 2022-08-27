@@ -63,19 +63,17 @@ public class ConsoleDestination : IConsoleDestination
 
     public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
     {
-        using (var reader = new StreamReader(content))
+        using var reader = new StreamReader(content);
+        while (true)
         {
-            while (true)
+            var line = await reader.ReadLineAsync();
+
+            if (line == null)
             {
-                var line = await reader.ReadLineAsync();
-
-                if (line == null)
-                {
-                    break;
-                }
-
-                System.Console.WriteLine(line);
+                break;
             }
+
+            System.Console.WriteLine(line);
         }
     }
 }

@@ -59,17 +59,13 @@ public class AzureDestination : IAzureDestination
     private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
-        using (var response = await httpClient.SendAsync(sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
-        {
-            await response.CheckSuccessAsync(cancellationToken);
+        using var response = await httpClient.SendAsync(sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        await response.CheckSuccessAsync(cancellationToken);
 
-            var sourceMD5 = response.ContentMD5();
+        var sourceMD5 = response.ContentMD5();
 
-            using (var sourceStream = await response.Content.ReadAsStreamAsync())
-            {
-                await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
-            }
-        }
+        using var sourceStream = await response.Content.ReadAsStreamAsync();
+        await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
     }
 
     private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
@@ -91,10 +87,8 @@ public class AzureDestination : IAzureDestination
                 var blockMD5Hash = CopyUtils.GetMD5Hash(buffer);
                 CopyUtils.AppendMDHasherData(blobHasher, buffer);
 
-                using (var ms = buffer.AsStream())
-                {
-                    await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, ct);
-                }
+                using var ms = buffer.AsStream();
+                await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, ct);
 
                 blockNumber++;
             },
@@ -175,42 +169,34 @@ public class AzureDestination : IAzureDestination
 
     private async Task<long> GetContentLengthFromHeadAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
     {
-        using (var httpClient = _httpClientFactory.CreateClient())
+        using var httpClient = _httpClientFactory.CreateClient();
+        using var headRequest = new HttpRequestMessage(HttpMethod.Head, url);
+        headers = headers?.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
+
+        headRequest.Headers.AddValues(headers);
+
+        using var headResult = await httpClient.SendAsync(headRequest, cancellationToken);
+
+        if (!headResult.IsSuccessStatusCode)
         {
-            using (var headRequest = new HttpRequestMessage(HttpMethod.Head, url))
-            {
-                headers = headers?.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
-
-                headRequest.Headers.AddValues(headers);
-
-                using var headResult = await httpClient.SendAsync(headRequest, cancellationToken);
-
-                if (!headResult.IsSuccessStatusCode)
-                {
-                    return -1;
-                }
-
-                return headResult.Content.Headers.ContentLength ?? -1;
-            }
+            return -1;
         }
+
+        return headResult.Content.Headers.ContentLength ?? -1;
     }
 
     private async Task<long> GetGetContentLengthFromGetAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
     {
-        using (var httpClient = _httpClientFactory.CreateClient())
+        using var httpClient = _httpClientFactory.CreateClient();
+        httpClient.DefaultRequestHeaders.AddValues(headers);
+
+        using var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        if (!response.IsSuccessStatusCode)
         {
-            httpClient.DefaultRequestHeaders.AddValues(headers);
-
-            using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
-            {
-                if (!response.IsSuccessStatusCode)
-                {
-                    return -1;
-                }
-
-                return response.Content.Headers.ContentLength ?? -1;
-            }
+            return -1;
         }
+
+        return response.Content.Headers.ContentLength ?? -1;
     }
 
     public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)

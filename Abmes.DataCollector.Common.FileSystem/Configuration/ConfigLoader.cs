@@ -37,12 +37,8 @@ public class ConfigLoader : IConfigLoader
 
     private static async Task<string> GetFileContentAsync(string fileName, CancellationToken cancellationToken)
     {
-        using (var fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Open))
-        {
-            using (var reader = new System.IO.StreamReader(fileStream, Encoding.UTF8))
-            {
-                return await reader.ReadToEndAsync();
-            }
-        }
+        using var fileStream = new System.IO.FileStream(fileName, System.IO.FileMode.Open);
+        using var reader = new System.IO.StreamReader(fileStream, Encoding.UTF8);
+        return await reader.ReadToEndAsync();
     }
 }

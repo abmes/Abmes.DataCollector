@@ -46,10 +46,8 @@ public class ConfigLoader : IConfigLoader
         var request = new GetObjectRequest { BucketName = bucketName, Key = root + configName };
         var response = _amazonS3.GetObjectAsync(request).Result;
 
-        using (var reader = new System.IO.StreamReader(response.ResponseStream, Encoding.UTF8))
-        {
-            return await reader.ReadToEndAsync();
-        }
+        using var reader = new System.IO.StreamReader(response.ResponseStream, Encoding.UTF8);
+        return await reader.ReadToEndAsync();
     }
 
     public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
