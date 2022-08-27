@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Abmes.DataCollector.Collector.Common.Collecting
+﻿namespace Abmes.DataCollector.Collector.Common.Collecting
 {
     public class DataPrepareResult
     {

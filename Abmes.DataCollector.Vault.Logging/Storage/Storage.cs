@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using System.Threading;
+﻿using Microsoft.Extensions.Logging;
 using Abmes.DataCollector.Vault.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Utils;

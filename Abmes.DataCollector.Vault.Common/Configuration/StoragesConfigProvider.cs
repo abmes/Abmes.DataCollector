@@ -1,11 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
 using Abmes.DataCollector.Vault.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Common.Configuration
 {

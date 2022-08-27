@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Abmes.DataCollector.Common.Configuration
+﻿namespace Abmes.DataCollector.Common.Configuration
 {
     public class EmptyConfigLocationProvider : IConfigLocationProvider
     {

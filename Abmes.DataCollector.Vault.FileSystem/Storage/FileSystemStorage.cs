@@ -1,11 +1,6 @@
 ﻿using Abmes.DataCollector.Common.FileSystem.Storage;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Vault.Configuration;
-using Abmes.DataCollector.Vault.Storage;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.FileSystem.Storage
 {

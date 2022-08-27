@@ -1,9 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Collecting;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
 {

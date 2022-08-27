@@ -3,12 +3,6 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting
 {

@@ -1,12 +1,7 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
-using System;
 using System.Diagnostics.Contracts;
-using System.IO;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Common.Azure.Configuration
 {

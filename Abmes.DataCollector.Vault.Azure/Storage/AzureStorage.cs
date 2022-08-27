@@ -1,15 +1,8 @@
 ﻿using Abmes.DataCollector.Common.Azure.Storage;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Vault.Configuration;
-using Abmes.DataCollector.Vault.Storage;
 using Azure.Storage;
-using Azure.Storage.Blobs;
 using Azure.Storage.Sas;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Azure.Storage
 {

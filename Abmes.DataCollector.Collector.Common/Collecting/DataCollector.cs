@@ -1,15 +1,9 @@
 ﻿using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using System.Collections.Concurrent;
-using Polly;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {

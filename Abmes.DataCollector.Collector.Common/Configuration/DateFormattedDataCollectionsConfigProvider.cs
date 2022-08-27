@@ -1,12 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
-
-namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration
 {
     public class DateFormattedDataCollectionsConfigProvider : IDataCollectionsConfigProvider
     {

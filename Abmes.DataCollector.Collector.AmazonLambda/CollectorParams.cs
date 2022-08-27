@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Abmes.DataCollector.Collector.AmazonLambda
+﻿namespace Abmes.DataCollector.Collector.AmazonLambda
 {
     public class CollectorParams
     {

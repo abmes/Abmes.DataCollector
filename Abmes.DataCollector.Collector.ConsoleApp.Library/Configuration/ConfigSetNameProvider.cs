@@ -1,6 +1,4 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using System;
-using System.Linq;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
 {

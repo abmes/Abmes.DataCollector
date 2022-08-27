@@ -1,7 +1,4 @@
 ﻿using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration
 {

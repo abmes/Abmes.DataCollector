@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration
 {
     public class VaultAppSettings : IVaultAppSettings
     {

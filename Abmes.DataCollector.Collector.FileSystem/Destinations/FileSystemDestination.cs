@@ -1,16 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Common.FileSystem.Storage;
 using Abmes.DataCollector.Utils;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Net.Http;
-using System.Security.Cryptography;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.FileSystem.Destinations
 {

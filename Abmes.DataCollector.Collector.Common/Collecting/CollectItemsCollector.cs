@@ -3,14 +3,7 @@ using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Polly;
-using System;
 using System.Collections.Concurrent;
-using System.Collections.Generic;
-using System.IO;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
 {

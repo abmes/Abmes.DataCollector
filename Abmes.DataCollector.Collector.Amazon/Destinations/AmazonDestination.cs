@@ -1,17 +1,9 @@
-﻿using Abmes.DataCollector.Collector.Common.Destinations;
-using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Utils;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using System;
-using System.Collections.Generic;
-using System.Net.Http;
-using System.Threading;
-using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Amazon.Storage;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using System.IO;
-using System.Linq;
 using CommunityToolkit.HighPerformance;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations

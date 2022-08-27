@@ -1,10 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
 using Abmes.DataCollector.Utils;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Common.Web.Configuration
 {

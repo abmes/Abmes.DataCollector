@@ -1,5 +1,4 @@
 ﻿using Autofac;
-using Abmes.DataCollector.Collector.Common.Configuration;
 using Microsoft.Extensions.Configuration;
 
 namespace Abmes.DataCollector.Collector.Service

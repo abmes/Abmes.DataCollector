@@ -1,10 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Collections.Generic;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Logging.Misc
 {

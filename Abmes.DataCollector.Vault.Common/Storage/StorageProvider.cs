@@ -1,8 +1,4 @@
-﻿using Autofac.Features.Indexed;
-using Abmes.DataCollector.Vault.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Text;
+﻿using Abmes.DataCollector.Vault.Configuration;
 
 namespace Abmes.DataCollector.Vault.Storage
 {

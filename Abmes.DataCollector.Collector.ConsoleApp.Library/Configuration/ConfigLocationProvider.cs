@@ -1,9 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Common.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration
 {

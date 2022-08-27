@@ -1,11 +1,8 @@
 ﻿using Abmes.DataCollector.Collector.Logging;
 using Autofac;
-using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
-using System;
-using System.IO;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization
 {

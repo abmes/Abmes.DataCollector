@@ -1,8 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Microsoft.AspNetCore.Authorization;
-using System.Linq;
-using System.Threading;
+﻿using Microsoft.AspNetCore.Authorization;
 using Abmes.DataCollector.Vault.Configuration;
 
 namespace Abmes.DataCollector.Vault.WebAPI.Authorization

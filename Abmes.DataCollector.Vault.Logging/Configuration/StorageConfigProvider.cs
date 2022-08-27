@@ -1,9 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
 using Abmes.DataCollector.Vault.Configuration;
-using System;
-using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Vault.Logging.Configuration
 {

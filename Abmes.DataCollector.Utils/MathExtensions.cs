@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Abmes.DataCollector.Utils
+﻿namespace Abmes.DataCollector.Utils
 {
     public static class MathExtensions
     {

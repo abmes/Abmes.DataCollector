@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Abmes.DataCollector.Common.Amazon.Configuration
+﻿namespace Abmes.DataCollector.Common.Amazon.Configuration
 {
     public interface IAmazonAppSettings
     {

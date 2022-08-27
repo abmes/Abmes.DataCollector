@@ -1,8 +1,5 @@
 ﻿using Autofac;
 using Abmes.DataCollector.Vault.Configuration;
-using Abmes.DataCollector.Vault.Services;
-using Abmes.DataCollector.Vault.Storage;
-using Abmes.DataCollector.Vault.Logging.Configuration;
 using Microsoft.Extensions.Configuration;
 
 namespace Abmes.DataCollector.Vault.Service

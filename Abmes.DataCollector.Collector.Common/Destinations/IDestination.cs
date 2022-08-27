@@ -1,9 +1,4 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Common.Destinations
 {

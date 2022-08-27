@@ -1,4 +1,3 @@
-using System.Threading;
 using Amazon.Lambda.Core;
 using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 

@@ -1,12 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Storage;
 using Amazon.S3;
 using Amazon.S3.Model;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading;
-using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Common.Amazon.Storage
 {

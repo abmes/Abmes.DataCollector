@@ -1,8 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace Abmes.DataCollector.Vault.Service.Configuration
+﻿namespace Abmes.DataCollector.Vault.Service.Configuration
 {
     public class IdentityServerAuthenticationSettings
     {

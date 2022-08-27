@@ -1,18 +1,11 @@
 ﻿using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using Abmes.DataCollector.Collector.Common.Misc;
-using System;
-using System.Collections.Generic;
 using System.Diagnostics.Contracts;
-using System.Linq;
-using System.Text;
 using Abmes.DataCollector.Utils;
-using System.Threading;
 using System.Collections.Concurrent;
-using System.Threading.Tasks;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using System.Net.Http;
 using Polly;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting
