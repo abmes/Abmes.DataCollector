@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.FileSystem.Configuration
+﻿namespace Abmes.DataCollector.Common.FileSystem.Configuration;
+
+public class FileSystemAppSettings : IFileSystemAppSettings
 {
-    public class FileSystemAppSettings : IFileSystemAppSettings
-    {
-        public string FileSystemConfigStorageRoot { get; set; }
-    }
+    public string FileSystemConfigStorageRoot { get; set; }
 }

@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface IDestinationsJsonConfigProvider
 {
-    public interface IDestinationsJsonConfigProvider
-    {
-        IEnumerable<DestinationConfig> GetDestinationsConfig(string json);
-    }
+    IEnumerable<DestinationConfig> GetDestinationsConfig(string json);
 }

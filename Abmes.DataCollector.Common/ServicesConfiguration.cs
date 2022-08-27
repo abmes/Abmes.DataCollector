@@ -4,14 +4,13 @@ using Abmes.DataCollector.Utils.DependencyInjection;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Abmes.DataCollector.Common
+namespace Abmes.DataCollector.Common;
+
+public static class ServicesConfiguration
 {
-    public static class ServicesConfiguration
+    public static void Configure(IServiceCollection services, IConfiguration configuration)
     {
-        public static void Configure(IServiceCollection services, IConfiguration configuration)
-        {
-            services.Configure<CommonAppSettings>(configuration.GetSection("AppSettings"));
-            services.AddOptionsAdapter<ICommonAppSettings, CommonAppSettings>();
-        }
+        services.Configure<CommonAppSettings>(configuration.GetSection("AppSettings"));
+        services.AddOptionsAdapter<ICommonAppSettings, CommonAppSettings>();
     }
 }

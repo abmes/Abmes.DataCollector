@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.Azure.Configuration
+﻿namespace Abmes.DataCollector.Common.Azure.Configuration;
+
+public interface IAzureAppSettings
 {
-    public interface IAzureAppSettings
-    {
-        string AzureConfigStorageContainerName { get; }
-    }
+    string AzureConfigStorageContainerName { get; }
 }

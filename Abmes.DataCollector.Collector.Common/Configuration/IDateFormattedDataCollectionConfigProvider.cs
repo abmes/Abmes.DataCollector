@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface IDateFormattedDataCollectionConfigProvider
 {
-    public interface IDateFormattedDataCollectionConfigProvider
-    {
-        DataCollectionConfig GetConfig(DataCollectionConfig config);
-    }
+    DataCollectionConfig GetConfig(DataCollectionConfig config);
 }

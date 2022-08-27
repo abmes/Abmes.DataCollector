@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Misc
+﻿namespace Abmes.DataCollector.Collector.Common.Misc;
+
+public interface IDelay
 {
-    public interface IDelay
-    {
-        Task DelayAsync(TimeSpan timeSpan, string reason, CancellationToken cancellationToken);
-    }
+    Task DelayAsync(TimeSpan timeSpan, string reason, CancellationToken cancellationToken);
 }

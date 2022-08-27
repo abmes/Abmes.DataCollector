@@ -1,17 +1,16 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public class BootstrapperTimeFilterProvider : ITimeFilterProvider
 {
-    public class BootstrapperTimeFilterProvider : ITimeFilterProvider
+    private readonly IBootstrapper _bootstrapper;
+
+    public BootstrapperTimeFilterProvider(IBootstrapper bootstrapper)
     {
-        private readonly IBootstrapper _bootstrapper;
+        _bootstrapper = bootstrapper;
+    }
 
-        public BootstrapperTimeFilterProvider(IBootstrapper bootstrapper)
-        {
-            _bootstrapper = bootstrapper;
-        }
-
-        public string GetTimeFilter()
-        {
-            return _bootstrapper.TimeFilter;
-        }
+    public string GetTimeFilter()
+    {
+        return _bootstrapper.TimeFilter;
     }
 }

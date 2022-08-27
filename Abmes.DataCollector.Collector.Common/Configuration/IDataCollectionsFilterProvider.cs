@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface IDataCollectionsFilterProvider
 {
-    public interface IDataCollectionsFilterProvider
-    {
-        Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken);
-    }
+    Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken);
 }

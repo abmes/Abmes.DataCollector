@@ -1,13 +1,12 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.Logging
+namespace Abmes.DataCollector.Collector.Logging;
+
+public static class LoggingConfigurator
 {
-    public static class LoggingConfigurator
+    public static void Configure(ILoggingBuilder loggingBuilder, IConfiguration configuration)
     {
-        public static void Configure(ILoggingBuilder loggingBuilder, IConfiguration configuration)
-        {
-            Abmes.DataCollector.Collector.Amazon.LoggingConfigurator.Configure(loggingBuilder, configuration);
-        }
+        Abmes.DataCollector.Collector.Amazon.LoggingConfigurator.Configure(loggingBuilder, configuration);
     }
 }

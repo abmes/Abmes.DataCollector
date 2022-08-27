@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface IConfigSetNameProvider
 {
-    public interface IConfigSetNameProvider
-    {
-        string GetConfigSetName();
-    }
+    string GetConfigSetName();
 }

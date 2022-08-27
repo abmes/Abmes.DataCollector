@@ -1,8 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Common.Destinations;
 
-namespace Abmes.DataCollector.Collector.Logging.Destinations
+namespace Abmes.DataCollector.Collector.Logging.Destinations;
+
+public interface ILoggingDestination : IDestination
 {
-    public interface ILoggingDestination : IDestination
-    {
-    }
 }

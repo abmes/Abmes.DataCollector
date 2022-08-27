@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.Configuration
+﻿namespace Abmes.DataCollector.Common.Configuration;
+
+public interface ICommonAppSettings
 {
-    public interface ICommonAppSettings
-    {
-        string ConfigStorageType { get; }
-    }
+    string ConfigStorageType { get; }
 }

@@ -1,19 +1,18 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration;
+
+public class User
 {
-    public class User
+    public string IdentityUserId { get; set; }
+    public IEnumerable<string> DataCollectionNames { get; set; }
+
+    public User()
     {
-        public string IdentityUserId { get; set; }
-        public IEnumerable<string> DataCollectionNames { get; set; }
+        // needed for deserialization
+    }
 
-        public User()
-        {
-            // needed for deserialization
-        }
-
-        public User(string identityUserId, IEnumerable<string> dataCollectionNames)
-        {
-            IdentityUserId = identityUserId;
-            DataCollectionNames = dataCollectionNames;
-        }
+    public User(string identityUserId, IEnumerable<string> dataCollectionNames)
+    {
+        IdentityUserId = identityUserId;
+        DataCollectionNames = dataCollectionNames;
     }
 }

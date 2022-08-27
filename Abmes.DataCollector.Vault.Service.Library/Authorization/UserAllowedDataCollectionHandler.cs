@@ -1,45 +1,44 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Abmes.DataCollector.Vault.Configuration;
 
-namespace Abmes.DataCollector.Vault.WebAPI.Authorization
+namespace Abmes.DataCollector.Vault.WebAPI.Authorization;
+
+public class UserAllowedDataCollectionHandler : AuthorizationHandler<UserAllowedDataCollectionRequirement>
 {
-    public class UserAllowedDataCollectionHandler : AuthorizationHandler<UserAllowedDataCollectionRequirement>
+    private readonly IUsersProvider _usersProvider;
+    private readonly IDataCollectionNameProvider _dataCollectionNameProvider;
+
+    public UserAllowedDataCollectionHandler(
+        IUsersProvider usersProvider,
+        IDataCollectionNameProvider dataCollectionNameProvider)
     {
-        private readonly IUsersProvider _usersProvider;
-        private readonly IDataCollectionNameProvider _dataCollectionNameProvider;
+        _usersProvider = usersProvider;
+        _dataCollectionNameProvider = dataCollectionNameProvider;
+    }
 
-        public UserAllowedDataCollectionHandler(
-            IUsersProvider usersProvider,
-            IDataCollectionNameProvider dataCollectionNameProvider)
+    protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, UserAllowedDataCollectionRequirement requirement)
+    {
+        var dataCollectionName = _dataCollectionNameProvider.GetDataCollectionName();
+
+        var identityUserId = context.User.Claims.Where(x => x.Type.Equals("sub")).Select(x => x.Value).FirstOrDefault();
+
+        if (string.IsNullOrEmpty(identityUserId))
         {
-            _usersProvider = usersProvider;
-            _dataCollectionNameProvider = dataCollectionNameProvider;
+            context.Fail();
         }
-
-        protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, UserAllowedDataCollectionRequirement requirement)
+        else
         {
-            var dataCollectionName = _dataCollectionNameProvider.GetDataCollectionName();
+            var users = await _usersProvider.GetUsersAsync(CancellationToken.None);
 
-            var identityUserId = context.User.Claims.Where(x => x.Type.Equals("sub")).Select(x => x.Value).FirstOrDefault();
+            var user = users.Where(x => x.IdentityUserId == identityUserId).FirstOrDefault();
 
-            if (string.IsNullOrEmpty(identityUserId))
+            if ((user == null) || (!user.DataCollectionNames.Contains(dataCollectionName)))
             {
                 context.Fail();
             }
             else
             {
-                var users = await _usersProvider.GetUsersAsync(CancellationToken.None);
-
-                var user = users.Where(x => x.IdentityUserId == identityUserId).FirstOrDefault();
-
-                if ((user == null) || (!user.DataCollectionNames.Contains(dataCollectionName)))
-                {
-                    context.Fail();
-                }
-                else
-                {
-                    context.Succeed(requirement);
-                }
+                context.Succeed(requirement);
             }
         }
     }

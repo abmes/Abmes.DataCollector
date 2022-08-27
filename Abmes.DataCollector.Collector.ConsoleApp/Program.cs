@@ -1,12 +1,11 @@
 ﻿using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 
-namespace Abmes.DataCollector.Collector.ConsoleApp
+namespace Abmes.DataCollector.Collector.ConsoleApp;
+
+class Program
 {
-    class Program
+    static async Task<int> Main(string[] args)
     {
-        static async Task<int> Main(string[] args)
-        {
-            return await Initializer.GetMainService().MainAsync(CancellationToken.None);
-        }
+        return await Initializer.GetMainService().MainAsync(CancellationToken.None);
     }
 }

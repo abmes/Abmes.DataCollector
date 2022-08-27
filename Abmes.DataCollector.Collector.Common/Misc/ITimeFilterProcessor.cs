@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Misc
+﻿namespace Abmes.DataCollector.Collector.Common.Misc;
+
+public interface ITimeFilterProcessor
 {
-    public interface ITimeFilterProcessor
-    {
-        bool TimeFilterAccepted(string timeFilter);
-    }
+    bool TimeFilterAccepted(string timeFilter);
 }

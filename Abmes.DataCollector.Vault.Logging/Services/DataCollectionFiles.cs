@@ -3,155 +3,154 @@ using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Services;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Vault.Logging.Services
+namespace Abmes.DataCollector.Vault.Logging.Services;
+
+public class DataCollectionFiles : IDataCollectionFiles
 {
-    public class DataCollectionFiles : IDataCollectionFiles
+    private readonly ILogger<DataCollectionFiles> _logger;
+    private readonly IDataCollectionFiles _dataCollectionFiles;
+
+    public DataCollectionFiles(ILogger<DataCollectionFiles> logger, IDataCollectionFiles dataCollectionFiles)
     {
-        private readonly ILogger<DataCollectionFiles> _logger;
-        private readonly IDataCollectionFiles _dataCollectionFiles;
+        _logger = logger;
+        _dataCollectionFiles = dataCollectionFiles;
+    }
 
-        public DataCollectionFiles(ILogger<DataCollectionFiles> logger, IDataCollectionFiles dataCollectionFiles)
+    public async Task<string> GetDownloadUrlAsync(string fileName, string storageType = default, CancellationToken cancellationToken = default)
+    {
+        try
         {
-            _logger = logger;
-            _dataCollectionFiles = dataCollectionFiles;
-        }
+            _logger.LogInformation("Started getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
 
-        public async Task<string> GetDownloadUrlAsync(string fileName, string storageType = default, CancellationToken cancellationToken = default)
+            var result = await _dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
+
+            _logger.LogInformation("Finished getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
+
+            return result;
+        }
+        catch (Exception e)
         {
-            try
-            {
-                _logger.LogInformation("Started getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
-
-                var result = await _dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
-
-                _logger.LogInformation("Finished getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting download url" + FromStorageType(storageType) + " for file '{fileName}': {errorMessage}", fileName, e.GetAggregateMessages());
-                throw;
-            }
+            _logger.LogCritical("Error getting download url" + FromStorageType(storageType) + " for file '{fileName}': {errorMessage}", fileName, e.GetAggregateMessages());
+            throw;
         }
+    }
 
-        public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType = default, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType = default, CancellationToken cancellationToken = default)
+    {
+        try
         {
-            try
-            {
-                _logger.LogInformation("Started getting download urls" + FromStorageType(storageType) + " for file name prefix'{fileNamePrefix}'", fileNamePrefix);
+            _logger.LogInformation("Started getting download urls" + FromStorageType(storageType) + " for file name prefix'{fileNamePrefix}'", fileNamePrefix);
 
-                var result = await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
+            var result = await _dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
 
-                _logger.LogInformation("Finished getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}'", fileNamePrefix);
+            _logger.LogInformation("Finished getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}'", fileNamePrefix);
 
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}': {errorMessage}", fileNamePrefix, e.GetAggregateMessages());
-                throw;
-            }
+            return result;
         }
-
-        public async Task<IEnumerable<IFileInfoData>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+        catch (Exception e)
         {
-            try
-            {
-                _logger.LogInformation("Started getting file infos");
-
-                var result = await _dataCollectionFiles.GetFileInfosAsync(prefix, maxAge, cancellationToken);
-
-                _logger.LogInformation("Finished getting file infos");
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting file infos: {errorMessage}", e.GetAggregateMessages());
-                throw;
-            }
+            _logger.LogCritical("Error getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}': {errorMessage}", fileNamePrefix, e.GetAggregateMessages());
+            throw;
         }
+    }
 
-        public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+    public async Task<IEnumerable<IFileInfoData>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+    {
+        try
         {
-            try
-            {
-                _logger.LogInformation("Started getting file names");
+            _logger.LogInformation("Started getting file infos");
 
-                var result = await _dataCollectionFiles.GetFileNamesAsync(prefix, maxAge, cancellationToken);
+            var result = await _dataCollectionFiles.GetFileInfosAsync(prefix, maxAge, cancellationToken);
 
-                _logger.LogInformation("Finished getting file names");
+            _logger.LogInformation("Finished getting file infos");
 
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting file names: {errorMessage}", e.GetAggregateMessages());
-                throw;
-            }
+            return result;
         }
-
-        public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType = default, CancellationToken cancellationToken = default)
+        catch (Exception e)
         {
-            try
-            {
-                _logger.LogInformation("Started getting latest download url" + FromStorageType(storageType));
-
-                var result = await _dataCollectionFiles.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
-
-                _logger.LogInformation("Finished getting latest download url" + FromStorageType(storageType));
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting latest download url" + FromStorageType(storageType) + ": {errorMessage}", e.GetAggregateMessages());
-                throw;
-            }
+            _logger.LogCritical("Error getting file infos: {errorMessage}", e.GetAggregateMessages());
+            throw;
         }
+    }
 
-        public async Task<IEnumerable<IFileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+    {
+        try
         {
-            try
-            {
-                _logger.LogInformation("Started getting latest file infos");
+            _logger.LogInformation("Started getting file names");
 
-                var result = await _dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
+            var result = await _dataCollectionFiles.GetFileNamesAsync(prefix, maxAge, cancellationToken);
 
-                _logger.LogInformation("Finished getting latest file infos");
+            _logger.LogInformation("Finished getting file names");
 
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting latest file infos: {errorMessage}", e.GetAggregateMessages());
-                throw;
-            }
+            return result;
         }
-
-        public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+        catch (Exception e)
         {
-            try
-            {
-                _logger.LogInformation("Started getting latest file names");
-
-                var result = await _dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
-
-                _logger.LogInformation("Finished getting latest file names");
-
-                return result;
-            }
-            catch (Exception e)
-            {
-                _logger.LogCritical("Error getting latest file names: {errorMessage}", e.GetAggregateMessages());
-                throw;
-            }
+            _logger.LogCritical("Error getting file names: {errorMessage}", e.GetAggregateMessages());
+            throw;
         }
+    }
 
-        private string FromStorageType(string storageType)
+    public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType = default, CancellationToken cancellationToken = default)
+    {
+        try
         {
-            return (string.IsNullOrEmpty(storageType) ? null : " from " + storageType);
+            _logger.LogInformation("Started getting latest download url" + FromStorageType(storageType));
+
+            var result = await _dataCollectionFiles.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
+
+            _logger.LogInformation("Finished getting latest download url" + FromStorageType(storageType));
+
+            return result;
         }
+        catch (Exception e)
+        {
+            _logger.LogCritical("Error getting latest download url" + FromStorageType(storageType) + ": {errorMessage}", e.GetAggregateMessages());
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<IFileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            _logger.LogInformation("Started getting latest file infos");
+
+            var result = await _dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
+
+            _logger.LogInformation("Finished getting latest file infos");
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            _logger.LogCritical("Error getting latest file infos: {errorMessage}", e.GetAggregateMessages());
+            throw;
+        }
+    }
+
+    public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
+    {
+        try
+        {
+            _logger.LogInformation("Started getting latest file names");
+
+            var result = await _dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
+
+            _logger.LogInformation("Finished getting latest file names");
+
+            return result;
+        }
+        catch (Exception e)
+        {
+            _logger.LogCritical("Error getting latest file names: {errorMessage}", e.GetAggregateMessages());
+            throw;
+        }
+    }
+
+    private string FromStorageType(string storageType)
+    {
+        return (string.IsNullOrEmpty(storageType) ? null : " from " + storageType);
     }
 }

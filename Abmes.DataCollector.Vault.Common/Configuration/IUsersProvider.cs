@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration;
+
+public interface IUsersProvider
 {
-    public interface IUsersProvider
-    {
-        Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
-    }
+    Task<IEnumerable<User>> GetUsersAsync(CancellationToken cancellationToken);
 }

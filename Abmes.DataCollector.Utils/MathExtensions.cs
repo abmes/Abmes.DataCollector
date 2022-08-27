@@ -1,10 +1,9 @@
-﻿namespace Abmes.DataCollector.Utils
+﻿namespace Abmes.DataCollector.Utils;
+
+public static class MathExtensions
 {
-    public static class MathExtensions
+    public static bool InRange(this int value, int minimum, int maximum)
     {
-        public static bool InRange(this int value, int minimum, int maximum)
-        {
-            return (value >= minimum) && (value <= maximum);
-        }
+        return (value >= minimum) && (value <= maximum);
     }
 }

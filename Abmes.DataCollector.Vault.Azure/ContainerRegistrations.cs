@@ -2,14 +2,13 @@
 using Abmes.DataCollector.Vault.Storage;
 using Autofac;
 
-namespace Abmes.DataCollector.Vault.Azure
+namespace Abmes.DataCollector.Vault.Azure;
+
+public static class ContainerRegistrations
 {
-    public static class ContainerRegistrations
+    public static void RegisterFor(ContainerBuilder builder)
     {
-        public static void RegisterFor(ContainerBuilder builder)
-        {
-            builder.RegisterType<AzureStorage>().As<IAzureStorage>();
-            builder.RegisterType<AzureStorageResolver>().Named<IStorageResolver>("base");
-        }
+        builder.RegisterType<AzureStorage>().As<IAzureStorage>();
+        builder.RegisterType<AzureStorageResolver>().Named<IStorageResolver>("base");
     }
 }

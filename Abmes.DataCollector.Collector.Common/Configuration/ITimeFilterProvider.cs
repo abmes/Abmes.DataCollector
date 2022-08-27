@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface ITimeFilterProvider
 {
-    public interface ITimeFilterProvider
-    {
-        string GetTimeFilter();
-    }
+    string GetTimeFilter();
 }

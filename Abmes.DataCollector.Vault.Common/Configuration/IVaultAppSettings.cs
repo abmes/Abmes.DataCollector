@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration;
+
+public interface IVaultAppSettings
 {
-    public interface IVaultAppSettings
-    {
-        TimeSpan DownloadUrlExpiry { get; set; }
-    }
+    TimeSpan DownloadUrlExpiry { get; set; }
 }

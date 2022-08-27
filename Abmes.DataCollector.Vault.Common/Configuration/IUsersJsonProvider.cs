@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration;
+
+public interface IUsersJsonProvider
 {
-    public interface IUsersJsonProvider
-    {
-        IEnumerable<User> GetUsers(string json);
-    }
+    IEnumerable<User> GetUsers(string json);
 }

@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface IMergedDataCollectionConfigProvider
 {
-    public interface IMergedDataCollectionConfigProvider
-    {
-        DataCollectionConfig GetConfig(DataCollectionConfig config, DataCollectionConfig template);
-    }
+    DataCollectionConfig GetConfig(DataCollectionConfig config, DataCollectionConfig template);
 }

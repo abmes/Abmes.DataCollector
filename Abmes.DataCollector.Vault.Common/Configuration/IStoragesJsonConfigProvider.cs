@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration;
+
+public interface IStoragesJsonConfigProvider
 {
-    public interface IStoragesJsonConfigProvider
-    {
-        IEnumerable<StorageConfig> GetStorageConfigs(string json);
-    }
+    IEnumerable<StorageConfig> GetStorageConfigs(string json);
 }

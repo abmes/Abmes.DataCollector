@@ -2,60 +2,59 @@
 using Abmes.DataCollector.Collector.Common.Configuration;
 using IdentityModel.Client;
 
-namespace Abmes.DataCollector.Collector.Common.Misc
+namespace Abmes.DataCollector.Collector.Common.Misc;
+
+public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpRequestConfigurator
 {
-    public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpRequestConfigurator
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public IdentityServiceHttpRequestConfigurator(IHttpClientFactory httpClientFactory)
     {
-        private readonly IHttpClientFactory _httpClientFactory;
+        _httpClientFactory = httpClientFactory;
+    }
 
-        public IdentityServiceHttpRequestConfigurator(IHttpClientFactory httpClientFactory)
+    public async Task ConfigAsync(HttpRequestMessage request, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    {
+        var accessToken = await GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
+
+        if (!string.IsNullOrEmpty(accessToken))
         {
-            _httpClientFactory = httpClientFactory;
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+        }
+    }
+
+    public void Config(HttpRequestMessage request, string identityServiceAccessToken, CancellationToken cancellationToken)
+    {
+        if (!string.IsNullOrEmpty(identityServiceAccessToken))
+        {
+            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", identityServiceAccessToken);
+        }
+    }
+
+    public async Task<string> GetIdentityServiceAccessTokenAsync(IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    {
+        if (string.IsNullOrEmpty(identityServiceClientInfo.Url))
+        {
+            return null;
         }
 
-        public async Task ConfigAsync(HttpRequestMessage request, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+        var tokenRequest = new PasswordTokenRequest
         {
-            var accessToken = await GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
+            Address = identityServiceClientInfo.Url.TrimEnd('/') + "/connect/token",
 
-            if (!string.IsNullOrEmpty(accessToken))
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
-            }
-        }
+            ClientId = identityServiceClientInfo.ClientId,
+            ClientSecret = identityServiceClientInfo.ClientSecret,
+            Scope = identityServiceClientInfo.Scope,
 
-        public void Config(HttpRequestMessage request, string identityServiceAccessToken, CancellationToken cancellationToken)
+            UserName = identityServiceClientInfo.UserName,
+            Password = identityServiceClientInfo.UserPassword
+        };
+
+        using (var httpClient = _httpClientFactory.CreateClient())
         {
-            if (!string.IsNullOrEmpty(identityServiceAccessToken))
-            {
-                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", identityServiceAccessToken);
-            }
-        }
+            var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
 
-        public async Task<string> GetIdentityServiceAccessTokenAsync(IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
-        {
-            if (string.IsNullOrEmpty(identityServiceClientInfo.Url))
-            {
-                return null;
-            }
-
-            var tokenRequest = new PasswordTokenRequest
-            {
-                Address = identityServiceClientInfo.Url.TrimEnd('/') + "/connect/token",
-
-                ClientId = identityServiceClientInfo.ClientId,
-                ClientSecret = identityServiceClientInfo.ClientSecret,
-                Scope = identityServiceClientInfo.Scope,
-
-                UserName = identityServiceClientInfo.UserName,
-                Password = identityServiceClientInfo.UserPassword
-            };
-
-            using (var httpClient = _httpClientFactory.CreateClient())
-            {
-                var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
-
-                return response.AccessToken;
-            }
+            return response.AccessToken;
         }
     }
 }

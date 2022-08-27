@@ -4,20 +4,19 @@ using Amazon.S3;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Abmes.DataCollector.Common.Amazon
-{
-    public static class ServicesConfiguration
-    {
-        public static void Configure(IServiceCollection services, IConfiguration configuration)
-        {
-            if (Abmes.DataCollector.Common.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
-            {
-                services.AddDefaultAWSOptions(configuration.GetAWSOptions());
-                services.AddAWSService<IAmazonS3>();
+namespace Abmes.DataCollector.Common.Amazon;
 
-                services.Configure<AmazonAppSettings>(configuration.GetSection("AppSettings"));
-                services.AddOptionsAdapter<IAmazonAppSettings, AmazonAppSettings>();
-            }
+public static class ServicesConfiguration
+{
+    public static void Configure(IServiceCollection services, IConfiguration configuration)
+    {
+        if (Abmes.DataCollector.Common.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
+        {
+            services.AddDefaultAWSOptions(configuration.GetAWSOptions());
+            services.AddAWSService<IAmazonS3>();
+
+            services.Configure<AmazonAppSettings>(configuration.GetSection("AppSettings"));
+            services.AddOptionsAdapter<IAmazonAppSettings, AmazonAppSettings>();
         }
     }
 }

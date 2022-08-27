@@ -7,239 +7,238 @@ using Azure.Storage.Blobs.Specialized;
 using CommunityToolkit.HighPerformance;
 using System.Text;
 
-namespace Abmes.DataCollector.Collector.Azure.Destinations
+namespace Abmes.DataCollector.Collector.Azure.Destinations;
+
+public class AzureDestination : IAzureDestination
 {
-    public class AzureDestination : IAzureDestination
+    private readonly IAzureCommonStorage _azureCommonStorage;
+    private readonly IHttpClientFactory _httpClientFactory;
+
+    public DestinationConfig DestinationConfig { get; }
+
+    public AzureDestination(
+        DestinationConfig destinationConfig,
+        IAzureCommonStorage azureCommonStorage,
+        IHttpClientFactory httpClientFactory)
     {
-        private readonly IAzureCommonStorage _azureCommonStorage;
-        private readonly IHttpClientFactory _httpClientFactory;
+        DestinationConfig = destinationConfig;
+        _azureCommonStorage = azureCommonStorage;
+        _httpClientFactory = httpClientFactory;
+    }
 
-        public DestinationConfig DestinationConfig { get; }
+    public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+    {
+        var container = await GetContainerAsync(dataCollectionName, cancellationToken);
 
-        public AzureDestination(
-            DestinationConfig destinationConfig,
-            IAzureCommonStorage azureCommonStorage,
-            IHttpClientFactory httpClientFactory)
+        await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(dataCollectionName, fileName), timeout, finishWait, cancellationToken);
+    }
+
+    private async Task<BlobContainerClient> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
+    {
+        var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
+        return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
+    }
+
+    private string GetBlobName(string dataCollectionName, string fileName)
+    {
+        return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
+    }
+
+    private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
+    {
+        //if (await GetContentLengthAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
+        //{
+        //    await AzureCopyToBlob(sourceUrl, container, blobName, finishWait, cancellationToken);
+        //}
+        //else
         {
-            DestinationConfig = destinationConfig;
-            _azureCommonStorage = azureCommonStorage;
-            _httpClientFactory = httpClientFactory;
+            await CopyFromUrlToBlob(sourceUrl, sourceHeaders, container, blobName, 1 * 1024 * 1024, timeout, cancellationToken);
         }
+    }
 
-        public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+    private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
+    {
+        using var httpClient = _httpClientFactory.CreateClient();
+        using (var response = await httpClient.SendAsync(sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
         {
-            var container = await GetContainerAsync(dataCollectionName, cancellationToken);
+            await response.CheckSuccessAsync(cancellationToken);
 
-            await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(dataCollectionName, fileName), timeout, finishWait, cancellationToken);
-        }
+            var sourceMD5 = response.ContentMD5();
 
-        private async Task<BlobContainerClient> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
-        {
-            var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
-            return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
-        }
-
-        private string GetBlobName(string dataCollectionName, string fileName)
-        {
-            return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
-        }
-
-        private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
-        {
-            //if (await GetContentLengthAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
-            //{
-            //    await AzureCopyToBlob(sourceUrl, container, blobName, finishWait, cancellationToken);
-            //}
-            //else
+            using (var sourceStream = await response.Content.ReadAsStreamAsync())
             {
-                await CopyFromUrlToBlob(sourceUrl, sourceHeaders, container, blobName, 1 * 1024 * 1024, timeout, cancellationToken);
+                await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
             }
         }
+    }
 
-        private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
-        {
-            using var httpClient = _httpClientFactory.CreateClient();
-            using (var response = await httpClient.SendAsync(sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken))
+    private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
+    {
+        var blob = container.GetBlockBlobClient(blobName);
+
+        var blobHasher = CopyUtils.GetMD5Hasher();
+
+        var blockIDs = new List<string>();
+        var blockNumber = 0;
+
+        await ParallelCopy.CopyAsync(
+            (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+            (buffer, ct) => async () =>
             {
-                await response.CheckSuccessAsync(cancellationToken);
+                var blockId = GetBlockId(blockNumber);
+                blockIDs.Add(blockId);
 
-                var sourceMD5 = response.ContentMD5();
+                var blockMD5Hash = CopyUtils.GetMD5Hash(buffer);
+                CopyUtils.AppendMDHasherData(blobHasher, buffer);
 
-                using (var sourceStream = await response.Content.ReadAsStreamAsync())
+                using (var ms = buffer.AsStream())
                 {
-                    await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
+                    await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, ct);
+                }
+
+                blockNumber++;
+            },
+            bufferSize,
+            cancellationToken
+        );
+
+        var blobHash = CopyUtils.GetMD5Hash(blobHasher);
+
+        if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != CopyUtils.GetMD5HashString(blobHash)))
+        {
+            throw new Exception("Invalid destination MD5");
+        }
+
+        var headers = new global::Azure.Storage.Blobs.Models.BlobHttpHeaders()
+        {
+            ContentHash = blobHash
+        };
+
+        await blob.CommitBlockListAsync(blockIDs, headers, null, null, null, cancellationToken);
+    }
+
+    private async Task AzureCopyToBlob(string sourceUrl, BlobContainerClient container, string blobName, bool finishWait, CancellationToken cancellationToken)
+    {
+        var blob = container.GetBlockBlobClient(blobName);
+
+        var copyTaskId = await blob.StartCopyFromUriAsync(new Uri(sourceUrl), null, null, null, null, null, cancellationToken);
+
+        if (finishWait)
+        {
+            await WaitCopyTaskAsync(container, blobName, cancellationToken);
+        }
+    }
+
+    private async Task WaitCopyTaskAsync(BlobContainerClient container, string blobName, CancellationToken cancellationToken)
+    {
+        while (true)
+        {
+            await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);  // todo: config
+
+            var blobs = container.GetBlobs(BlobTraits.CopyStatus, BlobStates.None, blobName, cancellationToken);
+
+            var blob = blobs.FirstOrDefault();
+
+            if (blob != null)
+            {
+                if ((blob.Properties.CopyStatus == CopyStatus.Failed) || (blob.Properties.CopyStatus == CopyStatus.Aborted))
+                {
+                    throw new Exception($"Copy of {blobName} failed: " + blob.Properties.CopyStatusDescription);
+                }
+
+                if (blob.Properties.CopyStatus == CopyStatus.Success)
+                {
+                    break;
                 }
             }
         }
+    }
 
-        private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
+    private static string GetBlockId(int blockNumber)
+    {
+        return Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("BlockId{0}", blockNumber.ToString("0000000"))));
+    }
+
+    private async Task<long> GetContentLengthAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+    {
+        var headContentLength = await GetContentLengthFromHeadAsync(url, headers, cancellationToken);
+
+        if (headContentLength == -1)
         {
-            var blob = container.GetBlockBlobClient(blobName);
-
-            var blobHasher = CopyUtils.GetMD5Hasher();
-
-            var blockIDs = new List<string>();
-            var blockNumber = 0;
-
-            await ParallelCopy.CopyAsync(
-                (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                (buffer, ct) => async () =>
-                {
-                    var blockId = GetBlockId(blockNumber);
-                    blockIDs.Add(blockId);
-
-                    var blockMD5Hash = CopyUtils.GetMD5Hash(buffer);
-                    CopyUtils.AppendMDHasherData(blobHasher, buffer);
-
-                    using (var ms = buffer.AsStream())
-                    {
-                        await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, ct);
-                    }
-
-                    blockNumber++;
-                },
-                bufferSize,
-                cancellationToken
-            );
-
-            var blobHash = CopyUtils.GetMD5Hash(blobHasher);
-
-            if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != CopyUtils.GetMD5HashString(blobHash)))
-            {
-                throw new Exception("Invalid destination MD5");
-            }
-
-            var headers = new global::Azure.Storage.Blobs.Models.BlobHttpHeaders()
-            {
-                ContentHash = blobHash
-            };
-
-            await blob.CommitBlockListAsync(blockIDs, headers, null, null, null, cancellationToken);
+            return await GetGetContentLengthFromGetAsync(url, headers, cancellationToken);
         }
-
-        private async Task AzureCopyToBlob(string sourceUrl, BlobContainerClient container, string blobName, bool finishWait, CancellationToken cancellationToken)
+        else
         {
-            var blob = container.GetBlockBlobClient(blobName);
-
-            var copyTaskId = await blob.StartCopyFromUriAsync(new Uri(sourceUrl), null, null, null, null, null, cancellationToken);
-
-            if (finishWait)
-            {
-                await WaitCopyTaskAsync(container, blobName, cancellationToken);
-            }
+            return headContentLength;
         }
+    }
 
-        private async Task WaitCopyTaskAsync(BlobContainerClient container, string blobName, CancellationToken cancellationToken)
+    private async Task<long> GetContentLengthFromHeadAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+    {
+        using (var httpClient = _httpClientFactory.CreateClient())
         {
-            while (true)
+            using (var headRequest = new HttpRequestMessage(HttpMethod.Head, url))
             {
-                await Task.Delay(TimeSpan.FromSeconds(5), cancellationToken);  // todo: config
+                headers = headers?.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
 
-                var blobs = container.GetBlobs(BlobTraits.CopyStatus, BlobStates.None, blobName, cancellationToken);
+                headRequest.Headers.AddValues(headers);
 
-                var blob = blobs.FirstOrDefault();
+                using var headResult = await httpClient.SendAsync(headRequest, cancellationToken);
 
-                if (blob != null)
+                if (!headResult.IsSuccessStatusCode)
                 {
-                    if ((blob.Properties.CopyStatus == CopyStatus.Failed) || (blob.Properties.CopyStatus == CopyStatus.Aborted))
-                    {
-                        throw new Exception($"Copy of {blobName} failed: " + blob.Properties.CopyStatusDescription);
-                    }
-
-                    if (blob.Properties.CopyStatus == CopyStatus.Success)
-                    {
-                        break;
-                    }
+                    return -1;
                 }
+
+                return headResult.Content.Headers.ContentLength ?? -1;
             }
         }
+    }
 
-        private static string GetBlockId(int blockNumber)
+    private async Task<long> GetGetContentLengthFromGetAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
+    {
+        using (var httpClient = _httpClientFactory.CreateClient())
         {
-            return Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("BlockId{0}", blockNumber.ToString("0000000"))));
-        }
+            httpClient.DefaultRequestHeaders.AddValues(headers);
 
-        private async Task<long> GetContentLengthAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
-        {
-            var headContentLength = await GetContentLengthFromHeadAsync(url, headers, cancellationToken);
-
-            if (headContentLength == -1)
+            using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
             {
-                return await GetGetContentLengthFromGetAsync(url, headers, cancellationToken);
-            }
-            else
-            {
-                return headContentLength;
-            }
-        }
-
-        private async Task<long> GetContentLengthFromHeadAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
-        {
-            using (var httpClient = _httpClientFactory.CreateClient())
-            {
-                using (var headRequest = new HttpRequestMessage(HttpMethod.Head, url))
+                if (!response.IsSuccessStatusCode)
                 {
-                    headers = headers?.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
-
-                    headRequest.Headers.AddValues(headers);
-
-                    using var headResult = await httpClient.SendAsync(headRequest, cancellationToken);
-
-                    if (!headResult.IsSuccessStatusCode)
-                    {
-                        return -1;
-                    }
-
-                    return headResult.Content.Headers.ContentLength ?? -1;
+                    return -1;
                 }
+
+                return response.Content.Headers.ContentLength ?? -1;
             }
         }
+    }
 
-        private async Task<long> GetGetContentLengthFromGetAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
-        {
-            using (var httpClient = _httpClientFactory.CreateClient())
-            {
-                httpClient.DefaultRequestHeaders.AddValues(headers);
+    public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
+    {
+        var container = await GetContainerAsync(dataCollectionName, cancellationToken);
+        var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
+        await blob.DeleteAsync(DeleteSnapshotsOption.None, null, cancellationToken);
+    }
 
-                using (var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead))
-                {
-                    if (!response.IsSuccessStatusCode)
-                    {
-                        return -1;
-                    }
+    public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
+    {
+        return await _azureCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
+    }
 
-                    return response.Content.Headers.ContentLength ?? -1;
-                }
-            }
-        }
+    public bool CanGarbageCollect()
+    {
+        return true;
+    }
 
-        public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
-        {
-            var container = await GetContainerAsync(dataCollectionName, cancellationToken);
-            var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
-            await blob.DeleteAsync(DeleteSnapshotsOption.None, null, cancellationToken);
-        }
+    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+    {
+        return Task.FromResult(true);
+    }
 
-        public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
-        {
-            return await _azureCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
-        }
-
-        public bool CanGarbageCollect()
-        {
-            return true;
-        }
-
-        public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
-        {
-            return Task.FromResult(true);
-        }
-
-        public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
-        {
-            var container = await GetContainerAsync(dataCollectionName, cancellationToken);
-            var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
-            await blob.UploadAsync(content);
-        }
+    public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
+    {
+        var container = await GetContainerAsync(dataCollectionName, cancellationToken);
+        var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
+        await blob.UploadAsync(content);
     }
 }

@@ -1,26 +1,25 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
 
-namespace Abmes.DataCollector.Collector.FileSystem.Destinations
+namespace Abmes.DataCollector.Collector.FileSystem.Destinations;
+
+public class FileSystemDestinationResolver : IDestinationResolver
 {
-    public class FileSystemDestinationResolver : IDestinationResolver
+    private readonly IFileSystemDestinationFactory _fileSystemDestinationFactory;
+
+    public FileSystemDestinationResolver(
+        IFileSystemDestinationFactory FileSystemDestinationFactory)
     {
-        private readonly IFileSystemDestinationFactory _fileSystemDestinationFactory;
+        _fileSystemDestinationFactory = FileSystemDestinationFactory;
+    }
 
-        public FileSystemDestinationResolver(
-            IFileSystemDestinationFactory FileSystemDestinationFactory)
-        {
-            _fileSystemDestinationFactory = FileSystemDestinationFactory;
-        }
+    public bool CanResolve(DestinationConfig destinationConfig)
+    {
+        return string.Equals(destinationConfig.DestinationType, "FileSystem");
+    }
 
-        public bool CanResolve(DestinationConfig destinationConfig)
-        {
-            return string.Equals(destinationConfig.DestinationType, "FileSystem");
-        }
-
-        public IDestination GetDestination(DestinationConfig destinationConfig)
-        {
-            return _fileSystemDestinationFactory(destinationConfig);
-        }
+    public IDestination GetDestination(DestinationConfig destinationConfig)
+    {
+        return _fileSystemDestinationFactory(destinationConfig);
     }
 }

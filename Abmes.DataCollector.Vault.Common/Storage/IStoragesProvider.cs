@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Vault.Storage
+﻿namespace Abmes.DataCollector.Vault.Storage;
+
+public interface IStoragesProvider
 {
-    public interface IStoragesProvider
-    {
-        Task<IEnumerable<IStorage>> GetStoragesAsync(CancellationToken cancellationToken);
-    }
+    Task<IEnumerable<IStorage>> GetStoragesAsync(CancellationToken cancellationToken);
 }

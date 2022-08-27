@@ -1,26 +1,25 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
 
-namespace Abmes.DataCollector.Collector.Console.Destinations
+namespace Abmes.DataCollector.Collector.Console.Destinations;
+
+public class ConsoleDestinationResolver : IDestinationResolver
 {
-    public class ConsoleDestinationResolver : IDestinationResolver
+    private readonly IConsoleDestinationFactory _webDestinationFactory;
+
+    public ConsoleDestinationResolver(
+        IConsoleDestinationFactory webDestinationFactory)
     {
-        private readonly IConsoleDestinationFactory _webDestinationFactory;
+        _webDestinationFactory = webDestinationFactory;
+    }
 
-        public ConsoleDestinationResolver(
-            IConsoleDestinationFactory webDestinationFactory)
-        {
-            _webDestinationFactory = webDestinationFactory;
-        }
+    public bool CanResolve(DestinationConfig destinationConfig)
+    {
+        return string.Equals(destinationConfig.DestinationType, "Console");
+    }
 
-        public bool CanResolve(DestinationConfig destinationConfig)
-        {
-            return string.Equals(destinationConfig.DestinationType, "Console");
-        }
-
-        public IDestination GetDestination(DestinationConfig destinationConfig)
-        {
-            return _webDestinationFactory(destinationConfig);
-        }
+    public IDestination GetDestination(DestinationConfig destinationConfig)
+    {
+        return _webDestinationFactory(destinationConfig);
     }
 }

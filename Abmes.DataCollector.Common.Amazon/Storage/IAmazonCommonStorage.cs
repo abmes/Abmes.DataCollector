@@ -1,8 +1,7 @@
 ﻿using Abmes.DataCollector.Common.Storage;
 
-namespace Abmes.DataCollector.Common.Amazon.Storage
+namespace Abmes.DataCollector.Common.Amazon.Storage;
+
+public interface IAmazonCommonStorage : ICommonStorage
 {
-    public interface IAmazonCommonStorage : ICommonStorage
-    {
-    }
 }

@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.Configuration
+﻿namespace Abmes.DataCollector.Common.Configuration;
+
+public interface IConfigProvider
 {
-    public interface IConfigProvider
-    {
-        Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken);
-    }
+    Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken);
 }

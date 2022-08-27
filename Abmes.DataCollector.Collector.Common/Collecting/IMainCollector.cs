@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Collecting
+﻿namespace Abmes.DataCollector.Collector.Common.Collecting;
+
+public interface IMainCollector
 {
-    public interface IMainCollector
-    {
-        Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken);
-    }
+    Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken);
 }

@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public interface ICollectorModeProvider
 {
-    public interface ICollectorModeProvider
-    {
-        CollectorMode GetCollectorMode();
-    }
+    CollectorMode GetCollectorMode();
 }

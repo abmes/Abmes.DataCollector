@@ -2,15 +2,14 @@
 using Abmes.DataCollector.Common.Storage;
 using Autofac;
 
-namespace Abmes.DataCollector.Common
+namespace Abmes.DataCollector.Common;
+
+public static class ContainerRegistrations
 {
-    public static class ContainerRegistrations
+    public static void RegisterFor(ContainerBuilder builder)
     {
-        public static void RegisterFor(ContainerBuilder builder)
-        {
-            builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("base");
-            builder.RegisterType<FileNameProvider>().As<IFileNameProvider>();
-            builder.RegisterType<FileInfoData>().As<IFileInfoData>();
-        }
+        builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("base");
+        builder.RegisterType<FileNameProvider>().As<IFileNameProvider>();
+        builder.RegisterType<FileInfoData>().As<IFileInfoData>();
     }
 }

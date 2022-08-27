@@ -2,13 +2,12 @@
 using Autofac;
 using Abmes.DataCollector.Common.Web.Configuration;
 
-namespace Abmes.DataCollector.Common.Web
+namespace Abmes.DataCollector.Common.Web;
+
+public static class ContainerRegistrations
 {
-    public static class ContainerRegistrations
+    public static void RegisterFor(ContainerBuilder builder)
     {
-        public static void RegisterFor(ContainerBuilder builder)
-        {
-            builder.RegisterType<ConfigLoader>().As<IConfigLoader>();
-        }
+        builder.RegisterType<ConfigLoader>().As<IConfigLoader>();
     }
 }

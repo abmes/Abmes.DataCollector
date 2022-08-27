@@ -1,27 +1,26 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
 
-namespace Abmes.DataCollector.Collector.Common.Configuration
+namespace Abmes.DataCollector.Collector.Common.Configuration;
+
+public class DestinationsConfigProvider : IDestinationsConfigProvider
 {
-    public class DestinationsConfigProvider : IDestinationsConfigProvider
+    private const string DestinationsConfigFileName = "DestinationsConfig.json";
+
+    private readonly IDestinationsJsonConfigProvider _destinationsJsonConfigProvider;
+    private readonly IConfigProvider _configProvider;
+
+    public DestinationsConfigProvider(
+        IDestinationsJsonConfigProvider destinationsJsonConfigProvider,
+        IConfigProvider configProvider)
     {
-        private const string DestinationsConfigFileName = "DestinationsConfig.json";
+        _destinationsJsonConfigProvider = destinationsJsonConfigProvider;
+        _configProvider = configProvider;
+    }
 
-        private readonly IDestinationsJsonConfigProvider _destinationsJsonConfigProvider;
-        private readonly IConfigProvider _configProvider;
-
-        public DestinationsConfigProvider(
-            IDestinationsJsonConfigProvider destinationsJsonConfigProvider,
-            IConfigProvider configProvider)
-        {
-            _destinationsJsonConfigProvider = destinationsJsonConfigProvider;
-            _configProvider = configProvider;
-        }
-
-        public async Task<IEnumerable<DestinationConfig>> GetDestinationsConfigAsync(string configSetName, CancellationToken cancellationToken)
-        {
-            var configBlobName = (configSetName + "/" + DestinationsConfigFileName).TrimStart('/');
-            var json = await _configProvider.GetConfigContentAsync(configBlobName, cancellationToken);
-            return _destinationsJsonConfigProvider.GetDestinationsConfig(json);
-        }
+    public async Task<IEnumerable<DestinationConfig>> GetDestinationsConfigAsync(string configSetName, CancellationToken cancellationToken)
+    {
+        var configBlobName = (configSetName + "/" + DestinationsConfigFileName).TrimStart('/');
+        var json = await _configProvider.GetConfigContentAsync(configBlobName, cancellationToken);
+        return _destinationsJsonConfigProvider.GetDestinationsConfig(json);
     }
 }

@@ -1,49 +1,48 @@
 ﻿using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.ConsoleApp.Logging
-{
-    class CollectorConsoleLoggingProvider : ILoggerProvider
-    {
-        public void Dispose() { }
+namespace Abmes.DataCollector.Collector.ConsoleApp.Logging;
 
-        public ILogger CreateLogger(string categoryName)
+class CollectorConsoleLoggingProvider : ILoggerProvider
+{
+    public void Dispose() { }
+
+    public ILogger CreateLogger(string categoryName)
+    {
+        return new CollectorConsoleLogger(categoryName);
+    }
+
+    public class CollectorConsoleLogger : ILogger
+    {
+        private readonly string _categoryName;
+
+        public CollectorConsoleLogger(string categoryName)
         {
-            return new CollectorConsoleLogger(categoryName);
+            _categoryName = categoryName;
         }
 
-        public class CollectorConsoleLogger : ILogger
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
         {
-            private readonly string _categoryName;
-
-            public CollectorConsoleLogger(string categoryName)
+            if (!IsEnabled(logLevel))
             {
-                _categoryName = categoryName;
+                return;
             }
 
-            public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+            System.Console.WriteLine($"{formatter(state, exception)}");
+
+            if (exception != null)
             {
-                if (!IsEnabled(logLevel))
-                {
-                    return;
-                }
-
-                System.Console.WriteLine($"{formatter(state, exception)}");
-
-                if (exception != null)
-                {
-                    System.Console.WriteLine(exception.StackTrace.ToString());
-                }
+                System.Console.WriteLine(exception.StackTrace.ToString());
             }
+        }
 
-            public bool IsEnabled(LogLevel logLevel)
-            {
-                return (logLevel >= LogLevel.Information);
-            }
+        public bool IsEnabled(LogLevel logLevel)
+        {
+            return (logLevel >= LogLevel.Information);
+        }
 
-            public IDisposable BeginScope<TState>(TState state)
-            {
-                return null;
-            }
+        public IDisposable BeginScope<TState>(TState state)
+        {
+            return null;
         }
     }
 }

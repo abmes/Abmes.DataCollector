@@ -1,15 +1,14 @@
-﻿namespace Abmes.DataCollector.Common.Storage
+﻿namespace Abmes.DataCollector.Common.Storage;
+
+public interface IFileInfoData
 {
-    public interface IFileInfoData
-    {
-        string Name { get; }
+    string Name { get; }
 
-        long? Size { get; }
+    long? Size { get; }
 
-        string MD5 { get; }
+    string MD5 { get; }
 
-        string GroupId { get; }
+    string GroupId { get; }
 
-        string StorageType { get; }
-    }
+    string StorageType { get; }
 }

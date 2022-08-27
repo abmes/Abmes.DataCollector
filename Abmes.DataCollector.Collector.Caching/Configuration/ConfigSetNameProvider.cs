@@ -1,26 +1,25 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 
-namespace Abmes.DataCollector.Collector.Caching.Configuration
+namespace Abmes.DataCollector.Collector.Caching.Configuration;
+
+public class ConfigSetNameProvider : IConfigSetNameProvider
 {
-    public class ConfigSetNameProvider : IConfigSetNameProvider
+    private readonly IConfigSetNameProvider _configSetNameProvider;
+    private string _configSetName;
+
+    public ConfigSetNameProvider(
+        IConfigSetNameProvider configSetNameProvider)
     {
-        private readonly IConfigSetNameProvider _configSetNameProvider;
-        private string _configSetName;
+        _configSetNameProvider = configSetNameProvider;
+    }
 
-        public ConfigSetNameProvider(
-            IConfigSetNameProvider configSetNameProvider)
+    public string GetConfigSetName()
+    {
+        if (string.IsNullOrEmpty(_configSetName))
         {
-            _configSetNameProvider = configSetNameProvider;
+            _configSetName = _configSetNameProvider.GetConfigSetName();
         }
 
-        public string GetConfigSetName()
-        {
-            if (string.IsNullOrEmpty(_configSetName))
-            {
-                _configSetName = _configSetNameProvider.GetConfigSetName();
-            }
-
-            return _configSetName;
-        }
+        return _configSetName;
     }
 }

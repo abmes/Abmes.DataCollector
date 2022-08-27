@@ -1,30 +1,29 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
 
-namespace Abmes.DataCollector.Collector.Logging.Destinations
+namespace Abmes.DataCollector.Collector.Logging.Destinations;
+
+public class LoggingDestinationResolver : IDestinationResolver
 {
-    public class LoggingDestinationResolver : IDestinationResolver
+    private readonly IDestinationResolver _destinationResolver;
+    private readonly ILoggingDestinationFactory _loggingDestinationFactory;
+
+    public LoggingDestinationResolver(
+        IDestinationResolver DestinationResolver,
+        ILoggingDestinationFactory loggingDestinationFactory)
     {
-        private readonly IDestinationResolver _destinationResolver;
-        private readonly ILoggingDestinationFactory _loggingDestinationFactory;
+        _destinationResolver = DestinationResolver;
+        _loggingDestinationFactory = loggingDestinationFactory;
+    }
 
-        public LoggingDestinationResolver(
-            IDestinationResolver DestinationResolver,
-            ILoggingDestinationFactory loggingDestinationFactory)
-        {
-            _destinationResolver = DestinationResolver;
-            _loggingDestinationFactory = loggingDestinationFactory;
-        }
+    public bool CanResolve(DestinationConfig destinationConfig)
+    {
+        return _destinationResolver.CanResolve(destinationConfig);
+    }
 
-        public bool CanResolve(DestinationConfig destinationConfig)
-        {
-            return _destinationResolver.CanResolve(destinationConfig);
-        }
-
-        public IDestination GetDestination(DestinationConfig destinationConfig)
-        {
-            var destination = _destinationResolver.GetDestination(destinationConfig);
-            return _loggingDestinationFactory(destination);
-        }
+    public IDestination GetDestination(DestinationConfig destinationConfig)
+    {
+        var destination = _destinationResolver.GetDestination(destinationConfig);
+        return _loggingDestinationFactory(destination);
     }
 }

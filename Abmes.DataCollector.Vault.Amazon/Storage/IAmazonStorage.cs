@@ -1,8 +1,7 @@
 ﻿using Abmes.DataCollector.Vault.Storage;
 
-namespace Abmes.DataCollector.Vault.Amazon.Storage
+namespace Abmes.DataCollector.Vault.Amazon.Storage;
+
+public interface IAmazonStorage : IStorage
 {
-    public interface IAmazonStorage : IStorage
-    {
-    }
 }

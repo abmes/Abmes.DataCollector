@@ -1,9 +1,8 @@
-﻿namespace Abmes.DataCollector.Common.Storage
+﻿namespace Abmes.DataCollector.Common.Storage;
+
+public interface ICommonStorage
 {
-    public interface ICommonStorage
-    {
-        string StorageType { get; }
-        Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken);
-        Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken);
-    }
+    string StorageType { get; }
+    Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken);
+    Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken);
 }

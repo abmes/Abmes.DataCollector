@@ -3,65 +3,64 @@ using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 using System.Diagnostics.Contracts;
 
-namespace Abmes.DataCollector.Common.Azure.Configuration
+namespace Abmes.DataCollector.Common.Azure.Configuration;
+
+public class ConfigLoader : IConfigLoader
 {
-    public class ConfigLoader : IConfigLoader
+    private const string AzureConfigStorageConnectionStringName = "AzureConfigStorage";
+
+    private readonly IConfiguration _configuration;
+    private readonly IAzureAppSettings _azureAppSettings;
+
+    public ConfigLoader(
+        IConfiguration configuration,
+        IAzureAppSettings azureAppSettings)
     {
-        private const string AzureConfigStorageConnectionStringName = "AzureConfigStorage";
+        _configuration = configuration;
+        _azureAppSettings = azureAppSettings;
+    }
 
-        private readonly IConfiguration _configuration;
-        private readonly IAzureAppSettings _azureAppSettings;
+    public bool CanLoadFromStorage(string storageType)
+    {
+        return string.Equals(storageType, "Azure", StringComparison.InvariantCultureIgnoreCase);
+    }
 
-        public ConfigLoader(
-            IConfiguration configuration,
-            IAzureAppSettings azureAppSettings)
+    public bool CanLoadFromLocation(string location)
+    {
+        return false;
+    }
+
+    public Task<string> GetConfigContentAsync(string configName, string location, CancellationToken cancellationToken)
+    {
+        throw new NotImplementedException();
+    }
+
+    public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
+    {
+        string connectionString = GetAzureStorageDbCollectConfigConnectionString();
+
+        var container = new BlobContainerClient(connectionString, _azureAppSettings.AzureConfigStorageContainerName);
+
+        var blob = container.GetBlobClient(configName);
+
+        using (var contentStream = new MemoryStream())
         {
-            _configuration = configuration;
-            _azureAppSettings = azureAppSettings;
-        }
+            await blob.DownloadToAsync(contentStream, cancellationToken);
+            contentStream.Position = 0;
 
-        public bool CanLoadFromStorage(string storageType)
-        {
-            return string.Equals(storageType, "Azure", StringComparison.InvariantCultureIgnoreCase);
-        }
-
-        public bool CanLoadFromLocation(string location)
-        {
-            return false;
-        }
-
-        public Task<string> GetConfigContentAsync(string configName, string location, CancellationToken cancellationToken)
-        {
-            throw new NotImplementedException();
-        }
-
-        public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
-        {
-            string connectionString = GetAzureStorageDbCollectConfigConnectionString();
-
-            var container = new BlobContainerClient(connectionString, _azureAppSettings.AzureConfigStorageContainerName);
-
-            var blob = container.GetBlobClient(configName);
-
-            using (var contentStream = new MemoryStream())
+            using (var reader = new StreamReader(contentStream))
             {
-                await blob.DownloadToAsync(contentStream, cancellationToken);
-                contentStream.Position = 0;
-
-                using (var reader = new StreamReader(contentStream))
-                {
-                    return await reader.ReadToEndAsync();
-                }
+                return await reader.ReadToEndAsync();
             }
         }
+    }
 
-        private string GetAzureStorageDbCollectConfigConnectionString()
-        {
-            var result = _configuration.GetConnectionString(AzureConfigStorageConnectionStringName);
+    private string GetAzureStorageDbCollectConfigConnectionString()
+    {
+        var result = _configuration.GetConnectionString(AzureConfigStorageConnectionStringName);
 
-            Contract.Assert(!string.IsNullOrEmpty(result));
+        Contract.Assert(!string.IsNullOrEmpty(result));
 
-            return result;
-        }
+        return result;
     }
 }

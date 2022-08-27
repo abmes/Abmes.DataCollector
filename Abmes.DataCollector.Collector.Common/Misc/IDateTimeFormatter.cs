@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Misc
+﻿namespace Abmes.DataCollector.Collector.Common.Misc;
+
+public interface IDateTimeFormatter
 {
-    public interface IDateTimeFormatter
-    {
-        string FormatDateTime(string format, string prefix, string suffix, DateTime dateTime);
-    }
+    string FormatDateTime(string format, string prefix, string suffix, DateTime dateTime);
 }

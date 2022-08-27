@@ -1,9 +1,8 @@
 ﻿using Abmes.DataCollector.Vault.Configuration;
 
-namespace Abmes.DataCollector.Vault.Storage
+namespace Abmes.DataCollector.Vault.Storage;
+
+public interface IStorageResolverProvider
 {
-    public interface IStorageResolverProvider
-    {
-        IStorageResolver GetResolver(StorageConfig storageConfig);
-    }
+    IStorageResolver GetResolver(StorageConfig storageConfig);
 }

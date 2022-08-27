@@ -1,8 +1,7 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Collecting
+﻿namespace Abmes.DataCollector.Collector.Common.Collecting;
+
+public class DataPrepareResult
 {
-    public class DataPrepareResult
-    {
-        public bool Finished { get; set; }
-        public bool HasErrors { get; set; }
-    }
+    public bool Finished { get; set; }
+    public bool HasErrors { get; set; }
 }

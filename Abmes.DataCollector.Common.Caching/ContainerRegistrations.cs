@@ -2,16 +2,15 @@
 using Abmes.DataCollector.Common.Caching.Cache;
 using Abmes.DataCollector.Common.Configuration;
 
-namespace Abmes.DataCollector.Common.Caching
-{
-    public static class ContainerRegistrations
-    {
-        public static void RegisterFor(ContainerBuilder builder)
-        {
-            builder.RegisterType<ConfigFileCache>().As<IConfigFileCache>().SingleInstance();
+namespace Abmes.DataCollector.Common.Caching;
 
-            builder.RegisterType<Caching.Configuration.ConfigFileProvider>().Named<IConfigProvider>("CachingDecorator");
-            builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "logging").As<IConfigProvider>();
-        }
+public static class ContainerRegistrations
+{
+    public static void RegisterFor(ContainerBuilder builder)
+    {
+        builder.RegisterType<ConfigFileCache>().As<IConfigFileCache>().SingleInstance();
+
+        builder.RegisterType<Caching.Configuration.ConfigFileProvider>().Named<IConfigProvider>("CachingDecorator");
+        builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "logging").As<IConfigProvider>();
     }
 }

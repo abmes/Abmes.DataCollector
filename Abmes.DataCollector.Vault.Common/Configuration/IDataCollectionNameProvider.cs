@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration
+﻿namespace Abmes.DataCollector.Vault.Configuration;
+
+public interface IDataCollectionNameProvider
 {
-    public interface IDataCollectionNameProvider
-    {
-        string GetDataCollectionName();
-    }
+    string GetDataCollectionName();
 }

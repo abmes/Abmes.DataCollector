@@ -1,9 +1,8 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 
-namespace Abmes.DataCollector.Collector.Common.Destinations
+namespace Abmes.DataCollector.Collector.Common.Destinations;
+
+public interface IDestinationResolverProvider
 {
-    public interface IDestinationResolverProvider
-    {
-        IDestinationResolver GetResolver(DestinationConfig destinationConfig);
-    }
+    IDestinationResolver GetResolver(DestinationConfig destinationConfig);
 }

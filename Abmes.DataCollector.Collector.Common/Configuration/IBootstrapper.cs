@@ -1,12 +1,11 @@
-﻿namespace Abmes.DataCollector.Collector.Common.Configuration
-{
-    public interface IBootstrapper
-    {
-        string ConfigSetName { get; }
-        string DataCollectionNames { get; }
-        CollectorMode CollectorMode { get; }
-        string TimeFilter { get; }
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-        void SetConfig(string configSetName, string dataCollectionNames, string collectorMode, string timeFilter);
-    }
+public interface IBootstrapper
+{
+    string ConfigSetName { get; }
+    string DataCollectionNames { get; }
+    CollectorMode CollectorMode { get; }
+    string TimeFilter { get; }
+
+    void SetConfig(string configSetName, string dataCollectionNames, string collectorMode, string timeFilter);
 }

@@ -1,7 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.Configuration
+﻿namespace Abmes.DataCollector.Common.Configuration;
+
+public interface IConfigLocationProvider
 {
-    public interface IConfigLocationProvider
-    {
-        string GetConfigLocation();
-    }
+    string GetConfigLocation();
 }

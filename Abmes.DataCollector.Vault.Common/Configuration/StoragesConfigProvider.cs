@@ -1,34 +1,33 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
 using Abmes.DataCollector.Vault.Configuration;
 
-namespace Abmes.DataCollector.Vault.Common.Configuration
+namespace Abmes.DataCollector.Vault.Common.Configuration;
+
+public class StoragesConfigProvider : IStoragesConfigProvider
 {
-    public class StoragesConfigProvider : IStoragesConfigProvider
+    private const string StorageConfigName = "StoragesConfig.json";
+
+    private readonly IStoragesJsonConfigProvider _storageJsonConfigProvider;
+    private readonly IConfigProvider _configProvider;
+
+    public StoragesConfigProvider(
+        IStoragesJsonConfigProvider storageJsonConfigProvider,
+        IConfigProvider configProvider)
     {
-        private const string StorageConfigName = "StoragesConfig.json";
+        _storageJsonConfigProvider = storageJsonConfigProvider;
+        _configProvider = configProvider;
+    }
 
-        private readonly IStoragesJsonConfigProvider _storageJsonConfigProvider;
-        private readonly IConfigProvider _configProvider;
+    public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
+    {
+        var json = await _configProvider.GetConfigContentAsync(StorageConfigName, cancellationToken);
+        var result = _storageJsonConfigProvider.GetStorageConfigs(json);
 
-        public StoragesConfigProvider(
-            IStoragesJsonConfigProvider storageJsonConfigProvider,
-            IConfigProvider configProvider)
+        if (result.Any(x => string.IsNullOrEmpty(x.StorageType)))
         {
-            _storageJsonConfigProvider = storageJsonConfigProvider;
-            _configProvider = configProvider;
+            throw new Exception("Invalid StorageType");
         }
 
-        public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
-        {
-            var json = await _configProvider.GetConfigContentAsync(StorageConfigName, cancellationToken);
-            var result = _storageJsonConfigProvider.GetStorageConfigs(json);
-
-            if (result.Any(x => string.IsNullOrEmpty(x.StorageType)))
-            {
-                throw new Exception("Invalid StorageType");
-            }
-
-            return result;
-        }
+        return result;
     }
 }
