@@ -169,8 +169,6 @@ public class AmazonDestination : IAmazonDestination
 
         using var fileTransferUtility = new TransferUtility(_amazonS3);
 
-        fileTransferUtility.Upload(content, DestinationConfig.RootBase(), key);
-
-        await Task.CompletedTask;
+        await fileTransferUtility.UploadAsync(content, DestinationConfig.RootBase(), key, cancellationToken);
     }
 }
