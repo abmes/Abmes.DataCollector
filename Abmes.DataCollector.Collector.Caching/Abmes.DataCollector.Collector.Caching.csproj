@@ -14,8 +14,4 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Cache\" />
-  </ItemGroup>
-
 </Project>
