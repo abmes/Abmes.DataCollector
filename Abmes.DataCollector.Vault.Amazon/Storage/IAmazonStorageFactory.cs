@@ -2,4 +2,4 @@
 
 namespace Abmes.DataCollector.Vault.Amazon.Storage;
 
-public delegate IAmazonStorage IAmazonStorageFactory(StorageConfig storageConfig);
+public delegate IAmazonStorage IAmazonStorageFactory(IStorageConfig storageConfig);

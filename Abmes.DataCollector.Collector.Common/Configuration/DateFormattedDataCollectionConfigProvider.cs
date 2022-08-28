@@ -14,28 +14,35 @@ public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataColle
 
     public DataCollectionConfig GetConfig(DataCollectionConfig config)
     {
-        return 
-            new DataCollectionConfig(
-                config.DataCollectionName,
-                config.DataGroupName,
-                config.InitialDelay,
-                FormatDateTime(config.PrepareUrl), 
-                config.PrepareHeaders, config.PrepareHttpMethod, config.PrepareFinishedPollUrl, config.PrepareFinishedPollHeaders, config.PrepareFinishedPollInterval, config.PrepareDuration,
-                FormatDateTime(config.CollectFileIdentifiersUrl),
-                config.CollectFileIdentifiersHeaders,
-                FormatDateTime(config.CollectUrl.Replace("[filename]", "(filename)")).Replace("(filename)", "[filename]"),
-                config.CollectHeaders, config.CollectParallelFileCount, config.CollectTimeout, config.CollectFinishWait, 
-                config.DestinationIds,
-                config.ParallelDestinationCount,
-                config.MaxFileCount,
-                config.LoginName,
-                config.LoginSecret,
-                config.IdentityServiceUrl,
-                config.IdentityServiceClientId,
-                config.IdentityServiceClientSecret,
-                config.IdentityServiceScope,
-                config.Values
-            );
+        return new DataCollectionConfig(
+            DataCollectionName: config.DataCollectionName,
+            DataGroupName: config.DataGroupName,
+            InitialDelay: config.InitialDelay,
+            PrepareUrl: FormatDateTime(config.PrepareUrl),
+            PrepareHeaders: config.PrepareHeaders,
+            PrepareHttpMethod: config.PrepareHttpMethod,
+            PrepareFinishedPollUrl: config.PrepareFinishedPollUrl,
+            PrepareFinishedPollHeaders: config.PrepareFinishedPollHeaders,
+            PrepareFinishedPollInterval: config.PrepareFinishedPollInterval,
+            PrepareDuration: config.PrepareDuration,
+            CollectFileIdentifiersUrl: FormatDateTime(config.CollectFileIdentifiersUrl),
+            CollectFileIdentifiersHeaders: config.CollectFileIdentifiersHeaders,
+            CollectUrl: FormatDateTime(config.CollectUrl.Replace("[filename]", "(filename)")).Replace("(filename)", "[filename]"),
+            CollectHeaders: config.CollectHeaders,
+            CollectParallelFileCount: config.CollectParallelFileCount,
+            CollectTimeout: config.CollectTimeout,
+            CollectFinishWait: config.CollectFinishWait,
+            DestinationIds: config.DestinationIds,
+            ParallelDestinationCount: config.ParallelDestinationCount,
+            MaxFileCount: config.MaxFileCount,
+            LoginName: config.LoginName,
+            LoginSecret: config.LoginSecret,
+            IdentityServiceUrl: config.IdentityServiceUrl,
+            IdentityServiceClientId: config.IdentityServiceClientId,
+            IdentityServiceClientSecret: config.IdentityServiceClientSecret,
+            IdentityServiceScope: config.IdentityServiceScope,
+            Values: config.Values
+        );
     }
 
     private string FormatDateTime(string url)

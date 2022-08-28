@@ -12,7 +12,7 @@ public class ConfigLocationProvider : IConfigLocationProvider
         _bootstrapper = bootstrapper;
     }
 
-    public string GetConfigLocation()
+    public string? GetConfigLocation()
     {
         var args = Environment.GetCommandLineArgs();
 

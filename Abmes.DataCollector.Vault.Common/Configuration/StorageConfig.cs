@@ -1,38 +1,35 @@
-﻿namespace Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Utils;
 
-public class StorageConfig
+namespace Abmes.DataCollector.Vault.Configuration;
+
+public record StorageConfig
+(
+    string? StorageType,
+    string? LoginName,
+    string? LoginSecret,
+    string? Root
+)
+: IStorageConfig
 {
-    public string StorageType { get; set; }
-    public string LoginName { get; set; }
-    public string LoginSecret { get; set; }
-    public string Root { get; set; }
+    string IStorageConfig.StorageType => Ensure.NotNullOrEmpty(StorageType);
 
-    public StorageConfig()
-    {
-        // needed for deserialization
-    }
-
-    // constructor needed for json deserialization
-    public StorageConfig(string storageType, string loginName, string loginSecret, string root)
-    {
-        StorageType = storageType;
-        LoginName = loginName;
-        LoginSecret = loginSecret;
-        Root = root;
-    }
-
-    public string RootBase()
+    public string? RootBase()
     {
         return Root?.Split('/', '\\').FirstOrDefault();
     }
 
-    public string RootDir(char separator, bool includeTrailingSeparator)
+    public string? RootDir(char separator, bool includeTrailingSeparator)
     {
-        var result = string.Join(separator, Root?.Split('/', '\\').Skip(1));
+        if (Root is null)
+        {
+            return null;
+        }
+
+        var result = string.Join(separator, Root.Split('/', '\\').Skip(1));
 
         if (includeTrailingSeparator && (!string.IsNullOrEmpty(result)))
         {
-            result = result + separator;
+            result += separator;
         }
 
         return result;

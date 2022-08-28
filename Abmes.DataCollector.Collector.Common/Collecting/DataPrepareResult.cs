@@ -1,7 +1,7 @@
 ﻿namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class DataPrepareResult
-{
-    public bool Finished { get; set; }
-    public bool HasErrors { get; set; }
-}
+public record DataPrepareResult
+(
+    bool Finished,
+    bool HasErrors
+);

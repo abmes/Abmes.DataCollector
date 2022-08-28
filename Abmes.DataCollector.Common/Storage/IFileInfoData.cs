@@ -6,9 +6,9 @@ public interface IFileInfoData
 
     long? Size { get; }
 
-    string MD5 { get; }
+    string? MD5 { get; }
 
-    string GroupId { get; }
+    string? GroupId { get; }
 
-    string StorageType { get; }
+    string? StorageType { get; }
 }

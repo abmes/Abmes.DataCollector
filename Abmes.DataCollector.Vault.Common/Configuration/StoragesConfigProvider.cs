@@ -18,7 +18,7 @@ public class StoragesConfigProvider : IStoragesConfigProvider
         _configProvider = configProvider;
     }
 
-    public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<IStorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
     {
         var json = await _configProvider.GetConfigContentAsync(StorageConfigName, cancellationToken);
         var result = _storageJsonConfigProvider.GetStorageConfigs(json);

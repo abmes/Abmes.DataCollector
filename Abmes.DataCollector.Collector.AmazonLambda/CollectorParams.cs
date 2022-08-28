@@ -1,9 +1,9 @@
 ﻿namespace Abmes.DataCollector.Collector.AmazonLambda;
 
-public class CollectorParams
+public record CollectorParams
 {
-    public string ConfigSetName { get; set; }
-    public string DataCollectionNames { get; set; }
-    public string CollectorMode { get; set; }
-    public string TimeFilter { get; set; }
+    public string? ConfigSetName { get; init; }
+    public string? DataCollectionNames { get; init; }
+    public string? CollectorMode { get; init; }
+    public string? TimeFilter { get; init; }
 }

@@ -12,7 +12,7 @@ public class StorageProvider : IStorageProvider
         _storageResolverProvider = storageResolverProvider;
     }
 
-    public IStorage GetStorage(StorageConfig storageConfig)
+    public IStorage GetStorage(IStorageConfig storageConfig)
     {
         var resolver = _storageResolverProvider.GetResolver(storageConfig);
         return resolver.GetStorage(storageConfig);

@@ -23,7 +23,7 @@ public class MainService : IMainService
         _timeFilterProcessor = timeFilterProcessor;
     }
 
-    public async Task<int> MainAsync(CancellationToken cancellationToken, Action<IBootstrapper> bootstrap = null)
+    public async Task<int> MainAsync(CancellationToken cancellationToken, Action<IBootstrapper>? bootstrap = null)
     {
         try
         {

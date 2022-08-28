@@ -17,7 +17,7 @@ public class Storage : ILoggingStorage
         _logger = logger;
     }
 
-    public StorageConfig StorageConfig
+    public IStorageConfig StorageConfig
     {
         get => _storage.StorageConfig;
     }

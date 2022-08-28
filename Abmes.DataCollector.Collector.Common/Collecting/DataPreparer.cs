@@ -74,7 +74,7 @@ public class DataPreparer : IDataPreparer
             catch
             {
                 // try again after pollInterval
-                prepareResult = new DataPrepareResult { Finished = false, HasErrors = true };
+                prepareResult = new DataPrepareResult(Finished: false, HasErrors: true);
             }
 
             if ((!prepareResult.Finished) &&

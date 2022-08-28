@@ -9,10 +9,10 @@ public class FileSystemStorage : IFileSystemStorage
     private readonly IVaultAppSettings _vaultAppSettings;
     private readonly IFileSystemCommonStorage _fileSystemCommonStorage;
 
-    public StorageConfig StorageConfig { get; }
+    public IStorageConfig StorageConfig { get; }
 
     public FileSystemStorage(
-        StorageConfig storageConfig,
+        IStorageConfig storageConfig,
         IVaultAppSettings vaultAppSettings,
         IFileSystemCommonStorage FileSystemCommonStorage) 
     {

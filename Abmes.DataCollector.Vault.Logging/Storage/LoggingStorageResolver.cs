@@ -16,12 +16,12 @@ public class LoggingStorageResolver : IStorageResolver
         _loggingStorageFactory = loggingStorageFactory;
     }
 
-    public bool CanResolve(StorageConfig storageConfig)
+    public bool CanResolve(IStorageConfig storageConfig)
     {
         return _storageResolver.CanResolve(storageConfig);
     }
 
-    public IStorage GetStorage(StorageConfig storageConfig)
+    public IStorage GetStorage(IStorageConfig storageConfig)
     {
         var storage = _storageResolver.GetStorage(storageConfig);
         return _loggingStorageFactory(storage);

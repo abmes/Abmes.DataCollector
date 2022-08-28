@@ -13,12 +13,12 @@ public class FileSystemStorageResolver : IStorageResolver
         _fileSystemStorageFactory = fileSystemStorageFactory;
     }
 
-    public bool CanResolve(StorageConfig storageConfig)
+    public bool CanResolve(IStorageConfig storageConfig)
     {
         return string.Equals(storageConfig.StorageType, "FileSystem");
     }
 
-    public IStorage GetStorage(StorageConfig storageConfig)
+    public IStorage GetStorage(IStorageConfig storageConfig)
     {
         return _fileSystemStorageFactory(storageConfig);
     }

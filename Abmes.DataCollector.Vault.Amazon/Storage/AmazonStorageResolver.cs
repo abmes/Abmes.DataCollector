@@ -13,12 +13,12 @@ public class AmazonStorageResolver : IStorageResolver
         _amazonStorageFactory = amazonStorageFactory;
     }
 
-    public bool CanResolve(StorageConfig storageConfig)
+    public bool CanResolve(IStorageConfig storageConfig)
     {
         return string.Equals(storageConfig.StorageType, "Amazon");
     }
 
-    public IStorage GetStorage(StorageConfig storageConfig)
+    public IStorage GetStorage(IStorageConfig storageConfig)
     {
         return _amazonStorageFactory(storageConfig);
     }

@@ -2,7 +2,7 @@
 
 public class EmptyConfigLocationProvider : IConfigLocationProvider
 {
-    public string GetConfigLocation()
+    public string? GetConfigLocation()
     {
         return null;
     }

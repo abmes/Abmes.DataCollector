@@ -2,5 +2,5 @@
 
 public interface IConfigLocationProvider
 {
-    string GetConfigLocation();
+    string? GetConfigLocation();
 }

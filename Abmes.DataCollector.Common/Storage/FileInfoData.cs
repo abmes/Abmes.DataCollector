@@ -2,27 +2,20 @@
 
 namespace Abmes.DataCollector.Common.Storage;
 
-public class FileInfoData : IFileInfoData
-{
-    public string Name { get; }
+public record FileInfoData
+(
+    // todo: properties should not be nullable. they are nullable because of dual usage of the class. Name-only usages should be refactored to different methods returning return strings
+    // todo: immutable record, no interface. no factory
+    string Name,
 
-    public long? Size { get; }
+    long? Size,
 
-    [JsonPropertyName("md5")]
-    public string MD5 { get; }
+    [property: JsonPropertyName("md5")]
+    string? MD5,
 
-    [JsonPropertyName("group")]
-    public string GroupId { get; }
+    [property: JsonPropertyName("group")]
+    string? GroupId,
 
-    [JsonPropertyName("storage")]
-    public string StorageType { get; }
-
-    public FileInfoData(string name, long? size, string md5, string groupId, string storageType)
-    {
-        Name = name;
-        Size = size;
-        MD5 = md5;
-        GroupId = groupId;
-        StorageType = storageType;
-    }
-}
+    [property: JsonPropertyName("storage")]
+    string? StorageType
+);

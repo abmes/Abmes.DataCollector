@@ -1,6 +1,7 @@
 ﻿using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using Abmes.DataCollector.Collector.Common.Misc;
+using Newtonsoft.Json.Linq;
 using System.Diagnostics.Contracts;
 using Abmes.DataCollector.Utils;
 using System.Collections.Concurrent;
@@ -186,6 +187,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
         else
         {
+            // todo: use System.Text.Json instead of Newtonsoft.Json
             var files = JArray.Parse(collectFileInfosJson) as JArray;
             var hasResult = false;
             foreach (var file in files)

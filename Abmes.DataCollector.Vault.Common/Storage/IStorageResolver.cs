@@ -4,6 +4,6 @@ namespace Abmes.DataCollector.Vault.Storage;
 
 public interface IStorageResolver
 {
-    IStorage GetStorage(StorageConfig storageConfig);
-    bool CanResolve(StorageConfig storageConfig);
+    IStorage GetStorage(IStorageConfig storageConfig);
+    bool CanResolve(IStorageConfig storageConfig);
 }

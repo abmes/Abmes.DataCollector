@@ -37,7 +37,7 @@ public class Startup
             LoggingConfigurator.Configure(loggingBuilder);
         });
 
-        var identityServerAuthenticationSettings = 
+        IIdentityServerAuthenticationSettings identityServerAuthenticationSettings = 
                 Configuration
                 .GetSection("IdentityServerAuthenticationSettings")
                 .Get<IdentityServerAuthenticationSettings>();
