@@ -3,15 +3,13 @@
 namespace Abmes.DataCollector.Vault.Configuration;
 
 public record StorageConfig
-(
-    string? StorageType,
-    string? LoginName,
-    string? LoginSecret,
-    string? Root
-)
-: IStorageConfig  // todo: interface not needed
 {
-    string IStorageConfig.StorageType => Ensure.NotNullOrEmpty(StorageType);
+    private string? _storageType;
+    public string StorageType { get => Ensure.NotNullOrEmpty(_storageType); init => _storageType = value; }
+
+    public string? LoginName { get; init; }
+    public string? LoginSecret { get; init; }
+    public string? Root { get; init; }
 
     public string RootBase()
     {

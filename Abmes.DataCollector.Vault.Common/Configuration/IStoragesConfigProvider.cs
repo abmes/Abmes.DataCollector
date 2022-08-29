@@ -2,5 +2,5 @@
 
 public interface IStoragesConfigProvider
 {
-    Task<IEnumerable<IStorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken);
+    Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken);
 }

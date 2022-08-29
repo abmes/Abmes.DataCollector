@@ -2,4 +2,4 @@
 
 namespace Abmes.DataCollector.Vault.Azure.Storage;
 
-public delegate IAzureStorage IAzureStorageFactory(IStorageConfig storageConfig);
+public delegate IAzureStorage IAzureStorageFactory(StorageConfig storageConfig);

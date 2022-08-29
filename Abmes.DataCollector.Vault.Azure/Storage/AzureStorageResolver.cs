@@ -13,12 +13,12 @@ public class AzureStorageResolver : IStorageResolver
         _AzureStorageFactory = AzureStorageFactory;
     }
 
-    public bool CanResolve(IStorageConfig storageConfig)
+    public bool CanResolve(StorageConfig storageConfig)
     {
         return string.Equals(storageConfig.StorageType, "Azure");
     }
 
-    public IStorage GetStorage(IStorageConfig storageConfig)
+    public IStorage GetStorage(StorageConfig storageConfig)
     {
         return _AzureStorageFactory(storageConfig);
     }

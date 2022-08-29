@@ -2,5 +2,5 @@
 
 public interface IStoragesJsonConfigProvider
 {
-    IEnumerable<IStorageConfig> GetStorageConfigs(string json);
+    IEnumerable<StorageConfig> GetStorageConfigs(string json);
 }

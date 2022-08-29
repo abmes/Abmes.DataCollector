@@ -4,5 +4,5 @@ namespace Abmes.DataCollector.Vault.Storage;
 
 public interface IStorageProvider
 {
-    IStorage GetStorage(IStorageConfig storageConfig);
+    IStorage GetStorage(StorageConfig storageConfig);
 }

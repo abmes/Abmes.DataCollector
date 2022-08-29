@@ -11,10 +11,10 @@ public class AzureStorage : IAzureStorage
     private readonly IVaultAppSettings _vaultAppSettings;
     private readonly IAzureCommonStorage _azureCommonStorage;
 
-    public IStorageConfig StorageConfig { get; }
+    public StorageConfig StorageConfig { get; }
 
     public AzureStorage(
-        IStorageConfig storageConfig,
+        StorageConfig storageConfig,
         IVaultAppSettings vaultAppSettings,
         IAzureCommonStorage azureCommonStorage)
     {

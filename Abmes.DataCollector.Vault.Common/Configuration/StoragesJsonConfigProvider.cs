@@ -4,9 +4,9 @@ namespace Abmes.DataCollector.Vault.Configuration;
 
 public class StoragesJsonConfigProvider : IStoragesJsonConfigProvider
 {
-    public IEnumerable<IStorageConfig> GetStorageConfigs(string json)
+    public IEnumerable<StorageConfig> GetStorageConfigs(string json)
     {
         var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        return JsonSerializer.Deserialize<IEnumerable<StorageConfig>>(json, options) ?? Enumerable.Empty<IStorageConfig>();
+        return JsonSerializer.Deserialize<IEnumerable<StorageConfig>>(json, options) ?? Enumerable.Empty<StorageConfig>();
     }
 }

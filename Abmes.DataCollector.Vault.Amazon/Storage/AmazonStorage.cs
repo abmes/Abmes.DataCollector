@@ -12,10 +12,10 @@ public class AmazonStorage : IAmazonStorage
     private readonly IAmazonS3 _amazonS3;
     private readonly IAmazonCommonStorage _amazonCommonStorage;
 
-    public IStorageConfig StorageConfig { get; }
+    public StorageConfig StorageConfig { get; }
 
     public AmazonStorage(
-        IStorageConfig storageConfig,
+        StorageConfig storageConfig,
         IVaultAppSettings vaultAppSettings,
         IAmazonS3 amazonS3,
         IAmazonCommonStorage amazonCommonStorage) 

@@ -2,4 +2,4 @@
 
 namespace Abmes.DataCollector.Vault.FileSystem.Storage;
 
-public delegate IFileSystemStorage IFileSystemStorageFactory(IStorageConfig storageConfig);
+public delegate IFileSystemStorage IFileSystemStorageFactory(StorageConfig storageConfig);

@@ -13,7 +13,7 @@ public class StorageConfigProvider : IStoragesConfigProvider
         _logger = logger;
         _destinationsConfigProvider = destinationsConfigProvider;
     }
-    public async Task<IEnumerable<IStorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
     {
         _logger.LogTrace("Started getting storage config");
 

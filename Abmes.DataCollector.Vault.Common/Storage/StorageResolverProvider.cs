@@ -11,7 +11,7 @@ public class StorageResolverProvider : IStorageResolverProvider
         _storageResolvers = storageResolvers;
     }
 
-    public IStorageResolver GetResolver(IStorageConfig storageConfig)
+    public IStorageResolver GetResolver(StorageConfig storageConfig)
     {
         return _storageResolvers.Where(x => x.CanResolve(storageConfig)).Single();
     }
