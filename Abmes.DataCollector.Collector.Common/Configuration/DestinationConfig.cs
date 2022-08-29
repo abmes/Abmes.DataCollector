@@ -49,16 +49,16 @@ public record DestinationConfig
         }
     }
 
-    public string? RootBase()
+    public string RootBase()
     {
-        return Root?.Split('/', '\\').FirstOrDefault();
+        return Root?.Split('/', '\\').FirstOrDefault() ?? string.Empty;
     }
 
-    public string? RootDir(char separator, bool includeTrailingSeparator)
+    public string RootDir(char separator, bool includeTrailingSeparator)
     {
         if (Root is null)
         {
-            return null;
+            return string.Empty;
         }
 
         var result = string.Join(separator, Root.Split('/', '\\').Skip(1));
