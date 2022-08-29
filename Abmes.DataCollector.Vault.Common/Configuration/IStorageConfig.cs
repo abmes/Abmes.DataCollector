@@ -7,6 +7,6 @@ public interface IStorageConfig
     public string? LoginSecret { get; }
     public string? Root { get; }
 
-    public string? RootBase();
-    public string? RootDir(char separator, bool includeTrailingSeparator);
+    public string RootBase();
+    public string RootDir(char separator, bool includeTrailingSeparator);
 }

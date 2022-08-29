@@ -8,5 +8,4 @@ public record IdentityServiceClientInfo
     string? Scope,
     string UserName,
     string UserPassword
-)
-: IIdentityServiceClientInfo;
+);

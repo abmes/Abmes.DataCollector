@@ -5,6 +5,20 @@ namespace Abmes.DataCollector.Collector.Common.Collecting;
 
 public interface ICollectItemsProvider
 {
-    IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken);
-    Task<IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken);
+    IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(
+        string dataCollectionName,
+        string collectFileIdentifiersUrl,
+        IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
+        string collectUrl,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        IdentityServiceClientInfo identityServiceClientInfo,
+        CancellationToken cancellationToken);
+
+    Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
+        IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems,
+        string dataCollectionName,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        int maxDegreeOfParallelism,
+        IdentityServiceClientInfo identityServiceClientInfo,
+        CancellationToken cancellationToken);
 }

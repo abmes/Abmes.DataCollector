@@ -7,35 +7,54 @@ namespace Abmes.DataCollector.Common.Amazon.Storage;
 public class AmazonCommonStorage : IAmazonCommonStorage
 {
     private readonly IAmazonS3 _amazonS3;
-    private readonly IFileInfoDataFactory _fileInfoFactory;
 
     public string StorageType => "Amazon";
 
-    public AmazonCommonStorage(
-        IAmazonS3 amazonS3,
-        IFileInfoDataFactory fileInfoFactory)
+    public AmazonCommonStorage(IAmazonS3 amazonS3)
     {
         _amazonS3 = amazonS3;
-        _fileInfoFactory = fileInfoFactory;
     }
 
-    public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(
+        string? loginName,
+        string? loginSecret,
+        string rootBase,
+        string rootDir,
+        string dataCollectionName,
+        string? fileNamePrefix,
+        CancellationToken cancellationToken)
     {
         return
             (await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
             .Select(x => x.Name);
     }
 
-    public async Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetDataCollectionFileInfosAsync(
+        string? loginName,
+        string? loginSecret,
+        string rootBase,
+        string rootDir,
+        string dataCollectionName,
+        string? fileNamePrefix,
+        CancellationToken cancellationToken)
     {
-        return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
+        return await InternalGetDataCollectionFileInfosAsync(
+            loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
     }
 
-    private async Task<IEnumerable<IFileInfoData>> InternalGetDataCollectionFileInfosAsync(string loginName, string loginSecret, string rootBase, string rootDir, string dataCollectionName, string fileNamePrefix, bool namesOnly, CancellationToken cancellationToken)
+    private async Task<IEnumerable<FileInfoData>> InternalGetDataCollectionFileInfosAsync(
+        string? loginName,
+        string? loginSecret,
+        string rootBase,
+        string rootDir,
+        string dataCollectionName,
+        string? fileNamePrefix,
+        bool namesOnly,
+        CancellationToken cancellationToken)
     {
         var prefix = rootDir + dataCollectionName + "/";
 
-        var resultList = new List<IFileInfoData>();
+        var resultList = new List<FileInfoData>();
 
         var request = new ListObjectsV2Request { BucketName = rootBase, Prefix = prefix + fileNamePrefix };
 
@@ -57,13 +76,13 @@ public class AmazonCommonStorage : IAmazonCommonStorage
         return resultList;
     }
 
-    private async Task<IFileInfoData> GetFileInfoAsync(S3Object s3Object, string prefix, bool namesOnly, CancellationToken cancellationToken)
+    private async Task<FileInfoData> GetFileInfoAsync(S3Object s3Object, string prefix, bool namesOnly, CancellationToken cancellationToken)
     {
         var name = s3Object.Key.Substring(prefix.Length);
 
         if (namesOnly)
         {
-            return _fileInfoFactory(name, null, null, null, StorageType);
+            return new FileInfoData(name, null, null, null, StorageType);
         }
 
         var request = new GetObjectMetadataRequest { BucketName = s3Object.BucketName, Key = s3Object.Key };
@@ -72,6 +91,6 @@ public class AmazonCommonStorage : IAmazonCommonStorage
 
         var md5 = !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"];
 
-        return _fileInfoFactory(name, response.Headers.ContentLength, md5, string.Join("/", name.Split('/').SkipLast(1)), StorageType);
+        return new FileInfoData(name, response.Headers.ContentLength, md5, string.Join("/", name.Split('/').SkipLast(1)), StorageType);
     }
 }

@@ -16,7 +16,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         _dataCollectionFiles = dataCollectionFiles;
     }
 
-    public async Task<string> GetDownloadUrlAsync(string fileName, string storageType = default, CancellationToken cancellationToken = default)
+    public async Task<string> GetDownloadUrlAsync(string fileName, string storageType, CancellationToken cancellationToken)
     {
         try
         {
@@ -35,7 +35,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         }
     }
 
-    public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType = default, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType, CancellationToken cancellationToken)
     {
         try
         {
@@ -54,7 +54,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         }
     }
 
-    public async Task<IEnumerable<IFileInfoData>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
     {
         try
         {
@@ -92,7 +92,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         }
     }
 
-    public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType = default, CancellationToken cancellationToken = default)
+    public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType, CancellationToken cancellationToken)
     {
         try
         {
@@ -111,7 +111,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         }
     }
 
-    public async Task<IEnumerable<IFileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
     {
         try
         {
@@ -149,8 +149,8 @@ public class DataCollectionFiles : IDataCollectionFiles
         }
     }
 
-    private string FromStorageType(string storageType)
+    private static string FromStorageType(string storageType)
     {
-        return (string.IsNullOrEmpty(storageType) ? null : " from " + storageType);
+        return string.IsNullOrEmpty(storageType) ? string.Empty : $" from {storageType}";
     }
 }

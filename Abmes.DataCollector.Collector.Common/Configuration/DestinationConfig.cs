@@ -30,8 +30,8 @@ public record DestinationConfig
     string? IdentityServiceScope
 )
 {
-    private IIdentityServiceClientInfo? _identityServiceClientInfo;
-    public IIdentityServiceClientInfo IdentityServiceClientInfo
+    private IdentityServiceClientInfo? _identityServiceClientInfo;
+    public IdentityServiceClientInfo IdentityServiceClientInfo
     {
         get
         {

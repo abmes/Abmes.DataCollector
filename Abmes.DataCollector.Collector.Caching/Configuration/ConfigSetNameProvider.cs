@@ -5,7 +5,7 @@ namespace Abmes.DataCollector.Collector.Caching.Configuration;
 public class ConfigSetNameProvider : IConfigSetNameProvider
 {
     private readonly IConfigSetNameProvider _configSetNameProvider;
-    private string _configSetName;
+    private string? _configSetName;
 
     public ConfigSetNameProvider(
         IConfigSetNameProvider configSetNameProvider)

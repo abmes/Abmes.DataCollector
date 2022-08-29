@@ -13,7 +13,7 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task ConfigAsync(HttpRequestMessage request, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public async Task ConfigAsync(HttpRequestMessage request, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
         var accessToken = await GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
 
@@ -31,7 +31,7 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
         }
     }
 
-    public async Task<string> GetIdentityServiceAccessTokenAsync(IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public async Task<string> GetIdentityServiceAccessTokenAsync(IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(identityServiceClientInfo.Url))
         {

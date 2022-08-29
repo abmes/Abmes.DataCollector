@@ -10,6 +10,5 @@ public static class ContainerRegistrations
     {
         builder.RegisterType<ConfigProvider>().Named<IConfigProvider>("base");
         builder.RegisterType<FileNameProvider>().As<IFileNameProvider>();
-        builder.RegisterType<FileInfoData>().As<IFileInfoData>();
     }
 }

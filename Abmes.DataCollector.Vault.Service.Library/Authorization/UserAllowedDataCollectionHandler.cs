@@ -32,7 +32,7 @@ public class UserAllowedDataCollectionHandler : AuthorizationHandler<UserAllowed
 
             var user = users.Where(x => x.IdentityUserId == identityUserId).FirstOrDefault();
 
-            if ((user == null) || (!user.DataCollectionNames.Contains(dataCollectionName)))
+            if ((user is null) || (!user.DataCollectionNames.Contains(dataCollectionName)))
             {
                 context.Fail();
             }

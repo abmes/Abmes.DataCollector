@@ -2,45 +2,46 @@
 
 namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public record DataCollectionConfig(
-    string? DataCollectionName,
-    string? DataGroupName,
-
-    TimeSpan? InitialDelay,
-
-    string? PrepareUrl,
-    IEnumerable<KeyValuePair<string, string>>? PrepareHeaders,
-    string? PrepareHttpMethod,
-    string? PrepareFinishedPollUrl,
-    IEnumerable<KeyValuePair<string, string>>? PrepareFinishedPollHeaders,
-    TimeSpan? PrepareFinishedPollInterval,
-    TimeSpan? PrepareDuration,
-
-    string? CollectFileIdentifiersUrl,
-    IEnumerable<KeyValuePair<string, string>>? CollectFileIdentifiersHeaders,
-    string? CollectUrl,
-    IEnumerable<KeyValuePair<string, string>>? CollectHeaders,
-    int? CollectParallelFileCount,
-    TimeSpan? CollectTimeout,
-    string? CollectFinishWait,
-
-    IEnumerable<string>? DestinationIds,
-    int? ParallelDestinationCount,
-    int? MaxFileCount,
-
-    string? LoginName,
-    string? LoginSecret,
-
-    string? IdentityServiceUrl,
-    string? IdentityServiceClientId,
-    string? IdentityServiceClientSecret,
-    string? IdentityServiceScope,
-
-    IEnumerable<KeyValuePair<string, string>>? Values
-)
+public record DataCollectionConfig
 {
-    private IIdentityServiceClientInfo? _identityServiceClientInfo;
-    public IIdentityServiceClientInfo IdentityServiceClientInfo 
+    public string? DataCollectionName { get; init; }
+    public string? DataGroupName { get; init; }
+
+    public TimeSpan? InitialDelay { get; init; }
+
+    public string? PrepareUrl { get; init; }
+    public IEnumerable<KeyValuePair<string, string>> PrepareHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public string? PrepareHttpMethod { get; init; }
+    public string? PrepareFinishedPollUrl { get; init; }
+    public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public TimeSpan? PrepareFinishedPollInterval { get; init; }
+    public TimeSpan? PrepareDuration { get; init; }
+
+    public string? CollectFileIdentifiersUrl { get; init; }
+    public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public string? CollectUrl { get; init; }
+    public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public int? CollectParallelFileCount { get; init; }
+    public TimeSpan? CollectTimeout { get; init; }
+    public string? CollectFinishWait { get; init; }
+
+    public IEnumerable<string> DestinationIds { get; init; } = Enumerable.Empty<string>();
+    public int? ParallelDestinationCount { get; init; }
+    public int? MaxFileCount { get; init; }
+
+    public string? LoginName { get; init; }
+    public string? LoginSecret { get; init; }
+
+    public string? IdentityServiceUrl { get; init; }
+    public string? IdentityServiceClientId { get; init; }
+    public string? IdentityServiceClientSecret { get; init; }
+    public string? IdentityServiceScope { get; init; }
+
+    public IEnumerable<KeyValuePair<string, string>> Values { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+
+
+    private IdentityServiceClientInfo? _identityServiceClientInfo;
+    public IdentityServiceClientInfo IdentityServiceClientInfo 
     {
         get
         {

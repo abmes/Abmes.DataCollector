@@ -32,7 +32,7 @@ public class DataCollector : IDataCollector
         _collectItemsCollector = collectItemsCollector;
     }
 
-    public async Task<(IEnumerable<string> NewFileNames, IEnumerable<IFileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+    public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
         // assert at least one destination before preparing
         var destinations = await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken);
@@ -83,9 +83,9 @@ public class DataCollector : IDataCollector
         return (Enumerable.Empty<string>(), collectionFileInfos);
     }
 
-    private async Task<IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+    private async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<(IFileInfoData CollectFileInfo, string CollectUrl)>();
+        var result = new ConcurrentBag<(FileInfoData CollectFileInfo, string CollectUrl)>();
 
         await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
             async (collectItem, ct) =>
@@ -110,13 +110,13 @@ public class DataCollector : IDataCollector
         return result;
     }
 
-    public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<IFileInfoData> collectionFileInfos, CancellationToken cancellationToken)
+    public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)
     {
         var destinations = (await GetDestinationsAsync(dataCollectionConfig.DestinationIds, cancellationToken)).Where(x => x.CanGarbageCollect());
         await Task.WhenAll(destinations.Select(x => GarbageCollectDestinationDataAsync(x, dataCollectionConfig.DataCollectionName, newFileNames, collectionFileInfos, cancellationToken)));
     }
 
-    private async Task GarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<string> newFileNames, IEnumerable<IFileInfoData> collectionFileInfos, CancellationToken cancellationToken)
+    private async Task GarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<string> newFileNames, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)
     {
         if (!destination.DestinationConfig.GarbageCollectionMode.HasValue)
         {
@@ -149,7 +149,7 @@ public class DataCollector : IDataCollector
         await GarbageCollectDestinationFilesAsync(destination, dataCollectionName, garbageDataCollectionFileNames, cancellationToken);
     }
 
-    private async Task ExcessGarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<string> newFileNames, IEnumerable<IFileInfoData> collectionFileInfos, CancellationToken cancellationToken)
+    private async Task ExcessGarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<string> newFileNames, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)
     {
         var destinationDataCollectionFileNames = (await destination.GetDataCollectionFileNamesAsync(dataCollectionName, cancellationToken)).ToList();
 

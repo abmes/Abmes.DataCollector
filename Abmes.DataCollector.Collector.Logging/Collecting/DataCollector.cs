@@ -17,11 +17,11 @@ public class DataCollector : IDataCollector
         _dataCollector = dataCollector;
     }
 
-    public async Task<(IEnumerable<string> NewFileNames, IEnumerable<IFileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+    public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
         try
         {
-            (IEnumerable<string> NewFileNames, IEnumerable<IFileInfoData> CollectionFileInfos) result;
+            (IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos) result;
 
             _logger.LogInformation("Started processing data '{dataCollectionName}'", dataCollectionConfig.DataCollectionName);
 
@@ -47,7 +47,7 @@ public class DataCollector : IDataCollector
         }
     }
 
-    public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<IFileInfoData> collectionFileInfos, CancellationToken cancellationToken)
+    public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)
     {
         try
         {

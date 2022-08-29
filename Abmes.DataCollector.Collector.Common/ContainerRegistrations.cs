@@ -28,7 +28,6 @@ public static class ContainerRegistrations
         builder.RegisterType<MergedDataCollectionConfigProvider>().As<IMergedDataCollectionConfigProvider>();
         builder.RegisterType<DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("base");
         builder.RegisterType<DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("base");
-        builder.RegisterType<IdentityServiceClientInfo>().As<IIdentityServiceClientInfo>();
         builder.RegisterType<IdentityServiceHttpRequestConfigurator>().As<IIdentityServiceHttpRequestConfigurator>();
 
         builder.RegisterType<Bootstrapper>().As<IBootstrapper>().SingleInstance();

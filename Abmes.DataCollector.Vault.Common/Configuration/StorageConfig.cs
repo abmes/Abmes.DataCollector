@@ -13,16 +13,16 @@ public record StorageConfig
 {
     string IStorageConfig.StorageType => Ensure.NotNullOrEmpty(StorageType);
 
-    public string? RootBase()
+    public string RootBase()
     {
-        return Root?.Split('/', '\\').FirstOrDefault();
+        return Root?.Split('/', '\\').FirstOrDefault() ?? String.Empty;
     }
 
-    public string? RootDir(char separator, bool includeTrailingSeparator)
+    public string RootDir(char separator, bool includeTrailingSeparator)
     {
         if (Root is null)
         {
-            return null;
+            return String.Empty;
         }
 
         var result = string.Join(separator, Root.Split('/', '\\').Skip(1));

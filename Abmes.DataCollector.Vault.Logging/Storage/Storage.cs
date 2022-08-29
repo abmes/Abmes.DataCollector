@@ -22,7 +22,7 @@ public class Storage : ILoggingStorage
         get => _storage.StorageConfig;
     }
 
-    public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
         try
         {
@@ -41,7 +41,7 @@ public class Storage : ILoggingStorage
         }
     }
 
-    public async Task<IEnumerable<IFileInfoData>> GetDataCollectionFileInfosAsync(string dataCollectionName, string fileNamePrefix, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetDataCollectionFileInfosAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
         try
         {

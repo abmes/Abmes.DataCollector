@@ -53,7 +53,7 @@ public static class HttpClientExtensions
         string? body = null,
         string? bodyMediaType = null,
         Stream? content = null,
-        IEnumerable<KeyValuePair<string, string>>? headers = null,
+        IEnumerable<KeyValuePair<string, string>> headers = null,
         string? accept = null,
         TimeSpan? timeout = null,
         Func<HttpRequestMessage, CancellationToken, Task>? requestConfiguratorTask = null,

@@ -24,7 +24,7 @@ public class DataCollectionFilesController : Controller
     // GET DataCollectionFiles/GetFiles?prefix=xyz&maxAge=0:2:0
     [Route("GetFiles")]
     [HttpGet]
-    public async Task<IEnumerable<IFileInfoData>> GetFileInfosAsync([FromQuery] string prefix, [FromQuery] string maxAge, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetFileInfosAsync([FromQuery] string prefix, [FromQuery] string maxAge, CancellationToken cancellationToken)
     {
         return await _dataCollectionFiles.GetFileInfosAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
     }
@@ -32,7 +32,7 @@ public class DataCollectionFilesController : Controller
     // GET DataCollectionFiles/GetFiles/latest
     [Route("GetFiles/latest")]
     [HttpGet]
-    public async Task<IEnumerable<IFileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
     {
         return await _dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
     }

@@ -14,18 +14,15 @@ namespace Abmes.DataCollector.Collector.Common.Collecting;
 public class CollectItemsProvider : ICollectItemsProvider
 {
     private readonly ICollectUrlExtractor _collectUrlExtractor;
-    private readonly IFileInfoDataFactory _fileInfoFactory;
     private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
     private readonly IHttpClientFactory _httpClientFactory;
 
     public CollectItemsProvider(
         ICollectUrlExtractor collectUrlsExtractor,
-        IFileInfoDataFactory fileInfoFactory,
         IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
         IHttpClientFactory httpClientFactory)
     {
         _collectUrlExtractor = collectUrlsExtractor;
-        _fileInfoFactory = fileInfoFactory;
         _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
         _httpClientFactory = httpClientFactory;
     }
@@ -35,7 +32,7 @@ public class CollectItemsProvider : ICollectItemsProvider
     private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
     private static readonly string[] DefaultGroupIdPropertyNames = { "group", "groupId" };
 
-    public IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
         {
@@ -122,7 +119,13 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
     }
 
-    public async Task<IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
+        IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems,
+        string dataCollectionName,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        int maxDegreeOfParallelism,
+        IdentityServiceClientInfo identityServiceClientInfo,
+        CancellationToken cancellationToken)
     {
         var collectItemsList = collectItems.ToList();
 
@@ -138,9 +141,15 @@ public class CollectItemsProvider : ICollectItemsProvider
             .Concat(redirectedCollectItems);
     }
 
-    private async Task<IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(IEnumerable<(IFileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<KeyValuePair<string, string>> collectHeaders, int maxDegreeOfParallelism, string identityServiceAccessToken, CancellationToken cancellationToken)
+    private async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(
+        IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems,
+        string dataCollectionName,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        int maxDegreeOfParallelism,
+        string identityServiceAccessToken,
+        CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<(IFileInfoData CollectFileInfo, string CollectUrl)>();
+        var result = new ConcurrentBag<(FileInfoData CollectFileInfo, string CollectUrl)>();
 
         await ParallelUtils.ParallelEnumerateAsync(
             collectItems,
@@ -174,7 +183,12 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
     }
 
-    private IEnumerable<IFileInfoData> GetCollectFileInfos(string collectFileInfosJson, IEnumerable<string> namePropertyNames, IEnumerable<string> sizePropertyNames, IEnumerable<string> md5PropertyNames, IEnumerable<string> groupIdPropertyNames)
+    private IEnumerable<FileInfoData> GetCollectFileInfos(
+        string collectFileInfosJson,
+        IEnumerable<string> namePropertyNames,
+        IEnumerable<string> sizePropertyNames,
+        IEnumerable<string> md5PropertyNames,
+        IEnumerable<string> groupIdPropertyNames)
     {
         var names = GetStrings(collectFileInfosJson);
 
@@ -182,7 +196,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         {
             foreach (var name in names)
             {
-                yield return _fileInfoFactory(name, null, null, null, null);
+                yield return new FileInfoData(name, null, null, null, null);
             }
         }
         else
@@ -204,7 +218,7 @@ public class CollectItemsProvider : ICollectItemsProvider
 
                     hasResult = true;
 
-                    yield return _fileInfoFactory(name, size, md5, groupId, null);
+                    yield return new FileInfoData(name, size, md5, groupId, null);
                 }
             }
 
@@ -216,7 +230,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
     }
 
-    private async Task<string> GetCollectItemsJson(string url, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, IIdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    private async Task<string> GetCollectItemsJson(string url, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
         return
