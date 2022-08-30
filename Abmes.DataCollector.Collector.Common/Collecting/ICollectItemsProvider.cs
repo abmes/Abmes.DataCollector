@@ -5,7 +5,7 @@ namespace Abmes.DataCollector.Collector.Common.Collecting;
 
 public interface ICollectItemsProvider
 {
-    IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(
+    IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
         string dataCollectionName,
         string collectFileIdentifiersUrl,
         IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,

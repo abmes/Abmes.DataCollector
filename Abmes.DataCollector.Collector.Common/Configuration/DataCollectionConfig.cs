@@ -4,7 +4,9 @@ namespace Abmes.DataCollector.Collector.Common.Configuration;
 
 public record DataCollectionConfig
 {
-    public string? DataCollectionName { get; init; }
+    private string? _dataCollectionName;
+    public string DataCollectionName { get => Ensure.NotNullOrEmpty(_dataCollectionName); init => _dataCollectionName = value; }
+
     public string? DataGroupName { get; init; }
 
     public TimeSpan? InitialDelay { get; init; }

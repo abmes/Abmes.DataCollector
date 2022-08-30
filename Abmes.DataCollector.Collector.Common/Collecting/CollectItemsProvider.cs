@@ -1,7 +1,6 @@
 ﻿using System.Text.Json;
 using Newtonsoft.Json.Linq;
 using Abmes.DataCollector.Collector.Common.Misc;
-using Newtonsoft.Json.Linq;
 using System.Diagnostics.Contracts;
 using Abmes.DataCollector.Utils;
 using System.Collections.Concurrent;
@@ -32,7 +31,14 @@ public class CollectItemsProvider : ICollectItemsProvider
     private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
     private static readonly string[] DefaultGroupIdPropertyNames = { "group", "groupId" };
 
-    public IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
+        string dataCollectionName,
+        string collectFileIdentifiersUrl,
+        IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
+        string collectUrl,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        IdentityServiceClientInfo identityServiceClientInfo,
+        CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
         {
@@ -162,7 +168,7 @@ public class CollectItemsProvider : ICollectItemsProvider
                 var lastUrl = urls.Last();
                 using var httpClient = _httpClientFactory.CreateClient();
                 await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
-                var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
+                var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
                 result.Add((collectItem.CollectFileInfo, url));
             }
         );
@@ -170,7 +176,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         return result;
     }
 
-    private IEnumerable<string> GetStrings(string json)
+    private IEnumerable<string>? GetStrings(string json)
     {
         try
         {

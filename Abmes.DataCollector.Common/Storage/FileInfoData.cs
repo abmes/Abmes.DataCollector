@@ -4,10 +4,6 @@ namespace Abmes.DataCollector.Common.Storage;
 
 public record FileInfoData
 (
-    // todo: properties should not be nullable.
-    // they are nullable because of dual usage of the class.
-    // Name-only usages should be refactored to different methods returning strings
-
     string Name,
 
     long? Size,

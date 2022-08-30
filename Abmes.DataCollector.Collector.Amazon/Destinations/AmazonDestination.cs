@@ -40,7 +40,7 @@ public class AmazonDestination : IAmazonDestination
         await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
     }
 
-    private async Task MultiPartUploadAsync(Stream sourceStream, string sourceMD5, string bucketName, string keyName, CancellationToken cancellationToken)
+    private async Task MultiPartUploadAsync(Stream sourceStream, string? sourceMD5, string bucketName, string keyName, CancellationToken cancellationToken)
     {
         // Create list to store upload part responses.
         var uploadResponses = new List<UploadPartResponse>();
@@ -63,7 +63,7 @@ public class AmazonDestination : IAmazonDestination
         var initResponse = await _amazonS3.InitiateMultipartUploadAsync(initiateRequest, cancellationToken);
         try
         {
-            var blobHasher = validateMD5 ? CopyUtils.GetMD5Hasher() : null;
+            using var blobHasher = validateMD5 ? CopyUtils.GetMD5Hasher() : null;
 
             var partSize = 10 * 1024 * 1024;  // todo: config
             var partNo = 1;
@@ -76,6 +76,8 @@ public class AmazonDestination : IAmazonDestination
 
                     if (validateMD5)
                     {
+                        ArgumentNullException.ThrowIfNull(blobHasher);
+
                         CopyUtils.AppendMDHasherData(blobHasher, buffer);
                     }
 
@@ -105,6 +107,8 @@ public class AmazonDestination : IAmazonDestination
 
             if (validateMD5)
             {
+                ArgumentNullException.ThrowIfNull(blobHasher);
+
                 var blobHash = CopyUtils.GetMD5HashString(blobHasher);
 
                 if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))

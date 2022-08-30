@@ -55,7 +55,7 @@ public class CollectItemsCollector : ICollectItemsCollector
         return
             _fileNameProvider.GenerateCollectDestinationFileName(
                 dataCollectionConfig.DataCollectionName,
-                collectItem.CollectFileInfo?.Name,
+                collectItem.CollectFileInfo.Name,
                 collectItem.CollectUrl,
                 collectMoment,
                 destination.DestinationConfig.CollectToDirectories,

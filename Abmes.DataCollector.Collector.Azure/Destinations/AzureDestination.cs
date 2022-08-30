@@ -35,6 +35,9 @@ public class AzureDestination : IAzureDestination
 
     private async Task<BlobContainerClient> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
+        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(DestinationConfig.LoginName);
+        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(DestinationConfig.LoginSecret);
+
         var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
         return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
     }
@@ -68,7 +71,7 @@ public class AzureDestination : IAzureDestination
         await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
     }
 
-    private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string sourceMD5, CancellationToken cancellationToken)
+    private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string? sourceMD5, CancellationToken cancellationToken)
     {
         var blob = container.GetBlockBlobClient(blobName);
 
@@ -171,7 +174,7 @@ public class AzureDestination : IAzureDestination
     {
         using var httpClient = _httpClientFactory.CreateClient();
         using var headRequest = new HttpRequestMessage(HttpMethod.Head, url);
-        headers = headers?.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
+        headers = headers.Where(x => !string.Equals(x.Key, "Authorization", StringComparison.OrdinalIgnoreCase));  // anonymous access required for StartCopyAsync
 
         headRequest.Headers.AddValues(headers);
 
