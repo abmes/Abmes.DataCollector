@@ -4,6 +4,7 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <RootNamespace>Abmes.DataCollector.Collector.ConsoleApp</RootNamespace>
   </PropertyGroup>
 
@@ -22,17 +23,11 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.FileSystem\Abmes.DataCollector.Common.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Logging\Abmes.DataCollector.Common.Logging.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Web\Abmes.DataCollector.Common.Web.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="8.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.EnvironmentVariables" Version="6.0.1" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.FileExtensions" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Configuration.Json" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Console" Version="6.0.0" />
-    <PackageReference Include="Microsoft.Extensions.Logging.Debug" Version="6.0.0" />
   </ItemGroup>
 
 </Project>
