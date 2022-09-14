@@ -18,7 +18,7 @@
         "Handler": "Abmes.DataCollector.Vault.AmazonLambda::Abmes.DataCollector.Vault.AmazonLambda.LambdaEntryPoint::FunctionHandlerAsync",
         "Runtime": "dotnetcore3.1",
         "CodeUri": "",
-        "MemorySize": 512,
+        "MemorySize": 1024,
         "Timeout": 30,
         "Role": null,
         "Policies": [ "AWSLambdaFullAccess" ],
@@ -27,6 +27,7 @@
             "AppSettings__ConfigStorageType": "Amazon|Azure",
             "AppSettings__DownloadUrlExpiry": "24:0:0",
             "AppSettings__AmazonS3ConfigStorageBucketName": "abmes-datacollectorvault-config",
+            "AppSettings__AmazonS3ListParallelism": "5",
             "IdentityServerAuthenticationSettings__Authority": "https://identity.mydomain.com",
             "IdentityServerAuthenticationSettings__ApiName": "data_collector_vault",
             "IdentityServerAuthenticationSettings__ApiSecret": "DataCollectorVaultApiSecretHere"
