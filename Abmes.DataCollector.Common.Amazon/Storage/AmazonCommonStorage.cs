@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Common.Storage;
+﻿using Abmes.DataCollector.Common.Amazon.Configuration;
+using Abmes.DataCollector.Common.Storage;
 using Amazon.S3;
 using Amazon.S3.Model;
 
@@ -6,12 +7,16 @@ namespace Abmes.DataCollector.Common.Amazon.Storage;
 
 public class AmazonCommonStorage : IAmazonCommonStorage
 {
+    private readonly IAmazonAppSettings _amazonAppSettings;
     private readonly IAmazonS3 _amazonS3;
 
     public string StorageType => "Amazon";
 
-    public AmazonCommonStorage(IAmazonS3 amazonS3)
+    public AmazonCommonStorage(
+        IAmazonAppSettings amazonAppSettings,
+        IAmazonS3 amazonS3)
     {
+        _amazonAppSettings = amazonAppSettings;
         _amazonS3 = amazonS3;
     }
 
@@ -64,6 +69,7 @@ public class AmazonCommonStorage : IAmazonCommonStorage
 
             var fileInfos = 
                     response.S3Objects
+                    .AsParallel().WithDegreeOfParallelism(_amazonAppSettings.AmazonS3ListParallelism ?? 1)
                     .Select(x => GetFileInfoAsync(x, prefix, namesOnly, cancellationToken).Result);
 
             resultList.AddRange(fileInfos);
