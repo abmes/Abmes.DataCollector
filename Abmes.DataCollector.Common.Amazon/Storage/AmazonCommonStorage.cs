@@ -60,9 +60,12 @@ public class AmazonCommonStorage : IAmazonCommonStorage
 
         while (true)
         {
-            var response = await _amazonS3.ListObjectsV2Async(request);
+            var response = await _amazonS3.ListObjectsV2Async(request, cancellationToken);
 
-            var fileInfos = response.S3Objects.Select(x => GetFileInfoAsync(x, prefix, namesOnly, cancellationToken).Result);
+            var fileInfos = 
+                    response.S3Objects
+                    .Select(x => GetFileInfoAsync(x, prefix, namesOnly, cancellationToken).Result);
+
             resultList.AddRange(fileInfos);
 
             if (!response.IsTruncated)
