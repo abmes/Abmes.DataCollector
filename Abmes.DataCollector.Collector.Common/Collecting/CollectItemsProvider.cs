@@ -50,7 +50,7 @@ public class CollectItemsProvider : ICollectItemsProvider
                         .Handle<Exception>()
                         .WaitAndRetry(new[] { TimeSpan.FromSeconds(5) })
                         .Execute(
-                            ct => httpClient.GetStringAsync(collectUrl.Substring(1), collectHeaders, null, null, ct).Result, 
+                            ct => httpClient.GetStringAsync(collectUrl[1..], collectHeaders, null, null, ct).Result, 
                             cancellationToken
                         );
 
@@ -58,12 +58,7 @@ public class CollectItemsProvider : ICollectItemsProvider
 
                 if (!string.IsNullOrEmpty(urlsString))
                 {
-                    var urls = GetStrings(urlsString);
-
-                    if (urls == null)
-                    {
-                        urls = urlsString.Split(Environment.NewLine);
-                    }
+                    var urls = GetStrings(urlsString) ?? urlsString.Split(Environment.NewLine);
 
                     foreach (var url in urls)
                     {
@@ -176,7 +171,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         return result;
     }
 
-    private IEnumerable<string>? GetStrings(string json)
+    private static IEnumerable<string>? GetStrings(string json)
     {
         try
         {
@@ -189,7 +184,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
     }
 
-    private IEnumerable<FileInfoData> GetCollectFileInfos(
+    private static IEnumerable<FileInfoData> GetCollectFileInfos(
         string collectFileInfosJson,
         IEnumerable<string> namePropertyNames,
         IEnumerable<string> sizePropertyNames,

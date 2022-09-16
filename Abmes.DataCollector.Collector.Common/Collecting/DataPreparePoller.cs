@@ -15,7 +15,7 @@ public class DataPreparePoller : IDataPreparePoller
     public async Task<DataPrepareResult> GetDataPrepareResultAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
-        var exportLogDataContent = await httpClient.GetStringAsync(pollUrl, pollHeaders, "application/json");
+        var exportLogDataContent = await httpClient.GetStringAsync(pollUrl, pollHeaders, "application/json", cancellationToken: cancellationToken);
 
         var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
         var result = JsonSerializer.Deserialize<DataPrepareResult>(exportLogDataContent, options);
