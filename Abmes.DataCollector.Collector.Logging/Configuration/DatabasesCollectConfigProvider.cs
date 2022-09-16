@@ -27,7 +27,7 @@ public class DataCollectionsConfigProvider : IDataCollectionsConfigProvider
 
             _logger.LogTrace("Finished getting data collections config '{configSetName}'", displayConfigSetName);
 
-            _logger.LogInformation("Found {count} data collections to collect", result.Count());
+            _logger.LogInformation("Found {count} data collections to collect", result.Count);
 
             return result;
         }

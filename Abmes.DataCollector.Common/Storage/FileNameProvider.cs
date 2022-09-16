@@ -46,7 +46,7 @@ public class FileNameProvider : IFileNameProvider
     {
         var nameParts = fileName.Replace(@"\", "/").Split("/");
 
-        if (nameParts.Count() > 1)
+        if (nameParts.Length > 1)
         {
             return ExtractDateTimeString(nameParts[0]);
         }
