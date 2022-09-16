@@ -20,7 +20,7 @@ class CollectorConsoleLoggingProvider : ILoggerProvider
             _categoryName = categoryName;
         }
 
-        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception exception, Func<TState, Exception, string> formatter)
+        public void Log<TState>(LogLevel logLevel, EventId eventId, TState state, Exception? exception, Func<TState, Exception?, string> formatter)
         {
             if (!IsEnabled(logLevel))
             {
@@ -31,7 +31,7 @@ class CollectorConsoleLoggingProvider : ILoggerProvider
 
             if (exception != null)
             {
-                System.Console.WriteLine(exception.StackTrace.ToString());
+                System.Console.WriteLine(exception.StackTrace);
             }
         }
 

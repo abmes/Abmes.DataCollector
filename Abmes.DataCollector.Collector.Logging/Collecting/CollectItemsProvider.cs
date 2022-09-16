@@ -19,7 +19,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         _collectItemsProvider = collectItemsProvider;
     }
 
-    public IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> GetCollectItems(string dataCollectionName, string? collectFileIdentifiersUrl, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
         try
         {

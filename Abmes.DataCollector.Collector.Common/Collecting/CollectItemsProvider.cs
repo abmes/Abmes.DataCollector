@@ -33,7 +33,7 @@ public class CollectItemsProvider : ICollectItemsProvider
 
     public IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
         string dataCollectionName,
-        string collectFileIdentifiersUrl,
+        string? collectFileIdentifiersUrl,
         IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
         string collectUrl,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
