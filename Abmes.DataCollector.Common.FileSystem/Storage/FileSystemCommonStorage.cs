@@ -16,7 +16,7 @@ public class FileSystemCommonStorage : IFileSystemCommonStorage
         CancellationToken cancellationToken)
     {
         return
-            (await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
+            (await InternalGetDataCollectionFileInfosAsync(rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
             .Select(x => x.Name);
     }
 
@@ -29,12 +29,10 @@ public class FileSystemCommonStorage : IFileSystemCommonStorage
         string? fileNamePrefix,
         CancellationToken cancellationToken)
     {
-        return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
+        return await InternalGetDataCollectionFileInfosAsync(rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
     }
 
     private async Task<IEnumerable<FileInfoData>> InternalGetDataCollectionFileInfosAsync(
-        string? loginName,
-        string? loginSecret,
         string rootBase,
         string rootDir,
         string dataCollectionName,
@@ -47,7 +45,7 @@ public class FileSystemCommonStorage : IFileSystemCommonStorage
 
         var fileNames = 
                 Directory.GetFiles(fullDirName, searchPattern, SearchOption.AllDirectories)
-                .Select(x => x.Substring(fullDirName.Length + 1).Replace(@"\","/"))
+                .Select(x => x[(fullDirName.Length + 1)..].Replace(@"\","/"))
                 .ToList();
 
         fileNames = fileNames.Where(x => !x.EndsWith(".md5", StringComparison.InvariantCultureIgnoreCase) || fileNames.Contains(x + ".md5", StringComparer.InvariantCultureIgnoreCase)).ToList();
@@ -55,7 +53,7 @@ public class FileSystemCommonStorage : IFileSystemCommonStorage
         return await Task.FromResult(fileNames.Select(x => GetFileInfoAsync(x, fullDirName, namesOnly, cancellationToken).Result));
     }
 
-    private string GetMD5FileName(string fileName)
+    private static string GetMD5FileName(string fileName)
     {
         return fileName + ".md5";
     }

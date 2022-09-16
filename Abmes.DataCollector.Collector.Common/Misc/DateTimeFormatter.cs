@@ -1,6 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 using System.Diagnostics.Contracts;
 using System.Text.RegularExpressions;
+using System.Linq;
 
 namespace Abmes.DataCollector.Collector.Common.Misc;
 
@@ -20,17 +21,11 @@ public class DateTimeFormatter : IDateTimeFormatter
         var pattern = patternPrefix + "([a-zA-Z]+)" + patternSuffix;
         var matches = Regex.Matches(format, pattern);
 
-        var moment = DateTimeOffset.UtcNow;
-
         var result = format;
-
-        foreach (Match match in matches)
+        foreach (var match in matches.Where(match => match.Groups.Count == 2))
         {
-            if (match.Groups.Count == 2)
-            {
-                var dateTimeFormat = match.Groups[1].Value;
-                result = result.Replace(match.Value, dateTime.ToString(dateTimeFormat));
-            }
+            var dateTimeFormat = match.Groups[1].Value;
+            result = result.Replace(match.Value, dateTime.ToString(dateTimeFormat));
         }
 
         return result;

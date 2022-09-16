@@ -15,7 +15,7 @@ public static class CopyUtils
 
         do
         {
-            bytesRead = await readTask(buffer.Slice(totalBytesRead), cancellationToken);
+            bytesRead = await readTask(buffer[totalBytesRead..], cancellationToken);
 
             if (bytesRead > 0)
             {
@@ -65,7 +65,7 @@ public static class CopyUtils
                 break;
             }
 
-            AppendMDHasherData(hasher, buffer.Slice(0, bytesRead));
+            AppendMDHasherData(hasher, buffer[..bytesRead]);
         }
 
         return GetMD5HashString(hasher);

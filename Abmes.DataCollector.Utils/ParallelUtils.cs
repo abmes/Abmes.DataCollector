@@ -5,9 +5,9 @@ namespace Abmes.DataCollector.Utils;
 
 public static class ParallelUtils
 {
-    public static async Task<ActionBlock<T>> ParallelEnumerateAsync<T>(IEnumerable<T> items, CancellationToken cancellationToken, int maxDegreeOfParallelism, Func<T, CancellationToken, Task> func)
+    public static async Task<ActionBlock<T>> ParallelEnumerateAsync<T>(IEnumerable<T> items, int maxDegreeOfParallelism, Func<T, CancellationToken, Task> func, CancellationToken cancellationToken)
     {
-        var dataflowBlockOptions = new System.Threading.Tasks.Dataflow.ExecutionDataflowBlockOptions
+        var dataflowBlockOptions = new ExecutionDataflowBlockOptions
         {
             MaxDegreeOfParallelism = maxDegreeOfParallelism,
             CancellationToken = cancellationToken

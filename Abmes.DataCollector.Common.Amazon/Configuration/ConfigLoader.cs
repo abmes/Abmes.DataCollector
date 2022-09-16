@@ -33,20 +33,20 @@ public class ConfigLoader : IConfigLoader
 
     public async Task<string> GetConfigContentAsync(string configName, string location, CancellationToken cancellationToken)
     {
-        var locationParts = location.Substring(S3LocationPrefix.Length).Split("/");
+        var locationParts = location[S3LocationPrefix.Length..].Split("/");
 
         var bucketName = locationParts.First();
         var root = string.Join("/", locationParts.Skip(1));
 
         if (!string.IsNullOrEmpty(root))
         {
-            root = root + "/";
+            root += "/";
         }
 
         var request = new GetObjectRequest { BucketName = bucketName, Key = root + configName };
-        var response = _amazonS3.GetObjectAsync(request).Result;
+        var response = await _amazonS3.GetObjectAsync(request, cancellationToken);
 
-        using var reader = new System.IO.StreamReader(response.ResponseStream, Encoding.UTF8);
+        using var reader = new StreamReader(response.ResponseStream, Encoding.UTF8);
         return await reader.ReadToEndAsync();
     }
 

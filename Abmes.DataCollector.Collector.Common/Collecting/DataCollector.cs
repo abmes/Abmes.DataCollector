@@ -49,7 +49,7 @@ public class DataCollector : IDataCollector
 
         var collectMoment = DateTimeOffset.Now;
 
-        var prepared = (collectorMode != CollectorMode.Collect) ? false : await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
+        var prepared = collectorMode == CollectorMode.Collect && await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
         var collectItems = _collectItemsProvider.GetCollectItems(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken).ToList();
         var collectionFileInfos = collectItems.Select(x => x.CollectFileInfo);
@@ -83,11 +83,13 @@ public class DataCollector : IDataCollector
         return (Enumerable.Empty<string>(), collectionFileInfos);
     }
 
-    private async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+    private static async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
     {
         var result = new ConcurrentBag<(FileInfoData CollectFileInfo, string CollectUrl)>();
 
-        await ParallelUtils.ParallelEnumerateAsync(collectItems, cancellationToken, Math.Max(1, maxDegreeOfParallelism),
+        await ParallelUtils.ParallelEnumerateAsync(
+            collectItems,
+            Math.Max(1, maxDegreeOfParallelism),
             async (collectItem, ct) =>
             {
                 if (collectItem.CollectFileInfo == null)
@@ -105,7 +107,8 @@ public class DataCollector : IDataCollector
                         }
                     }
                 }
-            });
+            },
+            cancellationToken);
 
         return result;
     }
@@ -133,7 +136,7 @@ public class DataCollector : IDataCollector
                 break;
 
             case GarbageCollectionMode.Excess:
-                await ExcessGarbageCollectDestinationDataAsync(destination, dataCollectionName, newFileNames, collectionFileInfos, cancellationToken);
+                await ExcessGarbageCollectDestinationDataAsync(destination, dataCollectionName, collectionFileInfos, cancellationToken);
                 break;
 
             default:
@@ -149,7 +152,7 @@ public class DataCollector : IDataCollector
         await GarbageCollectDestinationFilesAsync(destination, dataCollectionName, garbageDataCollectionFileNames, cancellationToken);
     }
 
-    private async Task ExcessGarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<string> newFileNames, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)
+    private static async Task ExcessGarbageCollectDestinationDataAsync(IDestination destination, string dataCollectionName, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)
     {
         var destinationDataCollectionFileNames = (await destination.GetDataCollectionFileNamesAsync(dataCollectionName, cancellationToken)).ToList();
 
@@ -162,7 +165,7 @@ public class DataCollector : IDataCollector
         await GarbageCollectDestinationFilesAsync(destination, dataCollectionName, garbageDataCollectionFileNames, cancellationToken);
     }
 
-    private async Task GarbageCollectDestinationFilesAsync(IDestination destination, string dataCollectionName, IEnumerable<string> fileNames, CancellationToken cancellationToken)
+    private static async Task GarbageCollectDestinationFilesAsync(IDestination destination, string dataCollectionName, IEnumerable<string> fileNames, CancellationToken cancellationToken)
     {
         await Task.WhenAll(fileNames.OrderBy(x => x).Select(x => destination.GarbageCollectDataCollectionFileAsync(dataCollectionName, x, cancellationToken)));
     }

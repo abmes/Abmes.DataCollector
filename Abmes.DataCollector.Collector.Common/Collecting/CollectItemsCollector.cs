@@ -31,10 +31,13 @@ public class CollectItemsCollector : ICollectItemsCollector
         var completeDestinationFiles = new ConcurrentBag<(IDestination Destination, string FileName, string GroupId)>();
         var failedDestinationGroups = new ConcurrentBag<(IDestination Destination, string GroupId)>();
 
-        await CollectRouteAsync(default, lockTargets, dataCollectionConfig, collectMoment, completeDestinationFiles, failedDestinationGroups, cancellationToken);
+        await CollectRouteAsync(default, lockTargets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, cancellationToken);
 
-        await ParallelUtils.ParallelEnumerateAsync(routes, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 0),
-            (route, ct) => CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, collectMoment, completeDestinationFiles, failedDestinationGroups, ct));
+        await ParallelUtils.ParallelEnumerateAsync(
+            routes,
+            Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 0),
+            (route, ct) => CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, ct),
+            cancellationToken);
 
         if (failedDestinationGroups.Any())
         {
@@ -73,7 +76,7 @@ public class CollectItemsCollector : ICollectItemsCollector
             .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + _fileNameProvider.LockFileName));
     }
 
-    private async Task CollectRouteAsync((FileInfoData CollectFileInfo, string CollectUrl) collectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> targets, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment,
+    private static async Task CollectRouteAsync((FileInfoData CollectFileInfo, string CollectUrl) collectItem, IEnumerable<(IDestination Destination, string DestinationFileName)> targets, DataCollectionConfig dataCollectionConfig,
         ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, ConcurrentBag<(IDestination Destination, string GroupId)> failedDestinationGroups, CancellationToken cancellationToken)
     {
         foreach (var target in targets)
@@ -82,7 +85,7 @@ public class CollectItemsCollector : ICollectItemsCollector
             {
                 if (!failedDestinationGroups.Contains((target.Destination, collectItem.CollectFileInfo?.GroupId ?? "default")))
                 {
-                    await CollectToDestinationAsync(collectItem, target.Destination, target.DestinationFileName, dataCollectionConfig, collectMoment, completeDestinationFiles, cancellationToken);
+                    await CollectToDestinationAsync(collectItem, target.Destination, target.DestinationFileName, dataCollectionConfig, completeDestinationFiles, cancellationToken);
                 }
             }
             catch
@@ -93,11 +96,11 @@ public class CollectItemsCollector : ICollectItemsCollector
         }
     }
 
-    private async Task CollectToDestinationAsync((FileInfoData CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, CancellationToken cancellationToken)
+    private static async Task CollectToDestinationAsync((FileInfoData CollectFileInfo, string CollectUrl) collectItem, IDestination destination, string destinationFileName, DataCollectionConfig dataCollectionConfig, ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, CancellationToken cancellationToken)
     {
         var tryNo = 1;
         await Policy
-            .Handle<Exception>(e => IsRetryableCollectError(e, dataCollectionConfig))
+            .Handle<Exception>(e => IsRetryableCollectError(e))
             .WaitAndRetryAsync(
                 2,
                 (x) => TimeSpan.FromSeconds(5),
@@ -123,7 +126,7 @@ public class CollectItemsCollector : ICollectItemsCollector
         completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId ?? "default"));
     }
 
-    private bool IsRetryableCollectError(Exception e, DataCollectionConfig dataCollectionConfig)
+    private static bool IsRetryableCollectError(Exception e)
     {
         string[] RetryableErrorMessages = { "Gateway Timeout 504", "The request timed out" };
 
@@ -142,13 +145,16 @@ public class CollectItemsCollector : ICollectItemsCollector
         await GarbageCollectTargetsAsync(failedTargets, dataCollectionConfig, cancellationToken);
     }
 
-    private async Task GarbageCollectTargetsAsync(IEnumerable<(IDestination Destination, IEnumerable<string> DestinationFileNames)> targets, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+    private static async Task GarbageCollectTargetsAsync(IEnumerable<(IDestination Destination, IEnumerable<string> DestinationFileNames)> targets, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
-        await ParallelUtils.ParallelEnumerateAsync(targets, cancellationToken, Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 1),
-            (target, ct) => GarbageCollectDestinationFilesAsync(target.Destination, dataCollectionConfig.DataCollectionName, target.DestinationFileNames, ct));
+        await ParallelUtils.ParallelEnumerateAsync(
+            targets,
+            Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 1),
+            (target, ct) => GarbageCollectDestinationFilesAsync(target.Destination, dataCollectionConfig.DataCollectionName, target.DestinationFileNames, ct),
+            cancellationToken);
     }
 
-    private async Task GarbageCollectDestinationFilesAsync(IDestination destination, string dataCollectionName, IEnumerable<string> fileNames, CancellationToken cancellationToken)
+    private static async Task GarbageCollectDestinationFilesAsync(IDestination destination, string dataCollectionName, IEnumerable<string> fileNames, CancellationToken cancellationToken)
     {
         await Task.WhenAll(fileNames.Select(x => destination.GarbageCollectDataCollectionFileAsync(dataCollectionName, x, cancellationToken)));
     }

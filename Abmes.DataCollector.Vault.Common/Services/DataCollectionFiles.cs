@@ -32,7 +32,6 @@ public class DataCollectionFiles : IDataCollectionFiles
     {
         var result =
             await GetStorageItemsAsync<FileInfoData>(
-                fileNamePrefix,
                 null,
                 async storage => GetUnlockedStorageItems((await storage.GetDataCollectionFileInfosAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x.Name, maxAge)), (x) => x.Name),
                 cancellationToken
@@ -45,14 +44,13 @@ public class DataCollectionFiles : IDataCollectionFiles
     {
         return
             await GetStorageItemsAsync(
-                fileNamePrefix,
                 storageType,
                 async storage => GetUnlockedStorageItems((await storage.GetDataCollectionFileNamesAsync(_dataCollectionName, fileNamePrefix, cancellationToken)).Where(x => FileHasMaxAge(x, maxAge)), (x) => x),
                 cancellationToken
             );
     }
 
-    private async Task<IEnumerable<(IStorage Storage, IEnumerable<T> Items)>> GetStorageItemsAsync<T>(string? fileNamePrefix, string? storageType, Func<IStorage, Task<IEnumerable<T>>> getItemsFunc, CancellationToken cancellationToken)
+    private async Task<IEnumerable<(IStorage Storage, IEnumerable<T> Items)>> GetStorageItemsAsync<T>(string? storageType, Func<IStorage, Task<IEnumerable<T>>> getItemsFunc, CancellationToken cancellationToken)
     {
         var storages = 
             (await _storageProvider.GetStoragesAsync(cancellationToken))
@@ -78,7 +76,7 @@ public class DataCollectionFiles : IDataCollectionFiles
                 .Select(x => getItemFileNameFunc(x))
                 .Where(x => !string.IsNullOrEmpty(x))
                 .Where(x => x.EndsWith(_fileNameProvider.LockFileName))
-                .Select(x => x.Substring(0, x.Length - _fileNameProvider.LockFileName.Length))
+                .Select(x => x[..^_fileNameProvider.LockFileName.Length])
                 .ToList();
 
         return
@@ -102,7 +100,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         return InternalGetLatestItemsAsync(storageFileInfos, x => _fileNameProvider.DataCollectionFileNameToDateTime(x.Name), cancellationToken);
     }
 
-    private (IStorage Storage, IEnumerable<T> Items) InternalGetLatestItemsAsync<T>(IEnumerable<(IStorage Storage, IEnumerable<T> Items)> storageItems, Func<T, DateTimeOffset> getItemDateTimeFunc, CancellationToken cancellationToken)
+    private static (IStorage Storage, IEnumerable<T> Items) InternalGetLatestItemsAsync<T>(IEnumerable<(IStorage Storage, IEnumerable<T> Items)> storageItems, Func<T, DateTimeOffset> getItemDateTimeFunc, CancellationToken cancellationToken)
     {
         return
             storageItems

@@ -30,7 +30,7 @@ public class AmazonCommonStorage : IAmazonCommonStorage
         CancellationToken cancellationToken)
     {
         return
-            (await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
+            (await InternalGetDataCollectionFileInfosAsync(rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
             .Select(x => x.Name);
     }
 
@@ -43,13 +43,10 @@ public class AmazonCommonStorage : IAmazonCommonStorage
         string? fileNamePrefix,
         CancellationToken cancellationToken)
     {
-        return await InternalGetDataCollectionFileInfosAsync(
-            loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
+        return await InternalGetDataCollectionFileInfosAsync(rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
     }
 
     private async Task<IEnumerable<FileInfoData>> InternalGetDataCollectionFileInfosAsync(
-        string? loginName,
-        string? loginSecret,
         string rootBase,
         string rootDir,
         string dataCollectionName,
@@ -87,7 +84,7 @@ public class AmazonCommonStorage : IAmazonCommonStorage
 
     private async Task<FileInfoData> GetFileInfoAsync(S3Object s3Object, string prefix, bool namesOnly, CancellationToken cancellationToken)
     {
-        var name = s3Object.Key.Substring(prefix.Length);
+        var name = s3Object.Key[prefix.Length..];
 
         if (namesOnly)
         {

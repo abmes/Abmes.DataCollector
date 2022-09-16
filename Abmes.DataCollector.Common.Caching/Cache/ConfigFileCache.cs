@@ -5,7 +5,7 @@ namespace Abmes.DataCollector.Common.Caching.Cache;
 
 public class ConfigFileCache : IConfigFileCache
 {
-    private readonly ConcurrentDictionary<string, string> _cache = new ConcurrentDictionary<string, string>();
+    private readonly ConcurrentDictionary<string, string> _cache = new();
 
     public async Task<string> GetConfigFileContentAsync(string fileName, IConfigProvider configFileProvider, CancellationToken cancellationToken)
     {

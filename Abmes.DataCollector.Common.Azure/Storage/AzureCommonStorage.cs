@@ -66,7 +66,7 @@ public class AzureCommonStorage : IAzureCommonStorage
         var root = string.IsNullOrEmpty(rootBase) ? dataCollectionName : rootBase;
         var container = await GetContainerAsync(loginName, loginSecret, root, false, cancellationToken);
 
-        var containerExists = await container.ExistsAsync();
+        var containerExists = await container.ExistsAsync(cancellationToken);
         if (!containerExists)
         {
             return Enumerable.Empty<FileInfoData>();

@@ -25,10 +25,10 @@ public class ConfigLocationProvider : IConfigLocationProvider
         var location = args[1];
         var bracketPos = location.IndexOf('[');
 
-        var suffix = (bracketPos >= 0) ? location.Substring(bracketPos) : null;
+        var suffix = (bracketPos >= 0) ? location[bracketPos..] : null;
         if (!string.IsNullOrEmpty(suffix))
         {
-            location = location.Substring(0, location.Length - suffix.Length);
+            location = location[..^suffix.Length];
         }
 
         return string.Join(System.IO.Path.DirectorySeparatorChar, location.Split('/', '\\').SkipLast(1)) + suffix;

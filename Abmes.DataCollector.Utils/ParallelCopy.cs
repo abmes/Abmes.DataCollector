@@ -33,7 +33,7 @@ public static class ParallelCopy
                 break;
             }
 
-            writeTask = Task.Run(copyWriteTaskFunc(buffers[bufferIndex].Slice(0, bytesRead), cancellationToken), cancellationToken);
+            writeTask = Task.Run(copyWriteTaskFunc(buffers[bufferIndex][..bytesRead], cancellationToken), cancellationToken);
             // careful - do not capture this variable by ref in a lambda as its value changes
             bufferIndex = 1 - bufferIndex;
         }

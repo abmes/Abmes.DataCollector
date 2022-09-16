@@ -154,7 +154,6 @@ public class CollectItemsProvider : ICollectItemsProvider
 
         await ParallelUtils.ParallelEnumerateAsync(
             collectItems,
-            cancellationToken,
             Math.Max(1, maxDegreeOfParallelism),
             async (collectItem, ct) =>
             {
@@ -165,8 +164,8 @@ public class CollectItemsProvider : ICollectItemsProvider
                 await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
                 var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
                 result.Add((collectItem.CollectFileInfo, url));
-            }
-        );
+            },
+            cancellationToken);
 
         return result;
     }

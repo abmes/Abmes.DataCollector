@@ -30,7 +30,7 @@ public class AzureDestination : IAzureDestination
     {
         var container = await GetContainerAsync(dataCollectionName, cancellationToken);
 
-        await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(dataCollectionName, fileName), timeout, finishWait, cancellationToken);
+        await SmartCopyToBlobAsync(collectUrl, collectHeaders, container, GetBlobName(dataCollectionName, fileName), timeout, cancellationToken);
     }
 
     private async Task<BlobContainerClient> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
@@ -47,7 +47,7 @@ public class AzureDestination : IAzureDestination
         return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
     }
 
-    private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, TimeSpan timeout, bool finishWait, CancellationToken cancellationToken)
+    private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, TimeSpan timeout, CancellationToken cancellationToken)
     {
         //if (await GetContentLengthAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
         //{
@@ -67,11 +67,11 @@ public class AzureDestination : IAzureDestination
 
         var sourceMD5 = response.ContentMD5();
 
-        using var sourceStream = await response.Content.ReadAsStreamAsync();
+        using var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
     }
 
-    private async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string? sourceMD5, CancellationToken cancellationToken)
+    private static async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string? sourceMD5, CancellationToken cancellationToken)
     {
         var blob = container.GetBlockBlobClient(blobName);
 
@@ -113,7 +113,8 @@ public class AzureDestination : IAzureDestination
 
         await blob.CommitBlockListAsync(blockIDs, headers, null, null, null, cancellationToken);
     }
-
+    
+    /*
     private async Task AzureCopyToBlob(string sourceUrl, BlobContainerClient container, string blobName, bool finishWait, CancellationToken cancellationToken)
     {
         var blob = container.GetBlockBlobClient(blobName);
@@ -125,8 +126,8 @@ public class AzureDestination : IAzureDestination
             await WaitCopyTaskAsync(container, blobName, cancellationToken);
         }
     }
-
-    private async Task WaitCopyTaskAsync(BlobContainerClient container, string blobName, CancellationToken cancellationToken)
+    
+    private static async Task WaitCopyTaskAsync(BlobContainerClient container, string blobName, CancellationToken cancellationToken)
     {
         while (true)
         {
@@ -150,12 +151,14 @@ public class AzureDestination : IAzureDestination
             }
         }
     }
+    */
 
     private static string GetBlockId(int blockNumber)
     {
         return Convert.ToBase64String(Encoding.ASCII.GetBytes(string.Format("BlockId{0}", blockNumber.ToString("0000000"))));
     }
 
+    /*
     private async Task<long> GetContentLengthAsync(string url, IEnumerable<KeyValuePair<string, string>> headers, CancellationToken cancellationToken)
     {
         var headContentLength = await GetContentLengthFromHeadAsync(url, headers, cancellationToken);
@@ -201,6 +204,7 @@ public class AzureDestination : IAzureDestination
 
         return response.Content.Headers.ContentLength ?? -1;
     }
+    */
 
     public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
     {
@@ -228,6 +232,6 @@ public class AzureDestination : IAzureDestination
     {
         var container = await GetContainerAsync(dataCollectionName, cancellationToken);
         var blob = container.GetBlobClient(GetBlobName(dataCollectionName, fileName));
-        await blob.UploadAsync(content);
+        await blob.UploadAsync(content, cancellationToken);
     }
 }

@@ -10,8 +10,7 @@ public class MainCollector : IMainCollector
     private readonly ILogger<MainCollector> _logger;
     private readonly IMainCollector _collector;
     private readonly ICollectorModeProvider _collectorModeProvider;
-
-    public IConfigSetNameProvider _configSetNameProvider { get; }
+    private readonly IConfigSetNameProvider _configSetNameProvider;
 
     public MainCollector(
         ILogger<MainCollector> logger, 
@@ -25,7 +24,7 @@ public class MainCollector : IMainCollector
         _collectorModeProvider = collectorModeProvider;
     }
 
-    private string ResultPrefix(bool result)
+    private static string ResultPrefix(bool result)
     {
         return (result ? "Finished" : "ERRORS occured when");
     }
