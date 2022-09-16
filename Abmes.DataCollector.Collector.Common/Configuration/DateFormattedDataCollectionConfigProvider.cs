@@ -1,4 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Common.Misc;
+using System.Diagnostics.CodeAnalysis;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration;
 
@@ -29,7 +30,7 @@ public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataColle
                 PrepareDuration = config.PrepareDuration,
                 CollectFileIdentifiersUrl = FormatDateTime(config.CollectFileIdentifiersUrl),
                 CollectFileIdentifiersHeaders = config.CollectFileIdentifiersHeaders,
-                CollectUrl = FormatDateTime(config.CollectUrl.Replace("[filename]", "(filename)")).Replace("(filename)", "[filename]"),
+                CollectUrl = FormatDateTime(config.CollectUrl?.Replace("[filename]", "(filename)"))?.Replace("(filename)", "[filename]"),
                 CollectHeaders = config.CollectHeaders,
                 CollectParallelFileCount = config.CollectParallelFileCount,
                 CollectTimeout = config.CollectTimeout,
@@ -47,7 +48,8 @@ public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataColle
             };
     }
 
-    private string FormatDateTime(string url)
+    [return: NotNullIfNotNull("url")]
+    private string? FormatDateTime(string? url)
     {
         return _dateTimeFormatter.FormatDateTime(url, @"\[", "]", DateTime.UtcNow);
     }

@@ -56,7 +56,7 @@ public class ConsoleDestination : IConsoleDestination
         return false;
     }
 
-    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string? md5, CancellationToken cancellationToken)
     {
         return Task.FromResult(true);
     }

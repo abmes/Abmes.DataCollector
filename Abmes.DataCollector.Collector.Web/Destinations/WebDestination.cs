@@ -48,6 +48,7 @@ public class WebDestination : IWebDestination
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
         var endpointUrl = GetEndpointUrl(DestinationConfig.FileNamesGetEndpoint, dataCollectionName, null);
+        ArgumentNullException.ThrowIfNull(endpointUrl);
 
         using var httpClient = _httpClientFactory.CreateClient();
         var json =
@@ -59,12 +60,13 @@ public class WebDestination : IWebDestination
                 cancellationToken: cancellationToken);
 
         var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        return JsonSerializer.Deserialize<IEnumerable<string>>(json, options);
+        return JsonSerializer.Deserialize<IEnumerable<string>>(json, options) ?? Enumerable.Empty<string>();
     }
 
     public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
     {
         var endpointUrl = GetEndpointUrl(DestinationConfig.GarbageCollectFilePostEndpoint, dataCollectionName, fileName);
+        ArgumentNullException.ThrowIfNull(endpointUrl);
 
         using var httpClient = _httpClientFactory.CreateClient();
         using var _ = await httpClient.SendAsync(
@@ -74,7 +76,7 @@ public class WebDestination : IWebDestination
             cancellationToken: cancellationToken);
     }
 
-    private string GetEndpointUrl(string endpoint, string dataCollectionName, string fileName)
+    private string? GetEndpointUrl(string? endpoint, string dataCollectionName, string? fileName)
     {
         if (string.IsNullOrEmpty(DestinationConfig.Root) || string.IsNullOrEmpty(endpoint))
         {
@@ -101,7 +103,7 @@ public class WebDestination : IWebDestination
             (!string.IsNullOrEmpty(DestinationConfig.GarbageCollectFilePostEndpoint));
     }
 
-    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string? md5, CancellationToken cancellationToken)
     {
         return Task.FromResult(true);
     }

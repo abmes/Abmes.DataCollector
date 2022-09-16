@@ -18,7 +18,7 @@ public class DataPreparePoller : IDataPreparePoller
         var exportLogDataContent = await httpClient.GetStringAsync(pollUrl, pollHeaders, "application/json", cancellationToken: cancellationToken);
 
         var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        var result = JsonSerializer.Deserialize<DataPrepareResult>(exportLogDataContent, options);
+        var result = JsonSerializer.Deserialize<DataPrepareResult>(exportLogDataContent, options) ?? new DataPrepareResult(Finished: false, HasErrors: false);
 
         return result;
     }

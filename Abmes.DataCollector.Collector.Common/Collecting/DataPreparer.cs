@@ -24,7 +24,7 @@ public class DataPreparer : IDataPreparer
             return false;
         }
 
-        await PrepareCollectAsync(dataCollectionConfig.PrepareUrl, dataCollectionConfig.PrepareHeaders, dataCollectionConfig.PrepareHttpMethod, cancellationToken);
+        await PrepareCollectAsync(dataCollectionConfig.PrepareUrl, dataCollectionConfig.PrepareHeaders, Ensure.NotNullOrEmpty(dataCollectionConfig.PrepareHttpMethod), cancellationToken);
 
         if (!string.IsNullOrEmpty(dataCollectionConfig.PrepareFinishedPollUrl))
         {

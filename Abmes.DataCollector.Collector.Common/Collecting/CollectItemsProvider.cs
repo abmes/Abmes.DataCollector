@@ -147,7 +147,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
-        string identityServiceAccessToken,
+        string? identityServiceAccessToken,
         CancellationToken cancellationToken)
     {
         var result = new ConcurrentBag<(FileInfoData CollectFileInfo, string CollectUrl)>();

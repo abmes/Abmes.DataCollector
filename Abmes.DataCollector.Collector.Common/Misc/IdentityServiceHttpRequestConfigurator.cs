@@ -1,5 +1,6 @@
 ﻿using System.Net.Http.Headers;
 using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Utils;
 using IdentityModel.Client;
 
 namespace Abmes.DataCollector.Collector.Common.Misc;
@@ -23,7 +24,7 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
         }
     }
 
-    public void Config(HttpRequestMessage request, string identityServiceAccessToken, CancellationToken cancellationToken)
+    public void Config(HttpRequestMessage request, string? identityServiceAccessToken, CancellationToken cancellationToken)
     {
         if (!string.IsNullOrEmpty(identityServiceAccessToken))
         {
@@ -31,7 +32,7 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
         }
     }
 
-    public async Task<string> GetIdentityServiceAccessTokenAsync(IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public async Task<string?> GetIdentityServiceAccessTokenAsync(IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(identityServiceClientInfo.Url))
         {

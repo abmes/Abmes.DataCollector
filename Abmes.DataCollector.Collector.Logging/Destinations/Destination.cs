@@ -21,7 +21,7 @@ public class Destination : ILoggingDestination
         get => _destination.DestinationConfig;
     }
 
-    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string? md5, CancellationToken cancellationToken)
     {
         return _destination.AcceptsFileAsync(dataCollectionName, name, size, md5, cancellationToken);
     }

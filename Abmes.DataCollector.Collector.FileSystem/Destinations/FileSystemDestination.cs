@@ -36,7 +36,11 @@ public class FileSystemDestination : IFileSystemDestination
 
         var fullFileName = GetFullFileName(dataCollectionName, fileName);
 
-        Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
+        var directoryName = Path.GetDirectoryName(fullFileName);
+        if (!string.IsNullOrEmpty(directoryName))
+        {
+            Directory.CreateDirectory(directoryName);
+        }
 
         using (var sourceStream = await response.Content.ReadAsStreamAsync())
         {
@@ -112,14 +116,14 @@ public class FileSystemDestination : IFileSystemDestination
         return Path.Combine(DestinationConfig.Root, dataCollectionName, fileName.Replace("/", "\\"));
     }
 
-    private async Task<string> GetFileMD5Async(string fullFileName, CancellationToken cancellationToken)
+    private async Task<string?> GetFileMD5Async(string fullFileName, CancellationToken cancellationToken)
     {
         var md5FileName = GetMD5FileName(fullFileName);
 
         return File.Exists(md5FileName) ? await File.ReadAllTextAsync(md5FileName, cancellationToken) : null;
     }
 
-    public async Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+    public async Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string? md5, CancellationToken cancellationToken)
     {
         var fullFileName = GetFullFileName(dataCollectionName, name);
 

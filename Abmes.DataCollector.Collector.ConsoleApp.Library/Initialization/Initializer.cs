@@ -21,6 +21,6 @@ public static class Initializer
         var container = builder.Build();
         var serviceProvider = container.Resolve<IServiceProvider>();
 
-        return serviceProvider.GetService<IMainService>();
+        return serviceProvider.GetRequiredService<IMainService>();
     }
 }

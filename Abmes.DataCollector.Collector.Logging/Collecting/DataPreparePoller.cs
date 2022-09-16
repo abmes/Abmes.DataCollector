@@ -39,7 +39,7 @@ public class DatabPreparePoller : IDataPreparePoller
         }
     }
 
-    private string GetDataCollectionName(string pollUrl)
+    private string? GetDataCollectionName(string pollUrl)
     {
         try
         {

@@ -1,4 +1,5 @@
-﻿using System.Diagnostics.Contracts;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Diagnostics.Contracts;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration;
 
@@ -47,13 +48,14 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
             result.Concat(
                 new[] {
                     new KeyValuePair<string, string>("DataCollectionName", config.DataCollectionName),
-                    new KeyValuePair<string, string>("DataGroupName", config.DataGroupName),
-                    new KeyValuePair<string, string>("LoginName", config.LoginName),
-                    new KeyValuePair<string, string>("LoginSecret", config.LoginSecret)
+                    new KeyValuePair<string, string>("DataGroupName", config.DataGroupName ?? string.Empty),
+                    new KeyValuePair<string, string>("LoginName", config.LoginName ?? string.Empty),
+                    new KeyValuePair<string, string>("LoginSecret", config.LoginSecret ?? string.Empty)
                 });
     }
 
-    private string MergeStringValue(string value, DataCollectionConfig config)
+    [return: NotNullIfNotNull("value")]
+    private string? MergeStringValue(string? value, DataCollectionConfig config)
     {
         Contract.Assert(config != null);
 
@@ -70,7 +72,8 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
         return result;
     }
 
-    private string MergeStringValue(string value, string templateValue, DataCollectionConfig config)
+    [return: NotNullIfNotNull("value")]
+    private string? MergeStringValue(string? value, string? templateValue, DataCollectionConfig config)
     {
         var result = string.IsNullOrEmpty(value) ? templateValue : value;
         return MergeStringValue(result, config);
@@ -78,8 +81,8 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
 
     private IEnumerable<KeyValuePair<string, string>> MergeHeaders(IEnumerable<KeyValuePair<string, string>> headers, IEnumerable<KeyValuePair<string, string>> templateHeaders, DataCollectionConfig config)
     {
-        headers = headers ?? Enumerable.Empty<KeyValuePair<string, string>>();
-        templateHeaders = templateHeaders ?? Enumerable.Empty<KeyValuePair<string, string>>();
+        headers ??= Enumerable.Empty<KeyValuePair<string, string>>();
+        templateHeaders ??= Enumerable.Empty<KeyValuePair<string, string>>();
 
         var headerKeys = headers.Select(y => y.Key).ToList();
 
@@ -88,6 +91,6 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
                 .Where(x => !headerKeys.Contains(x.Key))
                 .Concat(headers);
 
-        return result?.Select(x => new KeyValuePair<string, string>(MergeStringValue(x.Key, config), MergeStringValue(x.Value, config)));
+        return result.Select(x => new KeyValuePair<string, string>(MergeStringValue(x.Key, config), MergeStringValue(x.Value, config)));
     }
 }

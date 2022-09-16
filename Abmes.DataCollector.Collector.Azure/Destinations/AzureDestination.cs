@@ -219,7 +219,7 @@ public class AzureDestination : IAzureDestination
         return true;
     }
 
-    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string md5, CancellationToken cancellationToken)
+    public Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string? md5, CancellationToken cancellationToken)
     {
         return Task.FromResult(true);
     }

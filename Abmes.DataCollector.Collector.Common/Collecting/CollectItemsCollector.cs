@@ -80,7 +80,7 @@ public class CollectItemsCollector : ICollectItemsCollector
         {
             try
             {
-                if (!failedDestinationGroups.Contains((target.Destination, collectItem.CollectFileInfo?.GroupId)))
+                if (!failedDestinationGroups.Contains((target.Destination, collectItem.CollectFileInfo?.GroupId ?? "default")))
                 {
                     await CollectToDestinationAsync(collectItem, target.Destination, target.DestinationFileName, dataCollectionConfig, collectMoment, completeDestinationFiles, cancellationToken);
                 }
@@ -120,7 +120,7 @@ public class CollectItemsCollector : ICollectItemsCollector
                 cancellationToken
             );
 
-        completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId));
+        completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId ?? "default"));
     }
 
     private bool IsRetryableCollectError(Exception e, DataCollectionConfig dataCollectionConfig)

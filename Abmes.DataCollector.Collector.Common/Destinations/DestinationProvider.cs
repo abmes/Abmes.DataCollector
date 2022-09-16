@@ -29,7 +29,7 @@ public class DestinationProvider : IDestinationProvider
     {
         var configSetName = _configSetNameProvider.GetConfigSetName();
         var destinationsConfig = await _destinationsConfigProvider.GetDestinationsConfigAsync(configSetName, cancellationToken);
-        var destinationConfig = destinationsConfig.Where(x => x.DestinationId.Equals(destinationId, StringComparison.CurrentCultureIgnoreCase)).SingleOrDefault();
+        var destinationConfig = destinationsConfig.Where(x => destinationId.Equals(x.DestinationId, StringComparison.CurrentCultureIgnoreCase)).SingleOrDefault();
 
         if (destinationConfig == null)
         {
