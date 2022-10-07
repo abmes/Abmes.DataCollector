@@ -43,7 +43,7 @@ public class MainService : IMainService
         }
     }
 
-    private int DelayedExitCode(int exitCode, int delaySeconds = 0)
+    private static int DelayedExitCode(int exitCode, int delaySeconds = 0)
     {
         if (delaySeconds > 0)
         {

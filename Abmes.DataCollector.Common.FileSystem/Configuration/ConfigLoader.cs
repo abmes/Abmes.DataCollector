@@ -39,6 +39,6 @@ public class ConfigLoader : IConfigLoader
     {
         using var fileStream = new FileStream(fileName, FileMode.Open);
         using var reader = new StreamReader(fileStream, Encoding.UTF8);
-        return await reader.ReadToEndAsync();
+        return await reader.ReadToEndAsync();  // todo: cancellationToken in .net 7
     }
 }

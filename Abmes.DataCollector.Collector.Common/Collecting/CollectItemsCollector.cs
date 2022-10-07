@@ -134,7 +134,7 @@ public class CollectItemsCollector : ICollectItemsCollector
         return RetryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
     }
 
-    private async Task GarbageCollectFailedDestinationsAsync(IEnumerable<(IDestination Destination, string GroupId)> failedDestinationGroups, IEnumerable<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
+    private static async Task GarbageCollectFailedDestinationsAsync(IEnumerable<(IDestination Destination, string GroupId)> failedDestinationGroups, IEnumerable<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
         var failedTargets =
                 failedDestinationGroups

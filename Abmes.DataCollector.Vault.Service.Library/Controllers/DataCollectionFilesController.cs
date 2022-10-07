@@ -17,7 +17,7 @@ public class DataCollectionFilesController : ControllerBase
         _dataCollectionFiles = dataCollectionFiles;
     }
 
-    private TimeSpan? ParseTimeSpan(string? value)
+    private static TimeSpan? ParseTimeSpan(string? value)
     {
         return string.IsNullOrEmpty(value) ? null : TimeSpan.Parse(value);
     }

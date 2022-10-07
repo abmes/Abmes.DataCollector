@@ -90,31 +90,35 @@ public class DataCollectionFiles : IDataCollectionFiles
     {
         var storageFileNames = await InternalGetStorageFileNamesAsync(null, storageType, null, cancellationToken);
 
-        return InternalGetLatestItemsAsync(storageFileNames, x => _fileNameProvider.DataCollectionFileNameToDateTime(x), cancellationToken);
+        return await InternalGetLatestItemsAsync(storageFileNames, x => _fileNameProvider.DataCollectionFileNameToDateTime(x), cancellationToken);
     }
 
     private async Task<(IStorage Storage, IEnumerable<FileInfoData> FileInfos)> InternalGetLatestFileInfosAsync(CancellationToken cancellationToken)
     {
         var storageFileInfos = await InternalGetStorageFileInfosAsync(null, null, cancellationToken);
 
-        return InternalGetLatestItemsAsync(storageFileInfos, x => _fileNameProvider.DataCollectionFileNameToDateTime(x.Name), cancellationToken);
+        return await InternalGetLatestItemsAsync(storageFileInfos, x => _fileNameProvider.DataCollectionFileNameToDateTime(x.Name), cancellationToken);
     }
 
-    private static (IStorage Storage, IEnumerable<T> Items) InternalGetLatestItemsAsync<T>(IEnumerable<(IStorage Storage, IEnumerable<T> Items)> storageItems, Func<T, DateTimeOffset> getItemDateTimeFunc, CancellationToken cancellationToken)
+    private static async Task<(IStorage Storage, IEnumerable<T> Items)> InternalGetLatestItemsAsync<T>(
+        IEnumerable<(IStorage Storage, IEnumerable<T> Items)> storageItems,
+        Func<T, DateTimeOffset> getItemDateTimeFunc,
+        CancellationToken cancellationToken)
     {
-        return
-            storageItems
-                .Where(x => x.Items.Any())
-                .Select(x =>
-                    (
-                        x.Storage,
-                        x.Items
-                            .GroupBy(z => getItemDateTimeFunc(z))
-                            .OrderBy(z => z.Key)
-                            .LastOrDefault(Enumerable.Empty<T>())
+        return await
+            Task.FromResult(
+                storageItems
+                    .Where(x => x.Items.Any())
+                    .Select(x =>
+                        (
+                            x.Storage,
+                            x.Items
+                                .GroupBy(z => getItemDateTimeFunc(z))
+                                .OrderBy(z => z.Key)
+                                .LastOrDefault(Enumerable.Empty<T>())
+                        )
                     )
-                )
-                .FirstOrDefault();
+                    .FirstOrDefault());
     }
 
     public async Task<IEnumerable<FileInfoData>> GetFileInfosAsync(string? prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
