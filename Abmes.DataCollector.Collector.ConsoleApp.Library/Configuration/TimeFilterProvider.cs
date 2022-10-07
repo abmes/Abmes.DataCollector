@@ -14,6 +14,6 @@ public class TimeFilterProvider : ITimeFilterProvider
     {
         var args = Environment.GetCommandLineArgs();
 
-        return _bootstrapper.TimeFilter ?? ((args.Length <= 4) ? null : args[4]);
+        return string.IsNullOrEmpty(_bootstrapper.TimeFilter) ? ((args.Length <= 4) ? string.Empty : args[4]) : _bootstrapper.TimeFilter;
     }
 }

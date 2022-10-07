@@ -15,6 +15,6 @@ public class ConfigSetNameProvider : IConfigSetNameProvider
     {
         var args = Environment.GetCommandLineArgs();
 
-        return _bootstrapper.ConfigSetName ?? ((args.Length <= 1) ? null : args[1].Split('/', '\\').Last());
+        return string.IsNullOrEmpty(_bootstrapper.ConfigSetName) ? ((args.Length <= 1) ? string.Empty : args[1].Split('/', '\\').Last()) : _bootstrapper.ConfigSetName;
     }
 }
