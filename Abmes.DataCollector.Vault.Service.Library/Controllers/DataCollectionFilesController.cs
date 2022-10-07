@@ -7,7 +7,7 @@ namespace Abmes.DataCollector.Vault.Service.Controllers;
 
 [Authorize(Policy = "UserAllowedDataCollection")]
 [Route("[controller]")]
-public class DataCollectionFilesController : Controller
+public class DataCollectionFilesController : ControllerBase
 {
     private readonly IDataCollectionFiles _dataCollectionFiles;
 

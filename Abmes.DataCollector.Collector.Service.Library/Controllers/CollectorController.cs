@@ -5,7 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 namespace Abmes.DataCollector.Collector.Service.Controllers;
 
 [Route("[controller]")]
-public class CollectorController : Controller
+public class CollectorController : ControllerBase
 {
     private readonly IMainCollector _mainCollector;
     private readonly IBootstrapper _bootstrapper;
