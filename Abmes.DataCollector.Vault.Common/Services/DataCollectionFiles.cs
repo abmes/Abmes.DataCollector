@@ -117,7 +117,7 @@ public class DataCollectionFiles : IDataCollectionFiles
                 .FirstOrDefault();
     }
 
-    public async Task<IEnumerable<FileInfoData>> GetFileInfosAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+    public async Task<IEnumerable<FileInfoData>> GetFileInfosAsync(string? prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
     {
         var storageFileInfos = await InternalGetStorageFileInfosAsync(prefix, maxAge, cancellationToken);
         return
@@ -132,7 +132,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         return (await InternalGetLatestFileInfosAsync(cancellationToken)).FileInfos;
     }
 
-    public async Task<IEnumerable<string>> GetFileNamesAsync(string prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetFileNamesAsync(string? prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
     {
         var storageFileNames = await InternalGetStorageFileNamesAsync(prefix, null, maxAge, cancellationToken);
         return 
@@ -147,7 +147,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         return (await InternalGetLatestFileNamesAsync(null, cancellationToken)).FileNames;
     }
 
-    public async Task<string> GetDownloadUrlAsync(string fileName, string storageType, CancellationToken cancellationToken)
+    public async Task<string> GetDownloadUrlAsync(string fileName, string? storageType, CancellationToken cancellationToken)
     {
         var storageFileNames = await InternalGetStorageFileNamesAsync(fileName, storageType, null, cancellationToken);
 
@@ -162,7 +162,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         return await storage.GetDataCollectionFileDownloadUrlAsync(_dataCollectionName, fileName, cancellationToken);
     }
 
-    public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string fileNamePrefix, string storageType, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string? fileNamePrefix, string? storageType, CancellationToken cancellationToken)
     {
         var storageFileNames = await InternalGetStorageFileNamesAsync(fileNamePrefix, storageType,  null, cancellationToken);
 
@@ -173,7 +173,7 @@ public class DataCollectionFiles : IDataCollectionFiles
         return tasks.Select(x => x.Result);
     }
 
-    public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string storageType, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> GetLatestDownloadUrlsAsync(string? storageType, CancellationToken cancellationToken)
     {
         var (storage, fileNames) = await InternalGetLatestFileNamesAsync(storageType, cancellationToken);
 
