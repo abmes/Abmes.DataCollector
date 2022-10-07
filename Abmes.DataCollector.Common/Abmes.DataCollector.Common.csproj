@@ -4,9 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <AssemblyName>Abmes.DataCollector.Common</AssemblyName>
-    <RootNamespace>Abmes.DataCollector.Common</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

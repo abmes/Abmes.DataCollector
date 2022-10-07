@@ -4,8 +4,8 @@
     <TargetFramework>net6.0</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <RootNamespace>Abmes.DataCollector.Vault.Amazon</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>
