@@ -15,8 +15,8 @@
       "Type" : "AWS::Serverless::Function",
       "Properties": {
         "FunctionName": "AbmesDataCollectorVault",
-        "Handler": "Abmes.DataCollector.Vault.AmazonLambda::Abmes.DataCollector.Vault.AmazonLambda.LambdaEntryPoint::FunctionHandlerAsync",
-        "Runtime": "dotnetcore3.1",
+        "Handler": "Abmes.DataCollector.Vault.AmazonLambda",
+        "Runtime": "dotnet6",
         "CodeUri": "",
         "MemorySize": 1024,
         "Timeout": 30,
