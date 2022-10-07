@@ -120,8 +120,8 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
     }
 
-    public async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
-        IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems,
+    public async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
+        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
@@ -138,25 +138,27 @@ public class CollectItemsProvider : ICollectItemsProvider
 
         return
             collectItemsList
-            .Where(x => !x.CollectUrl.StartsWith('@'))
-            .Concat(redirectedCollectItems);
+                .Where(x => !x.CollectUrl.StartsWith('@'))
+                .Concat(redirectedCollectItems);
     }
 
-    private async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(
-        IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems,
+    private async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(
+        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
         string? identityServiceAccessToken,
         CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<(FileInfoData CollectFileInfo, string CollectUrl)>();
+        var result = new ConcurrentBag<(FileInfoData? CollectFileInfo, string CollectUrl)>();
 
         await ParallelUtils.ParallelEnumerateAsync(
             collectItems,
             Math.Max(1, maxDegreeOfParallelism),
             async (collectItem, ct) =>
             {
+                ArgumentNullException.ThrowIfNull(collectItem.CollectFileInfo);
+
                 var urls = collectItem.CollectUrl.TrimStart('@').Split('|').ToList();
                 var preliminaryUrls = urls.SkipLast(1);
                 var lastUrl = urls.Last();

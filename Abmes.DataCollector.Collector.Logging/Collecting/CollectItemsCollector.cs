@@ -19,7 +19,7 @@ public class CollectItemsCollector : ICollectItemsCollector
         _collectItemsCollector = collectItemsCollector;
     }
 
-    public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
     {
         collectItems = collectItems.ToList().AsEnumerable();  // enumerate
 

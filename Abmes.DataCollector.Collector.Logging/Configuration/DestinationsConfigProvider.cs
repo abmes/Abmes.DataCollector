@@ -16,7 +16,7 @@ public class DestinationsConfigProvider : IDestinationsConfigProvider
     }
     public async Task<IEnumerable<DestinationConfig>> GetDestinationsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {
-        var displayConfigSetName = configSetName ?? "<default>";
+        var displayConfigSetName = string.IsNullOrEmpty(configSetName) ? "<default>" : configSetName;
 
         try
         {

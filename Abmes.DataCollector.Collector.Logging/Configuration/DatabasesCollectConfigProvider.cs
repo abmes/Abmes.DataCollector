@@ -17,7 +17,7 @@ public class DataCollectionsConfigProvider : IDataCollectionsConfigProvider
 
     public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {
-        var displayConfigSetName = configSetName ?? "<default>";
+        var displayConfigSetName = string.IsNullOrEmpty(configSetName) ? "<default>" : configSetName;
 
         try
         {

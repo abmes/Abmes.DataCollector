@@ -51,8 +51,10 @@ public class DataCollector : IDataCollector
 
         var prepared = collectorMode == CollectorMode.Collect && await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
+        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(dataCollectionConfig.CollectUrl);
+
         var collectItems = _collectItemsProvider.GetCollectItems(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken).ToList();
-        var collectionFileInfos = collectItems.Select(x => x.CollectFileInfo);
+        var collectionFileInfos = collectItems.Where(x => x.CollectFileInfo is not null).Select(x => Ensure.NotNull(x.CollectFileInfo));
 
         var acceptedCollectItems = await GetAcceptedCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig.CollectParallelFileCount ?? 1, cancellationToken);
 
@@ -83,9 +85,9 @@ public class DataCollector : IDataCollector
         return (Enumerable.Empty<string>(), collectionFileInfos);
     }
 
-    private static async Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+    private static async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<(FileInfoData CollectFileInfo, string CollectUrl)>();
+        var result = new ConcurrentBag<(FileInfoData? CollectFileInfo, string CollectUrl)>();
 
         await ParallelUtils.ParallelEnumerateAsync(
             collectItems,

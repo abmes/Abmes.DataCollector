@@ -84,16 +84,16 @@ public class FileSystemDestination : IFileSystemDestination
         File.Delete(GetMD5FileName(fullFileName));
 
         var fullDirName = Path.GetDirectoryName(fullFileName);
-        var dataCollectionRootFullDirName = Path.Combine(DestinationConfig.Root, dataCollectionName).TrimEnd('\\');
+        var dataCollectionRootFullDirName = Path.Combine(DestinationConfig.Root ?? string.Empty, dataCollectionName).TrimEnd('\\');
 
-        DeleteEmptyDirectories(fullDirName, dataCollectionRootFullDirName);
+        DeleteEmptyDirectories(fullDirName ?? string.Empty, dataCollectionRootFullDirName);
 
         await Task.CompletedTask;
     }
 
     private void DeleteEmptyDirectories(string fullDirName, string rootFullDirName)
     {
-        while (fullDirName.TrimEnd('\\') != rootFullDirName)
+        while (!string.IsNullOrEmpty(fullDirName) && (fullDirName.TrimEnd('\\') != rootFullDirName))
         {
             if (!IsDirectoryEmpty(fullDirName))
             {
@@ -102,7 +102,7 @@ public class FileSystemDestination : IFileSystemDestination
 
             Directory.Delete(fullDirName);
 
-            fullDirName = Path.GetDirectoryName(fullDirName);
+            fullDirName = Path.GetDirectoryName(fullDirName) ?? string.Empty;
         }
     }
 
@@ -113,7 +113,7 @@ public class FileSystemDestination : IFileSystemDestination
 
     private string GetFullFileName(string dataCollectionName, string fileName)
     {
-        return Path.Combine(DestinationConfig.Root, dataCollectionName, fileName.Replace("/", "\\"));
+        return Path.Combine(DestinationConfig.Root ?? string.Empty, dataCollectionName, fileName.Replace("/", "\\"));
     }
 
     private async Task<string?> GetFileMD5Async(string fullFileName, CancellationToken cancellationToken)
@@ -151,7 +151,10 @@ public class FileSystemDestination : IFileSystemDestination
     {
         var fullFileName = GetFullFileName(dataCollectionName, fileName);
 
-        Directory.CreateDirectory(Path.GetDirectoryName(fullFileName));
+        var directoryName = Path.GetDirectoryName(fullFileName);
+        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(directoryName);
+
+        Directory.CreateDirectory(directoryName);
 
         using var fileStream = new FileStream(fullFileName, FileMode.Create);
         await content.CopyToAsync(fileStream);

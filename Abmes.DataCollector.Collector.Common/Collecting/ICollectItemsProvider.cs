@@ -14,8 +14,8 @@ public interface ICollectItemsProvider
         IdentityServiceClientInfo identityServiceClientInfo,
         CancellationToken cancellationToken);
 
-    Task<IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
-        IEnumerable<(FileInfoData CollectFileInfo, string CollectUrl)> collectItems,
+    Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
+        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
