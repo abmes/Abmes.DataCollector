@@ -93,7 +93,7 @@ public static class CopyUtils
 
     public static string? GetMD5HashString(byte[]? md5Hash)
     {
-        if ((md5Hash == null) || (md5Hash.Length == 0))
+        if ((md5Hash is null) || (md5Hash.Length == 0))
         {
             return null;
         }

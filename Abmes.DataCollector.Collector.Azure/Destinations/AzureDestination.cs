@@ -137,7 +137,7 @@ public class AzureDestination : IAzureDestination
 
             var blob = blobs.FirstOrDefault();
 
-            if (blob != null)
+            if (blob is not null)
             {
                 if ((blob.Properties.CopyStatus == CopyStatus.Failed) || (blob.Properties.CopyStatus == CopyStatus.Aborted))
                 {

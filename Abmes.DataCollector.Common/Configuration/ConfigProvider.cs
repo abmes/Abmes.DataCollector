@@ -30,7 +30,7 @@ public class ConfigProvider : IConfigProvider
     {
         var configLoader = _configLoaders.Where(x => x.CanLoadFromLocation(configLocation)).FirstOrDefault();
 
-        if (configLoader == null)
+        if (configLoader is null)
         {
             throw new Exception($"Can't provide configuration from the specified location");
         }
@@ -47,7 +47,7 @@ public class ConfigProvider : IConfigProvider
 
         var configLoader = _configLoaders.Where(x => x.CanLoadFromStorage(_commonAppSettings.ConfigStorageType)).FirstOrDefault();
 
-        if (configLoader == null)
+        if (configLoader is null)
         {
             throw new Exception($"Can't provide configuration from storage type '{_commonAppSettings.ConfigStorageType}'");
         }

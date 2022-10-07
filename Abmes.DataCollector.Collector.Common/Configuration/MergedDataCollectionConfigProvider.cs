@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Diagnostics.Contracts;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration;
 
@@ -27,7 +26,7 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
                 CollectParallelFileCount = config.CollectParallelFileCount ?? template.CollectParallelFileCount,
                 CollectTimeout = config.CollectTimeout ?? template.CollectTimeout,
                 CollectFinishWait = config.CollectFinishWait ?? template.CollectFinishWait,
-                DestinationIds = (config.DestinationIds == null) || (!config.DestinationIds.Any()) ? template.DestinationIds : config.DestinationIds,
+                DestinationIds = (config.DestinationIds is null) || (!config.DestinationIds.Any()) ? template.DestinationIds : config.DestinationIds,
                 ParallelDestinationCount = config.ParallelDestinationCount ?? template.ParallelDestinationCount,
                 MaxFileCount = config.MaxFileCount?? template.MaxFileCount,
                 LoginName = MergeStringValue(config.LoginName, template.LoginName, config),
@@ -57,8 +56,6 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
     [return: NotNullIfNotNull("value")]
     private string? MergeStringValue(string? value, DataCollectionConfig config)
     {
-        Contract.Assert(config != null);
-
         var result = value;
 
         if (!string.IsNullOrEmpty(result))

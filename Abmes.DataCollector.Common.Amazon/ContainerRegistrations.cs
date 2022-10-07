@@ -21,6 +21,6 @@ public static class ContainerRegistrations
     {
         return
             (string.Equals(configuration.GetSection("AppSettings")?.GetValue<string>("ConfigStorageType"), "Amazon") ||
-            (configuration.GetAWSOptions().Region != null));
+            (configuration.GetAWSOptions().Region is not null));
     }
 }

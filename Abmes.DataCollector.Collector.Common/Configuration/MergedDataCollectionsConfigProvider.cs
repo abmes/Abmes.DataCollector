@@ -19,14 +19,13 @@ public class MergedDataCollectionsConfigProvider : IDataCollectionsConfigProvide
 
         var template = dataCollectionsConfig.Where(x => x.DataCollectionName == "*").FirstOrDefault();
 
-        if (template == null)
-        {
-            return dataCollectionsConfig;
-        }
-
-        return 
+        return
+            template is null
+            ?
             dataCollectionsConfig
-            .Where(x => x.DataCollectionName != "*")
-            .Select(x => _mergedDataCollectionConfigProvider.GetConfig(x, template));
+            :
+            dataCollectionsConfig
+                .Where(x => x.DataCollectionName != "*")
+                .Select(x => _mergedDataCollectionConfigProvider.GetConfig(x, template));
     }
 }

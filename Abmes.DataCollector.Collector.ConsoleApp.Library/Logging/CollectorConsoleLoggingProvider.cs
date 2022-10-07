@@ -29,7 +29,7 @@ class CollectorConsoleLoggingProvider : ILoggerProvider
 
             System.Console.WriteLine($"{formatter(state, exception)}");
 
-            if (exception != null)
+            if (exception is not null)
             {
                 System.Console.WriteLine(exception.StackTrace);
             }

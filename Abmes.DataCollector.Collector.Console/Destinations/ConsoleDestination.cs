@@ -64,11 +64,13 @@ public class ConsoleDestination : IConsoleDestination
     public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
     {
         using var reader = new StreamReader(content);
-        while (true)
+        while (true)  // EndOfStream is synchronous - do not use it!
         {
-            var line = await reader.ReadLineAsync();
+            cancellationToken.ThrowIfCancellationRequested();
+            
+            var line = await reader.ReadLineAsync();  // todo: cancellationToken in .net 7 instead of previous line
 
-            if (line == null)
+            if (line is null)
             {
                 break;
             }

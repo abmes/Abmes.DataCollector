@@ -194,7 +194,7 @@ public class CollectItemsProvider : ICollectItemsProvider
     {
         var names = GetStrings(collectFileInfosJson);
 
-        if (names != null)
+        if (names is not null)
         {
             foreach (var name in names)
             {

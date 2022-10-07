@@ -94,7 +94,7 @@ public class DataCollector : IDataCollector
             Math.Max(1, maxDegreeOfParallelism),
             async (collectItem, ct) =>
             {
-                if (collectItem.CollectFileInfo == null)
+                if (collectItem.CollectFileInfo is null)
                 {
                     result.Add(collectItem);
                 }
