@@ -25,6 +25,8 @@ public class Startup
 
         services.AddHttpContextAccessor();
 
+        services.AddHealthChecks();
+
         services.AddOptions();
         services.AddHttpClient();
         services.AddLogging(loggingBuilder =>
@@ -69,6 +71,7 @@ public class Startup
         app.UseEndpoints(endpoints =>
         {
             endpoints.MapControllers();
+            endpoints.MapHealthChecks("/Health");
         });
     }
 }
