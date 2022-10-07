@@ -1,12 +1,11 @@
+using Abmes.DataCollector.Collector.Logging;
+using Abmes.DataCollector.Utils.AspNetCore;
+using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Autofac;
-using Abmes.DataCollector.Utils.AspNetCore;
-using Abmes.DataCollector.Collector.Logging;
 
 namespace Abmes.DataCollector.Collector.Service;
 
@@ -17,15 +16,14 @@ public class Startup
         Configuration = configuration;
     }
 
-    private IContainer ApplicationContainer { get; set; }
-    public static IConfiguration Configuration { get; private set; }
+    public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
 
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddHttpContextAccessor();
 
         services.AddOptions();
         services.AddHttpClient();

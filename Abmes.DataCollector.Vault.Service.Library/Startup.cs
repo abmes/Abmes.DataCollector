@@ -1,14 +1,13 @@
 using Abmes.DataCollector.Collector.Logging;
+using Abmes.DataCollector.Utils.AspNetCore;
+using Abmes.DataCollector.Vault.Service.Configuration;
+using Abmes.DataCollector.Vault.WebAPI.Authorization;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using Abmes.DataCollector.Vault.WebAPI.Authorization;
-using Abmes.DataCollector.Utils.AspNetCore;
-using Abmes.DataCollector.Vault.Service.Configuration;
 using Microsoft.Extensions.Hosting;
 
 namespace Abmes.DataCollector.Vault.Service;
@@ -19,16 +18,14 @@ public class Startup
     {
         Configuration = configuration;
     }
-
-    private IContainer ApplicationContainer { get; set; }
-    public static IConfiguration Configuration { get; private set; }
+    public IConfiguration Configuration { get; }
 
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
         services.AddControllers();
 
-        services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+        services.AddHttpContextAccessor();
 
         services.AddOptions();
         services.AddHttpClient();
@@ -101,7 +98,6 @@ public class Startup
         app.UseRouting();
 
         app.UseAuthentication();
-
         app.UseAuthorization();
 
         app.UseEndpoints(endpoints =>
