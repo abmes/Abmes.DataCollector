@@ -1,12 +1,11 @@
-﻿using System.Text.Json;
-using Newtonsoft.Json.Linq;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Misc;
-using System.Diagnostics.Contracts;
-using Abmes.DataCollector.Utils;
-using System.Collections.Concurrent;
 using Abmes.DataCollector.Common.Storage;
-using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Utils;
+using Newtonsoft.Json.Linq;
 using Polly;
+using System.Collections.Concurrent;
+using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
@@ -107,7 +106,7 @@ public class CollectItemsProvider : ICollectItemsProvider
                     }
                     else
                     {
-                        Contract.Assert(!string.IsNullOrEmpty(collectUrl));
+                        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(collectUrl);
 
                         if ((string.IsNullOrEmpty(queryFilter)) ||
                             (FileMaskUtils.FileNameMatchesFilter(collectFileInfo.Name, queryFilter)))
