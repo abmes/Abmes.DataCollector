@@ -11,6 +11,7 @@ public class Function
     [LambdaSerializer(typeof(global::Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
     public void FunctionHandler(CollectorParams collectorParams)
     {
+        //todo: serverless template
         System.Console.WriteLine(collectorParams.CollectorMode);
         System.Console.WriteLine(collectorParams.ConfigSetName);
         System.Console.WriteLine(collectorParams.DataCollectionNames);
