@@ -2,7 +2,6 @@
 using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
-using Newtonsoft.Json.Linq;
 using Polly;
 using System.Collections.Concurrent;
 using System.Text.Json;
@@ -202,15 +201,15 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
         else
         {
-            // todo: use System.Text.Json instead of Newtonsoft.Json
-            var files = JArray.Parse(collectFileInfosJson) as JArray;
+            using var files = JsonDocument.Parse(collectFileInfosJson);
+
             var hasResult = false;
-            foreach (var file in files)
+            foreach (var file in files.RootElement.EnumerateArray())
             {
-                var name = namePropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var sizestr = sizePropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var md5 = md5PropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var groupId = groupIdPropertyNames.Select(x => file.Value<string>(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var name = namePropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var sizestr = sizePropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var md5 = md5PropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var groupId = groupIdPropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(name))
                 {
