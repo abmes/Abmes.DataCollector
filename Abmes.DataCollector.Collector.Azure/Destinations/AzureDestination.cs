@@ -26,7 +26,16 @@ public class AzureDestination : IAzureDestination
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+    public async Task CollectAsync(
+        string collectUrl,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        IdentityServiceClientInfo collectIdentityServiceClientInfo,
+        string dataCollectionName,
+        string fileName,
+        TimeSpan timeout,
+        bool finishWait,
+        int tryNo,
+        CancellationToken cancellationToken)
     {
         var container = await GetContainerAsync(dataCollectionName, cancellationToken);
 
@@ -47,7 +56,13 @@ public class AzureDestination : IAzureDestination
         return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
     }
 
-    private async Task SmartCopyToBlobAsync(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, TimeSpan timeout, CancellationToken cancellationToken)
+    private async Task SmartCopyToBlobAsync(
+        string sourceUrl,
+        IEnumerable<KeyValuePair<string, string>> sourceHeaders,
+        BlobContainerClient container,
+        string blobName,
+        TimeSpan timeout,
+        CancellationToken cancellationToken)
     {
         //if (await GetContentLengthAsync(sourceUrl, sourceHeaders, cancellationToken) > 0)
         //{
@@ -59,10 +74,21 @@ public class AzureDestination : IAzureDestination
         }
     }
 
-    private async Task CopyFromUrlToBlob(string sourceUrl, IEnumerable<KeyValuePair<string, string>> sourceHeaders, BlobContainerClient container, string blobName, int bufferSize, TimeSpan timeout, CancellationToken cancellationToken)
+    private async Task CopyFromUrlToBlob(
+        string sourceUrl,
+        IEnumerable<KeyValuePair<string, string>> sourceHeaders,
+        BlobContainerClient container,
+        string blobName,
+        int bufferSize,
+        TimeSpan timeout,
+        CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
-        using var response = await httpClient.SendAsync(sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
+        using var response =
+            await httpClient.SendAsync(
+                sourceUrl, HttpMethod.Get, null, null, null, sourceHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+
         await response.CheckSuccessAsync(cancellationToken);
 
         var sourceMD5 = response.ContentMD5();
@@ -71,7 +97,13 @@ public class AzureDestination : IAzureDestination
         await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);
     }
 
-    private static async Task CopyStreamToBlobAsync(Stream sourceStream, BlobContainerClient container, string blobName, int bufferSize, string? sourceMD5, CancellationToken cancellationToken)
+    private static async Task CopyStreamToBlobAsync(
+        Stream sourceStream,
+        BlobContainerClient container,
+        string blobName,
+        int bufferSize,
+        string? sourceMD5,
+        CancellationToken cancellationToken)
     {
         var blob = container.GetBlockBlobClient(blobName);
 
@@ -196,7 +228,7 @@ public class AzureDestination : IAzureDestination
         using var httpClient = _httpClientFactory.CreateClient();
         httpClient.DefaultRequestHeaders.AddValues(headers);
 
-        using var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead);
+        using var response = await httpClient.GetAsync(url, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         if (!response.IsSuccessStatusCode)
         {
             return -1;
@@ -215,7 +247,15 @@ public class AzureDestination : IAzureDestination
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
-        return await _azureCommonStorage.GetDataCollectionFileNamesAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
+        return await
+            _azureCommonStorage.GetDataCollectionFileNamesAsync(
+                DestinationConfig.LoginName,
+                DestinationConfig.LoginSecret,
+                DestinationConfig.RootBase(),
+                DestinationConfig.RootDir('/', true),
+                dataCollectionName,
+                null,
+                cancellationToken);
     }
 
     public bool CanGarbageCollect()

@@ -28,13 +28,22 @@ public class AmazonDestination : IAmazonDestination
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+    public async Task CollectAsync(
+        string collectUrl,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        IdentityServiceClientInfo collectIdentityServiceClientInfo,
+        string dataCollectionName,
+        string fileName,
+        TimeSpan timeout,
+        bool finishWait,
+        int tryNo,
+        CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
         using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         var sourceMD5 = response.ContentMD5();
 
-        using var sourceStream = await response.Content.ReadAsStreamAsync();
+        using var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         var key = dataCollectionName + '/' + fileName;
 
         await MultiPartUploadAsync(sourceStream, sourceMD5, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true) + key, cancellationToken);
@@ -154,7 +163,8 @@ public class AmazonDestination : IAmazonDestination
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
-        return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
+        return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(
+            null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
     }
 
     public bool CanGarbageCollect()

@@ -47,7 +47,7 @@ public class ConfigLoader : IConfigLoader
         var response = await _amazonS3.GetObjectAsync(request, cancellationToken);
 
         using var reader = new StreamReader(response.ResponseStream, Encoding.UTF8);
-        return await reader.ReadToEndAsync();
+        return await reader.ReadToEndAsync();  // todo: cancellationToken in .net 7
     }
 
     public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)

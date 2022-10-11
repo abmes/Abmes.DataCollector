@@ -48,7 +48,7 @@ public class ConfigLoader : IConfigLoader
         contentStream.Position = 0;
 
         using var reader = new StreamReader(contentStream);
-        return await reader.ReadToEndAsync();
+        return await reader.ReadToEndAsync();  // todo: cancellationToken in .net 7
     }
 
     private string GetAzureStorageDbCollectConfigConnectionString()

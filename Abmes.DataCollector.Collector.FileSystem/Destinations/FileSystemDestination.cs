@@ -42,7 +42,7 @@ public class FileSystemDestination : IFileSystemDestination
             Directory.CreateDirectory(directoryName);
         }
 
-        using (var sourceStream = await response.Content.ReadAsStreamAsync())
+        using (var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken))
         {
             using var fileStream = new FileStream(fullFileName, FileMode.Create);
             await ParallelCopy.CopyAsync(
@@ -157,6 +157,6 @@ public class FileSystemDestination : IFileSystemDestination
         Directory.CreateDirectory(directoryName);
 
         using var fileStream = new FileStream(fullFileName, FileMode.Create);
-        await content.CopyToAsync(fileStream);
+        await content.CopyToAsync(fileStream, cancellationToken);
     }
 }
