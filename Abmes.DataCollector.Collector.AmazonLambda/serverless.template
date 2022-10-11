@@ -1,0 +1,59 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
+
+  "Parameters": {
+    "LambdaName": {
+        "Type" : "String",
+        "Description" : "Lambda Function Name",
+        "MinLength" : "0"
+    },
+    "ConfigStorageType": {
+        "Type" : "String",
+        "Description" : "Amazon|Azure",
+        "MinLength" : "0"
+    },
+    "AmazonS3ConfigStorageBucketName": {
+        "Type" : "String",
+        "Description" : "S3 bucket name for config",
+        "MinLength" : "0"
+    }
+  },
+
+  "Conditions": {},
+
+  "Resources": {
+
+    "AspNetCoreFunction": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "FunctionName": { "Ref": "LambdaName" },
+        "Handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
+        "Runtime": "dotnet6",
+        "CodeUri": "",
+        "MemorySize": 512,
+        "Timeout": 900,
+        "Role": null,
+        "Policies": [
+          "AmazonS3FullAccess"
+        ],
+        "Environment": {
+          "Variables": {
+            "AppSettings__ConfigStorageType": { "Ref": "ConfigStorageType" },
+            "AppSettings__AmazonS3ConfigStorageBucketName": { "Ref": "AmazonS3ConfigStorageBucketName" }
+          }
+        }
+      }
+    }
+  },
+
+  "Outputs": {
+    "ApiURL": {
+        "Description": "API endpoint URL for Prod environment",
+        "Value": {
+          "Fn::Sub": "https://${AspNetCoreApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+        }
+    }
+  }
+}
