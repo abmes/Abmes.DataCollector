@@ -1,0 +1,10 @@
+{
+  "DataCollectorLambdaSampleWatcherSchedule": {
+    "Type": "Schedule",
+    "Properties": {
+      "Name": "DataCollectorLambdaSampleWatcherSchedule",
+      "Schedule": "rate(5 minutes)",
+      "Input": "{ \"configSetName\": \"samplewatcher\", \"dataCollectionNames\": \"\" }"
+    }
+  }
+}

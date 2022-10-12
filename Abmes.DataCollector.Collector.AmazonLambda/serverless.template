@@ -43,17 +43,11 @@
             "AppSettings__ConfigStorageType": { "Ref": "ConfigStorageType" },
             "AppSettings__AmazonS3ConfigStorageBucketName": { "Ref": "AmazonS3ConfigStorageBucketName" }
           }
-        }
+        },
+        "Events": {}
       }
     }
   },
 
-  "Outputs": {
-    "ApiURL": {
-        "Description": "API endpoint URL for Prod environment",
-        "Value": {
-          "Fn::Sub": "https://${AspNetCoreApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
-        }
-    }
-  }
+  "Outputs": {}
 }

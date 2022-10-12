@@ -12,5 +12,6 @@
   "s3-prefix": "Abmes.DataCollector.Collector.AmazonLambda/",
   "stack-name": "DevAbmesDataCollectorStack",
   "template": "serverless.template",
+  "template-substitutions": "$.Resources.AspNetCoreFunction.Properties.Events=AbmesDataCollectorLambdaEventsTemplatePart.dev.json",
   "template-parameters": "\"LambdaName\"=\"DevAbmesDataCollectorLambda\";\"ConfigStorageType\"=\"Amazon|Azure\";\"AmazonS3ConfigStorageBucketName\"=\"abmes-datacollector-config\""
 }
