@@ -4,31 +4,120 @@
   "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
 
   "Parameters": {
-    "LambdaName": {
-        "Type" : "String",
-        "Description" : "Lambda Function Name",
-        "MinLength" : "0"
+    "ProjectBaseName": {
+      "Type": "String",
+      "Description": "Project base name",
+      "MinLength": "0"
     },
+    "ProjectBaseNameLower": {
+      "Type": "String",
+      "Description": "Project base name in lower case",
+      "MinLength": "0"
+    },
+    "OrganizationNameLower": {
+      "Type": "String",
+      "Description": "Orgaznization Name in lower case",
+      "MinLength": "0"
+    },
+    "VpcId": {
+      "Type": "AWS::EC2::VPC::Id",
+      "Description": "VPC Id"
+    },
+    "ContainerSubnets": {
+      "Type": "List<AWS::EC2::Subnet::Id>",
+      "Description": "List of subnets for fargate container"
+    },
+
+    "ScheduleRule1BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 1 base name",
+      "MinLength": "0",
+      "Default": ""
+    },
+    "ScheduleRule1ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 1 base name",
+      "MinLength": "0"
+    },
+    "ScheduleRule1Command": {
+      "Type": "String",
+      "Description": "Schedule rule 1 base name",
+      "MinLength": "0"
+    },
+
+    "ScheduleRule2BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 2 base name",
+      "MinLength": "0",
+      "Default": ""
+    },
+    "ScheduleRule2ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 2 base name",
+      "MinLength": "0"
+    },
+    "ScheduleRule2Command": {
+      "Type": "String",
+      "Description": "Schedule rule 2 base name",
+      "MinLength": "0"
+    },
+
+    "ScheduleRule3BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 3 base name",
+      "MinLength": "0",
+      "Default": ""
+    },
+    "ScheduleRule3ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 3 base name",
+      "MinLength": "0"
+    },
+    "ScheduleRule3Command": {
+      "Type": "String",
+      "Description": "Schedule rule 3 base name",
+      "MinLength": "0"
+    },
+
     "ConfigStorageType": {
-        "Type" : "String",
-        "Description" : "Amazon|Azure",
-        "MinLength" : "0"
+      "Type": "String",
+      "Description": "Amazon|Azure",
+      "MinLength": "0"
     },
     "AmazonS3ConfigStorageBucketName": {
-        "Type" : "String",
-        "Description" : "S3 bucket name for config",
-        "MinLength" : "0"
+      "Type": "String",
+      "Description": "S3 bucket name for config",
+      "MinLength": "0"
     }
   },
 
-  "Conditions": {},
+  "Conditions": {
+    "IsScheduleRule1BaseNameEmpty": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule1BaseName" },
+        ""
+      ]
+    },
+    "IsScheduleRule2BaseNameEmpty": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule2BaseName" },
+        ""
+      ]
+    },
+    "IsScheduleRule3BaseNameEmpty": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule3BaseName" },
+        ""
+      ]
+    }
+  },
 
   "Resources": {
 
     "AspNetCoreFunction": {
       "Type": "AWS::Serverless::Function",
       "Properties": {
-        "FunctionName": { "Ref": "LambdaName" },
+        "FunctionName": { "Fn::Sub": "${ProjectBaseName}Lambda" },
         "Handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
         "Runtime": "dotnet6",
         "CodeUri": "",
@@ -46,7 +135,245 @@
         },
         "Events": {}
       }
+    },
+
+    "AspNetCoreContainerTaskRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": { "Fn::Sub": "${ProjectBaseName}ContainerTaskRole" },
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [ { "Fn::Sub": "ecs-tasks.${AWS::URLSuffix}" } ]
+              },
+              "Action": [ "sts:AssumeRole" ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/AmazonS3FullAccess",
+          "arn:aws:iam::aws:policy/CloudWatchLogsFullAccess"
+        ]
+      }
+    },
+
+    "AspNetCoreContainerExecutionRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": { "Fn::Sub": "${ProjectBaseName}ContainerExecutionRole" },
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [ { "Fn::Sub": "ecs-tasks.${AWS::URLSuffix}" } ]
+              },
+              "Action": [ "sts:AssumeRole" ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/SecretsManagerReadWrite",
+          "arn:aws:iam::aws:policy/service-role/AmazonECSTaskExecutionRolePolicy",
+          "arn:aws:iam::aws:policy/AmazonSSMReadOnlyAccess"
+        ]
+      }
+    },
+
+    "AspNetCoreContainerEventsRole": {
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "RoleName": { "Fn::Sub": "${ProjectBaseName}ContainerEventsRole" },
+        "AssumeRolePolicyDocument": {
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [ { "Fn::Sub": "events.${AWS::URLSuffix}" } ]
+              },
+              "Action": [ "sts:AssumeRole" ]
+            }
+          ]
+        },
+        "ManagedPolicyArns": [
+          "arn:aws:iam::aws:policy/service-role/AmazonEC2ContainerServiceEventsRole"
+        ]
+      }
+    },
+
+    "AspNetCoreContainerRepository": {
+      "Type": "AWS::ECR::Repository",
+      "Properties": {
+        "RepositoryName": { "Fn::Sub": "${OrganizationNameLower}/${ProjectBaseNameLower}containerrepository" }
+      }
+    },
+
+    "AspNetCoreContainerTaskDefinition": {
+      "Type": "AWS::ECS::TaskDefinition",
+      "Properties": {
+        "Family": { "Fn::Sub": "${ProjectBaseName}ContainerTask" },
+        "RequiresCompatibilities": [ "FARGATE" ],
+        "Cpu": "1024",
+        "Memory": "2048",
+        "NetworkMode": "awsvpc",
+        "TaskRoleArn": { "Fn::Sub": "${AspNetCoreContainerTaskRole.Arn}" },
+        "ExecutionRoleArn": { "Fn::Sub": "${AspNetCoreContainerExecutionRole.Arn}" },
+        "ContainerDefinitions": [
+          {
+            "Name": { "Fn::Sub": "${ProjectBaseName}Container" },
+            "Image": { "Fn::Sub": "${AspNetCoreContainerRepository.RepositoryUri}:latest" },
+            "Environment": [
+              {
+                "Name": "AppSettings__ConfigStorageType",
+                "Value": { "Ref": "ConfigStorageType" }
+              },
+              {
+                "Name": "AppSettings__AmazonS3ConfigStorageBucketName",
+                "Value": { "Ref": "AmazonS3ConfigStorageBucketName" }
+              }
+            ],
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options": {
+                "awslogs-group": { "Fn::Sub": "/ecs/${ProjectBaseName}Container" },
+                "awslogs-region": { "Ref": "AWS::Region" },
+                "awslogs-stream-prefix": "ecs"
+              }
+            },
+            "Essential": true
+          }
+        ]
+      }
     }
+  },
+
+  "AspNetCoreContainerCluster": {
+    "Type": "AWS::ECS::Cluster",
+    "Properties": {
+      "ClusterName": { "Fn::Sub": "${ProjectBaseName}ContainerCluster" }
+    }
+  },
+
+  "AspNetCoreContainerSecurityGroup": {
+    "Type": "AWS::EC2::SecurityGroup",
+    "Properties": {
+      "GroupDescription": { "Fn::Sub": "${ProjectBaseName}Container Security Group" },
+      "GroupName": { "Fn::Sub": "${ProjectBaseName}ContainerSecurityGroup" },
+      "VpcId": { "Ref": "VpcId" },
+      "SecurityGroupEgress": [
+        {
+          "Description": "Allow all outbound ipv4 traffic",
+          "CidrIp": "0.0.0.0/0",
+          "IpProtocol": "-1"
+        },
+        {
+          "Description": "Allow all outbound ipv6 traffic",
+          "CidrIpv6": "::/0",
+          "IpProtocol": "-1"
+        }
+      ]
+    }
+  },
+
+  "AspNetCoreContainerScheduleRule1": {
+    "Fn::If": [
+      "IsScheduleRule1BaseNameEmpty",
+      { "Ref": "AWS::NoValue" },
+      {
+        "Type": "AWS::Events::Rule",
+        "Properties": {
+          "Name": { "Fn::Sub": "${ProjectBaseName}Container${ScheduleRule1BaseName}ScheduleRule" },
+          "ScheduleExpression": { "Ref": "ScheduleRule1ScheduleExpression" },
+          "Targets": [
+            {
+              "Arn": { "Fn::Sub": "${AspNetCoreContainerCluster.Arn}" },
+              "Id": "TheTargetId",
+              "RoleArn": { "Fn::Sub": "${AspNetCoreContainerEventsRole.Arn}" },
+              "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule1Command}\"] } ] }" },
+              "EcsParameters": {
+                "TaskDefinitionArn": { "Ref": "AspNetCoreContainerTaskDefinition" },
+                "LaunchType": "FARGATE",
+                "NetworkConfiguration": {
+                  "AwsVpcConfiguration": {
+                    "AssignPublicIp": "ENABLED",
+                    "SecurityGroups": [ { "Ref": "AspNetCoreContainerSecurityGroup" } ],
+                    "Subnets": { "Ref": "ContainerSubnets" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "AspNetCoreContainerScheduleRule2": {
+    "Fn::If": [
+      "IsScheduleRule2BaseNameEmpty",
+      { "Ref": "AWS::NoValue" },
+      {
+        "Type": "AWS::Events::Rule",
+        "Properties": {
+          "Name": { "Fn::Sub": "${ProjectBaseName}Container${ScheduleRule2BaseName}ScheduleRule" },
+          "ScheduleExpression": { "Ref": "ScheduleRule2ScheduleExpression" },
+          "Targets": [
+            {
+              "Arn": { "Fn::Sub": "${AspNetCoreContainerCluster.Arn}" },
+              "Id": "TheTargetId",
+              "RoleArn": { "Fn::Sub": "${AspNetCoreContainerEventsRole.Arn}" },
+              "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule2Command}\"] } ] }" },
+              "EcsParameters": {
+                "TaskDefinitionArn": { "Ref": "AspNetCoreContainerTaskDefinition" },
+                "LaunchType": "FARGATE",
+                "NetworkConfiguration": {
+                  "AwsVpcConfiguration": {
+                    "AssignPublicIp": "ENABLED",
+                    "SecurityGroups": [ { "Ref": "AspNetCoreContainerSecurityGroup" } ],
+                    "Subnets": { "Ref": "ContainerSubnets" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
+  },
+
+  "AspNetCoreContainerScheduleRule3": {
+    "Fn::If": [
+      "IsScheduleRule3BaseNameEmpty",
+      { "Ref": "AWS::NoValue" },
+      {
+        "Type": "AWS::Events::Rule",
+        "Properties": {
+          "Name": { "Fn::Sub": "${ProjectBaseName}Container${ScheduleRule3BaseName}ScheduleRule" },
+          "ScheduleExpression": { "Ref": "ScheduleRule3ScheduleExpression" },
+          "Targets": [
+            {
+              "Arn": { "Fn::Sub": "${AspNetCoreContainerCluster.Arn}" },
+              "Id": "TheTargetId",
+              "RoleArn": { "Fn::Sub": "${AspNetCoreContainerEventsRole.Arn}" },
+              "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule3Command}\"] } ] }" },
+              "EcsParameters": {
+                "TaskDefinitionArn": { "Ref": "AspNetCoreContainerTaskDefinition" },
+                "LaunchType": "FARGATE",
+                "NetworkConfiguration": {
+                  "AwsVpcConfiguration": {
+                    "AssignPublicIp": "ENABLED",
+                    "SecurityGroups": [ { "Ref": "AspNetCoreContainerSecurityGroup" } ],
+                    "Subnets": { "Ref": "ContainerSubnets" }
+                  }
+                }
+              }
+            }
+          ]
+        }
+      }
+    ]
   },
 
   "Outputs": {}
