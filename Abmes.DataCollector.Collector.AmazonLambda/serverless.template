@@ -219,6 +219,13 @@
       }
     },
 
+    "TheContainerLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+      }
+    },
+
     "TheContainerTaskDefinition": {
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
@@ -246,7 +253,7 @@
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
-                "awslogs-group": { "Fn::Sub": "/ecs/${ProjectBaseName}Container" },
+                "awslogs-group": { "Ref": "TheContainerLogGroup" },
                 "awslogs-region": { "Ref": "AWS::Region" },
                 "awslogs-stream-prefix": "ecs"
               }
