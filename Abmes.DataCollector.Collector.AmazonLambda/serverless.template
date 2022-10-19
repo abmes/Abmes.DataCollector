@@ -215,14 +215,14 @@
     "TheContainerRepository": {
       "Type": "AWS::ECR::Repository",
       "Properties": {
-        "RepositoryName": { "Fn::Sub": "${OrganizationNameLower}/${ProjectBaseNameLower}containerrepository" }
+        "RepositoryName": { "Fn::Sub": "${OrganizationNameLower}/${ProjectBaseNameLower}-containerrepository" }
       }
     },
 
     "TheContainerTaskDefinition": {
       "Type": "AWS::ECS::TaskDefinition",
       "Properties": {
-        "Family": { "Fn::Sub": "${ProjectBaseName}ContainerTask" },
+        "Family": { "Fn::Sub": "${ProjectBaseName}ContainerTaskDefinition" },
         "RequiresCompatibilities": [ "FARGATE" ],
         "Cpu": "1024",
         "Memory": "2048",
