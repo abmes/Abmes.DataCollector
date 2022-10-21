@@ -13,5 +13,5 @@
   "stack-name": "AbmesDataCollectorStack",
   "template": "serverless.template",
   "template-substitutions": "$.Resources.TheFunction.Properties.Events=AbmesDataCollectorLambdaEventsTemplatePart.json",
-  "template-parameters": "\"ProjectBaseName\"=\"AbmesDataCollector\";\"ProjectBaseNameLower\"=\"abmesdatacollector\";\"OrganizationNameLower\"=\"abmes\";\"VpcId\"=\"vpc-123456789\";\"ContainerSubnets\"=\"subnet-123,subnet-456,subnet-789\";\"ScheduleRule1BaseName\"=\"Production\";\"ScheduleRule1ScheduleExpression\"=\"cron(...)\";\"ScheduleRule1Command\"=\"production\";\"ConfigStorageType\"=\"Amazon|Azure\";\"AmazonS3ConfigStorageBucketName\"=\"abmes-datacollector-config\""
+  "template-parameters": "\"ProjectBaseName\"=\"AbmesDataCollector\";\"ProjectBaseNameLower\"=\"abmesdatacollector\";\"OrganizationNameLower\"=\"abmes\";\"VpcId\"=\"vpc-123456789\";\"ContainerSubnets\"=\"subnet-123,subnet-456,subnet-789\";\"MetricsNamespace\"=\"AbmesMetrics\";\"AlarmsEmailAddress\"=\"some@email.address\";\"ScheduleRule1BaseName\"=\"Production\";\"ScheduleRule1ScheduleExpression\"=\"cron(...)\";\"ScheduleRule1Command\"=\"production\";\"ConfigStorageType\"=\"Amazon|Azure\";\"AmazonS3ConfigStorageBucketName\"=\"abmes-datacollector-config\""
 }

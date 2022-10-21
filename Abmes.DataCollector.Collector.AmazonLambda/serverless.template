@@ -6,18 +6,15 @@
   "Parameters": {
     "ProjectBaseName": {
       "Type": "String",
-      "Description": "Project base name",
-      "MinLength": "0"
+      "Description": "Project base name"
     },
     "ProjectBaseNameLower": {
       "Type": "String",
-      "Description": "Project base name in lower case",
-      "MinLength": "0"
+      "Description": "Project base name in lower case"
     },
     "OrganizationNameLower": {
       "Type": "String",
-      "Description": "Orgaznization Name in lower case",
-      "MinLength": "0"
+      "Description": "Orgaznization Name in lower case"
     },
     "VpcId": {
       "Type": "AWS::EC2::VPC::Id",
@@ -26,6 +23,14 @@
     "ContainerSubnets": {
       "Type": "List<AWS::EC2::Subnet::Id>",
       "Description": "List of subnets for fargate container"
+    },
+    "MetricsNamespace": {
+      "Type": "String",
+      "Description": "CloudWatch metrics namespace"
+    },
+    "AlarmsEmailAddress": {
+      "Type": "String",
+      "Description": "Email address to send alarm notifications to"
     },
 
     "ScheduleRule1BaseName": {
@@ -78,13 +83,11 @@
 
     "ConfigStorageType": {
       "Type": "String",
-      "Description": "Amazon|Azure",
-      "MinLength": "0"
+      "Description": "Amazon|Azure"
     },
     "AmazonS3ConfigStorageBucketName": {
       "Type": "String",
-      "Description": "S3 bucket name for config",
-      "MinLength": "0"
+      "Description": "S3 bucket name for config"
     }
   },
 
@@ -320,6 +323,56 @@
       }
     },
 
+    "TheContainerMetricFilter1": {
+      "Condition": "IsScheduleRule1BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule1BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule1Command}] ERRORS occured\"" },
+        "LogGroupName": { "Ref": "TheContainerLogGroup" },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule1BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheContainerAlarmSnsTopic1": {
+      "Condition": "IsScheduleRule1BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule1BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheContainerAlarm1": {
+      "Condition": "IsScheduleRule1BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule1BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule1BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheContainerAlarmSnsTopic1" } ]
+      }
+    },
+
     "TheContainerScheduleRule2": {
       "Condition": "IsScheduleRule2BaseNameNotEmpty",
       "Type": "AWS::Events::Rule",
@@ -345,6 +398,56 @@
             }
           }
         ]
+      }
+    },
+
+    "TheContainerMetricFilter2": {
+      "Condition": "IsScheduleRule2BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule2BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "[${ScheduleRule2Command}] ERRORS occured" },
+        "LogGroupName": { "Ref": "TheContainerLogGroup" },
+        "MetricTransformations": [
+          {
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule2BaseName}-Errors-Metric" },
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheContainerAlarmSnsTopic2": {
+      "Condition": "IsScheduleRule2BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule2BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheContainerAlarm2": {
+      "Condition": "IsScheduleRule2BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule2BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule2BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheContainerAlarmSnsTopic2" } ]
       }
     },
 
@@ -374,7 +477,58 @@
           }
         ]
       }
+    },
+
+    "TheContainerMetricFilter3": {
+      "Condition": "IsScheduleRule3BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule3BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "[${ScheduleRule3Command}] ERRORS occured" },
+        "LogGroupName": { "Ref": "TheContainerLogGroup" },
+        "MetricTransformations": [
+          {
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule3BaseName}-Errors-Metric" },
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheContainerAlarmSnsTopic3": {
+      "Condition": "IsScheduleRule3BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule3BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheContainerAlarm3": {
+      "Condition": "IsScheduleRule3BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule3BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-Container-${ScheduleRule3BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheContainerAlarmSnsTopic3" } ]
+      }
     }
+
   },
 
   "Outputs": {}
