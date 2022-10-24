@@ -17,7 +17,7 @@ public class CollectUrlExtractor : ICollectUrlExtractor
         _collectUrlExtractor = collectUrlExtractor;
     }
 
-    public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string? identityServiceAccessToken, CancellationToken cancellationToken)
+    public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string? collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string? identityServiceAccessToken, CancellationToken cancellationToken)
     {
         collectFileIdentifier ??= "default";
 

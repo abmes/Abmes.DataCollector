@@ -155,14 +155,12 @@ public class CollectItemsProvider : ICollectItemsProvider
             Math.Max(1, maxDegreeOfParallelism),
             async (collectItem, ct) =>
             {
-                ArgumentNullException.ThrowIfNull(collectItem.CollectFileInfo);
-
                 var urls = collectItem.CollectUrl.TrimStart('@').Split('|').ToList();
                 var preliminaryUrls = urls.SkipLast(1);
                 var lastUrl = urls.Last();
                 using var httpClient = _httpClientFactory.CreateClient();
                 await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
-                var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
+                var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
                 result.Add((collectItem.CollectFileInfo, url));
             },
             cancellationToken);

@@ -64,12 +64,10 @@ public class CollectItemsCollector : ICollectItemsCollector
 
     private string GetDestinationFileName((FileInfoData? CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
     {
-        ArgumentNullException.ThrowIfNull(collectItem.CollectFileInfo);
-
         return
             _fileNameProvider.GenerateCollectDestinationFileName(
                 dataCollectionConfig.DataCollectionName,
-                collectItem.CollectFileInfo.Name,
+                collectItem.CollectFileInfo?.Name,
                 collectItem.CollectUrl,
                 collectMoment,
                 destination.DestinationConfig.CollectToDirectories,
