@@ -29,10 +29,7 @@ public class Startup
         services.AddHttpClient();
         services.AddLogging(loggingBuilder =>
         {
-            //var loggingConfigSection = Configuration.GetSection(Configuration["Logging"]);
-            //loggingBuilder.AddConfiguration(loggingConfigSection);
-            //loggingBuilder.AddConsole();
-            loggingBuilder.AddProvider(new Logging.CollectorConsoleLoggingProvider());
+            loggingBuilder.AddSimpleConsole();
             loggingBuilder.AddDebug();
 
             LoggingConfigurator.Configure(loggingBuilder, Configuration);

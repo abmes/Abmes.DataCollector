@@ -5,6 +5,7 @@ using Amazon.S3.Transfer;
 using Abmes.DataCollector.Common.Amazon.Storage;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using CommunityToolkit.HighPerformance;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations;
 
@@ -13,6 +14,7 @@ public class AmazonDestination : IAmazonDestination
     private readonly IAmazonS3 _amazonS3;
     private readonly IAmazonCommonStorage _amazonCommonStorage;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly ILogger<AmazonDestination> _logger;
 
     public DestinationConfig DestinationConfig { get; }
 
@@ -20,12 +22,14 @@ public class AmazonDestination : IAmazonDestination
         DestinationConfig destinationConfig,
         IAmazonS3 amazonS3,
         IAmazonCommonStorage amazonCommonStorage,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        ILogger<AmazonDestination> logger)
     {
         DestinationConfig = destinationConfig;
         _amazonS3 = amazonS3;
         _amazonCommonStorage = amazonCommonStorage;
         _httpClientFactory = httpClientFactory;
+        _logger = logger;
     }
 
     public async Task CollectAsync(
@@ -140,7 +144,7 @@ public class AmazonDestination : IAmazonDestination
         }
         catch (Exception exception)
         {
-            Console.WriteLine("An AmazonS3Exception was thrown: { 0}", exception.Message);
+            _logger.LogError(exception, "An AmazonS3Exception was thrown: { 0}", exception.Message);
 
             // Abort the upload.
             var abortMPURequest = new AbortMultipartUploadRequest

@@ -1,6 +1,8 @@
 ﻿using Abmes.DataCollector.Collector.Common.Collecting;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Misc;
+using Amazon.Runtime.Internal.Util;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 
@@ -10,17 +12,20 @@ public class MainService : IMainService
     private readonly IBootstrapper _bootstrapper;
     private readonly ITimeFilterProvider _timeFilterProvider;
     private readonly ITimeFilterProcessor _timeFilterProcessor;
+    private readonly ILogger<MainService> _logger;
 
     public MainService(
         IMainCollector mainCollector,
         IBootstrapper bootstrapper,
         ITimeFilterProvider timeFilterProvider,
-        ITimeFilterProcessor timeFilterProcessor)
+        ITimeFilterProcessor timeFilterProcessor,
+        ILogger<MainService> logger)
     {
         _mainCollector = mainCollector;
         _bootstrapper = bootstrapper;
         _timeFilterProvider = timeFilterProvider;
         _timeFilterProcessor = timeFilterProcessor;
+        _logger = logger;
     }
 
     public async Task<int> MainAsync(Action<IBootstrapper>? bootstrap, int exitDelaySeconds, CancellationToken cancellationToken)
@@ -38,16 +43,16 @@ public class MainService : IMainService
         }
         catch (Exception e)
         {
-            System.Console.WriteLine(e.Message);
+            _logger.LogCritical(e, e.Message);
             return DelayedExitCode(1, exitDelaySeconds);
         }
     }
 
-    private static int DelayedExitCode(int exitCode, int delaySeconds = 0)
+    private int DelayedExitCode(int exitCode, int delaySeconds = 0)
     {
         if (delaySeconds > 0)
         {
-            System.Console.WriteLine($"Exitting after {delaySeconds} seconds ...");
+            _logger.LogInformation($"Exitting after {delaySeconds} seconds ...");
             Task.Delay(TimeSpan.FromSeconds(delaySeconds)).Wait();
         }
 
