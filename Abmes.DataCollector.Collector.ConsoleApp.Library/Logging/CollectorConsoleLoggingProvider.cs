@@ -4,7 +4,10 @@ namespace Abmes.DataCollector.Collector.ConsoleApp.Logging;
 
 class CollectorConsoleLoggingProvider : ILoggerProvider
 {
-    public void Dispose() { }
+    public void Dispose()
+    {
+        // do nothing
+    }
 
     public ILogger CreateLogger(string categoryName)
     {
@@ -42,7 +45,7 @@ class CollectorConsoleLoggingProvider : ILoggerProvider
 
         public IDisposable BeginScope<TState>(TState state)
         {
-            throw new NotImplementedException();
+            return default!;  // todo: IDisposable? in .net 7 - ! not needed
         }
     }
 }
