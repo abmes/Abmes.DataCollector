@@ -187,7 +187,7 @@
       }
     },
 
-    "TheLambdaPermission": {
+    "TheLambdaEventsPermission": {
       "Type": "AWS::Lambda::Permission",
       "Properties": {
         "FunctionName": { "Ref": "TheLambda" },
@@ -344,7 +344,7 @@
     },
 
 
-    "TheContainerScheduleRule1": {
+    "TheScheduleRule1": {
       "Condition": "IsScheduleRule1BaseNameNotEmpty",
       "Type": "AWS::Events::Rule",
       "Properties": {
@@ -382,7 +382,7 @@
       }
     },
 
-    "TheContainerMetricFilter1": {
+    "TheMetricFilter1": {
       "Condition": "IsScheduleRule1BaseNameNotEmpty",
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
@@ -406,7 +406,7 @@
       }
     },
 
-    "TheContainerAlarmSnsTopic1": {
+    "TheAlarmSnsTopic1": {
       "Condition": "IsScheduleRule1BaseNameNotEmpty",
       "Type": "AWS::SNS::Topic",
       "Properties": {
@@ -420,7 +420,7 @@
       }
     },
 
-    "TheContainerAlarm1": {
+    "TheAlarm1": {
       "Condition": "IsScheduleRule1BaseNameNotEmpty",
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
@@ -434,12 +434,12 @@
         "ComparisonOperator": "GreaterThanThreshold",
         "Threshold": 0,
         "TreatMissingData": "ignore",
-        "AlarmActions": [ { "Ref": "TheContainerAlarmSnsTopic1" } ]
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic1" } ]
       }
     },
 
 
-    "TheContainerScheduleRule2": {
+    "TheScheduleRule2": {
       "Condition": "IsScheduleRule2BaseNameNotEmpty",
       "Type": "AWS::Events::Rule",
       "Properties": {
@@ -477,7 +477,7 @@
       }
     },
 
-    "TheContainerMetricFilter2": {
+    "TheMetricFilter2": {
       "Condition": "IsScheduleRule2BaseNameNotEmpty",
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
@@ -501,7 +501,7 @@
       }
     },
 
-    "TheContainerAlarmSnsTopic2": {
+    "TheAlarmSnsTopic2": {
       "Condition": "IsScheduleRule2BaseNameNotEmpty",
       "Type": "AWS::SNS::Topic",
       "Properties": {
@@ -515,7 +515,7 @@
       }
     },
 
-    "TheContainerAlarm2": {
+    "TheAlarm2": {
       "Condition": "IsScheduleRule2BaseNameNotEmpty",
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
@@ -529,12 +529,12 @@
         "ComparisonOperator": "GreaterThanThreshold",
         "Threshold": 0,
         "TreatMissingData": "ignore",
-        "AlarmActions": [ { "Ref": "TheContainerAlarmSnsTopic2" } ]
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic2" } ]
       }
     },
 
 
-    "TheContainerScheduleRule3": {
+    "TheScheduleRule3": {
       "Condition": "IsScheduleRule3BaseNameNotEmpty",
       "Type": "AWS::Events::Rule",
       "Properties": {
@@ -572,7 +572,7 @@
       }
     },
 
-    "TheContainerMetricFilter3": {
+    "TheMetricFilter3": {
       "Condition": "IsScheduleRule3BaseNameNotEmpty",
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
@@ -596,7 +596,7 @@
       }
     },
 
-    "TheContainerAlarmSnsTopic3": {
+    "TheAlarmSnsTopic3": {
       "Condition": "IsScheduleRule3BaseNameNotEmpty",
       "Type": "AWS::SNS::Topic",
       "Properties": {
@@ -610,7 +610,7 @@
       }
     },
 
-    "TheContainerAlarm3": {
+    "TheAlarm3": {
       "Condition": "IsScheduleRule3BaseNameNotEmpty",
       "Type": "AWS::CloudWatch::Alarm",
       "Properties": {
@@ -624,7 +624,7 @@
         "ComparisonOperator": "GreaterThanThreshold",
         "Threshold": 0,
         "TreatMissingData": "ignore",
-        "AlarmActions": [ { "Ref": "TheContainerAlarmSnsTopic3" } ]
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic3" } ]
       }
     }
 
