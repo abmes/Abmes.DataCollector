@@ -99,6 +99,138 @@
       "Default": ""
     },
 
+    "ScheduleRule4BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 4 base name",
+      "Default": ""
+    },
+    "ScheduleRule4ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 4 cron/rate expression",
+      "Default": ""
+    },
+    "ScheduleRule4Target": {
+      "Type": "String",
+      "Description": "Schedule rule 4 target",
+      "AllowedValues": [ "Lambda", "Container" ],
+      "Default": "Lambda"
+    },
+    "ScheduleRule4Command": {
+      "Type": "String",
+      "Description": "Schedule rule 4 command",
+      "Default": ""
+    },
+
+    "ScheduleRule5BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 5 base name",
+      "Default": ""
+    },
+    "ScheduleRule5ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 5 cron/rate expression",
+      "Default": ""
+    },
+    "ScheduleRule5Target": {
+      "Type": "String",
+      "Description": "Schedule rule 5 target",
+      "AllowedValues": [ "Lambda", "Container" ],
+      "Default": "Lambda"
+    },
+    "ScheduleRule5Command": {
+      "Type": "String",
+      "Description": "Schedule rule 5 command",
+      "Default": ""
+    },
+
+    "ScheduleRule6BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 6 base name",
+      "Default": ""
+    },
+    "ScheduleRule6ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 6 cron/rate expression",
+      "Default": ""
+    },
+    "ScheduleRule6Target": {
+      "Type": "String",
+      "Description": "Schedule rule 6 target",
+      "AllowedValues": [ "Lambda", "Container" ],
+      "Default": "Lambda"
+    },
+    "ScheduleRule6Command": {
+      "Type": "String",
+      "Description": "Schedule rule 6 command",
+      "Default": ""
+    },
+
+    "ScheduleRule7BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 7 base name",
+      "Default": ""
+    },
+    "ScheduleRule7ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 7 cron/rate expression",
+      "Default": ""
+    },
+    "ScheduleRule7Target": {
+      "Type": "String",
+      "Description": "Schedule rule 7 target",
+      "AllowedValues": [ "Lambda", "Container" ],
+      "Default": "Lambda"
+    },
+    "ScheduleRule7Command": {
+      "Type": "String",
+      "Description": "Schedule rule 7 command",
+      "Default": ""
+    },
+
+    "ScheduleRule8BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 8 base name",
+      "Default": ""
+    },
+    "ScheduleRule8ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 8 cron/rate expression",
+      "Default": ""
+    },
+    "ScheduleRule8Target": {
+      "Type": "String",
+      "Description": "Schedule rule 8 target",
+      "AllowedValues": [ "Lambda", "Container" ],
+      "Default": "Lambda"
+    },
+    "ScheduleRule8Command": {
+      "Type": "String",
+      "Description": "Schedule rule 8 command",
+      "Default": ""
+    },
+
+    "ScheduleRule9BaseName": {
+      "Type": "String",
+      "Description": "Schedule rule 9 base name",
+      "Default": ""
+    },
+    "ScheduleRule9ScheduleExpression": {
+      "Type": "String",
+      "Description": "Schedule rule 9 cron/rate expression",
+      "Default": ""
+    },
+    "ScheduleRule9Target": {
+      "Type": "String",
+      "Description": "Schedule rule 9 target",
+      "AllowedValues": [ "Lambda", "Container" ],
+      "Default": "Lambda"
+    },
+    "ScheduleRule9Command": {
+      "Type": "String",
+      "Description": "Schedule rule 9 command",
+      "Default": ""
+    },
+
     "ConfigStorageType": {
       "Type": "String",
       "Description": "Amazon|Azure"
@@ -157,6 +289,108 @@
     "IsScheduleRule3TargetContainer": {
       "Fn::Equals": [
         { "Ref": "ScheduleRule3Target" },
+        "Container"
+      ]
+    },
+
+    "IsScheduleRule4BaseNameNotEmpty": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            { "Ref": "ScheduleRule4BaseName" },
+            ""
+          ]
+        }
+      ]
+    },
+    "IsScheduleRule4TargetContainer": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule4Target" },
+        "Container"
+      ]
+    },
+
+    "IsScheduleRule5BaseNameNotEmpty": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            { "Ref": "ScheduleRule5BaseName" },
+            ""
+          ]
+        }
+      ]
+    },
+    "IsScheduleRule5TargetContainer": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule5Target" },
+        "Container"
+      ]
+    },
+
+    "IsScheduleRule6BaseNameNotEmpty": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            { "Ref": "ScheduleRule6BaseName" },
+            ""
+          ]
+        }
+      ]
+    },
+    "IsScheduleRule6TargetContainer": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule6Target" },
+        "Container"
+      ]
+    },
+
+    "IsScheduleRule7BaseNameNotEmpty": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            { "Ref": "ScheduleRule7BaseName" },
+            ""
+          ]
+        }
+      ]
+    },
+    "IsScheduleRule7TargetContainer": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule7Target" },
+        "Container"
+      ]
+    },
+
+    "IsScheduleRule8BaseNameNotEmpty": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            { "Ref": "ScheduleRule8BaseName" },
+            ""
+          ]
+        }
+      ]
+    },
+    "IsScheduleRule8TargetContainer": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule8Target" },
+        "Container"
+      ]
+    },
+
+    "IsScheduleRule9BaseNameNotEmpty": {
+      "Fn::Not": [
+        {
+          "Fn::Equals": [
+            { "Ref": "ScheduleRule9BaseName" },
+            ""
+          ]
+        }
+      ]
+    },
+    "IsScheduleRule9TargetContainer": {
+      "Fn::Equals": [
+        { "Ref": "ScheduleRule9Target" },
         "Container"
       ]
     }
@@ -625,6 +859,576 @@
         "Threshold": 0,
         "TreatMissingData": "ignore",
         "AlarmActions": [ { "Ref": "TheAlarmSnsTopic3" } ]
+      }
+    },
+
+
+    "TheScheduleRule4": {
+      "Condition": "IsScheduleRule4BaseNameNotEmpty",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-ScheduleRule" },
+        "ScheduleExpression": { "Ref": "ScheduleRule4ScheduleExpression" },
+        "Targets": [
+          {
+            "Fn::If": [
+              "IsScheduleRule4TargetContainer",
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
+                "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule4Command}\"] } ] }" },
+                "EcsParameters": {
+                  "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
+                  "LaunchType": "FARGATE",
+                  "NetworkConfiguration": {
+                    "AwsVpcConfiguration": {
+                      "AssignPublicIp": "ENABLED",
+                      "SecurityGroups": [ { "Ref": "TheContainerSecurityGroup" } ],
+                      "Subnets": { "Ref": "ContainerSubnets" }
+                    }
+                  }
+                }
+              },
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule4Command}\", \"dataCollectionNames\": \"\" }" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "TheMetricFilter4": {
+      "Condition": "IsScheduleRule4BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule4Command}] ERRORS occured\"" },
+        "LogGroupName": {
+          "Fn::If": [
+            "IsScheduleRule4TargetContainer",
+            { "Ref": "TheContainerLogGroup" },
+            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+          ]
+        },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheAlarmSnsTopic4": {
+      "Condition": "IsScheduleRule4BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheAlarm4": {
+      "Condition": "IsScheduleRule4BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic4" } ]
+      }
+    },
+
+
+    "TheScheduleRule5": {
+      "Condition": "IsScheduleRule5BaseNameNotEmpty",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-ScheduleRule" },
+        "ScheduleExpression": { "Ref": "ScheduleRule5ScheduleExpression" },
+        "Targets": [
+          {
+            "Fn::If": [
+              "IsScheduleRule5TargetContainer",
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
+                "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule5Command}\"] } ] }" },
+                "EcsParameters": {
+                  "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
+                  "LaunchType": "FARGATE",
+                  "NetworkConfiguration": {
+                    "AwsVpcConfiguration": {
+                      "AssignPublicIp": "ENABLED",
+                      "SecurityGroups": [ { "Ref": "TheContainerSecurityGroup" } ],
+                      "Subnets": { "Ref": "ContainerSubnets" }
+                    }
+                  }
+                }
+              },
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule5Command}\", \"dataCollectionNames\": \"\" }" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "TheMetricFilter5": {
+      "Condition": "IsScheduleRule5BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule5Command}] ERRORS occured\"" },
+        "LogGroupName": {
+          "Fn::If": [
+            "IsScheduleRule5TargetContainer",
+            { "Ref": "TheContainerLogGroup" },
+            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+          ]
+        },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheAlarmSnsTopic5": {
+      "Condition": "IsScheduleRule5BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheAlarm5": {
+      "Condition": "IsScheduleRule5BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic5" } ]
+      }
+    },
+
+
+    "TheScheduleRule6": {
+      "Condition": "IsScheduleRule6BaseNameNotEmpty",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-ScheduleRule" },
+        "ScheduleExpression": { "Ref": "ScheduleRule6ScheduleExpression" },
+        "Targets": [
+          {
+            "Fn::If": [
+              "IsScheduleRule6TargetContainer",
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
+                "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule6Command}\"] } ] }" },
+                "EcsParameters": {
+                  "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
+                  "LaunchType": "FARGATE",
+                  "NetworkConfiguration": {
+                    "AwsVpcConfiguration": {
+                      "AssignPublicIp": "ENABLED",
+                      "SecurityGroups": [ { "Ref": "TheContainerSecurityGroup" } ],
+                      "Subnets": { "Ref": "ContainerSubnets" }
+                    }
+                  }
+                }
+              },
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule6Command}\", \"dataCollectionNames\": \"\" }" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "TheMetricFilter6": {
+      "Condition": "IsScheduleRule6BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule6Command}] ERRORS occured\"" },
+        "LogGroupName": {
+          "Fn::If": [
+            "IsScheduleRule6TargetContainer",
+            { "Ref": "TheContainerLogGroup" },
+            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+          ]
+        },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheAlarmSnsTopic6": {
+      "Condition": "IsScheduleRule6BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheAlarm6": {
+      "Condition": "IsScheduleRule6BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic6" } ]
+      }
+    },
+
+
+    "TheScheduleRule7": {
+      "Condition": "IsScheduleRule7BaseNameNotEmpty",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-ScheduleRule" },
+        "ScheduleExpression": { "Ref": "ScheduleRule7ScheduleExpression" },
+        "Targets": [
+          {
+            "Fn::If": [
+              "IsScheduleRule7TargetContainer",
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
+                "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule7Command}\"] } ] }" },
+                "EcsParameters": {
+                  "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
+                  "LaunchType": "FARGATE",
+                  "NetworkConfiguration": {
+                    "AwsVpcConfiguration": {
+                      "AssignPublicIp": "ENABLED",
+                      "SecurityGroups": [ { "Ref": "TheContainerSecurityGroup" } ],
+                      "Subnets": { "Ref": "ContainerSubnets" }
+                    }
+                  }
+                }
+              },
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule7Command}\", \"dataCollectionNames\": \"\" }" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "TheMetricFilter7": {
+      "Condition": "IsScheduleRule7BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule7Command}] ERRORS occured\"" },
+        "LogGroupName": {
+          "Fn::If": [
+            "IsScheduleRule7TargetContainer",
+            { "Ref": "TheContainerLogGroup" },
+            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+          ]
+        },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheAlarmSnsTopic7": {
+      "Condition": "IsScheduleRule7BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheAlarm7": {
+      "Condition": "IsScheduleRule7BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic7" } ]
+      }
+    },
+
+
+    "TheScheduleRule8": {
+      "Condition": "IsScheduleRule8BaseNameNotEmpty",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-ScheduleRule" },
+        "ScheduleExpression": { "Ref": "ScheduleRule8ScheduleExpression" },
+        "Targets": [
+          {
+            "Fn::If": [
+              "IsScheduleRule8TargetContainer",
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
+                "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule8Command}\"] } ] }" },
+                "EcsParameters": {
+                  "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
+                  "LaunchType": "FARGATE",
+                  "NetworkConfiguration": {
+                    "AwsVpcConfiguration": {
+                      "AssignPublicIp": "ENABLED",
+                      "SecurityGroups": [ { "Ref": "TheContainerSecurityGroup" } ],
+                      "Subnets": { "Ref": "ContainerSubnets" }
+                    }
+                  }
+                }
+              },
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule8Command}\", \"dataCollectionNames\": \"\" }" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "TheMetricFilter8": {
+      "Condition": "IsScheduleRule8BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule8Command}] ERRORS occured\"" },
+        "LogGroupName": {
+          "Fn::If": [
+            "IsScheduleRule8TargetContainer",
+            { "Ref": "TheContainerLogGroup" },
+            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+          ]
+        },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheAlarmSnsTopic8": {
+      "Condition": "IsScheduleRule8BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheAlarm8": {
+      "Condition": "IsScheduleRule8BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic8" } ]
+      }
+    },
+
+
+    "TheScheduleRule9": {
+      "Condition": "IsScheduleRule9BaseNameNotEmpty",
+      "Type": "AWS::Events::Rule",
+      "Properties": {
+        "Name": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-ScheduleRule" },
+        "ScheduleExpression": { "Ref": "ScheduleRule9ScheduleExpression" },
+        "Targets": [
+          {
+            "Fn::If": [
+              "IsScheduleRule9TargetContainer",
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
+                "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule9Command}\"] } ] }" },
+                "EcsParameters": {
+                  "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
+                  "LaunchType": "FARGATE",
+                  "NetworkConfiguration": {
+                    "AwsVpcConfiguration": {
+                      "AssignPublicIp": "ENABLED",
+                      "SecurityGroups": [ { "Ref": "TheContainerSecurityGroup" } ],
+                      "Subnets": { "Ref": "ContainerSubnets" }
+                    }
+                  }
+                }
+              },
+              {
+                "Id": "TheTargetId",
+                "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule9Command}\", \"dataCollectionNames\": \"\" }" }
+              }
+            ]
+          }
+        ]
+      }
+    },
+
+    "TheMetricFilter9": {
+      "Condition": "IsScheduleRule9BaseNameNotEmpty",
+      "Type": "AWS::Logs::MetricFilter",
+      "Properties": {
+        "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-Errors-MetricFilter" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule9Command}] ERRORS occured\"" },
+        "LogGroupName": {
+          "Fn::If": [
+            "IsScheduleRule9TargetContainer",
+            { "Ref": "TheContainerLogGroup" },
+            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+          ]
+        },
+        "MetricTransformations": [
+          {
+            "MetricNamespace": { "Ref": "MetricsNamespace" },
+            "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-Errors-Metric" },
+            "MetricValue": "1",
+            "DefaultValue": 0
+          }
+        ]
+      }
+    },
+
+    "TheAlarmSnsTopic9": {
+      "Condition": "IsScheduleRule9BaseNameNotEmpty",
+      "Type": "AWS::SNS::Topic",
+      "Properties": {
+        "TopicName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-Errors-AlarmTopic" },
+        "Subscription": [
+          {
+            "Protocol": "email",
+            "Endpoint": { "Ref": "AlarmsEmailAddress" }
+          }
+        ]
+      }
+    },
+
+    "TheAlarm9": {
+      "Condition": "IsScheduleRule9BaseNameNotEmpty",
+      "Type": "AWS::CloudWatch::Alarm",
+      "Properties": {
+        "AlarmName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-Errors-Alarm" },
+        "Namespace": { "Ref": "MetricsNamespace" },
+        "MetricName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-Errors-Metric" },
+        "Statistic": "Sum",
+        "Period": 60,
+        "EvaluationPeriods": 1,
+        "DatapointsToAlarm": 1,
+        "ComparisonOperator": "GreaterThanThreshold",
+        "Threshold": 0,
+        "TreatMissingData": "ignore",
+        "AlarmActions": [ { "Ref": "TheAlarmSnsTopic9" } ]
       }
     }
 
