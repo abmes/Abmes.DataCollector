@@ -23,7 +23,7 @@ public class MainService : IMainService
         _timeFilterProcessor = timeFilterProcessor;
     }
 
-    public async Task<int> MainAsync(Action<IBootstrapper>? bootstrap, CancellationToken cancellationToken)
+    public async Task<int> MainAsync(Action<IBootstrapper>? bootstrap, int exitDelaySeconds, CancellationToken cancellationToken)
     {
         try
         {
@@ -34,12 +34,12 @@ public class MainService : IMainService
                 await _mainCollector.CollectAsync(cancellationToken);
             }
 
-            return DelayedExitCode(0, 5);
+            return DelayedExitCode(0, exitDelaySeconds);
         }
         catch (Exception e)
         {
             System.Console.WriteLine(e.Message);
-            return DelayedExitCode(1, 5);
+            return DelayedExitCode(1, exitDelaySeconds);
         }
     }
 

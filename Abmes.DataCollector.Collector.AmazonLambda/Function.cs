@@ -21,6 +21,7 @@ public class Function
             .GetMainService()
             .MainAsync(
                 bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames, collectorParams.CollectorMode, collectorParams.TimeFilter),
+                0,
                 CancellationToken.None
             )
             .Wait();
