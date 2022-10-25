@@ -16,13 +16,18 @@
       "Type": "String",
       "Description": "Orgaznization Name in lower case"
     },
-    "VpcId": {
+    "ContainerVpcId": {
       "Type": "AWS::EC2::VPC::Id",
       "Description": "VPC Id"
     },
     "ContainerSubnets": {
       "Type": "List<AWS::EC2::Subnet::Id>",
       "Description": "List of subnets for fargate container"
+    },
+    "ShouldCreateLogGroups": {
+      "Type": "String",
+      "Description": "Should log groups be created. True when log groups do not exeist, False if log groups already exist",
+      "AllowedValues": [ "False", "True" ]
     },
     "MetricsNamespace": {
       "Type": "String",
@@ -242,6 +247,13 @@
   },
 
   "Conditions": {
+    "IsLogGroupCreationNeeded": {
+      "Fn::Equals": [
+        { "Ref": "ShouldCreateLogGroups" },
+        "True"
+      ]
+    },
+
     "IsScheduleRule1BaseNameNotEmpty": {
       "Fn::Not": [
         {
@@ -400,6 +412,8 @@
   "Resources": {
 
     "TheLambdaLogGroup": {
+      "Condition": "IsLogGroupCreationNeeded",
+      "DeletionPolicy": "Retain",
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
@@ -408,7 +422,6 @@
 
     "TheLambda": {
       "Type": "AWS::Serverless::Function",
-      "DependsOn": "TheLambdaLogGroup",
       "Properties": {
         "FunctionName": { "Fn::Sub": "${ProjectBaseName}Lambda" },
         "Handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
@@ -513,6 +526,8 @@
     },
 
     "TheContainerLogGroup": {
+      "Condition": "IsLogGroupCreationNeeded",
+      "DeletionPolicy": "Retain",
       "Type": "AWS::Logs::LogGroup",
       "Properties": {
         "LogGroupName": { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
@@ -546,7 +561,13 @@
             "LogConfiguration": {
               "LogDriver": "awslogs",
               "Options": {
-                "awslogs-group": { "Ref": "TheContainerLogGroup" },
+                "awslogs-group": {
+                  "Fn::If": [
+                    "IsLogGroupCreationNeeded",
+                    { "Ref": "TheContainerLogGroup" },
+                    { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+                  ]
+                },
                 "awslogs-region": { "Ref": "AWS::Region" },
                 "awslogs-stream-prefix": "ecs"
               }
@@ -569,7 +590,7 @@
       "Properties": {
         "GroupDescription": { "Fn::Sub": "${ProjectBaseName}Container Security Group" },
         "GroupName": { "Fn::Sub": "${ProjectBaseName}ContainerSecurityGroup" },
-        "VpcId": { "Ref": "VpcId" },
+        "VpcId": { "Ref": "ContainerVpcId" },
         "SecurityGroupEgress": [
           {
             "Description": "Allow all outbound ipv4 traffic",
@@ -633,8 +654,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule1TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -728,8 +761,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule2TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -823,8 +868,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule3TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -918,8 +975,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule4TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -1013,8 +1082,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule5TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -1108,8 +1189,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule6TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -1203,8 +1296,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule7TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -1298,8 +1403,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule8TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
@@ -1393,8 +1510,20 @@
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule9TargetContainer",
-            { "Ref": "TheContainerLogGroup" },
-            { "Ref": "TheLambdaLogGroup" }
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheContainerLogGroup" },
+                { "Fn::Sub": "/ecs/${ProjectBaseName}Container" }
+              ]
+            },
+            {
+              "Fn::If": [
+                "IsLogGroupCreationNeeded",
+                { "Ref": "TheLambdaLogGroup" },
+                { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+              ]
+            }
           ]
         },
         "MetricTransformations": [
