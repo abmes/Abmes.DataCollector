@@ -399,8 +399,16 @@
 
   "Resources": {
 
+    "TheLambdaLogGroup": {
+      "Type": "AWS::Logs::LogGroup",
+      "Properties": {
+        "LogGroupName": { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+      }
+    },
+
     "TheLambda": {
       "Type": "AWS::Serverless::Function",
+      "DependsOn": "TheLambdaLogGroup",
       "Properties": {
         "FunctionName": { "Fn::Sub": "${ProjectBaseName}Lambda" },
         "Handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
@@ -626,7 +634,7 @@
           "Fn::If": [
             "IsScheduleRule1TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -721,7 +729,7 @@
           "Fn::If": [
             "IsScheduleRule2TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -816,7 +824,7 @@
           "Fn::If": [
             "IsScheduleRule3TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -911,7 +919,7 @@
           "Fn::If": [
             "IsScheduleRule4TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -1006,7 +1014,7 @@
           "Fn::If": [
             "IsScheduleRule5TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -1101,7 +1109,7 @@
           "Fn::If": [
             "IsScheduleRule6TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -1196,7 +1204,7 @@
           "Fn::If": [
             "IsScheduleRule7TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -1291,7 +1299,7 @@
           "Fn::If": [
             "IsScheduleRule8TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
@@ -1386,7 +1394,7 @@
           "Fn::If": [
             "IsScheduleRule9TargetContainer",
             { "Ref": "TheContainerLogGroup" },
-            { "Fn::Sub": "/aws/lambda/${ProjectBaseName}Lambda" }
+            { "Ref": "TheLambdaLogGroup" }
           ]
         },
         "MetricTransformations": [
