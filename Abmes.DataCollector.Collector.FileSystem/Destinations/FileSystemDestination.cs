@@ -26,7 +26,16 @@ public class FileSystemDestination : IFileSystemDestination
         return true;
     }
 
-    public async Task CollectAsync(string collectUrl, IEnumerable<KeyValuePair<string, string>> collectHeaders, IdentityServiceClientInfo collectIdentityServiceClientInfo, string dataCollectionName, string fileName, TimeSpan timeout, bool finishWait, int tryNo, CancellationToken cancellationToken)
+    public async Task CollectAsync(
+        string collectUrl,
+        IEnumerable<KeyValuePair<string, string>> collectHeaders,
+        IdentityServiceClientInfo? collectIdentityServiceClientInfo,
+        string dataCollectionName,
+        string fileName,
+        TimeSpan timeout,
+        bool finishWait,
+        int tryNo,
+        CancellationToken cancellationToken)
     {
         int bufferSize = 1 * 1024 * 1024;
 

@@ -14,13 +14,16 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
         _httpClientFactory = httpClientFactory;
     }
 
-    public async Task ConfigAsync(HttpRequestMessage request, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public async Task ConfigAsync(HttpRequestMessage request, IdentityServiceClientInfo? identityServiceClientInfo, CancellationToken cancellationToken)
     {
-        var accessToken = await GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
-
-        if (!string.IsNullOrEmpty(accessToken))
+        if (identityServiceClientInfo is not null)
         {
-            request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            var accessToken = await GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
+
+            if (!string.IsNullOrEmpty(accessToken))
+            {
+                request.Headers.Authorization = new AuthenticationHeaderValue("Bearer", accessToken);
+            }
         }
     }
 
@@ -32,13 +35,8 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
         }
     }
 
-    public async Task<string?> GetIdentityServiceAccessTokenAsync(IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    public async Task<string> GetIdentityServiceAccessTokenAsync(IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
     {
-        if (string.IsNullOrEmpty(identityServiceClientInfo.Url))
-        {
-            return null;
-        }
-
         var tokenRequest = new PasswordTokenRequest
         {
             Address = identityServiceClientInfo.Url.TrimEnd('/') + "/connect/token",

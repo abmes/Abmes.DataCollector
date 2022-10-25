@@ -53,7 +53,17 @@ public class DataCollector : IDataCollector
 
         ArgumentExceptionExtensions.ThrowIfNullOrEmpty(dataCollectionConfig.CollectUrl);
 
-        var collectItems = _collectItemsProvider.GetCollectItems(dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectFileIdentifiersUrl, dataCollectionConfig.CollectFileIdentifiersHeaders, dataCollectionConfig.CollectUrl, dataCollectionConfig.CollectHeaders, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken).ToList();
+        var collectItems =
+            _collectItemsProvider.GetCollectItems(
+                dataCollectionConfig.DataCollectionName,
+                dataCollectionConfig.CollectFileIdentifiersUrl,
+                dataCollectionConfig.CollectFileIdentifiersHeaders,
+                dataCollectionConfig.CollectUrl,
+                dataCollectionConfig.CollectHeaders,
+                dataCollectionConfig.IdentityServiceClientInfo,
+                cancellationToken)
+            .ToList();
+
         var collectionFileInfos = collectItems.Where(x => x.CollectFileInfo is not null).Select(x => Ensure.NotNull(x.CollectFileInfo));
 
         var acceptedCollectItems = await GetAcceptedCollectItemsAsync(collectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig.CollectParallelFileCount ?? 1, cancellationToken);
@@ -70,7 +80,14 @@ public class DataCollector : IDataCollector
                 acceptedCollectItems = acceptedCollectItems.Take(dataCollectionConfig.MaxFileCount.Value);
             }
 
-            var redirectedCollectItems = await _collectItemsProvider.GetRedirectedCollectItemsAsync(acceptedCollectItems, dataCollectionConfig.DataCollectionName, dataCollectionConfig.CollectHeaders, dataCollectionConfig.CollectParallelFileCount ?? 1, dataCollectionConfig.IdentityServiceClientInfo, cancellationToken);
+            var redirectedCollectItems =
+                await _collectItemsProvider.GetRedirectedCollectItemsAsync(
+                    acceptedCollectItems,
+                    dataCollectionConfig.DataCollectionName,
+                    dataCollectionConfig.CollectHeaders,
+                    dataCollectionConfig.CollectParallelFileCount ?? 1,
+                    dataCollectionConfig.IdentityServiceClientInfo,
+                    cancellationToken);
 
             var newFileNames = await _collectItemsCollector.CollectItemsAsync(redirectedCollectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
 

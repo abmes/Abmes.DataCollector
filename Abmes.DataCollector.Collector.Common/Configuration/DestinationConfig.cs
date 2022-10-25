@@ -31,11 +31,15 @@ public record DestinationConfig
 )
 {
     private IdentityServiceClientInfo? _identityServiceClientInfo;
-    public IdentityServiceClientInfo IdentityServiceClientInfo
+    public IdentityServiceClientInfo? IdentityServiceClientInfo
     {
         get
         {
             _identityServiceClientInfo ??=
+                string.IsNullOrEmpty(IdentityServiceUrl)
+                ?
+                null
+                :
                 new IdentityServiceClientInfo(
                     Url: Ensure.NotNullOrEmpty(IdentityServiceUrl),
                     ClientId: Ensure.NotNullOrEmpty(IdentityServiceClientId),

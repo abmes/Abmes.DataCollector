@@ -35,7 +35,7 @@ public class AmazonDestination : IAmazonDestination
     public async Task CollectAsync(
         string collectUrl,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
-        IdentityServiceClientInfo collectIdentityServiceClientInfo,
+        IdentityServiceClientInfo? collectIdentityServiceClientInfo,
         string dataCollectionName,
         string fileName,
         TimeSpan timeout,

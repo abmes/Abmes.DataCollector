@@ -35,7 +35,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
         string collectUrl,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
-        IdentityServiceClientInfo identityServiceClientInfo,
+        IdentityServiceClientInfo? identityServiceClientInfo,
         CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
@@ -123,16 +123,23 @@ public class CollectItemsProvider : ICollectItemsProvider
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
-        IdentityServiceClientInfo identityServiceClientInfo,
+        IdentityServiceClientInfo? identityServiceClientInfo,
         CancellationToken cancellationToken)
     {
         var collectItemsList = collectItems.ToList();
 
         var redirectableCollectItems = collectItemsList.Where(x => x.CollectUrl.StartsWith('@'));
 
-        var identityServiceAccessToken = await _identityServiceHttpRequestConfigurator.GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
+        var identityServiceAccessToken =
+            (identityServiceClientInfo is null)
+            ?
+            null
+            :
+            await _identityServiceHttpRequestConfigurator.GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
 
-        var redirectedCollectItems = await RedirectCollectItemsAsync(redirectableCollectItems, dataCollectionName, collectHeaders, maxDegreeOfParallelism, identityServiceAccessToken, cancellationToken);
+        var redirectedCollectItems =
+            await RedirectCollectItemsAsync(
+                redirectableCollectItems, dataCollectionName, collectHeaders, maxDegreeOfParallelism, identityServiceAccessToken, cancellationToken);
 
         return
             collectItemsList
@@ -228,7 +235,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         }
     }
 
-    private async Task<string> GetCollectItemsJson(string url, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, IdentityServiceClientInfo identityServiceClientInfo, CancellationToken cancellationToken)
+    private async Task<string> GetCollectItemsJson(string url, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, IdentityServiceClientInfo? identityServiceClientInfo, CancellationToken cancellationToken)
     {
         using var httpClient = _httpClientFactory.CreateClient();
         return
