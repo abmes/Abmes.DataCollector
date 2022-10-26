@@ -1,7 +1,6 @@
-﻿using System.Net.Http.Headers;
-using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using IdentityModel.Client;
+using System.Net.Http.Headers;
 
 namespace Abmes.DataCollector.Collector.Common.Misc;
 
