@@ -34,9 +34,9 @@ public class CollectItemsProvider : ICollectItemsProvider
 
             var result = 
                     _collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken)
-                    .OrderBy(x => x.CollectFileInfo?.Name)
+                    .OrderBy(x => x.CollectFileInfo?.Name)  // todo: logging decorator should not alter behavior i.e. change the order of the result list
                     .ToList();
-
+            
             _logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
             _logger.LogInformation($"Retrieved {result.Count} collect items for data collection '{dataCollectionName}'", dataCollectionName);
@@ -51,6 +51,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         catch (Exception e)
         {
             _logger.LogCritical("Error getting collect items for data collection '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
+            _logger.LogCritical(e.StackTrace);
             throw;
         }
     }
