@@ -54,9 +54,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule1Command": {
+    "ScheduleRule1ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 1 command",
+      "Description": "Schedule rule 1 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule1DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 1 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule1CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 1 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule1TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 1 timeFilter",
       "Default": ""
     },
 
@@ -76,9 +91,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule2Command": {
+    "ScheduleRule2ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 2 command",
+      "Description": "Schedule rule 2 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule2DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 2 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule2CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 2 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule2TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 2 timeFilter",
       "Default": ""
     },
 
@@ -98,9 +128,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule3Command": {
+    "ScheduleRule3ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 3 command",
+      "Description": "Schedule rule 3 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule3DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 3 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule3CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 3 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule3TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 3 timeFilter",
       "Default": ""
     },
 
@@ -120,9 +165,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule4Command": {
+    "ScheduleRule4ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 4 command",
+      "Description": "Schedule rule 4 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule4DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 4 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule4CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 4 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule4TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 4 timeFilter",
       "Default": ""
     },
 
@@ -142,9 +202,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule5Command": {
+    "ScheduleRule5ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 5 command",
+      "Description": "Schedule rule 5 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule5DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 5 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule5CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 5 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule5TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 5 timeFilter",
       "Default": ""
     },
 
@@ -164,9 +239,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule6Command": {
+    "ScheduleRule6ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 6 command",
+      "Description": "Schedule rule 6 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule6DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 6 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule6CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 6 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule6TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 6 timeFilter",
       "Default": ""
     },
 
@@ -186,9 +276,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule7Command": {
+    "ScheduleRule7ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 7 command",
+      "Description": "Schedule rule 7 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule7DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 7 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule7CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 7 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule7TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 7 timeFilter",
       "Default": ""
     },
 
@@ -208,9 +313,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule8Command": {
+    "ScheduleRule8ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 8 command",
+      "Description": "Schedule rule 8 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule8DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 8 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule8CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 8 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule8TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 8 timeFilter",
       "Default": ""
     },
 
@@ -230,9 +350,24 @@
       "AllowedValues": [ "Lambda", "Container" ],
       "Default": "Lambda"
     },
-    "ScheduleRule9Command": {
+    "ScheduleRule9ConfigSetName": {
       "Type": "String",
-      "Description": "Schedule rule 9 command",
+      "Description": "Schedule rule 9 configSetName",
+      "Default": ""
+    },
+    "ScheduleRule9DataCollectionNames": {
+      "Type": "String",
+      "Description": "Schedule rule 9 dataCollectionNames",
+      "Default": "*"
+    },
+    "ScheduleRule9CollectorMode": {
+      "Type": "String",
+      "Description": "Schedule rule 9 collectorMode",
+      "Default": "collect"
+    },
+    "ScheduleRule9TimeFilter": {
+      "Type": "String",
+      "Description": "Schedule rule 9 timeFilter",
       "Default": ""
     },
 
@@ -621,7 +756,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule1Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule1ConfigSetName}\", \"${ScheduleRule1DataCollectionNames}\", \"${ScheduleRule1CollectorMode}\", \"${ScheduleRule1TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -637,7 +772,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule1Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule1ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule1DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule1CollectorMode}\", \"timeFilter\": \"${ScheduleRule1TimeFilter}\" }" }
               }
             ]
           }
@@ -650,7 +785,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule1Target}-${ScheduleRule1BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule1Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule1ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule1TargetContainer",
@@ -728,7 +863,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule2Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule2ConfigSetName}\", \"${ScheduleRule2DataCollectionNames}\", \"${ScheduleRule2CollectorMode}\", \"${ScheduleRule2TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -744,7 +879,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule2Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule2ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule2DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule2CollectorMode}\", \"timeFilter\": \"${ScheduleRule2TimeFilter}\" }" }
               }
             ]
           }
@@ -757,7 +892,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule2Target}-${ScheduleRule2BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule2Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule2ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule2TargetContainer",
@@ -835,7 +970,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule3Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule3ConfigSetName}\", \"${ScheduleRule3DataCollectionNames}\", \"${ScheduleRule3CollectorMode}\", \"${ScheduleRule3TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -851,7 +986,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule3Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule3ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule3DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule3CollectorMode}\", \"timeFilter\": \"${ScheduleRule3TimeFilter}\" }" }
               }
             ]
           }
@@ -864,7 +999,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule3Target}-${ScheduleRule3BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule3Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule3ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule3TargetContainer",
@@ -942,7 +1077,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule4Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule4ConfigSetName}\", \"${ScheduleRule4DataCollectionNames}\", \"${ScheduleRule4CollectorMode}\", \"${ScheduleRule4TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -958,7 +1093,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule4Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule4ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule4DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule4CollectorMode}\", \"timeFilter\": \"${ScheduleRule4TimeFilter}\" }" }
               }
             ]
           }
@@ -971,7 +1106,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule4Target}-${ScheduleRule4BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule4Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule4ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule4TargetContainer",
@@ -1049,7 +1184,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule5Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule5ConfigSetName}\", \"${ScheduleRule5DataCollectionNames}\", \"${ScheduleRule5CollectorMode}\", \"${ScheduleRule5TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -1065,7 +1200,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule5Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule5ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule5DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule5CollectorMode}\", \"timeFilter\": \"${ScheduleRule5TimeFilter}\" }" }
               }
             ]
           }
@@ -1078,7 +1213,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule5Target}-${ScheduleRule5BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule5Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule5ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule5TargetContainer",
@@ -1156,7 +1291,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule6Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule6ConfigSetName}\", \"${ScheduleRule6DataCollectionNames}\", \"${ScheduleRule6CollectorMode}\", \"${ScheduleRule6TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -1172,7 +1307,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule6Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule6ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule6DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule6CollectorMode}\", \"timeFilter\": \"${ScheduleRule6TimeFilter}\" }" }
               }
             ]
           }
@@ -1185,7 +1320,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule6Target}-${ScheduleRule6BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule6Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule6ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule6TargetContainer",
@@ -1263,7 +1398,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule7Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule7ConfigSetName}\", \"${ScheduleRule7DataCollectionNames}\", \"${ScheduleRule7CollectorMode}\", \"${ScheduleRule7TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -1279,7 +1414,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule7Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule7ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule7DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule7CollectorMode}\", \"timeFilter\": \"${ScheduleRule7TimeFilter}\" }" }
               }
             ]
           }
@@ -1292,7 +1427,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule7Target}-${ScheduleRule7BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule7Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule7ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule7TargetContainer",
@@ -1370,7 +1505,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule8Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule8ConfigSetName}\", \"${ScheduleRule8DataCollectionNames}\", \"${ScheduleRule8CollectorMode}\", \"${ScheduleRule8TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -1386,7 +1521,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule8Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule8ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule8DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule8CollectorMode}\", \"timeFilter\": \"${ScheduleRule8TimeFilter}\" }" }
               }
             ]
           }
@@ -1399,7 +1534,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule8Target}-${ScheduleRule8BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule8Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule8ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule8TargetContainer",
@@ -1477,7 +1612,7 @@
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheContainerCluster.Arn}" },
                 "RoleArn": { "Fn::Sub": "${TheContainerEventsRole.Arn}" },
-                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule9Command}\"] } ] }" },
+                "Input": { "Fn::Sub": "{ \"containerOverrides\": [ { \"name\": \"${ProjectBaseName}Container\", \"command\": [\"${ScheduleRule9ConfigSetName}\", \"${ScheduleRule9DataCollectionNames}\", \"${ScheduleRule9CollectorMode}\", \"${ScheduleRule9TimeFilter}\"] } ] }" },
                 "EcsParameters": {
                   "TaskDefinitionArn": { "Ref": "TheContainerTaskDefinition" },
                   "LaunchType": "FARGATE",
@@ -1493,7 +1628,7 @@
               {
                 "Id": "TheTargetId",
                 "Arn": { "Fn::Sub": "${TheLambda.Arn}" },
-                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule9Command}\", \"dataCollectionNames\": \"\" }" }
+                "Input": { "Fn::Sub": "{ \"configSetName\": \"${ScheduleRule9ConfigSetName}\", \"dataCollectionNames\": \"${ScheduleRule9DataCollectionNames}\", \"collectorMode\": \"${ScheduleRule9CollectorMode}\", \"timeFilter\": \"${ScheduleRule9TimeFilter}\" }" }
               }
             ]
           }
@@ -1506,7 +1641,7 @@
       "Type": "AWS::Logs::MetricFilter",
       "Properties": {
         "FilterName": { "Fn::Sub": "${ProjectBaseName}-${ScheduleRule9Target}-${ScheduleRule9BaseName}-Errors-MetricFilter" },
-        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule9Command}] ERRORS occured\"" },
+        "FilterPattern": { "Fn::Sub": "\"[${ScheduleRule9ConfigSetName}] ERRORS occured\"" },
         "LogGroupName": {
           "Fn::If": [
             "IsScheduleRule9TargetContainer",
