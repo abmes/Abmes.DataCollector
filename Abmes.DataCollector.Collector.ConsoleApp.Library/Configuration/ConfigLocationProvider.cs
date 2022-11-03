@@ -16,7 +16,7 @@ public class ConfigLocationProvider : IConfigLocationProvider
     {
         var args = Environment.GetCommandLineArgs();
 
-        if ((_bootstrapper.ConfigSetName is not null) || (args.Length <= 1))
+        if ((!string.IsNullOrEmpty(_bootstrapper.ConfigSetName)) || (args.Length <= 1))
         {
             return null;
         }
