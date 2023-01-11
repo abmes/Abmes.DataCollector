@@ -80,7 +80,7 @@ public class FileSystemDestination : IFileSystemDestination
         return await _fileSystemCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('\\', false), dataCollectionName, null, cancellationToken);
     }
 
-    private bool IsDirectoryEmpty(string path)
+    private static bool IsDirectoryEmpty(string path)
     {
         return !Directory.EnumerateFileSystemEntries(path).Any();
     }
@@ -100,7 +100,7 @@ public class FileSystemDestination : IFileSystemDestination
         await Task.CompletedTask;
     }
 
-    private void DeleteEmptyDirectories(string fullDirName, string rootFullDirName)
+    private static void DeleteEmptyDirectories(string fullDirName, string rootFullDirName)
     {
         while (!string.IsNullOrEmpty(fullDirName) && (fullDirName.TrimEnd('\\') != rootFullDirName))
         {
@@ -115,7 +115,7 @@ public class FileSystemDestination : IFileSystemDestination
         }
     }
 
-    private string GetMD5FileName(string fileName)
+    private static string GetMD5FileName(string fileName)
     {
         return fileName + ".md5";
     }
@@ -125,7 +125,7 @@ public class FileSystemDestination : IFileSystemDestination
         return Path.Combine(DestinationConfig.Root ?? string.Empty, dataCollectionName, fileName.Replace("/", "\\"));
     }
 
-    private async Task<string?> GetFileMD5Async(string fullFileName, CancellationToken cancellationToken)
+    private static async Task<string?> GetFileMD5Async(string fullFileName, CancellationToken cancellationToken)
     {
         var md5FileName = GetMD5FileName(fullFileName);
 

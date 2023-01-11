@@ -20,7 +20,7 @@ public class FilteredDataCollectionsConfigProvider : IDataCollectionsConfigProvi
         return result.Where(x => DataMatchesFilter(x, filter));
     }
 
-    private bool DataMatchesFilter(DataCollectionConfig config, string filter)
+    private static bool DataMatchesFilter(DataCollectionConfig config, string filter)
     {
         return 
             string.IsNullOrEmpty(filter) ||

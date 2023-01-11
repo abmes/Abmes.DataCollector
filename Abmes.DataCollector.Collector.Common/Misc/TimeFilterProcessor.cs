@@ -16,7 +16,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
         return timeFilters.Any(x => SingleTimeFilterAccepted(x, moment));
     }
 
-    private bool SingleTimeFilterAccepted(string timeFilter, DateTimeOffset moment)
+    private static bool SingleTimeFilterAccepted(string timeFilter, DateTimeOffset moment)
     {
         var timeFilterParts = timeFilter.Split(':');
 
@@ -33,7 +33,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
             TimeInMultiRange(timeZoneDateTime.Minute, timeFilterParts[1]);
     }
 
-    private bool TimeInMultiRange(int x, string range)
+    private static bool TimeInMultiRange(int x, string range)
     {
         return
             range.Split(',', StringSplitOptions.RemoveEmptyEntries)
@@ -41,7 +41,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
             .Any(z => z);
     }
 
-    private bool TimeInRange(int x, string range)
+    private static bool TimeInRange(int x, string range)
     {
         if (range == "*")
         {
@@ -68,7 +68,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
         return false;
     }
 
-    private DateTime GetTimeZoneDateTime(DateTimeOffset moment, string timeZoneId)
+    private static DateTime GetTimeZoneDateTime(DateTimeOffset moment, string timeZoneId)
     {
         if (string.IsNullOrEmpty(timeZoneId))
         {
@@ -81,7 +81,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
         return TimeZoneInfo.ConvertTime(moment, timeZoneInfo).DateTime;
     }
 
-    private void InvalidTimeFilterError(string timeFilter)
+    private static void InvalidTimeFilterError(string timeFilter)
     {
         throw new Exception("Invalid time filter: " + timeFilter);
     }

@@ -39,7 +39,7 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
             };
     }
 
-    private IEnumerable<KeyValuePair<string, string>> GetValues(DataCollectionConfig config)
+    private static IEnumerable<KeyValuePair<string, string>> GetValues(DataCollectionConfig config)
     {
         var result = config.Values ?? Enumerable.Empty<KeyValuePair<string, string>>();
 
@@ -54,7 +54,7 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
     }
 
     [return: NotNullIfNotNull("value")]
-    private string? MergeStringValue(string? value, DataCollectionConfig config)
+    private static string? MergeStringValue(string? value, DataCollectionConfig config)
     {
         var result = value;
 
@@ -70,13 +70,13 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
     }
 
     [return: NotNullIfNotNull("value")]
-    private string? MergeStringValue(string? value, string? templateValue, DataCollectionConfig config)
+    private static string? MergeStringValue(string? value, string? templateValue, DataCollectionConfig config)
     {
         var result = string.IsNullOrEmpty(value) ? templateValue : value;
         return MergeStringValue(result, config);
     }
 
-    private IEnumerable<KeyValuePair<string, string>> MergeHeaders(IEnumerable<KeyValuePair<string, string>> headers, IEnumerable<KeyValuePair<string, string>> templateHeaders, DataCollectionConfig config)
+    private static IEnumerable<KeyValuePair<string, string>> MergeHeaders(IEnumerable<KeyValuePair<string, string>> headers, IEnumerable<KeyValuePair<string, string>> templateHeaders, DataCollectionConfig config)
     {
         headers ??= Enumerable.Empty<KeyValuePair<string, string>>();
         templateHeaders ??= Enumerable.Empty<KeyValuePair<string, string>>();
