@@ -1,7 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Collecting;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Misc;
-using Amazon.Runtime.Internal.Util;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization;

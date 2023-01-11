@@ -1,6 +1,4 @@
-﻿using Abmes.DataCollector.Utils;
-
-namespace Abmes.DataCollector.Collector.Common.Configuration;
+﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
 
 public class Bootstrapper : IBootstrapper
 {
