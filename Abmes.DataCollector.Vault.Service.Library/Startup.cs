@@ -93,7 +93,9 @@ public class Startup
             app.UseDeveloperExceptionPage();
         }
 
-        app.UseMiddleware<ErrorHandlingMiddleware>();
+        // order of middlewares is important
+        app.UseMiddleware<BasicExceptionHandlingMiddleware>();
+        app.UseMiddleware<ExceptionLoggingMiddleware>();
 
         app.UseHttpsRedirection();
 
