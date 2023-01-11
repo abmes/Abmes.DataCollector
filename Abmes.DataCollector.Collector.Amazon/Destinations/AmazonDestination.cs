@@ -144,7 +144,7 @@ public class AmazonDestination : IAmazonDestination
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "An AmazonS3Exception was thrown: { 0}", exception.Message);
+            _logger.LogError(exception, "An AmazonS3Exception was thrown: {message}", exception.Message);
 
             // Abort the upload.
             var abortMPURequest = new AbortMultipartUploadRequest
