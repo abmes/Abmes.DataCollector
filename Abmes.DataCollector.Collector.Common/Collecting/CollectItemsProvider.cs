@@ -5,6 +5,7 @@ using Abmes.DataCollector.Utils;
 using Microsoft.AspNetCore.Authentication;
 using Polly;
 using System.Collections.Concurrent;
+using System.Text;
 using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
@@ -14,15 +15,18 @@ public class CollectItemsProvider : ICollectItemsProvider
     private readonly ICollectUrlExtractor _collectUrlExtractor;
     private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
     private readonly IHttpClientFactory _httpClientFactory;
+    private readonly IEnumerable<ISimpleContentProvider> _simpleContentProviders;
 
     public CollectItemsProvider(
         ICollectUrlExtractor collectUrlsExtractor,
         IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-        IHttpClientFactory httpClientFactory)
+        IHttpClientFactory httpClientFactory,
+        IEnumerable<ISimpleContentProvider> simpleContentProviders)
     {
         _collectUrlExtractor = collectUrlsExtractor;
         _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
         _httpClientFactory = httpClientFactory;
+        _simpleContentProviders = simpleContentProviders;
     }
 
     private static readonly string[] DefaultNamePropertyNames = { "name", "fileName", "identifier" };
@@ -45,13 +49,15 @@ public class CollectItemsProvider : ICollectItemsProvider
             {
                 using var httpClient = _httpClientFactory.CreateClient();
                 var jsonResult =
-                        Policy
-                        .Handle<Exception>()
-                        .WaitAndRetry(new[] { TimeSpan.FromSeconds(5) })
-                        .Execute(
-                            ct => httpClient.GetStringAsync(collectUrl[1..], collectHeaders, null, null, ct).Result, 
-                            cancellationToken
-                        );
+                    Policy
+                    .Handle<Exception>()
+                    .WaitAndRetry(new[] { TimeSpan.FromSeconds(5) })
+                    .Execute(
+                        ct =>
+                            GetSimpleContentProvidersResultAsync(collectUrl[1..], ct).Result ??
+                            httpClient.GetStringAsync(collectUrl[1..], collectHeaders, null, null, ct).Result,
+                        cancellationToken
+                    );
 
                 var urlsString = HttpUtils.FixJsonResult(jsonResult);
 
@@ -117,6 +123,21 @@ public class CollectItemsProvider : ICollectItemsProvider
                 }
             }
         }
+    }
+
+    private async Task<string?> GetSimpleContentProvidersResultAsync(string uri, CancellationToken cancellationToken)
+    {
+        foreach (var simpleContentProvider in _simpleContentProviders)
+        {
+            var contentBytes = await simpleContentProvider.GetContentAsync(uri, cancellationToken);
+
+            if (contentBytes is not null)
+            {
+                return Encoding.UTF8.GetString(contentBytes);
+            }
+        }
+
+        return null;
     }
 
     public async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(

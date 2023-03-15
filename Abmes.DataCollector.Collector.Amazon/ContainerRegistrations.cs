@@ -1,4 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Amazon.Destinations;
+﻿using Abmes.DataCollector.Collector.Amazon.Collecting;
+using Abmes.DataCollector.Collector.Amazon.Destinations;
+using Abmes.DataCollector.Collector.Common.Collecting;
 using Abmes.DataCollector.Collector.Common.Destinations;
 using Autofac;
 using Microsoft.Extensions.Configuration;
@@ -14,5 +16,7 @@ public static class ContainerRegistrations
             builder.RegisterType<AmazonDestination>().As<IAmazonDestination>();
             builder.RegisterType<AmazonDestinationResolver>().Named<IDestinationResolver>("base");
         }
+
+        builder.RegisterType<AmazonSimpleContentProvider>().As<ISimpleContentProvider>();
     }
 }
