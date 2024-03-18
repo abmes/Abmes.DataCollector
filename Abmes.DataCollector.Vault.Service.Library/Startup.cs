@@ -36,10 +36,12 @@ public class Startup
             LoggingConfigurator.Configure(loggingBuilder);
         });
 
-        IIdentityServerAuthenticationSettings identityServerAuthenticationSettings = 
+        var identityServerAuthenticationSettings = 
                 Configuration
                 .GetSection("IdentityServerAuthenticationSettings")
                 .Get<IdentityServerAuthenticationSettings>();
+
+        ArgumentNullException.ThrowIfNull(identityServerAuthenticationSettings);
 
         services
             .AddAuthentication(IdentityModel.AspNetCore.OAuth2Introspection.OAuth2IntrospectionDefaults.AuthenticationScheme)

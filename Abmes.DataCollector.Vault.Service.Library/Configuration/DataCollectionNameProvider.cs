@@ -15,7 +15,7 @@ public class DataCollectionNameProvider : IDataCollectionNameProvider
 
     public string GetDataCollectionName()
     {
-        var result = _httpContextAccessor.HttpContext?.Request.Headers["DataCollectionName"];
+        var result = _httpContextAccessor.HttpContext?.Request.Headers["DataCollectionName"].ToString();
         ArgumentExceptionExtensions.ThrowIfNullOrEmpty(result);
         return result;
     }

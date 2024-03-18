@@ -1,5 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Utils;
 using IdentityModel.Client;
+using System.Net;
 using System.Net.Http.Headers;
 
 namespace Abmes.DataCollector.Collector.Common.Misc;
@@ -50,6 +52,9 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
 
         using var httpClient = _httpClientFactory.CreateClient();
         var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
+
+        ArgumentExceptionExtensions.ThrowIf(response.HttpStatusCode is not HttpStatusCode.OK);
+        ArgumentNullException.ThrowIfNull(response.AccessToken);
 
         return response.AccessToken;
     }
