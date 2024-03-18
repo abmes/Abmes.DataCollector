@@ -3,16 +3,9 @@ using System.Text;
 
 namespace Abmes.DataCollector.Common.FileSystem.Configuration;
 
-public class ConfigLoader : IConfigLoader
+public class ConfigLoader(
+    IFileSystemAppSettings fileSystemAppSettings) : IConfigLoader
 {
-    private readonly IFileSystemAppSettings _fileSystemAppSettings;
-
-    public ConfigLoader(
-        IFileSystemAppSettings fileSystemAppSettings)
-    {
-        _fileSystemAppSettings = fileSystemAppSettings;
-    }
-
     public bool CanLoadFromStorage(string storageType)
     {
         return string.Equals(storageType, "FileSystem", StringComparison.InvariantCultureIgnoreCase);
@@ -25,7 +18,7 @@ public class ConfigLoader : IConfigLoader
 
     public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
     {
-        return await GetConfigContentAsync(configName, _fileSystemAppSettings.FileSystemConfigStorageRoot, cancellationToken);
+        return await GetConfigContentAsync(configName, fileSystemAppSettings.FileSystemConfigStorageRoot, cancellationToken);
     }
 
     public async Task<string> GetConfigContentAsync(string configName, string location, CancellationToken cancellationToken)

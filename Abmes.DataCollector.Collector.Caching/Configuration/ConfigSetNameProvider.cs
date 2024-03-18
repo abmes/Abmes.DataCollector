@@ -2,22 +2,16 @@
 
 namespace Abmes.DataCollector.Collector.Caching.Configuration;
 
-public class ConfigSetNameProvider : IConfigSetNameProvider
+public class ConfigSetNameProvider(
+    IConfigSetNameProvider configSetNameProvider) : IConfigSetNameProvider
 {
-    private readonly IConfigSetNameProvider _configSetNameProvider;
     private string? _configSetName;
-
-    public ConfigSetNameProvider(
-        IConfigSetNameProvider configSetNameProvider)
-    {
-        _configSetNameProvider = configSetNameProvider;
-    }
 
     public string GetConfigSetName()
     {
         if (string.IsNullOrEmpty(_configSetName))
         {
-            _configSetName = _configSetNameProvider.GetConfigSetName();
+            _configSetName = configSetNameProvider.GetConfigSetName();
         }
 
         return _configSetName;

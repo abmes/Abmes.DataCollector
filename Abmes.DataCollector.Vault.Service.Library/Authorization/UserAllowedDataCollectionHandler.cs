@@ -3,22 +3,13 @@ using Abmes.DataCollector.Vault.Configuration;
 
 namespace Abmes.DataCollector.Vault.WebAPI.Authorization;
 
-public class UserAllowedDataCollectionHandler : AuthorizationHandler<UserAllowedDataCollectionRequirement>
+public class UserAllowedDataCollectionHandler(
+    IUsersProvider usersProvider,
+    IDataCollectionNameProvider dataCollectionNameProvider) : AuthorizationHandler<UserAllowedDataCollectionRequirement>
 {
-    private readonly IUsersProvider _usersProvider;
-    private readonly IDataCollectionNameProvider _dataCollectionNameProvider;
-
-    public UserAllowedDataCollectionHandler(
-        IUsersProvider usersProvider,
-        IDataCollectionNameProvider dataCollectionNameProvider)
-    {
-        _usersProvider = usersProvider;
-        _dataCollectionNameProvider = dataCollectionNameProvider;
-    }
-
     protected override async Task HandleRequirementAsync(AuthorizationHandlerContext context, UserAllowedDataCollectionRequirement requirement)
     {
-        var dataCollectionName = _dataCollectionNameProvider.GetDataCollectionName();
+        var dataCollectionName = dataCollectionNameProvider.GetDataCollectionName();
 
         var identityUserId = context.User.Claims.Where(x => x.Type.Equals("sub")).Select(x => x.Value).FirstOrDefault();
 
@@ -28,7 +19,7 @@ public class UserAllowedDataCollectionHandler : AuthorizationHandler<UserAllowed
         }
         else
         {
-            var users = await _usersProvider.GetUsersAsync(CancellationToken.None);
+            var users = await usersProvider.GetUsersAsync(CancellationToken.None);
 
             var user = users.Where(x => x.IdentityUserId == identityUserId).FirstOrDefault();
 

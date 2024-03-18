@@ -5,44 +5,29 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 
-public class MainService : IMainService
+public class MainService(
+    IMainCollector mainCollector,
+    IBootstrapper bootstrapper,
+    ITimeFilterProvider timeFilterProvider,
+    ITimeFilterProcessor timeFilterProcessor,
+    ILogger<MainService> logger) : IMainService
 {
-    private readonly IMainCollector _mainCollector;
-    private readonly IBootstrapper _bootstrapper;
-    private readonly ITimeFilterProvider _timeFilterProvider;
-    private readonly ITimeFilterProcessor _timeFilterProcessor;
-    private readonly ILogger<MainService> _logger;
-
-    public MainService(
-        IMainCollector mainCollector,
-        IBootstrapper bootstrapper,
-        ITimeFilterProvider timeFilterProvider,
-        ITimeFilterProcessor timeFilterProcessor,
-        ILogger<MainService> logger)
-    {
-        _mainCollector = mainCollector;
-        _bootstrapper = bootstrapper;
-        _timeFilterProvider = timeFilterProvider;
-        _timeFilterProcessor = timeFilterProcessor;
-        _logger = logger;
-    }
-
     public async Task<int> MainAsync(Action<IBootstrapper>? bootstrap, int exitDelaySeconds, CancellationToken cancellationToken)
     {
         try
         {
-            bootstrap?.Invoke(_bootstrapper);
+            bootstrap?.Invoke(bootstrapper);
 
-            if (_timeFilterProcessor.TimeFilterAccepted(_timeFilterProvider.GetTimeFilter()))
+            if (timeFilterProcessor.TimeFilterAccepted(timeFilterProvider.GetTimeFilter()))
             {
-                await _mainCollector.CollectAsync(cancellationToken);
+                await mainCollector.CollectAsync(cancellationToken);
             }
 
             return DelayedExitCode(0, exitDelaySeconds);
         }
         catch (Exception e)
         {
-            _logger.LogCritical(e, e.Message);
+            logger.LogCritical(e, e.Message);
             return DelayedExitCode(1, exitDelaySeconds);
         }
     }
@@ -51,7 +36,7 @@ public class MainService : IMainService
     {
         if (delaySeconds > 0)
         {
-            _logger.LogInformation($"Exitting after {delaySeconds} seconds ...");
+            logger.LogInformation($"Exitting after {delaySeconds} seconds ...");
             Task.Delay(TimeSpan.FromSeconds(delaySeconds)).Wait();
         }
 

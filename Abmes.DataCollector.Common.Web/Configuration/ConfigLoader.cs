@@ -3,16 +3,10 @@ using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Common.Web.Configuration;
 
-public class ConfigLoader : IConfigLoader
+public class ConfigLoader(
+    IHttpClientFactory httpClientFactory) : IConfigLoader
 {
     private const string HttpsPrefix = "https://";
-
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public ConfigLoader(IHttpClientFactory httpClientFactory)
-    {
-        _httpClientFactory = httpClientFactory;
-    }
 
     public bool CanLoadFromLocation(string location)
     {
@@ -37,7 +31,7 @@ public class ConfigLoader : IConfigLoader
         var headers = (bracketPos >= 0) ? GetHeaders(location[bracketPos..]) : null;
         var url = location[..bracketPos].TrimEnd('/') + "/" + configName;
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         return await httpClient.GetStringAsync(url, headers, null, null, cancellationToken);
     }
 

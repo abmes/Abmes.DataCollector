@@ -2,19 +2,13 @@
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration;
 
-public class ConfigSetNameProvider : IConfigSetNameProvider
+public class ConfigSetNameProvider(
+    IBootstrapper bootstrapper) : IConfigSetNameProvider
 {
-    private readonly IBootstrapper _bootstrapper;
-
-    public ConfigSetNameProvider(IBootstrapper bootstrapper)
-    {
-        _bootstrapper = bootstrapper;
-    }
-
     public string GetConfigSetName()
     {
         var args = Environment.GetCommandLineArgs();
 
-        return string.IsNullOrEmpty(_bootstrapper.ConfigSetName) ? ((args.Length <= 1) ? string.Empty : args[1].Split('/', '\\').Last()) : _bootstrapper.ConfigSetName;
+        return string.IsNullOrEmpty(bootstrapper.ConfigSetName) ? ((args.Length <= 1) ? string.Empty : args[1].Split('/', '\\').Last()) : bootstrapper.ConfigSetName;
     }
 }

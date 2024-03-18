@@ -3,27 +3,18 @@ using Abmes.DataCollector.Vault.Storage;
 
 namespace Abmes.DataCollector.Vault.Logging.Storage;
 
-public class LoggingStorageResolver : IStorageResolver
+public class LoggingStorageResolver(
+    IStorageResolver storageResolver,
+    ILoggingStorageFactory loggingStorageFactory) : IStorageResolver
 {
-    private readonly IStorageResolver _storageResolver;
-    private readonly ILoggingStorageFactory _loggingStorageFactory;
-
-    public LoggingStorageResolver(
-        IStorageResolver StorageResolver,
-        ILoggingStorageFactory loggingStorageFactory)
-    {
-        _storageResolver = StorageResolver;
-        _loggingStorageFactory = loggingStorageFactory;
-    }
-
     public bool CanResolve(StorageConfig storageConfig)
     {
-        return _storageResolver.CanResolve(storageConfig);
+        return storageResolver.CanResolve(storageConfig);
     }
 
     public IStorage GetStorage(StorageConfig storageConfig)
     {
-        var storage = _storageResolver.GetStorage(storageConfig);
-        return _loggingStorageFactory(storage);
+        var storage = storageResolver.GetStorage(storageConfig);
+        return loggingStorageFactory(storage);
     }
 }

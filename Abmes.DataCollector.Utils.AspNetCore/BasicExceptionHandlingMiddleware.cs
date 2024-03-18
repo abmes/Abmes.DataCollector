@@ -3,20 +3,14 @@ using System.Net;
 
 namespace Abmes.DataCollector.Utils.AspNetCore;
 
-public class BasicExceptionHandlingMiddleware
+public class BasicExceptionHandlingMiddleware(
+    RequestDelegate next)
 {
-    private readonly RequestDelegate _next;
-
-    public BasicExceptionHandlingMiddleware(RequestDelegate next)
-    {
-        _next = next;
-    }
-
     public async Task InvokeAsync(HttpContext context /* other scoped dependencies */)
     {
         try
         {
-            await _next(context);
+            await next(context);
         }
         catch (Exception exception)
         {

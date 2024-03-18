@@ -10,16 +10,10 @@ using System.Threading.Tasks;
 
 namespace Abmes.DataCollector.Collector.Amazon.Collecting
 {
-    public class AmazonSimpleContentProvider : ISimpleContentProvider
+    public class AmazonSimpleContentProvider(
+        IAmazonS3 amazonS3) : ISimpleContentProvider
     {
         private const string S3LocationPrefix = "s3://";
-        private readonly IAmazonS3 _amazonS3;
-
-        public AmazonSimpleContentProvider(
-            IAmazonS3 amazonS3)
-        {
-            _amazonS3 = amazonS3;
-        }
 
         public async Task<byte[]?> GetContentAsync(string uri, CancellationToken cancellationToken)
         {
@@ -33,7 +27,7 @@ namespace Abmes.DataCollector.Collector.Amazon.Collecting
             var key = string.Join("/", locationParts.Skip(1));
 
             var request = new GetObjectRequest { BucketName = bucketName, Key = key };
-            var response = await _amazonS3.GetObjectAsync(request, cancellationToken);
+            var response = await amazonS3.GetObjectAsync(request, cancellationToken);
 
             using var ms = new MemoryStream();
 

@@ -5,20 +5,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace Abmes.DataCollector.Common.Azure.Configuration;
 
-public class ConfigLoader : IConfigLoader
+public class ConfigLoader(
+    IConfiguration configuration,
+    IAzureAppSettings azureAppSettings) : IConfigLoader
 {
     private const string AzureConfigStorageConnectionStringName = "AzureConfigStorage";
-
-    private readonly IConfiguration _configuration;
-    private readonly IAzureAppSettings _azureAppSettings;
-
-    public ConfigLoader(
-        IConfiguration configuration,
-        IAzureAppSettings azureAppSettings)
-    {
-        _configuration = configuration;
-        _azureAppSettings = azureAppSettings;
-    }
 
     public bool CanLoadFromStorage(string storageType)
     {
@@ -39,7 +30,7 @@ public class ConfigLoader : IConfigLoader
     {
         string connectionString = GetAzureStorageDbCollectConfigConnectionString();
 
-        var container = new BlobContainerClient(connectionString, _azureAppSettings.AzureConfigStorageContainerName);
+        var container = new BlobContainerClient(connectionString, azureAppSettings.AzureConfigStorageContainerName);
 
         var blob = container.GetBlobClient(configName);
 
@@ -53,7 +44,7 @@ public class ConfigLoader : IConfigLoader
 
     private string GetAzureStorageDbCollectConfigConnectionString()
     {
-        var result = _configuration.GetConnectionString(AzureConfigStorageConnectionStringName);
+        var result = configuration.GetConnectionString(AzureConfigStorageConnectionStringName);
 
         ArgumentExceptionExtensions.ThrowIfNullOrEmpty(result);
 

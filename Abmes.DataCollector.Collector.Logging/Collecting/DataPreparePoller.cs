@@ -4,37 +4,30 @@ using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting;
 
-public class DatabPreparePoller : IDataPreparePoller
+public class DatabPreparePoller(
+    ILogger<DatabPreparePoller> logger,
+    IDataPreparePoller dataPreparePoller) : IDataPreparePoller
 {
-    private readonly ILogger<DatabPreparePoller> _logger;
-    private readonly IDataPreparePoller _dataPreparePoller;
-
-    public DatabPreparePoller(ILogger<DatabPreparePoller> logger, IDataPreparePoller dataPreparePoller)
-    {
-        _logger = logger;
-        _dataPreparePoller = dataPreparePoller;
-    }
-
     public async Task<DataPrepareResult> GetDataPrepareResultAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, CancellationToken cancellationToken)
     {
         var dataCollectionName = GetDataCollectionName(pollUrl);
 
         try
         {
-            _logger.LogInformation("Started prepare status polling for data '{dataCollectionName}'", dataCollectionName);
+            logger.LogInformation("Started prepare status polling for data '{dataCollectionName}'", dataCollectionName);
 
-            var result = await _dataPreparePoller.GetDataPrepareResultAsync(pollUrl, pollHeaders, cancellationToken);
+            var result = await dataPreparePoller.GetDataPrepareResultAsync(pollUrl, pollHeaders, cancellationToken);
 
-            _logger.LogInformation("Finished prepare status polling for data '{dataCollectionName}'", dataCollectionName);
+            logger.LogInformation("Finished prepare status polling for data '{dataCollectionName}'", dataCollectionName);
 
             var status = (result.Finished ? "Finished" : "Not finished");
-            _logger.LogInformation("Prepare status for data '{dataCollectionName}': {status}", dataCollectionName, status);
+            logger.LogInformation("Prepare status for data '{dataCollectionName}': {status}", dataCollectionName, status);
 
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogError("Error prepare status polling for data '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
+            logger.LogError("Error prepare status polling for data '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
             throw;
         }
     }
@@ -48,7 +41,7 @@ public class DatabPreparePoller : IDataPreparePoller
         }
         catch (Exception e)
         {
-            _logger.LogCritical($"Error getting data name for prepare status polling: {pollUrl}; {e.GetAggregateMessages()}");
+            logger.LogCritical($"Error getting data name for prepare status polling: {pollUrl}; {e.GetAggregateMessages()}");
             return "<unknown>";
         }
     }

@@ -1,16 +1,10 @@
 ﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public class BootstrapperCollectorModeProvider : ICollectorModeProvider
+public class BootstrapperCollectorModeProvider(
+    IBootstrapper bootstrapper) : ICollectorModeProvider
 {
-    private readonly IBootstrapper _bootstrapper;
-
-    public BootstrapperCollectorModeProvider(IBootstrapper bootstrapper)
-    {
-        _bootstrapper = bootstrapper;
-    }
-
     public CollectorMode GetCollectorMode()
     {
-        return _bootstrapper.CollectorMode;
+        return bootstrapper.CollectorMode;
     }
 }

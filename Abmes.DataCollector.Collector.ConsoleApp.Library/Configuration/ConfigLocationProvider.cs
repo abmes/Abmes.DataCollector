@@ -3,20 +3,14 @@ using Abmes.DataCollector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration;
 
-public class ConfigLocationProvider : IConfigLocationProvider
+public class ConfigLocationProvider(
+    IBootstrapper bootstrapper) : IConfigLocationProvider
 {
-    private readonly IBootstrapper _bootstrapper;
-
-    public ConfigLocationProvider(IBootstrapper bootstrapper)
-    {
-        _bootstrapper = bootstrapper;
-    }
-
     public string? GetConfigLocation()
     {
         var args = Environment.GetCommandLineArgs();
 
-        if ((!string.IsNullOrEmpty(_bootstrapper.ConfigSetName)) || (args.Length <= 1))
+        if ((!string.IsNullOrEmpty(bootstrapper.ConfigSetName)) || (args.Length <= 1))
         {
             return null;
         }

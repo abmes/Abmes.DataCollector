@@ -9,22 +9,12 @@ using System.Text;
 
 namespace Abmes.DataCollector.Collector.Azure.Destinations;
 
-public class AzureDestination : IAzureDestination
+public class AzureDestination(
+    DestinationConfig destinationConfig,
+    IAzureCommonStorage azureCommonStorage,
+    IHttpClientFactory httpClientFactory) : IAzureDestination
 {
-    private readonly IAzureCommonStorage _azureCommonStorage;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public DestinationConfig DestinationConfig { get; }
-
-    public AzureDestination(
-        DestinationConfig destinationConfig,
-        IAzureCommonStorage azureCommonStorage,
-        IHttpClientFactory httpClientFactory)
-    {
-        DestinationConfig = destinationConfig;
-        _azureCommonStorage = azureCommonStorage;
-        _httpClientFactory = httpClientFactory;
-    }
+    public DestinationConfig DestinationConfig => destinationConfig;
 
     public async Task CollectAsync(
         string collectUrl,
@@ -48,7 +38,7 @@ public class AzureDestination : IAzureDestination
         ArgumentExceptionExtensions.ThrowIfNullOrEmpty(DestinationConfig.LoginSecret);
 
         var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
-        return await _azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
+        return await azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);
     }
 
     private string GetBlobName(string dataCollectionName, string fileName)
@@ -83,7 +73,7 @@ public class AzureDestination : IAzureDestination
         TimeSpan timeout,
         CancellationToken cancellationToken)
     {
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
 
         using var response =
             await httpClient.SendAsync(
@@ -248,7 +238,7 @@ public class AzureDestination : IAzureDestination
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
         return await
-            _azureCommonStorage.GetDataCollectionFileNamesAsync(
+            azureCommonStorage.GetDataCollectionFileNamesAsync(
                 DestinationConfig.LoginName,
                 DestinationConfig.LoginSecret,
                 DestinationConfig.RootBase(),

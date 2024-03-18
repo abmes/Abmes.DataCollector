@@ -3,16 +3,9 @@ using Abmes.DataCollector.Collector.Common.Destinations;
 
 namespace Abmes.DataCollector.Collector.Azure.Destinations;
 
-public class AzureDestinationResolver : IDestinationResolver
+public class AzureDestinationResolver(
+    IAzureDestinationFactory AzureDestinationFactory) : IDestinationResolver
 {
-    private readonly IAzureDestinationFactory _AzureDestinationFactory;
-
-    public AzureDestinationResolver(
-        IAzureDestinationFactory AzureDestinationFactory)
-    {
-        _AzureDestinationFactory = AzureDestinationFactory;
-    }
-
     public bool CanResolve(DestinationConfig destinationConfig)
     {
         return string.Equals(destinationConfig.DestinationType, "Azure");
@@ -20,6 +13,6 @@ public class AzureDestinationResolver : IDestinationResolver
 
     public IDestination GetDestination(DestinationConfig destinationConfig)
     {
-        return _AzureDestinationFactory(destinationConfig);
+        return AzureDestinationFactory(destinationConfig);
     }
 }

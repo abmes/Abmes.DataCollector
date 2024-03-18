@@ -1,39 +1,32 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Collector.Common.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Logging.Configuration;
 
-public class DataCollectionsConfigProvider : IDataCollectionsConfigProvider
+public class DataCollectionsConfigProvider(
+    ILogger<IDataCollectionsConfigProvider> logger,
+    IDataCollectionsConfigProvider dataCollectionsConfigProvider) : IDataCollectionsConfigProvider
 {
-    private readonly ILogger<IDataCollectionsConfigProvider> _logger;
-    private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
-
-    public DataCollectionsConfigProvider(ILogger<IDataCollectionsConfigProvider> logger, IDataCollectionsConfigProvider DataCollectionsConfigProvider)
-    {
-        _logger = logger;
-        _dataCollectionsConfigProvider = DataCollectionsConfigProvider;
-    }
-
     public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {
         var displayConfigSetName = string.IsNullOrEmpty(configSetName) ? "<default>" : configSetName;
 
         try
         {
-            _logger.LogTrace("Started getting data collections config '{configSetName}'", displayConfigSetName);
+            logger.LogTrace("Started getting data collections config '{configSetName}'", displayConfigSetName);
 
-            var result = (await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken)).ToList();
+            var result = (await dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken)).ToList();
 
-            _logger.LogTrace("Finished getting data collections config '{configSetName}'", displayConfigSetName);
+            logger.LogTrace("Finished getting data collections config '{configSetName}'", displayConfigSetName);
 
-            _logger.LogInformation("Found {count} data collections to collect", result.Count);
+            logger.LogInformation("Found {count} data collections to collect", result.Count);
 
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogCritical("Error getting data collections config '{configSetName}': {errorMessage}", displayConfigSetName, e.GetAggregateMessages());
+            logger.LogCritical("Error getting data collections config '{configSetName}': {errorMessage}", displayConfigSetName, e.GetAggregateMessages());
             throw;
         }
     }

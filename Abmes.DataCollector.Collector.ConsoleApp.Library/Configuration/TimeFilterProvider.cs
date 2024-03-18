@@ -2,18 +2,13 @@
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration;
 
-public class TimeFilterProvider : ITimeFilterProvider
+public class TimeFilterProvider(
+    IBootstrapper bootstrapper) : ITimeFilterProvider
 {
-    private readonly IBootstrapper _bootstrapper;
-
-    public TimeFilterProvider(IBootstrapper bootstrapper)
-    {
-        _bootstrapper = bootstrapper;
-    }
     public string GetTimeFilter()
     {
         var args = Environment.GetCommandLineArgs();
 
-        return string.IsNullOrEmpty(_bootstrapper.TimeFilter) ? ((args.Length <= 4) ? string.Empty : args[4]) : _bootstrapper.TimeFilter;
+        return string.IsNullOrEmpty(bootstrapper.TimeFilter) ? ((args.Length <= 4) ? string.Empty : args[4]) : bootstrapper.TimeFilter;
     }
 }

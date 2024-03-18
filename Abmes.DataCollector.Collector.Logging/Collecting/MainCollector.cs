@@ -5,25 +5,12 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting;
 
-public class MainCollector : IMainCollector
+public class MainCollector(
+    ILogger<MainCollector> logger,
+    IMainCollector collector,
+    IConfigSetNameProvider configSetNameProvider,
+    ICollectorModeProvider collectorModeProvider) : IMainCollector
 {
-    private readonly ILogger<MainCollector> _logger;
-    private readonly IMainCollector _collector;
-    private readonly ICollectorModeProvider _collectorModeProvider;
-    private readonly IConfigSetNameProvider _configSetNameProvider;
-
-    public MainCollector(
-        ILogger<MainCollector> logger, 
-        IMainCollector collector,
-        IConfigSetNameProvider configSetNameProvider,
-        ICollectorModeProvider collectorModeProvider)
-    {
-        _logger = logger;
-        _collector = collector;
-        _configSetNameProvider = configSetNameProvider;
-        _collectorModeProvider = collectorModeProvider;
-    }
-
     private static string ResultPrefix(bool result)
     {
         return (result ? "Finished" : "ERRORS occured when");
@@ -31,8 +18,8 @@ public class MainCollector : IMainCollector
 
     public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
     {
-        var configSetName = _configSetNameProvider.GetConfigSetName();
-        var collectorMode = _collectorModeProvider.GetCollectorMode();
+        var configSetName = configSetNameProvider.GetConfigSetName();
+        var collectorMode = collectorModeProvider.GetCollectorMode();
 
         var mode = collectorMode.ToString().ToLowerInvariant();
 
@@ -40,12 +27,12 @@ public class MainCollector : IMainCollector
         {
             IEnumerable<string> result;
 
-            _logger.LogInformation($"[{configSetName}] Started {mode}ing data collections.");
+            logger.LogInformation($"[{configSetName}] Started {mode}ing data collections.");
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
             try
             {
-                result = await _collector.CollectAsync(cancellationToken);
+                result = await collector.CollectAsync(cancellationToken);
             }
             finally
             {
@@ -54,13 +41,13 @@ public class MainCollector : IMainCollector
 
             var failedDataCollectionNames = result.Any() ? " (" + string.Join(",", result) + ")" : null;
 
-            _logger.LogInformation($"[{configSetName}] {ResultPrefix(!result.Any())} {mode}ing data collections{failedDataCollectionNames}. Elapsed time: {watch.Elapsed}");
+            logger.LogInformation($"[{configSetName}] {ResultPrefix(!result.Any())} {mode}ing data collections{failedDataCollectionNames}. Elapsed time: {watch.Elapsed}");
 
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogCritical($"[{configSetName}] " + ResultPrefix(false) + " {mode}ing data collections: {errorMessage}", mode, e.GetAggregateMessages());
+            logger.LogCritical($"[{configSetName}] " + ResultPrefix(false) + " {mode}ing data collections: {errorMessage}", mode, e.GetAggregateMessages());
             throw;
         }
     }

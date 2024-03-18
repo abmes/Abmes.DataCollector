@@ -3,16 +3,9 @@ using Abmes.DataCollector.Collector.Common.Destinations;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations;
 
-public class AmazonDestinationResolver : IDestinationResolver
+public class AmazonDestinationResolver(
+    IAmazonDestinationFactory amazonDestinationFactory) : IDestinationResolver
 {
-    private readonly IAmazonDestinationFactory _amazonDestinationFactory;
-
-    public AmazonDestinationResolver(
-        IAmazonDestinationFactory amazonDestinationFactory)
-    {
-        _amazonDestinationFactory = amazonDestinationFactory;
-    }
-
     public bool CanResolve(DestinationConfig destinationConfig)
     {
         return string.Equals(destinationConfig.DestinationType, "Amazon");
@@ -20,6 +13,6 @@ public class AmazonDestinationResolver : IDestinationResolver
 
     public IDestination GetDestination(DestinationConfig destinationConfig)
     {
-        return _amazonDestinationFactory(destinationConfig);
+        return amazonDestinationFactory(destinationConfig);
     }
 }

@@ -3,16 +3,9 @@ using Abmes.DataCollector.Vault.Storage;
 
 namespace Abmes.DataCollector.Vault.Amazon.Storage;
 
-public class AmazonStorageResolver : IStorageResolver
+public class AmazonStorageResolver(
+    IAmazonStorageFactory amazonStorageFactory) : IStorageResolver
 {
-    private readonly IAmazonStorageFactory _amazonStorageFactory;
-
-    public AmazonStorageResolver(
-        IAmazonStorageFactory amazonStorageFactory)
-    {
-        _amazonStorageFactory = amazonStorageFactory;
-    }
-
     public bool CanResolve(StorageConfig storageConfig)
     {
         return string.Equals(storageConfig.StorageType, "Amazon");
@@ -20,6 +13,6 @@ public class AmazonStorageResolver : IStorageResolver
 
     public IStorage GetStorage(StorageConfig storageConfig)
     {
-        return _amazonStorageFactory(storageConfig);
+        return amazonStorageFactory(storageConfig);
     }
 }

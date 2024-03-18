@@ -4,22 +4,12 @@ using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Collector.Console.Destinations;
 
-public class ConsoleDestination : IConsoleDestination
+public class ConsoleDestination(
+    DestinationConfig destinationConfig,
+    IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+    IHttpClientFactory httpClientFactory) : IConsoleDestination
 {
-    public DestinationConfig DestinationConfig { get; }
-
-    private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public ConsoleDestination(
-        DestinationConfig destinationConfig,
-        IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-        IHttpClientFactory httpClientFactory)
-    {
-        DestinationConfig = destinationConfig;
-        _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
-        _httpClientFactory = httpClientFactory;
-    }
+    public DestinationConfig DestinationConfig => destinationConfig;
 
     public async Task CollectAsync(
         string collectUrl,
@@ -32,7 +22,7 @@ public class ConsoleDestination : IConsoleDestination
         int tryNo,
         CancellationToken cancellationToken)
     {
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         var content =
             await httpClient.GetStringAsync(
                 collectUrl,
@@ -42,7 +32,7 @@ public class ConsoleDestination : IConsoleDestination
                 collectHeaders,
                 null,
                 timeout,
-                (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, collectIdentityServiceClientInfo, ct),
+                (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, collectIdentityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
 
         System.Console.WriteLine(content);

@@ -4,19 +4,11 @@ using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class DataPreparer : IDataPreparer
+public class DataPreparer(
+    IDataPreparePoller dataPreparePoller,
+    IDelay delay,
+    IHttpClientFactory httpClientFactory) : IDataPreparer
 {
-    private readonly IDataPreparePoller _dataPreparePoller;
-    private readonly IDelay _delay;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public DataPreparer(IDataPreparePoller DataPreparePoller, IDelay delay, IHttpClientFactory httpClientFactory)
-    {
-        _dataPreparePoller = DataPreparePoller;
-        _delay = delay;
-        _httpClientFactory = httpClientFactory;
-    }
-
     public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
         if (string.IsNullOrEmpty(dataCollectionConfig.PrepareUrl))
@@ -40,7 +32,7 @@ public class DataPreparer : IDataPreparer
 
     private async Task WaitPrepareDurationAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
-        await _delay.DelayAsync(dataCollectionConfig.PrepareDuration ?? default, $"Data {dataCollectionConfig.DataCollectionName} prepare to finish", cancellationToken);
+        await delay.DelayAsync(dataCollectionConfig.PrepareDuration ?? default, $"Data {dataCollectionConfig.DataCollectionName} prepare to finish", cancellationToken);
     }
 
     private async Task PrepareCollectAsync(string prepareUrl, IEnumerable<KeyValuePair<string, string>> prepareHeaders, string prepareHttpMethod, CancellationToken cancellationToken)
@@ -48,7 +40,7 @@ public class DataPreparer : IDataPreparer
         var urls = prepareUrl.Split('|').ToList();
         var preliminaryUrls = urls.SkipLast(1);
         var lastUrl = urls.Last();
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         await httpClient.SendManyAsync(preliminaryUrls, new HttpMethod(prepareHttpMethod), prepareHeaders, cancellationToken);
         using var _ = await httpClient.SendAsync(lastUrl, new HttpMethod(prepareHttpMethod), headers: prepareHeaders, timeout: TimeSpan.FromMinutes(5), cancellationToken: cancellationToken);
     }
@@ -69,7 +61,7 @@ public class DataPreparer : IDataPreparer
 
             try
             {
-                prepareResult = await _dataPreparePoller.GetDataPrepareResultAsync(pollUrl, pollHeaders, cancellationToken);
+                prepareResult = await dataPreparePoller.GetDataPrepareResultAsync(pollUrl, pollHeaders, cancellationToken);
             }
             catch
             {

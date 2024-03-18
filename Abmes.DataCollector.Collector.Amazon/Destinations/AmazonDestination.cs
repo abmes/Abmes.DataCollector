@@ -9,28 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Amazon.Destinations;
 
-public class AmazonDestination : IAmazonDestination
+public class AmazonDestination(
+    DestinationConfig destinationConfig,
+    IAmazonS3 amazonS3,
+    IAmazonCommonStorage amazonCommonStorage,
+    IHttpClientFactory httpClientFactory,
+    ILogger<AmazonDestination> logger) : IAmazonDestination
 {
-    private readonly IAmazonS3 _amazonS3;
-    private readonly IAmazonCommonStorage _amazonCommonStorage;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly ILogger<AmazonDestination> _logger;
-
-    public DestinationConfig DestinationConfig { get; }
-
-    public AmazonDestination(
-        DestinationConfig destinationConfig,
-        IAmazonS3 amazonS3,
-        IAmazonCommonStorage amazonCommonStorage,
-        IHttpClientFactory httpClientFactory,
-        ILogger<AmazonDestination> logger)
-    {
-        DestinationConfig = destinationConfig;
-        _amazonS3 = amazonS3;
-        _amazonCommonStorage = amazonCommonStorage;
-        _httpClientFactory = httpClientFactory;
-        _logger = logger;
-    }
+    public DestinationConfig DestinationConfig => destinationConfig;
 
     public async Task CollectAsync(
         string collectUrl,
@@ -43,7 +29,7 @@ public class AmazonDestination : IAmazonDestination
         int tryNo,
         CancellationToken cancellationToken)
     {
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         var sourceMD5 = response.ContentMD5();
 
@@ -73,7 +59,7 @@ public class AmazonDestination : IAmazonDestination
         }
 
         // Initiate the upload.
-        var initResponse = await _amazonS3.InitiateMultipartUploadAsync(initiateRequest, cancellationToken);
+        var initResponse = await amazonS3.InitiateMultipartUploadAsync(initiateRequest, cancellationToken);
         try
         {
             using var blobHasher = validateMD5 ? CopyUtils.GetMD5Hasher() : null;
@@ -111,7 +97,7 @@ public class AmazonDestination : IAmazonDestination
                     };
 
                     // Upload a part and add the response to our list.
-                    var uploadResponse = await _amazonS3.UploadPartAsync(uploadRequest, cancellationToken);
+                    var uploadResponse = await amazonS3.UploadPartAsync(uploadRequest, cancellationToken);
                     uploadResponses.Add(uploadResponse);
                 },
                 partSize,
@@ -140,11 +126,11 @@ public class AmazonDestination : IAmazonDestination
             completeRequest.AddPartETags(uploadResponses);
 
             // Complete the upload.
-            var completeUploadResponse = await _amazonS3.CompleteMultipartUploadAsync(completeRequest, cancellationToken);
+            var completeUploadResponse = await amazonS3.CompleteMultipartUploadAsync(completeRequest, cancellationToken);
         }
         catch (Exception exception)
         {
-            _logger.LogError(exception, "An AmazonS3Exception was thrown: {message}", exception.Message);
+            logger.LogError(exception, "An AmazonS3Exception was thrown: {message}", exception.Message);
 
             // Abort the upload.
             var abortMPURequest = new AbortMultipartUploadRequest
@@ -153,7 +139,7 @@ public class AmazonDestination : IAmazonDestination
                 Key = keyName,
                 UploadId = initResponse.UploadId
             };
-            await _amazonS3.AbortMultipartUploadAsync(abortMPURequest, cancellationToken);
+            await amazonS3.AbortMultipartUploadAsync(abortMPURequest, cancellationToken);
         }
     }
 
@@ -162,12 +148,12 @@ public class AmazonDestination : IAmazonDestination
         var key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
 
         var request = new DeleteObjectRequest { BucketName = DestinationConfig.RootBase(), Key = key };
-        await _amazonS3.DeleteObjectAsync(request, cancellationToken);
+        await amazonS3.DeleteObjectAsync(request, cancellationToken);
     }
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
-        return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(
+        return await amazonCommonStorage.GetDataCollectionFileNamesAsync(
             null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('/', true), dataCollectionName, null, cancellationToken);
     }
 
@@ -185,7 +171,7 @@ public class AmazonDestination : IAmazonDestination
     {
         var key = DestinationConfig.RootDir('/', true) + dataCollectionName + '/' + fileName;
 
-        using var fileTransferUtility = new TransferUtility(_amazonS3);
+        using var fileTransferUtility = new TransferUtility(amazonS3);
 
         await fileTransferUtility.UploadAsync(content, DestinationConfig.RootBase(), key, cancellationToken);
     }

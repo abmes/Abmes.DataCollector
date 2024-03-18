@@ -5,23 +5,11 @@ using Polly;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class CollectUrlExtractor : ICollectUrlExtractor
+public class CollectUrlExtractor(
+    IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+    ILogger<CollectUrlExtractor> logger,
+    IHttpClientFactory httpClientFactory) : ICollectUrlExtractor
 {
-    private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
-    private readonly ILogger<CollectUrlExtractor> _logger;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public CollectUrlExtractor(
-        IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-        ILogger<CollectUrlExtractor> logger,
-        IHttpClientFactory httpClientFactory)
-    {
-        _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
-        _logger = logger;
-        _httpClientFactory = httpClientFactory;
-
-    }
-
     public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string? collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string? identityServiceAccessToken, CancellationToken cancellationToken)
     {
         var tryNo = 0;
@@ -37,10 +25,10 @@ public class CollectUrlExtractor : ICollectUrlExtractor
 
                         if (tryNo > 1)
                         {
-                            _logger.LogInformation($"Retrying ({tryNo-1}) get collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'");
+                            logger.LogInformation($"Retrying ({tryNo-1}) get collect url for file '{collectFileIdentifier}' in data collection '{dataCollectionName}'");
                         }
 
-                        using var httpClient = _httpClientFactory.CreateClient();
+                        using var httpClient = httpClientFactory.CreateClient();
 
                         var collectUrlsJson = 
                             await httpClient.GetStringAsync(
@@ -48,7 +36,7 @@ public class CollectUrlExtractor : ICollectUrlExtractor
                                 HttpMethod.Get,
                                 headers: headers,
                                 accept: "application/json",
-                                requestConfiguratorTask: (request, ct) => Task.Run(() => _identityServiceHttpRequestConfigurator.Config(request, identityServiceAccessToken, ct), ct),
+                                requestConfiguratorTask: (request, ct) => Task.Run(() => identityServiceHttpRequestConfigurator.Config(request, identityServiceAccessToken, ct), ct),
                                 cancellationToken: cancellationToken);
 
                         return HttpUtils.FixJsonResult(collectUrlsJson);

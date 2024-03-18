@@ -4,22 +4,12 @@ using Abmes.DataCollector.Vault.Configuration;
 
 namespace Abmes.DataCollector.Vault.FileSystem.Storage;
 
-public class FileSystemStorage : IFileSystemStorage
+public class FileSystemStorage(
+    StorageConfig storageConfig,
+    IVaultAppSettings vaultAppSettings,
+    IFileSystemCommonStorage fileSystemCommonStorage) : IFileSystemStorage
 {
-    private readonly IVaultAppSettings _vaultAppSettings;
-    private readonly IFileSystemCommonStorage _fileSystemCommonStorage;
-
-    public StorageConfig StorageConfig { get; }
-
-    public FileSystemStorage(
-        StorageConfig storageConfig,
-        IVaultAppSettings vaultAppSettings,
-        IFileSystemCommonStorage FileSystemCommonStorage) 
-    {
-        StorageConfig = storageConfig;
-        _vaultAppSettings = vaultAppSettings;
-        _fileSystemCommonStorage = FileSystemCommonStorage;
-    }
+    public StorageConfig StorageConfig => storageConfig;
 
     public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
     {
@@ -28,11 +18,11 @@ public class FileSystemStorage : IFileSystemStorage
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
-        return await _fileSystemCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+        return await fileSystemCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
     }
 
     public async Task<IEnumerable<FileInfoData>> GetDataCollectionFileInfosAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
-        return await _fileSystemCommonStorage.GetDataCollectionFileInfosAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+        return await fileSystemCommonStorage.GetDataCollectionFileInfosAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
     }
 }

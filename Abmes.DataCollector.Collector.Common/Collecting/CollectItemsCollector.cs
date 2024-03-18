@@ -7,16 +7,9 @@ using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class CollectItemsCollector : ICollectItemsCollector
+public class CollectItemsCollector(
+    IFileNameProvider fileNameProvider) : ICollectItemsCollector
 {
-    private readonly IFileNameProvider _fileNameProvider;
-
-    public CollectItemsCollector(
-        IFileNameProvider fileNameProvider)
-    {
-        _fileNameProvider = fileNameProvider;
-    }
-
     public async Task<IEnumerable<string>> CollectItemsAsync(
         IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
         string dataCollectionName,
@@ -65,7 +58,7 @@ public class CollectItemsCollector : ICollectItemsCollector
     private string GetDestinationFileName((FileInfoData? CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
     {
         return
-            _fileNameProvider.GenerateCollectDestinationFileName(
+            fileNameProvider.GenerateCollectDestinationFileName(
                 dataCollectionConfig.DataCollectionName,
                 collectItem.CollectFileInfo?.Name,
                 collectItem.CollectUrl,
@@ -81,7 +74,7 @@ public class CollectItemsCollector : ICollectItemsCollector
             .Select(x => (x.Destination, DestinationDirName: string.Join("/", x.DestinationFileName.Split("/").SkipLast(1))))
             .GroupBy(x => x)
             .Where(x => x.Count() > 1)
-            .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + _fileNameProvider.LockFileName));
+            .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + fileNameProvider.LockFileName));
     }
 
     private static async Task CollectRouteAsync(

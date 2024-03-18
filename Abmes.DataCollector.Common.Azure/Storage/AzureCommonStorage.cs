@@ -6,16 +6,10 @@ using Azure.Storage.Blobs.Models;
 
 namespace Abmes.DataCollector.Common.Azure.Storage;
 
-public class AzureCommonStorage : IAzureCommonStorage
+public class AzureCommonStorage(
+    IAzureAppSettings commonAppSettings) : IAzureCommonStorage
 {
-    private readonly IAzureAppSettings _commonAppSettings;
-
     public string StorageType => "Azure";
-
-    public AzureCommonStorage(IAzureAppSettings commonAppSettings)
-    {
-        _commonAppSettings = commonAppSettings;
-    }
 
     public async Task<BlobContainerClient> GetContainerAsync(string loginName, string loginSecret, string root, bool createIfNotExists, CancellationToken cancellationToken)
     {

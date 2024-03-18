@@ -1,24 +1,13 @@
 ﻿namespace Abmes.DataCollector.Common.Configuration;
 
-public class ConfigProvider : IConfigProvider
+public class ConfigProvider(
+    IEnumerable<IConfigLoader> configLoaders,
+    ICommonAppSettings commonAppSettings,
+    IConfigLocationProvider configLocationProvider) : IConfigProvider
 {
-    private readonly IEnumerable<IConfigLoader> _configLoaders;
-    private readonly ICommonAppSettings _commonAppSettings;
-    private readonly IConfigLocationProvider _configLocationProvider;
-
-    public ConfigProvider(
-        IEnumerable<IConfigLoader> configLoaders,
-        ICommonAppSettings commonAppSettings,
-        IConfigLocationProvider configLocationProvider)
-    {
-        _configLoaders = configLoaders;
-        _commonAppSettings = commonAppSettings;
-        _configLocationProvider = configLocationProvider;
-    }
-
     public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
     {
-        var configLocation = _configLocationProvider.GetConfigLocation();
+        var configLocation = configLocationProvider.GetConfigLocation();
 
         return
             string.IsNullOrEmpty(configLocation) ?
@@ -28,7 +17,7 @@ public class ConfigProvider : IConfigProvider
 
     private async Task<string> GetConfigContentFromLocationAsync(string configName, string configLocation, CancellationToken cancellationToken)
     {
-        var configLoader = _configLoaders.Where(x => x.CanLoadFromLocation(configLocation)).FirstOrDefault();
+        var configLoader = configLoaders.Where(x => x.CanLoadFromLocation(configLocation)).FirstOrDefault();
 
         if (configLoader is null)
         {
@@ -40,16 +29,16 @@ public class ConfigProvider : IConfigProvider
 
     private async Task<string> GetConfigContentFromStorageAsync(string configName, CancellationToken cancellationToken)
     { 
-        if (string.IsNullOrEmpty(_commonAppSettings.ConfigStorageType))
+        if (string.IsNullOrEmpty(commonAppSettings.ConfigStorageType))
         {
             throw new Exception("ConfigStorageType not specified!");
         }
 
-        var configLoader = _configLoaders.Where(x => x.CanLoadFromStorage(_commonAppSettings.ConfigStorageType)).FirstOrDefault();
+        var configLoader = configLoaders.Where(x => x.CanLoadFromStorage(commonAppSettings.ConfigStorageType)).FirstOrDefault();
 
         if (configLoader is null)
         {
-            throw new Exception($"Can't provide configuration from storage type '{_commonAppSettings.ConfigStorageType}'");
+            throw new Exception($"Can't provide configuration from storage type '{commonAppSettings.ConfigStorageType}'");
         }
 
         return await configLoader.GetConfigContentAsync(configName, cancellationToken);

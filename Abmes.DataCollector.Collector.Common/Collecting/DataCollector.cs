@@ -7,31 +7,14 @@ using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class DataCollector : IDataCollector
+public class DataCollector(
+    IDestinationProvider destinationProvider,
+    IDataPreparer dataPreparer,
+    ICollectItemsProvider collectItemsProvider,
+    IFileNameProvider fileNameProvider,
+    IDelay delay,
+    ICollectItemsCollector collectItemsCollector) : IDataCollector
 {
-    private readonly IDestinationProvider _destinationProvider;
-    private readonly IDataPreparer _dataPreparer;
-    private readonly ICollectItemsProvider _collectItemsProvider;
-    private readonly IFileNameProvider _fileNameProvider;
-    private readonly IDelay _delay;
-    private readonly ICollectItemsCollector _collectItemsCollector;
-
-    public DataCollector(
-        IDestinationProvider destinationProvider,
-        IDataPreparer DataPreparer,
-        ICollectItemsProvider collectItemsProvider,
-        IFileNameProvider fileNameProvider,
-        IDelay delay,
-        ICollectItemsCollector collectItemsCollector)
-    {
-        _destinationProvider = destinationProvider;
-        _dataPreparer = DataPreparer;
-        _collectItemsProvider = collectItemsProvider;
-        _fileNameProvider = fileNameProvider;
-        _delay = delay;
-        _collectItemsCollector = collectItemsCollector;
-    }
-
     public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {
         // assert at least one destination before preparing
@@ -44,17 +27,17 @@ public class DataCollector : IDataCollector
 
         if ((dataCollectionConfig.InitialDelay ?? default).TotalSeconds > 0)
         {
-            await _delay.DelayAsync(dataCollectionConfig.InitialDelay ?? default, $"initial delay for Data '{dataCollectionConfig.DataCollectionName}'", cancellationToken);
+            await delay.DelayAsync(dataCollectionConfig.InitialDelay ?? default, $"initial delay for Data '{dataCollectionConfig.DataCollectionName}'", cancellationToken);
         }
 
         var collectMoment = DateTimeOffset.Now;
 
-        var prepared = collectorMode == CollectorMode.Collect && await _dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
+        var prepared = collectorMode == CollectorMode.Collect && await dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
         ArgumentExceptionExtensions.ThrowIfNullOrEmpty(dataCollectionConfig.CollectUrl);
 
         var collectItems =
-            _collectItemsProvider.GetCollectItems(
+            collectItemsProvider.GetCollectItems(
                 dataCollectionConfig.DataCollectionName,
                 dataCollectionConfig.CollectFileIdentifiersUrl,
                 dataCollectionConfig.CollectFileIdentifiersHeaders,
@@ -81,7 +64,7 @@ public class DataCollector : IDataCollector
             }
 
             var redirectedCollectItems =
-                await _collectItemsProvider.GetRedirectedCollectItemsAsync(
+                await collectItemsProvider.GetRedirectedCollectItemsAsync(
                     acceptedCollectItems,
                     dataCollectionConfig.DataCollectionName,
                     dataCollectionConfig.CollectHeaders,
@@ -89,7 +72,7 @@ public class DataCollector : IDataCollector
                     dataCollectionConfig.IdentityServiceClientInfo,
                     cancellationToken);
 
-            var newFileNames = await _collectItemsCollector.CollectItemsAsync(redirectedCollectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
+            var newFileNames = await collectItemsCollector.CollectItemsAsync(redirectedCollectItems, dataCollectionConfig.DataCollectionName, destinations, dataCollectionConfig, collectMoment, cancellationToken);
 
             return (newFileNames, collectionFileInfos);
         }
@@ -191,7 +174,7 @@ public class DataCollector : IDataCollector
 
     private async Task<IEnumerable<IDestination>> GetDestinationsAsync(IEnumerable<string> destinationIds, CancellationToken cancellationToken)
     {
-        return await Task.WhenAll(destinationIds.Select(x => _destinationProvider.GetDestinationAsync(x, cancellationToken)));
+        return await Task.WhenAll(destinationIds.Select(x => destinationProvider.GetDestinationAsync(x, cancellationToken)));
     }
 
     private IEnumerable<string> GetWaterfallGarbageDataCollectionFileNames(IEnumerable<string> dataCollectionFileNames, IEnumerable<string> newFileNames)
@@ -200,7 +183,7 @@ public class DataCollector : IDataCollector
 
         var files =
                 dataCollectionFileNames
-                .Select(x => new { FileName = x, FileDateTime = _fileNameProvider.DataCollectionFileNameToDateTime(x), IsNew = newFileNames.Contains(x) })
+                .Select(x => new { FileName = x, FileDateTime = fileNameProvider.DataCollectionFileNameToDateTime(x), IsNew = newFileNames.Contains(x) })
                 .GroupBy(x => x.FileDateTime)
                 .Select(x => new { FileNames = x.Select(y => y.FileName), FilesDateTime = x.Key, IsNew = !x.Any(y => !y.IsNew) })
                 .Select(x => new { x.FileNames, x.FilesDateTime, RelativeDateInfo = new RelativeDateInfo(x.FilesDateTime.Date, now.Date), x.IsNew })

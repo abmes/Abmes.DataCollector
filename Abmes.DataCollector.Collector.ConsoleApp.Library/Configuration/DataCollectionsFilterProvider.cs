@@ -2,20 +2,14 @@
 
 namespace Abmes.DataCollector.Collector.ConsoleApp.Configuration;
 
-public class DataCollectionsFilterProvider : IDataCollectionsFilterProvider
+public class DataCollectionsFilterProvider(
+    IBootstrapper bootstrapper) : IDataCollectionsFilterProvider
 {
-    private readonly IBootstrapper _bootstrapper;
-
-    public DataCollectionsFilterProvider(IBootstrapper bootstrapper)
-    {
-        _bootstrapper = bootstrapper;
-    }
-
     public async Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken)
     {
         var args = Environment.GetCommandLineArgs();
 
-        var result = string.IsNullOrEmpty(_bootstrapper.DataCollectionNames) ? ((args.Length > 2) ? args[2] : string.Empty) : _bootstrapper.DataCollectionNames;
+        var result = string.IsNullOrEmpty(bootstrapper.DataCollectionNames) ? ((args.Length > 2) ? args[2] : string.Empty) : bootstrapper.DataCollectionNames;
 
         return await Task.FromResult(result);
     }

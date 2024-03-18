@@ -1,21 +1,12 @@
 ﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public class DateFormattedDataCollectionsConfigProvider : IDataCollectionsConfigProvider
+public class DateFormattedDataCollectionsConfigProvider(
+    IDateFormattedDataCollectionConfigProvider dateFormattedDataCollectionConfigProvider,
+    IDataCollectionsConfigProvider dataCollectionsConfigProvider) : IDataCollectionsConfigProvider
 {
-    private readonly IDateFormattedDataCollectionConfigProvider _dateFormattedDataCollectionConfigProvider;
-    private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
-
-    public DateFormattedDataCollectionsConfigProvider(
-        IDateFormattedDataCollectionConfigProvider dateFormattedDataCollectionConfigProvider,
-        IDataCollectionsConfigProvider dataCollectionsConfigProvider)
-    {
-        _dateFormattedDataCollectionConfigProvider = dateFormattedDataCollectionConfigProvider;
-        _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
-    }
-
     public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {
-        var dataCollectionsConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
-        return dataCollectionsConfig.Select(x => _dateFormattedDataCollectionConfigProvider.GetConfig(x));
+        var dataCollectionsConfig = await dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+        return dataCollectionsConfig.Select(x => dateFormattedDataCollectionConfigProvider.GetConfig(x));
     }
 }

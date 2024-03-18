@@ -5,22 +5,12 @@ using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Web.Destinations;
 
-public class WebDestination : IWebDestination
+public class WebDestination(
+    DestinationConfig destinationConfig,
+    IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+    IHttpClientFactory httpClientFactory) : IWebDestination
 {
-    public DestinationConfig DestinationConfig { get; }
-
-    private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public WebDestination(
-        DestinationConfig destinationConfig,
-        IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-        IHttpClientFactory httpClientFactory)
-    {
-        DestinationConfig = destinationConfig;
-        _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
-        _httpClientFactory = httpClientFactory;
-    }
+    public DestinationConfig DestinationConfig => destinationConfig;
 
     public async Task CollectAsync(
         string collectUrl,
@@ -40,7 +30,7 @@ public class WebDestination : IWebDestination
             return;
         }
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         using var _ = await httpClient.SendAsync(
             endpointUrl,
             HttpMethod.Post,
@@ -50,7 +40,7 @@ public class WebDestination : IWebDestination
             collectHeaders,
             null,
             timeout,
-            (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
+            (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
             cancellationToken: cancellationToken);
     }
 
@@ -59,13 +49,13 @@ public class WebDestination : IWebDestination
         var endpointUrl = GetEndpointUrl(DestinationConfig.FileNamesGetEndpoint, dataCollectionName, null);
         ArgumentNullException.ThrowIfNull(endpointUrl);
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         var json =
             await httpClient.GetStringAsync(
                 endpointUrl,
                 HttpMethod.Get,
                 accept: "application/json",
-                requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
+                requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
 
         var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
@@ -77,11 +67,11 @@ public class WebDestination : IWebDestination
         var endpointUrl = GetEndpointUrl(DestinationConfig.GarbageCollectFilePostEndpoint, dataCollectionName, fileName);
         ArgumentNullException.ThrowIfNull(endpointUrl);
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         using var _ = await httpClient.SendAsync(
             endpointUrl,
             HttpMethod.Post,
-            requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
+            requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
             cancellationToken: cancellationToken);
     }
 
@@ -126,12 +116,12 @@ public class WebDestination : IWebDestination
             return;
         }
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         using var _ = await httpClient.SendAsync(
             endpointUrl,
             HttpMethod.Post,
             content: content,
-            requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
+            requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
             cancellationToken: cancellationToken);
     }
 }

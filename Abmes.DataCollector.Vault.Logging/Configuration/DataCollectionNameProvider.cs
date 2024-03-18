@@ -1,36 +1,28 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Configuration;
-using Abmes.DataCollector.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Logging.Configuration;
 
-public class DataCollectionNameProvider : IDataCollectionNameProvider
+public class DataCollectionNameProvider(
+    ILogger<DataCollectionNameProvider> logger,
+    IDataCollectionNameProvider dataCollectionNameProvider) : IDataCollectionNameProvider
 {
-    private readonly ILogger<DataCollectionNameProvider> _logger;
-    private readonly IDataCollectionNameProvider _dataCollectionNameProvider;
-
-    public DataCollectionNameProvider(ILogger<DataCollectionNameProvider> logger, IDataCollectionNameProvider dataCollectionNameProvider)
-    {
-        _logger = logger;
-        _dataCollectionNameProvider = dataCollectionNameProvider;
-    }
-
-
     public string GetDataCollectionName()
     {
         try
         {
-            _logger.LogInformation("Started getting data name");
+            logger.LogInformation("Started getting data name");
 
-            var result = _dataCollectionNameProvider.GetDataCollectionName();
+            var result = dataCollectionNameProvider.GetDataCollectionName();
 
-            _logger.LogInformation("Finished getting data name");
+            logger.LogInformation("Finished getting data name");
 
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogCritical("Error getting config data name: {errorMessage}", e.GetAggregateMessages());
+            logger.LogCritical("Error getting config data name: {errorMessage}", e.GetAggregateMessages());
             throw;
         }
     }

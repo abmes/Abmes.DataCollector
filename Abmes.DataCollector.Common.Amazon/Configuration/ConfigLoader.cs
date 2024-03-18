@@ -5,19 +5,11 @@ using System.Text;
 
 namespace Abmes.DataCollector.Common.Amazon.Configuration;
 
-public class ConfigLoader : IConfigLoader
+public class ConfigLoader(
+    IAmazonAppSettings amazonAppSettings,
+    IAmazonS3 amazonS3) : IConfigLoader
 {
     private const string S3LocationPrefix = "s3://";
-    private readonly IAmazonAppSettings _amazonAppSettings;
-    private readonly IAmazonS3 _amazonS3;
-
-    public ConfigLoader(
-        IAmazonAppSettings amazonAppSettings,
-        IAmazonS3 amazonS3)
-    {
-        _amazonAppSettings = amazonAppSettings;
-        _amazonS3 = amazonS3;
-    }
 
     public bool CanLoadFromStorage(string storageType)
     {
@@ -44,7 +36,7 @@ public class ConfigLoader : IConfigLoader
         }
 
         var request = new GetObjectRequest { BucketName = bucketName, Key = root + configName };
-        var response = await _amazonS3.GetObjectAsync(request, cancellationToken);
+        var response = await amazonS3.GetObjectAsync(request, cancellationToken);
 
         using var reader = new StreamReader(response.ResponseStream, Encoding.UTF8);
         return await reader.ReadToEndAsync();  // todo: cancellationToken in .net 7
@@ -52,7 +44,7 @@ public class ConfigLoader : IConfigLoader
 
     public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
     {
-        var location = S3LocationPrefix + _amazonAppSettings.AmazonS3ConfigStorageBucketName;
+        var location = S3LocationPrefix + amazonAppSettings.AmazonS3ConfigStorageBucketName;
         return await GetConfigContentAsync(configName, location, cancellationToken);
     }
 }

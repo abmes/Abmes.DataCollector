@@ -6,25 +6,13 @@ using Amazon.S3.Model;
 
 namespace Abmes.DataCollector.Vault.Amazon.Storage;
 
-public class AmazonStorage : IAmazonStorage
+public class AmazonStorage(
+    StorageConfig storageConfig,
+    IVaultAppSettings vaultAppSettings,
+    IAmazonS3 amazonS3,
+    IAmazonCommonStorage amazonCommonStorage) : IAmazonStorage
 {
-    private readonly IVaultAppSettings _vaultAppSettings;
-    private readonly IAmazonS3 _amazonS3;
-    private readonly IAmazonCommonStorage _amazonCommonStorage;
-
-    public StorageConfig StorageConfig { get; }
-
-    public AmazonStorage(
-        StorageConfig storageConfig,
-        IVaultAppSettings vaultAppSettings,
-        IAmazonS3 amazonS3,
-        IAmazonCommonStorage amazonCommonStorage) 
-    {
-        StorageConfig = storageConfig;
-        _vaultAppSettings = vaultAppSettings;
-        _amazonS3 = amazonS3;
-        _amazonCommonStorage = amazonCommonStorage;
-    }
+    public StorageConfig StorageConfig => storageConfig;
 
     public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
     {
@@ -33,21 +21,21 @@ public class AmazonStorage : IAmazonStorage
             BucketName = StorageConfig.RootBase(),
             Key = StorageConfig.RootDir('/', true) + dataCollectionName + "/" + fileName,
             Verb = HttpVerb.GET,
-            Expires = DateTime.UtcNow.Add(_vaultAppSettings.DownloadUrlExpiry)
+            Expires = DateTime.UtcNow.Add(vaultAppSettings.DownloadUrlExpiry)
         };
 
-        string result = _amazonS3.GetPreSignedURL(request);
+        string result = amazonS3.GetPreSignedURL(request);
 
         return await Task.FromResult(result);
     }
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
-        return await _amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+        return await amazonCommonStorage.GetDataCollectionFileNamesAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
     }
 
     public async Task<IEnumerable<FileInfoData>> GetDataCollectionFileInfosAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
-        return await _amazonCommonStorage.GetDataCollectionFileInfosAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
+        return await amazonCommonStorage.GetDataCollectionFileInfosAsync(StorageConfig.LoginName, StorageConfig.LoginSecret, StorageConfig.RootBase(), StorageConfig.RootDir('/', true), dataCollectionName, fileNamePrefix, cancellationToken);
     }
 }

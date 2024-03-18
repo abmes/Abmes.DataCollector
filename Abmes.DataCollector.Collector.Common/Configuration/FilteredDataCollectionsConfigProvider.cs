@@ -1,22 +1,13 @@
 ﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public class FilteredDataCollectionsConfigProvider : IDataCollectionsConfigProvider
+public class FilteredDataCollectionsConfigProvider(
+    IDataCollectionsFilterProvider dataFilterProvider,
+    IDataCollectionsConfigProvider dataCollectionsConfigProvider) : IDataCollectionsConfigProvider
 {
-    private readonly IDataCollectionsFilterProvider _dataCollectionsFilterProvider;
-    private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
-
-    public FilteredDataCollectionsConfigProvider(
-        IDataCollectionsFilterProvider dataFilterProvider,
-        IDataCollectionsConfigProvider dataCollectionsConfigProvider)
-    {
-        _dataCollectionsFilterProvider = dataFilterProvider;
-        _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
-    }
-
     public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {
-        var filter = await _dataCollectionsFilterProvider.GetDataCollectionsFilterAsync(cancellationToken);
-        var result = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+        var filter = await dataFilterProvider.GetDataCollectionsFilterAsync(cancellationToken);
+        var result = await dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
         return result.Where(x => DataMatchesFilter(x, filter));
     }
 

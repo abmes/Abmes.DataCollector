@@ -4,32 +4,25 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Common.Logging.Configuration;
 
-public class ConfigProvider : IConfigProvider
+public class ConfigProvider(
+    ILogger<ConfigProvider> logger,
+    IConfigProvider configProvider) : IConfigProvider
 {
-    private readonly ILogger<ConfigProvider> _logger;
-    private readonly IConfigProvider _configProvider;
-
-    public ConfigProvider(ILogger<ConfigProvider> logger, IConfigProvider configProvider)
-    {
-        _logger = logger;
-        _configProvider = configProvider;
-    }
-
     public async Task<string> GetConfigContentAsync(string fileName, CancellationToken cancellationToken)
     {
         try
         {
-            _logger.LogInformation("Started getting config file '{fileName}' content", fileName);
+            logger.LogInformation("Started getting config file '{fileName}' content", fileName);
 
-            var result = await _configProvider.GetConfigContentAsync(fileName, cancellationToken);
+            var result = await configProvider.GetConfigContentAsync(fileName, cancellationToken);
 
-            _logger.LogInformation("Finished getting config file '{fileName}' content", fileName);
+            logger.LogInformation("Finished getting config file '{fileName}' content", fileName);
 
             return result;
         }
         catch (Exception e)
         {
-            _logger.LogCritical("Error getting config file '{fileName}' content: {errorMessage}", fileName, e.GetAggregateMessages());
+            logger.LogCritical("Error getting config file '{fileName}' content: {errorMessage}", fileName, e.GetAggregateMessages());
             throw;
         }
     }

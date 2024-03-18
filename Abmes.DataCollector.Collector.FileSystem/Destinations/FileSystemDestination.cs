@@ -4,22 +4,12 @@ using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Collector.FileSystem.Destinations;
 
-public class FileSystemDestination : IFileSystemDestination
+public class FileSystemDestination(
+    DestinationConfig destinationConfig,
+    IFileSystemCommonStorage fileSystemCommonStorage,
+    IHttpClientFactory httpClientFactory) : IFileSystemDestination
 {
-    private readonly IFileSystemCommonStorage _fileSystemCommonStorage;
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public DestinationConfig DestinationConfig { get; }
-
-    public FileSystemDestination(
-        DestinationConfig destinationConfig,
-        IFileSystemCommonStorage FileSystemCommonStorage,
-        IHttpClientFactory httpClientFactory)
-    {
-        DestinationConfig = destinationConfig;
-        _fileSystemCommonStorage = FileSystemCommonStorage;
-        _httpClientFactory = httpClientFactory;
-    }
+    public DestinationConfig DestinationConfig => destinationConfig;
 
     public bool CanGarbageCollect()
     {
@@ -39,7 +29,7 @@ public class FileSystemDestination : IFileSystemDestination
     {
         int bufferSize = 1 * 1024 * 1024;
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
         var sourceMD5 = response.ContentMD5();
 
@@ -77,7 +67,7 @@ public class FileSystemDestination : IFileSystemDestination
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
-        return await _fileSystemCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('\\', false), dataCollectionName, null, cancellationToken);
+        return await fileSystemCommonStorage.GetDataCollectionFileNamesAsync(null, null, DestinationConfig.RootBase(), DestinationConfig.RootDir('\\', false), dataCollectionName, null, cancellationToken);
     }
 
     private static bool IsDirectoryEmpty(string path)

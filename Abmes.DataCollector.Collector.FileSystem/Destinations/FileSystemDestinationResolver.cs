@@ -3,16 +3,9 @@ using Abmes.DataCollector.Collector.Common.Destinations;
 
 namespace Abmes.DataCollector.Collector.FileSystem.Destinations;
 
-public class FileSystemDestinationResolver : IDestinationResolver
+public class FileSystemDestinationResolver(
+    IFileSystemDestinationFactory FileSystemDestinationFactory) : IDestinationResolver
 {
-    private readonly IFileSystemDestinationFactory _fileSystemDestinationFactory;
-
-    public FileSystemDestinationResolver(
-        IFileSystemDestinationFactory FileSystemDestinationFactory)
-    {
-        _fileSystemDestinationFactory = FileSystemDestinationFactory;
-    }
-
     public bool CanResolve(DestinationConfig destinationConfig)
     {
         return string.Equals(destinationConfig.DestinationType, "FileSystem");
@@ -20,6 +13,6 @@ public class FileSystemDestinationResolver : IDestinationResolver
 
     public IDestination GetDestination(DestinationConfig destinationConfig)
     {
-        return _fileSystemDestinationFactory(destinationConfig);
+        return FileSystemDestinationFactory(destinationConfig);
     }
 }

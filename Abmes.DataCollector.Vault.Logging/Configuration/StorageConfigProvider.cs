@@ -1,25 +1,19 @@
-﻿using Microsoft.Extensions.Logging;
-using Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Vault.Configuration;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Logging.Configuration;
 
-public class StorageConfigProvider : IStoragesConfigProvider
+public class StorageConfigProvider(
+    ILogger<IStoragesConfigProvider> logger,
+    IStoragesConfigProvider destinationsConfigProvider) : IStoragesConfigProvider
 {
-    private readonly ILogger<IStoragesConfigProvider> _logger;
-    private readonly IStoragesConfigProvider _destinationsConfigProvider;
-
-    public StorageConfigProvider(ILogger<IStoragesConfigProvider> logger, IStoragesConfigProvider destinationsConfigProvider)
-    {
-        _logger = logger;
-        _destinationsConfigProvider = destinationsConfigProvider;
-    }
     public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
     {
-        _logger.LogTrace("Started getting storage config");
+        logger.LogTrace("Started getting storage config");
 
-        var result = await _destinationsConfigProvider.GetStorageConfigsAsync(cancellationToken);
+        var result = await destinationsConfigProvider.GetStorageConfigsAsync(cancellationToken);
 
-        _logger.LogTrace("Finished getting storage config");
+        logger.LogTrace("Finished getting storage config");
 
         return result;
     }

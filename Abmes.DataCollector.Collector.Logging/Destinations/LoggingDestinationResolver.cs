@@ -3,27 +3,18 @@ using Abmes.DataCollector.Collector.Common.Destinations;
 
 namespace Abmes.DataCollector.Collector.Logging.Destinations;
 
-public class LoggingDestinationResolver : IDestinationResolver
+public class LoggingDestinationResolver(
+    IDestinationResolver destinationResolver,
+    ILoggingDestinationFactory loggingDestinationFactory) : IDestinationResolver
 {
-    private readonly IDestinationResolver _destinationResolver;
-    private readonly ILoggingDestinationFactory _loggingDestinationFactory;
-
-    public LoggingDestinationResolver(
-        IDestinationResolver DestinationResolver,
-        ILoggingDestinationFactory loggingDestinationFactory)
-    {
-        _destinationResolver = DestinationResolver;
-        _loggingDestinationFactory = loggingDestinationFactory;
-    }
-
     public bool CanResolve(DestinationConfig destinationConfig)
     {
-        return _destinationResolver.CanResolve(destinationConfig);
+        return destinationResolver.CanResolve(destinationConfig);
     }
 
     public IDestination GetDestination(DestinationConfig destinationConfig)
     {
-        var destination = _destinationResolver.GetDestination(destinationConfig);
-        return _loggingDestinationFactory(destination);
+        var destination = destinationResolver.GetDestination(destinationConfig);
+        return loggingDestinationFactory(destination);
     }
 }

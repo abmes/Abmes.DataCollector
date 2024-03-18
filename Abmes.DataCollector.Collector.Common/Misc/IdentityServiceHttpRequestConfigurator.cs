@@ -6,15 +6,9 @@ using System.Net.Http.Headers;
 
 namespace Abmes.DataCollector.Collector.Common.Misc;
 
-public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpRequestConfigurator
+public class IdentityServiceHttpRequestConfigurator(
+    IHttpClientFactory httpClientFactory) : IIdentityServiceHttpRequestConfigurator
 {
-    private readonly IHttpClientFactory _httpClientFactory;
-
-    public IdentityServiceHttpRequestConfigurator(IHttpClientFactory httpClientFactory)
-    {
-        _httpClientFactory = httpClientFactory;
-    }
-
     public async Task ConfigAsync(HttpRequestMessage request, IdentityServiceClientInfo? identityServiceClientInfo, CancellationToken cancellationToken)
     {
         if (identityServiceClientInfo is not null)
@@ -50,7 +44,7 @@ public class IdentityServiceHttpRequestConfigurator : IIdentityServiceHttpReques
             Password = identityServiceClientInfo.UserPassword
         };
 
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         var response = await httpClient.RequestPasswordTokenAsync(tokenRequest, cancellationToken);
 
         ArgumentExceptionExtensions.ThrowIf(response.HttpStatusCode is not HttpStatusCode.OK);

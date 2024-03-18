@@ -2,31 +2,18 @@
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class MainCollector : IMainCollector
+public class MainCollector(
+    IConfigSetNameProvider configSetNameProvider,
+    IDataCollectionsConfigProvider dataCollectionsConfigProvider,
+    IDataCollector dataCollector,
+    ICollectorModeProvider collectorModeProvider) : IMainCollector
 {
-    private readonly IConfigSetNameProvider _configSetNameProvider;
-    private readonly IDataCollectionsConfigProvider _dataCollectionsConfigProvider;
-    private readonly IDataCollector _dataCollector;
-    private readonly ICollectorModeProvider _collectorModeProvider;
-
-    public MainCollector(
-        IConfigSetNameProvider configSetNameProvider,
-        IDataCollectionsConfigProvider dataCollectionsConfigProvider,
-        IDataCollector dataCollector,
-        ICollectorModeProvider collectorModeProvider)
-    {
-        _configSetNameProvider = configSetNameProvider;
-        _dataCollectionsConfigProvider = dataCollectionsConfigProvider;
-        _dataCollector = dataCollector;
-        _collectorModeProvider = collectorModeProvider;
-    }
-
     public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
     {
-        var configSetName = _configSetNameProvider.GetConfigSetName();
-        var collectorMode = _collectorModeProvider.GetCollectorMode();
+        var configSetName = configSetNameProvider.GetConfigSetName();
+        var collectorMode = collectorModeProvider.GetCollectorMode();
 
-        var dataCollectionsConfig = await _dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
+        var dataCollectionsConfig = await dataCollectionsConfigProvider.GetDataCollectionsConfigAsync(configSetName, cancellationToken);
         var dataGroups = dataCollectionsConfig.GroupBy(x => x.DataGroupName).Select(x => new { DataGroupName = x.Key, DataCollectionsConfig = x });
 
         var tasks = dataGroups.Select(x => CollectGroupAsync(collectorMode, x.DataCollectionsConfig, cancellationToken)).ToList();
@@ -43,11 +30,11 @@ public class MainCollector : IMainCollector
         {
             try
             {
-                var (newFileNames, collectionFileInfos) = await _dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken);
+                var (newFileNames, collectionFileInfos) = await dataCollector.CollectDataAsync(collectorMode, dataCollectionConfig, cancellationToken);
 
                 if (collectorMode == CollectorMode.Collect)
                 {
-                    await _dataCollector.GarbageCollectDataAsync(dataCollectionConfig, newFileNames, collectionFileInfos, cancellationToken);
+                    await dataCollector.GarbageCollectDataAsync(dataCollectionConfig, newFileNames, collectionFileInfos, cancellationToken);
                 }
             }
             catch

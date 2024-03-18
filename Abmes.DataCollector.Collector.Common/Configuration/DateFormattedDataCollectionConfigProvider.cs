@@ -3,16 +3,9 @@ using System.Diagnostics.CodeAnalysis;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataCollectionConfigProvider
+public class DateFormattedDataCollectionConfigProvider(
+    IDateTimeFormatter dateTimeFormatter) : IDateFormattedDataCollectionConfigProvider
 {
-    private readonly IDateTimeFormatter _dateTimeFormatter;
-
-    public DateFormattedDataCollectionConfigProvider(
-        IDateTimeFormatter dateTimeFormatter)
-    {
-        _dateTimeFormatter = dateTimeFormatter;
-    }
-
     public DataCollectionConfig GetConfig(DataCollectionConfig config)
     {
         return
@@ -51,6 +44,6 @@ public class DateFormattedDataCollectionConfigProvider : IDateFormattedDataColle
     [return: NotNullIfNotNull("url")]
     private string? FormatDateTime(string? url)
     {
-        return _dateTimeFormatter.FormatDateTime(url, @"\[", "]", DateTime.UtcNow);
+        return dateTimeFormatter.FormatDateTime(url, @"\[", "]", DateTime.UtcNow);
     }
 }

@@ -2,25 +2,16 @@
 
 namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public class DestinationsConfigProvider : IDestinationsConfigProvider
+public class DestinationsConfigProvider(
+    IDestinationsJsonConfigProvider destinationsJsonConfigProvider,
+    IConfigProvider configProvider) : IDestinationsConfigProvider
 {
     private const string DestinationsConfigFileName = "DestinationsConfig.json";
-
-    private readonly IDestinationsJsonConfigProvider _destinationsJsonConfigProvider;
-    private readonly IConfigProvider _configProvider;
-
-    public DestinationsConfigProvider(
-        IDestinationsJsonConfigProvider destinationsJsonConfigProvider,
-        IConfigProvider configProvider)
-    {
-        _destinationsJsonConfigProvider = destinationsJsonConfigProvider;
-        _configProvider = configProvider;
-    }
 
     public async Task<IEnumerable<DestinationConfig>> GetDestinationsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {
         var configBlobName = (configSetName + "/" + DestinationsConfigFileName).TrimStart('/');
-        var json = await _configProvider.GetConfigContentAsync(configBlobName, cancellationToken);
-        return _destinationsJsonConfigProvider.GetDestinationsConfig(json);
+        var json = await configProvider.GetConfigContentAsync(configBlobName, cancellationToken);
+        return destinationsJsonConfigProvider.GetDestinationsConfig(json);
     }
 }

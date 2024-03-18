@@ -1,16 +1,10 @@
 ﻿namespace Abmes.DataCollector.Collector.Common.Configuration;
 
-public class BootstrapperConfigSetNameProvider : IConfigSetNameProvider
+public class BootstrapperConfigSetNameProvider(
+    IBootstrapper bootstrapper) : IConfigSetNameProvider
 {
-    private readonly IBootstrapper _bootstrapper;
-
-    public BootstrapperConfigSetNameProvider(IBootstrapper bootstrapper)
-    {
-        _bootstrapper = bootstrapper;
-    }
-
     public string GetConfigSetName()
     {
-        return _bootstrapper.ConfigSetName;
+        return bootstrapper.ConfigSetName;
     }
 }

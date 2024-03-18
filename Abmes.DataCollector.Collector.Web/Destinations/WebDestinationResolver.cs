@@ -3,16 +3,9 @@ using Abmes.DataCollector.Collector.Common.Destinations;
 
 namespace Abmes.DataCollector.Collector.Web.Destinations;
 
-public class WebDestinationResolver : IDestinationResolver
+public class WebDestinationResolver(
+    IWebDestinationFactory webDestinationFactory) : IDestinationResolver
 {
-    private readonly IWebDestinationFactory _webDestinationFactory;
-
-    public WebDestinationResolver(
-        IWebDestinationFactory webDestinationFactory)
-    {
-        _webDestinationFactory = webDestinationFactory;
-    }
-
     public bool CanResolve(DestinationConfig destinationConfig)
     {
         return string.Equals(destinationConfig.DestinationType, "Web");
@@ -20,6 +13,6 @@ public class WebDestinationResolver : IDestinationResolver
 
     public IDestination GetDestination(DestinationConfig destinationConfig)
     {
-        return _webDestinationFactory(destinationConfig);
+        return webDestinationFactory(destinationConfig);
     }
 }

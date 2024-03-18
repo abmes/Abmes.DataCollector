@@ -9,15 +9,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace Abmes.DataCollector.Collector.Service;
 
-public class Startup
+public class Startup(
+    IConfiguration configuration)
 {
-    public Startup(IConfiguration configuration)
-    {
-        Configuration = configuration;
-    }
-
-    public IConfiguration Configuration { get; }
-
     // This method gets called by the runtime. Use this method to add services to the container
     public void ConfigureServices(IServiceCollection services)
     {
@@ -31,10 +25,10 @@ public class Startup
         services.AddHttpClient();
         services.AddLogging(loggingBuilder =>
         {
-            LoggingConfigurator.Configure(loggingBuilder, Configuration);
+            LoggingConfigurator.Configure(loggingBuilder, configuration);
         });
 
-        ServicesConfiguration.Configure(services, Configuration);
+        ServicesConfiguration.Configure(services, configuration);
     }
 
     // ConfigureContainer is where you can register things directly
@@ -46,8 +40,8 @@ public class Startup
     public void ConfigureContainer(ContainerBuilder builder)
     {
         // Register your own things directly with Autofac
-        ContainerRegistrations.RegisterFor(builder, Configuration);
-        builder.RegisterInstance(Configuration).As<IConfiguration>();
+        ContainerRegistrations.RegisterFor(builder, configuration);
+        builder.RegisterInstance(configuration).As<IConfiguration>();
         //...
     }
 

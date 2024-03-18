@@ -2,19 +2,12 @@
 
 namespace Abmes.DataCollector.Vault.Storage;
 
-public class StorageProvider : IStorageProvider
+public class StorageProvider(
+    IStorageResolverProvider storageResolverProvider) : IStorageProvider
 {
-    private readonly IStorageResolverProvider _storageResolverProvider;
-
-    public StorageProvider(
-        IStorageResolverProvider storageResolverProvider)
-    {
-        _storageResolverProvider = storageResolverProvider;
-    }
-
     public IStorage GetStorage(StorageConfig storageConfig)
     {
-        var resolver = _storageResolverProvider.GetResolver(storageConfig);
+        var resolver = storageResolverProvider.GetResolver(storageConfig);
         return resolver.GetStorage(storageConfig);
     }
 }

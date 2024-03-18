@@ -10,25 +10,12 @@ using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
-public class CollectItemsProvider : ICollectItemsProvider
+public class CollectItemsProvider(
+    ICollectUrlExtractor collectUrlsExtractor,
+    IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
+    IHttpClientFactory httpClientFactory,
+    IEnumerable<ISimpleContentProvider> simpleContentProviders) : ICollectItemsProvider
 {
-    private readonly ICollectUrlExtractor _collectUrlExtractor;
-    private readonly IIdentityServiceHttpRequestConfigurator _identityServiceHttpRequestConfigurator;
-    private readonly IHttpClientFactory _httpClientFactory;
-    private readonly IEnumerable<ISimpleContentProvider> _simpleContentProviders;
-
-    public CollectItemsProvider(
-        ICollectUrlExtractor collectUrlsExtractor,
-        IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-        IHttpClientFactory httpClientFactory,
-        IEnumerable<ISimpleContentProvider> simpleContentProviders)
-    {
-        _collectUrlExtractor = collectUrlsExtractor;
-        _identityServiceHttpRequestConfigurator = identityServiceHttpRequestConfigurator;
-        _httpClientFactory = httpClientFactory;
-        _simpleContentProviders = simpleContentProviders;
-    }
-
     private static readonly string[] DefaultNamePropertyNames = { "name", "fileName", "identifier" };
     private static readonly string[] DefaultSizePropertyNames = { "size", "length" };
     private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
@@ -47,7 +34,7 @@ public class CollectItemsProvider : ICollectItemsProvider
         {
             if (collectUrl.StartsWith("@"))
             {
-                using var httpClient = _httpClientFactory.CreateClient();
+                using var httpClient = httpClientFactory.CreateClient();
                 var jsonResult =
                     Policy
                     .Handle<Exception>()
@@ -127,7 +114,7 @@ public class CollectItemsProvider : ICollectItemsProvider
 
     private async Task<string?> GetSimpleContentProvidersResultAsync(string uri, CancellationToken cancellationToken)
     {
-        foreach (var simpleContentProvider in _simpleContentProviders)
+        foreach (var simpleContentProvider in simpleContentProviders)
         {
             var contentBytes = await simpleContentProvider.GetContentAsync(uri, cancellationToken);
 
@@ -157,7 +144,7 @@ public class CollectItemsProvider : ICollectItemsProvider
             ?
             null
             :
-            await _identityServiceHttpRequestConfigurator.GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
+            await identityServiceHttpRequestConfigurator.GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
 
         var redirectedCollectItems =
             await RedirectCollectItemsAsync(
@@ -187,9 +174,9 @@ public class CollectItemsProvider : ICollectItemsProvider
                 var urls = collectItem.CollectUrl.TrimStart('@').Split('|').ToList();
                 var preliminaryUrls = urls.SkipLast(1);
                 var lastUrl = urls.Last();
-                using var httpClient = _httpClientFactory.CreateClient();
+                using var httpClient = httpClientFactory.CreateClient();
                 await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
-                var url = await _collectUrlExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
+                var url = await collectUrlsExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
                 result.Add((collectItem.CollectFileInfo, url));
             },
             cancellationToken);
@@ -259,14 +246,14 @@ public class CollectItemsProvider : ICollectItemsProvider
 
     private async Task<string> GetCollectItemsJson(string url, IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders, IdentityServiceClientInfo? identityServiceClientInfo, CancellationToken cancellationToken)
     {
-        using var httpClient = _httpClientFactory.CreateClient();
+        using var httpClient = httpClientFactory.CreateClient();
         return
             await httpClient.GetStringAsync(
                 url,
                 HttpMethod.Get,
                 headers: collectFileIdentifiersHeaders,
                 accept: "application/json",
-                requestConfiguratorTask: (request, ct) => _identityServiceHttpRequestConfigurator.ConfigAsync(request, identityServiceClientInfo, ct),
+                requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, identityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
     }
 }

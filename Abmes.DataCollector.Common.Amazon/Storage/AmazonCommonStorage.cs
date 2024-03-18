@@ -5,20 +5,11 @@ using Amazon.S3.Model;
 
 namespace Abmes.DataCollector.Common.Amazon.Storage;
 
-public class AmazonCommonStorage : IAmazonCommonStorage
+public class AmazonCommonStorage(
+    IAmazonAppSettings amazonAppSettings,
+    IAmazonS3 amazonS3) : IAmazonCommonStorage
 {
-    private readonly IAmazonAppSettings _amazonAppSettings;
-    private readonly IAmazonS3 _amazonS3;
-
     public string StorageType => "Amazon";
-
-    public AmazonCommonStorage(
-        IAmazonAppSettings amazonAppSettings,
-        IAmazonS3 amazonS3)
-    {
-        _amazonAppSettings = amazonAppSettings;
-        _amazonS3 = amazonS3;
-    }
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(
         string? loginName,
@@ -62,11 +53,11 @@ public class AmazonCommonStorage : IAmazonCommonStorage
 
         while (true)
         {
-            var response = await _amazonS3.ListObjectsV2Async(request, cancellationToken);
+            var response = await amazonS3.ListObjectsV2Async(request, cancellationToken);
 
             var fileInfos = 
                     response.S3Objects
-                    .AsParallel().WithDegreeOfParallelism(_amazonAppSettings.AmazonS3ListParallelism ?? 1)
+                    .AsParallel().WithDegreeOfParallelism(amazonAppSettings.AmazonS3ListParallelism ?? 1)
                     .Select(x => GetFileInfoAsync(x, prefix, namesOnly, cancellationToken).Result);
 
             resultList.AddRange(fileInfos);
@@ -93,7 +84,7 @@ public class AmazonCommonStorage : IAmazonCommonStorage
 
         var request = new GetObjectMetadataRequest { BucketName = s3Object.BucketName, Key = s3Object.Key };
 
-        var response = await _amazonS3.GetObjectMetadataAsync(request, cancellationToken);
+        var response = await amazonS3.GetObjectMetadataAsync(request, cancellationToken);
 
         var md5 = !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"];
 

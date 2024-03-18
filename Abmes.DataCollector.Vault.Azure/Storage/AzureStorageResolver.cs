@@ -3,16 +3,9 @@ using Abmes.DataCollector.Vault.Storage;
 
 namespace Abmes.DataCollector.Vault.Azure.Storage;
 
-public class AzureStorageResolver : IStorageResolver
+public class AzureStorageResolver(
+    IAzureStorageFactory AzureStorageFactory) : IStorageResolver
 {
-    private readonly IAzureStorageFactory _AzureStorageFactory;
-
-    public AzureStorageResolver(
-        IAzureStorageFactory AzureStorageFactory)
-    {
-        _AzureStorageFactory = AzureStorageFactory;
-    }
-
     public bool CanResolve(StorageConfig storageConfig)
     {
         return string.Equals(storageConfig.StorageType, "Azure");
@@ -20,6 +13,6 @@ public class AzureStorageResolver : IStorageResolver
 
     public IStorage GetStorage(StorageConfig storageConfig)
     {
-        return _AzureStorageFactory(storageConfig);
+        return AzureStorageFactory(storageConfig);
     }
 }
