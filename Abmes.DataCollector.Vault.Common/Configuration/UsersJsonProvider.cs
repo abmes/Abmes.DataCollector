@@ -4,9 +4,10 @@ namespace Abmes.DataCollector.Vault.Configuration;
 
 public class UsersJsonProvider : IUsersJsonProvider
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
     public IEnumerable<User> GetUsers(string json)
     {
-        var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        return JsonSerializer.Deserialize<IEnumerable<User>>(json, options) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<User>>(json, _jsonSerializerOptions) ?? [];
     }
 }

@@ -4,9 +4,10 @@ namespace Abmes.DataCollector.Collector.Common.Configuration;
 
 public class DestinationsJsonConfigProvider : IDestinationsJsonConfigProvider
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
     public IEnumerable<DestinationConfig> GetDestinationsConfig(string json)
     {
-        var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        return JsonSerializer.Deserialize<IEnumerable<DestinationConfig>>(json, options) ?? [];
+        return JsonSerializer.Deserialize<IEnumerable<DestinationConfig>>(json, _jsonSerializerOptions) ?? [];
     }
 }

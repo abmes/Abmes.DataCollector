@@ -7,15 +7,15 @@ namespace Abmes.DataCollector.Utils.AspNetCore;
 
 public static class ExceptionHandlingMiddlewareHelper
 {
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new()
+    {
+        Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
+        PropertyNameCaseInsensitive = true
+    };
+
     public static async Task ReturnUserErrorAsync(HttpContext context, HttpStatusCode httpStatusCode, string? errorMessage)
     {
-        var options = new JsonSerializerOptions()
-        {
-            Encoder = JavaScriptEncoder.UnsafeRelaxedJsonEscaping,
-            PropertyNameCaseInsensitive = true
-        };
-
-        var result = JsonSerializer.Serialize(new { error = errorMessage }, options);
+        var result = JsonSerializer.Serialize(new { error = errorMessage }, _jsonSerializerOptions);
         context.Response.ContentType = "application/json";
         context.Response.StatusCode = (int)httpStatusCode;
         await context.Response.WriteAsync(result);
