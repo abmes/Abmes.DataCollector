@@ -19,12 +19,10 @@ public class ConfigProvider(
     {
         var configLoader = configLoaders.Where(x => x.CanLoadFromLocation(configLocation)).FirstOrDefault();
 
-        if (configLoader is null)
-        {
-            throw new Exception($"Can't provide configuration from the specified location");
-        }
-
-        return await configLoader.GetConfigContentAsync(configName, configLocation, cancellationToken);
+        return
+            configLoader is not null
+            ? await configLoader.GetConfigContentAsync(configName, configLocation, cancellationToken)
+            : throw new Exception($"Can't provide configuration from the specified location");
     }
 
     private async Task<string> GetConfigContentFromStorageAsync(string configName, CancellationToken cancellationToken)
@@ -33,11 +31,9 @@ public class ConfigProvider(
 
         var configLoader = configLoaders.Where(x => x.CanLoadFromStorage(commonAppSettings.ConfigStorageType)).FirstOrDefault();
 
-        if (configLoader is null)
-        {
-            throw new Exception($"Can't provide configuration from storage type '{commonAppSettings.ConfigStorageType}'");
-        }
-
-        return await configLoader.GetConfigContentAsync(configName, cancellationToken);
+        return
+            configLoader is not null
+            ? await configLoader.GetConfigContentAsync(configName, cancellationToken)
+            : throw new Exception($"Can't provide configuration from storage type '{commonAppSettings.ConfigStorageType}'");
     }
 }

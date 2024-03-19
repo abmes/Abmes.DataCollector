@@ -81,16 +81,14 @@ public class AzureCommonStorage : IAzureCommonStorage
 
         var name = string.Join("/", blob.Name.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(prefixSections));
 
-        if (namesOnly)
-        {
-            return await Task.FromResult(new FileInfoData(name, null, null, null, StorageType));
-        }
-
-        return new(
-            name,
-            blob.Properties.ContentLength,
-            Convert.ToBase64String(blob.Properties.ContentHash),
-            string.Join("/", name.Split('/').SkipLast(1)),
-            StorageType);
+        return
+            namesOnly
+            ? await Task.FromResult(new FileInfoData(name, null, null, null, StorageType))
+            : new(
+                name,
+                blob.Properties.ContentLength,
+                Convert.ToBase64String(blob.Properties.ContentHash),
+                string.Join("/", name.Split('/').SkipLast(1)),
+                StorageType);
     }
 }

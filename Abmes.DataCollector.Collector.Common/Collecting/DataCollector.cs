@@ -77,12 +77,10 @@ public class DataCollector(
             return (newFileNames, collectionFileInfos);
         }
 
-        if ((collectorMode == CollectorMode.Check) && acceptedCollectItems.Any())
-        {
-            throw new Exception("Found missing data");
-        }
-
-        return ([], collectionFileInfos);
+        return
+            (collectorMode == CollectorMode.Check) && acceptedCollectItems.Any()
+            ? throw new Exception("Found missing data")
+            : ([], collectionFileInfos);
     }
 
     private static async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
