@@ -73,7 +73,7 @@ public class CollectItemsProvider(
 
             var queryUrl = selector.First();
 
-            var queryPropertyNames = (selector.Length ==  2) ? selector.Last().Split(',', ';') : Enumerable.Empty<string>();
+            var queryPropertyNames = (selector.Length ==  2) ? selector.Last().Split(',', ';') : [];
 
             var queryNamePropertyName = queryPropertyNames.FirstOrDefault();
             var querySizePropertyName = queryPropertyNames.Skip(1).FirstOrDefault();

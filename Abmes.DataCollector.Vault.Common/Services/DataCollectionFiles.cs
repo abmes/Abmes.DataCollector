@@ -119,7 +119,7 @@ public class DataCollectionFiles(
             storageFileInfos
                 .Where(x => x.FileInfos.Any())
                 .Select(x => x.FileInfos)
-                .FirstOrDefault(Enumerable.Empty<FileInfoData>());
+                .FirstOrDefault([]);
     }
 
     public async Task<IEnumerable<FileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
@@ -134,7 +134,7 @@ public class DataCollectionFiles(
             storageFileNames
                 .Where(x => x.FileNames.Any())
                 .Select(x => x.FileNames)
-                .FirstOrDefault(Enumerable.Empty<string>());
+                .FirstOrDefault([]);
     }
 
     public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)

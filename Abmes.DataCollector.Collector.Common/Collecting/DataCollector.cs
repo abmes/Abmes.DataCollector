@@ -82,7 +82,7 @@ public class DataCollector(
             throw new Exception("Found missing data");
         }
 
-        return (Enumerable.Empty<string>(), collectionFileInfos);
+        return ([], collectionFileInfos);
     }
 
     private static async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
