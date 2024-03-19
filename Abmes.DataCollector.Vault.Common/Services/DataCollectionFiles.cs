@@ -96,6 +96,8 @@ public class DataCollectionFiles(
         Func<T, DateTimeOffset> getItemDateTimeFunc,
         CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         return await
             Task.FromResult(
                 storageItems

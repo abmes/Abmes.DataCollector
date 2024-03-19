@@ -39,7 +39,7 @@ public class ConfigLoader(
         contentStream.Position = 0;
 
         using var reader = new StreamReader(contentStream);
-        return await reader.ReadToEndAsync();  // todo: cancellationToken in .net 7
+        return await reader.ReadToEndAsync(cancellationToken);
     }
 
     private string GetAzureStorageDbCollectConfigConnectionString()

@@ -77,6 +77,8 @@ public class AzureCommonStorage : IAzureCommonStorage
 
     private async Task<FileInfoData> GetFileInfoAsync(BlobItem blob, int prefixSections, bool namesOnly, CancellationToken cancellationToken)
     {
+        cancellationToken.ThrowIfCancellationRequested();
+
         var name = string.Join("/", blob.Name.Split("/", StringSplitOptions.RemoveEmptyEntries).Skip(prefixSections));
 
         if (namesOnly)
@@ -84,7 +86,7 @@ public class AzureCommonStorage : IAzureCommonStorage
             return await Task.FromResult(new FileInfoData(name, null, null, null, StorageType));
         }
 
-        return new FileInfoData(
+        return new(
             name,
             blob.Properties.ContentLength,
             Convert.ToBase64String(blob.Properties.ContentHash),
