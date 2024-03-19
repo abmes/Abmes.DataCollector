@@ -12,6 +12,8 @@ public class WebDestination(
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
     public async Task CollectAsync(
         string collectUrl,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
@@ -58,8 +60,7 @@ public class WebDestination(
                 requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
                 cancellationToken: cancellationToken);
 
-        var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        return JsonSerializer.Deserialize<IEnumerable<string>>(json, options) ?? Enumerable.Empty<string>();
+        return JsonSerializer.Deserialize<IEnumerable<string>>(json, _jsonSerializerOptions) ?? [];
     }
 
     public async Task GarbageCollectDataCollectionFileAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)

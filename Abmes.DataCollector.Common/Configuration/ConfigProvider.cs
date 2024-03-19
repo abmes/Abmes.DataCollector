@@ -29,10 +29,7 @@ public class ConfigProvider(
 
     private async Task<string> GetConfigContentFromStorageAsync(string configName, CancellationToken cancellationToken)
     { 
-        if (string.IsNullOrEmpty(commonAppSettings.ConfigStorageType))
-        {
-            throw new Exception("ConfigStorageType not specified!");
-        }
+        ArgumentException.ThrowIfNullOrEmpty(commonAppSettings.ConfigStorageType);
 
         var configLoader = configLoaders.Where(x => x.CanLoadFromStorage(commonAppSettings.ConfigStorageType)).FirstOrDefault();
 

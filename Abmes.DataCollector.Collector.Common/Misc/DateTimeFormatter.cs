@@ -6,7 +6,7 @@ namespace Abmes.DataCollector.Collector.Common.Misc;
 
 public class DateTimeFormatter : IDateTimeFormatter
 {
-    [return: NotNullIfNotNull("format")]
+    [return: NotNullIfNotNull(nameof(format))]
     public string? FormatDateTime(string? format, string patternPrefix, string patternSuffix, DateTime dateTime)
     {
         ArgumentExceptionExtensions.ThrowIfNullOrEmpty(patternPrefix);

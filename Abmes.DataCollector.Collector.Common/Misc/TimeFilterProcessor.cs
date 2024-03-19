@@ -83,6 +83,6 @@ public class TimeFilterProcessor : ITimeFilterProcessor
 
     private static void InvalidTimeFilterError(string timeFilter)
     {
-        throw new Exception("Invalid time filter: " + timeFilter);
+        throw new Exception($"Invalid time filter: {timeFilter}");
     }
 }

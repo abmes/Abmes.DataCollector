@@ -19,7 +19,7 @@ public static class ParallelUtils
         {
             await Policy
                 .Handle<Exception>()
-                .WaitAndRetryAsync(new[] { TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60) })
+                .WaitAndRetryAsync([TimeSpan.FromSeconds(30), TimeSpan.FromSeconds(60)])
                 .ExecuteAsync(async (ct) =>
                     {
                         var sent = await workerBlock.SendAsync(item, cancellationToken);

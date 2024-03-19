@@ -38,7 +38,7 @@ public class CollectItemsCollector(
             (route, ct) => CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, ct),
             cancellationToken);
 
-        if (failedDestinationGroups.Any())
+        if (!failedDestinationGroups.IsEmpty)
         {
             await GarbageCollectFailedDestinationsAsync(failedDestinationGroups, completeDestinationFiles, dataCollectionConfig, cancellationToken);
 

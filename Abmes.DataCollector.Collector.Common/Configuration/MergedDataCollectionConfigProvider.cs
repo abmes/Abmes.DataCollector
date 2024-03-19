@@ -41,19 +41,19 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
 
     private static IEnumerable<KeyValuePair<string, string>> GetValues(DataCollectionConfig config)
     {
-        var result = config.Values ?? Enumerable.Empty<KeyValuePair<string, string>>();
+        var result = config.Values ?? [];
 
         return
             result.Concat(
-                new[] {
-                    new KeyValuePair<string, string>("DataCollectionName", config.DataCollectionName),
-                    new KeyValuePair<string, string>("DataGroupName", config.DataGroupName ?? string.Empty),
-                    new KeyValuePair<string, string>("LoginName", config.LoginName ?? string.Empty),
-                    new KeyValuePair<string, string>("LoginSecret", config.LoginSecret ?? string.Empty)
-                });
+                [
+                    new ("DataCollectionName", config.DataCollectionName),
+                    new ("DataGroupName", config.DataGroupName ?? string.Empty),
+                    new ("LoginName", config.LoginName ?? string.Empty),
+                    new ("LoginSecret", config.LoginSecret ?? string.Empty)
+                ]);
     }
 
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     private static string? MergeStringValue(string? value, DataCollectionConfig config)
     {
         var result = value;
@@ -69,7 +69,7 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
         return result;
     }
 
-    [return: NotNullIfNotNull("value")]
+    [return: NotNullIfNotNull(nameof(value))]
     private static string? MergeStringValue(string? value, string? templateValue, DataCollectionConfig config)
     {
         var result = string.IsNullOrEmpty(value) ? templateValue : value;
@@ -78,8 +78,8 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
 
     private static IEnumerable<KeyValuePair<string, string>> MergeHeaders(IEnumerable<KeyValuePair<string, string>> headers, IEnumerable<KeyValuePair<string, string>> templateHeaders, DataCollectionConfig config)
     {
-        headers ??= Enumerable.Empty<KeyValuePair<string, string>>();
-        templateHeaders ??= Enumerable.Empty<KeyValuePair<string, string>>();
+        headers ??= [];
+        templateHeaders ??= [];
 
         var headerKeys = headers.Select(y => y.Key).ToList();
 

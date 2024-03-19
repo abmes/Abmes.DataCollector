@@ -65,9 +65,7 @@ public class ConsoleDestination(
         using var reader = new StreamReader(content);
         while (true)  // EndOfStream is synchronous - do not use it!
         {
-            cancellationToken.ThrowIfCancellationRequested();
-            
-            var line = await reader.ReadLineAsync();  // todo: cancellationToken in .net 7 instead of previous line
+            var line = await reader.ReadLineAsync(cancellationToken);
 
             if (line is null)
             {

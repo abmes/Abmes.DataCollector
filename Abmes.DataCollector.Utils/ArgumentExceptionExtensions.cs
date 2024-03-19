@@ -5,7 +5,7 @@ namespace Abmes.DataCollector.Utils;
 
 public static class ArgumentExceptionExtensions
 {
-    public static void ThrowIf([DoesNotReturnIf(true)] bool condition, [CallerArgumentExpression("condition")] string? conditionText = null)
+    public static void ThrowIf([DoesNotReturnIf(true)] bool condition, [CallerArgumentExpression(nameof(condition))] string? conditionText = null)
     {
         if (condition)
         {
@@ -14,7 +14,7 @@ public static class ArgumentExceptionExtensions
     }
 
     // todo: this will be in .net 7 - remove it after migrating to .net 7 or newer
-    public static void ThrowIfNullOrEmpty([NotNull] string? argument, [CallerArgumentExpression("argument")] string? paramName = null)
+    public static void ThrowIfNullOrEmpty([NotNull] string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
     {
         if (string.IsNullOrEmpty(argument))
         {

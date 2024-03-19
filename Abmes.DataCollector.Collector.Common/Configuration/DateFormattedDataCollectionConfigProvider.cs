@@ -41,7 +41,7 @@ public class DateFormattedDataCollectionConfigProvider(
             };
     }
 
-    [return: NotNullIfNotNull("url")]
+    [return: NotNullIfNotNull(nameof(url))]
     private string? FormatDateTime(string? url)
     {
         return dateTimeFormatter.FormatDateTime(url, @"\[", "]", DateTime.UtcNow);

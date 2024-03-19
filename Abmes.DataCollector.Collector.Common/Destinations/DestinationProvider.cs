@@ -20,11 +20,6 @@ public class DestinationProvider(
         var destinationsConfig = await destinationsConfigProvider.GetDestinationsConfigAsync(configSetName, cancellationToken);
         var destinationConfig = destinationsConfig.Where(x => destinationId.Equals(x.DestinationId, StringComparison.CurrentCultureIgnoreCase)).SingleOrDefault();
 
-        if (destinationConfig is null)
-        {
-            throw new Exception($"Destination with id '{destinationId}' not found");
-        }
-
-        return destinationConfig;
+        return destinationConfig ?? throw new Exception($"Destination with id '{destinationId}' not found");
     }
 }

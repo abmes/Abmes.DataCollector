@@ -8,5 +8,5 @@ public record User
     private string? _identityUserId;
     public string IdentityUserId { get => Ensure.NotNullOrEmpty(_identityUserId); init => _identityUserId = value; }
 
-    public IEnumerable<string> DataCollectionNames { get; init; } = Enumerable.Empty<string>();
+    public IEnumerable<string> DataCollectionNames { get; init; } = [];
 }

@@ -7,6 +7,6 @@ public class DataCollectionsJsonConfigProvider : IDataCollectionsJsonConfigsProv
     public IEnumerable<DataCollectionConfig> GetDataCollectionsConfig(string json)
     {
         var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-        return JsonSerializer.Deserialize<IEnumerable<DataCollectionConfig>>(json, options) ?? Enumerable.Empty<DataCollectionConfig>();
+        return JsonSerializer.Deserialize<IEnumerable<DataCollectionConfig>>(json, options) ?? [];
     }
 }

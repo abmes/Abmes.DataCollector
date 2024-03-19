@@ -28,7 +28,7 @@ public class FileNameProvider : IFileNameProvider
         {
             if (!string.IsNullOrEmpty(collectItemName))
             {
-                fileName = string.Join("/", collectItemName.Split("/").SkipLast(1).Concat(new[] { fileName }));
+                fileName = string.Join("/", collectItemName.Split("/").SkipLast(1).Concat([fileName]));
             }
         }
 

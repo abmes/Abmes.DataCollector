@@ -32,13 +32,13 @@ public class CollectItemsProvider(
     {
         if (string.IsNullOrEmpty(collectFileIdentifiersUrl))
         {
-            if (collectUrl.StartsWith("@"))
+            if (collectUrl.StartsWith('@'))
             {
                 using var httpClient = httpClientFactory.CreateClient();
                 var jsonResult =
                     Policy
                     .Handle<Exception>()
-                    .WaitAndRetry(new[] { TimeSpan.FromSeconds(5) })
+                    .WaitAndRetry([TimeSpan.FromSeconds(5)])
                     .Execute(
                         ct =>
                             GetSimpleContentProvidersResultAsync(collectUrl[1..], ct).Result ??
@@ -184,12 +184,13 @@ public class CollectItemsProvider(
         return result;
     }
 
+    private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
+
     private static IEnumerable<string>? GetStrings(string json)
     {
         try
         {
-            var options = new JsonSerializerOptions() { PropertyNameCaseInsensitive = true };
-            return JsonSerializer.Deserialize<IEnumerable<string>>(json, options);
+            return JsonSerializer.Deserialize<IEnumerable<string>>(json, _jsonSerializerOptions);
         }
         catch
         {

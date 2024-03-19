@@ -12,22 +12,22 @@ public record DataCollectionConfig
     public TimeSpan? InitialDelay { get; init; }
 
     public string? PrepareUrl { get; init; }
-    public IEnumerable<KeyValuePair<string, string>> PrepareHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public IEnumerable<KeyValuePair<string, string>> PrepareHeaders { get; init; } = [];
     public string? PrepareHttpMethod { get; init; }
     public string? PrepareFinishedPollUrl { get; init; }
-    public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public IEnumerable<KeyValuePair<string, string>> PrepareFinishedPollHeaders { get; init; } = [];
     public TimeSpan? PrepareFinishedPollInterval { get; init; }
     public TimeSpan? PrepareDuration { get; init; }
 
     public string? CollectFileIdentifiersUrl { get; init; }
-    public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public IEnumerable<KeyValuePair<string, string>> CollectFileIdentifiersHeaders { get; init; } = [];
     public string? CollectUrl { get; init; }
-    public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public IEnumerable<KeyValuePair<string, string>> CollectHeaders { get; init; } = [];
     public int? CollectParallelFileCount { get; init; }
     public TimeSpan? CollectTimeout { get; init; }
     public string? CollectFinishWait { get; init; }
 
-    public IEnumerable<string> DestinationIds { get; init; } = Enumerable.Empty<string>();
+    public IEnumerable<string> DestinationIds { get; init; } = [];
     public int? ParallelDestinationCount { get; init; }
     public int? MaxFileCount { get; init; }
 
@@ -39,7 +39,7 @@ public record DataCollectionConfig
     public string? IdentityServiceClientSecret { get; init; }
     public string? IdentityServiceScope { get; init; }
 
-    public IEnumerable<KeyValuePair<string, string>> Values { get; init; } = Enumerable.Empty<KeyValuePair<string, string>>();
+    public IEnumerable<KeyValuePair<string, string>> Values { get; init; } = [];
 
 
     private IdentityServiceClientInfo? _identityServiceClientInfo;
