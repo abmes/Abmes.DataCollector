@@ -6,8 +6,7 @@ using Azure.Storage.Blobs.Models;
 
 namespace Abmes.DataCollector.Common.Azure.Storage;
 
-public class AzureCommonStorage(
-    IAzureAppSettings commonAppSettings) : IAzureCommonStorage
+public class AzureCommonStorage : IAzureCommonStorage
 {
     public string StorageType => "Azure";
 
