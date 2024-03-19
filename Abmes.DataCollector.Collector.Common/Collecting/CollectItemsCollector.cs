@@ -24,7 +24,7 @@ public class CollectItemsCollector(
 
         if (dataCollectionConfig.ParallelDestinationCount > 1)
         {
-            routes = routes.SelectMany(x => x.Targets.Select(y => (CollectItem: x.CollectItem, Targets: (IEnumerable<(IDestination Destination, string DestinationFileName)>)(new[] { (y.Destination, y.DestinationFileName) }))));
+            routes = routes.SelectMany(x => x.Targets.Select(y => (CollectItem: x.CollectItem, Targets: (IEnumerable<(IDestination Destination, string DestinationFileName)>)([(y.Destination, y.DestinationFileName)]))));
         }
 
         var completeDestinationFiles = new ConcurrentBag<(IDestination Destination, string FileName, string GroupId)>();
@@ -143,11 +143,11 @@ public class CollectItemsCollector(
         completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId ?? "default"));
     }
 
+    private static readonly string[] _retryableErrorMessages = ["Gateway Timeout 504", "The request timed out"];
+
     private static bool IsRetryableCollectError(Exception e)
     {
-        string[] RetryableErrorMessages = { "Gateway Timeout 504", "The request timed out" };
-
-        return RetryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
+        return _retryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private static async Task GarbageCollectFailedDestinationsAsync(

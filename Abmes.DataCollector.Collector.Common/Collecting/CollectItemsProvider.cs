@@ -16,10 +16,10 @@ public class CollectItemsProvider(
     IHttpClientFactory httpClientFactory,
     IEnumerable<ISimpleContentProvider> simpleContentProviders) : ICollectItemsProvider
 {
-    private static readonly string[] DefaultNamePropertyNames = { "name", "fileName", "identifier" };
-    private static readonly string[] DefaultSizePropertyNames = { "size", "length" };
-    private static readonly string[] DefaultMD5PropertyNames = { "md5", "hash", "checksum" };
-    private static readonly string[] DefaultGroupIdPropertyNames = { "group", "groupId" };
+    private static readonly string[] DefaultNamePropertyNames = ["name", "fileName", "identifier"];
+    private static readonly string[] DefaultSizePropertyNames = ["size", "length"];
+    private static readonly string[] DefaultMD5PropertyNames = ["md5", "hash", "checksum"];
+    private static readonly string[] DefaultGroupIdPropertyNames = ["group", "groupId"];
 
     public IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
         string dataCollectionName,
@@ -84,10 +84,10 @@ public class CollectItemsProvider(
 
             if (!string.IsNullOrEmpty(collectFileIdentifiersJson))
             {
-                var namePropertyNames = string.IsNullOrEmpty(queryNamePropertyName) ? DefaultNamePropertyNames : new[] { queryNamePropertyName };
-                var sizePropertyNames = string.IsNullOrEmpty(querySizePropertyName) ? DefaultSizePropertyNames : new[] { querySizePropertyName };
-                var md5PropertyNames = string.IsNullOrEmpty(queryMD5PropertyName) ? DefaultMD5PropertyNames : new[] { queryMD5PropertyName };
-                var groupIdPropertyNames = string.IsNullOrEmpty(queryGroupIdPropertyName) ? DefaultGroupIdPropertyNames : new[] { queryGroupIdPropertyName };
+                var namePropertyNames = string.IsNullOrEmpty(queryNamePropertyName) ? DefaultNamePropertyNames : [queryNamePropertyName];
+                var sizePropertyNames = string.IsNullOrEmpty(querySizePropertyName) ? DefaultSizePropertyNames : [querySizePropertyName];
+                var md5PropertyNames = string.IsNullOrEmpty(queryMD5PropertyName) ? DefaultMD5PropertyNames : [queryMD5PropertyName];
+                var groupIdPropertyNames = string.IsNullOrEmpty(queryGroupIdPropertyName) ? DefaultGroupIdPropertyNames : [queryGroupIdPropertyName];
 
                 var collectFileInfos = GetCollectFileInfos(collectFileIdentifiersJson, namePropertyNames, sizePropertyNames, md5PropertyNames, groupIdPropertyNames);
 
