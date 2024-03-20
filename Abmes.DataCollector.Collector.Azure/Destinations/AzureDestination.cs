@@ -64,6 +64,11 @@ public class AzureDestination(
         }
     }
 
+    private static string? ContentMD5(HttpResponseMessage response)
+    {
+        return CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5);
+    }
+
     private async Task CopyFromUrlToBlob(
         string sourceUrl,
         IEnumerable<KeyValuePair<string, string>> sourceHeaders,
@@ -81,7 +86,7 @@ public class AzureDestination(
 
         await response.CheckSuccessAsync(cancellationToken);
 
-        var sourceMD5 = response.ContentMD5();
+        var sourceMD5 = ContentMD5(response);
 
         using var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         await CopyStreamToBlobAsync(sourceStream, container, blobName, bufferSize, sourceMD5, cancellationToken);

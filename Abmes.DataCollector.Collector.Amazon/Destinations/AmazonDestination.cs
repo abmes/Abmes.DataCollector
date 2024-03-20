@@ -18,6 +18,14 @@ public class AmazonDestination(
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 
+    private static string? ContentMD5(HttpResponseMessage response)
+    {
+        return
+            CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5)
+            ??
+            response.Headers.Where(x => x.Key.Equals("x-amz-meta-content-md5", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.Value.FirstOrDefault()).FirstOrDefault();
+    }
+
     public async Task CollectAsync(
         string collectUrl,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
@@ -31,7 +39,7 @@ public class AmazonDestination(
     {
         using var httpClient = httpClientFactory.CreateClient();
         using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-        var sourceMD5 = response.ContentMD5();
+        var sourceMD5 = ContentMD5(response);
 
         using var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken);
         var key = dataCollectionName + '/' + fileName;

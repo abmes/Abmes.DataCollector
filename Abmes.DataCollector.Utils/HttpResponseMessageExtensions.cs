@@ -10,12 +10,4 @@ public static class HttpResponseMessageExtensions
             throw new HttpRequestException($"{response.ReasonPhrase} {(int)response.StatusCode}" + Environment.NewLine + errorMessage);
         }
     }
-
-    public static string? ContentMD5(this HttpResponseMessage response)
-    {
-        return
-            CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5)
-            ??
-            response.Headers.Where(x => x.Key.Equals("x-amz-meta-content-md5", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.Value.FirstOrDefault()).FirstOrDefault();
-    }
 }

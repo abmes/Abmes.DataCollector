@@ -16,6 +16,11 @@ public class FileSystemDestination(
         return true;
     }
 
+    private static string? ContentMD5(HttpResponseMessage response)
+    {
+        return CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5);
+    }
+
     public async Task CollectAsync(
         string collectUrl,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
@@ -31,7 +36,7 @@ public class FileSystemDestination(
 
         using var httpClient = httpClientFactory.CreateClient();
         using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
-        var sourceMD5 = response.ContentMD5();
+        var sourceMD5 = ContentMD5(response);
 
         var fullFileName = GetFullFileName(dataCollectionName, fileName);
 
