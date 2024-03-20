@@ -25,4 +25,10 @@ public static class Ensure
         ArgumentException.ThrowIfNullOrEmpty(argument, paramName);
         return argument;
     }
+
+    public static T Value<T>(T argument, [DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression(nameof(condition))] string? conditionText = null)
+    {
+        ArgumentExceptionExtensions.ThrowIfNot(condition, conditionText);
+        return argument;
+    }
 }
