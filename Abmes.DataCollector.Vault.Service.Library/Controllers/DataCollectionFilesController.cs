@@ -1,5 +1,4 @@
 ﻿using Abmes.DataCollector.Common.Storage;
-using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
@@ -53,7 +52,7 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<string> GetDownloadUrlAsync([FromQuery] string? fileName, [FromQuery] string? storageType, CancellationToken cancellationToken)
     {
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(fileName);
+        ArgumentException.ThrowIfNullOrEmpty(fileName);
 
         return await dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
     }

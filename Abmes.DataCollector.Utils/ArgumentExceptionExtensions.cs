@@ -13,19 +13,11 @@ public static class ArgumentExceptionExtensions
         }
     }
 
-    // todo: this will be in .net 7 - remove it after migrating to .net 7 or newer
-    public static void ThrowIfNullOrEmpty([NotNull] string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
+    public static void ThrowIfNot([DoesNotReturnIf(false)] bool condition, [CallerArgumentExpression(nameof(condition))] string? conditionText = null)
     {
-        if (string.IsNullOrEmpty(argument))
+        if (!condition)
         {
-            ThrowNullOrEmptyException(argument, paramName);
+            throw new ArgumentException($"'{conditionText}' is not true");
         }
-    }
-
-    [DoesNotReturn]
-    private static void ThrowNullOrEmptyException(string? argument, string? paramName)
-    {
-        ArgumentNullException.ThrowIfNull(argument, paramName);
-        throw new ArgumentException("The value cannot be an empty string.", paramName);
     }
 }

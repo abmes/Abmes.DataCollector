@@ -1,5 +1,4 @@
 ﻿using Abmes.DataCollector.Common.Configuration;
-using Abmes.DataCollector.Utils;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 
@@ -46,7 +45,7 @@ public class ConfigLoader(
     {
         var result = configuration.GetConnectionString(AzureConfigStorageConnectionStringName);
 
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(result);
+        ArgumentException.ThrowIfNullOrEmpty(result);
 
         return result;
     }

@@ -34,8 +34,8 @@ public class AzureDestination(
 
     private async Task<BlobContainerClient> GetContainerAsync(string dataCollectionName, CancellationToken cancellationToken)
     {
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(DestinationConfig.LoginName);
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(DestinationConfig.LoginSecret);
+        ArgumentException.ThrowIfNullOrEmpty(DestinationConfig.LoginName);
+        ArgumentException.ThrowIfNullOrEmpty(DestinationConfig.LoginSecret);
 
         var root = string.IsNullOrEmpty(DestinationConfig.Root) ? dataCollectionName : DestinationConfig.RootBase();
         return await azureCommonStorage.GetContainerAsync(DestinationConfig.LoginName, DestinationConfig.LoginSecret, root, true, cancellationToken);

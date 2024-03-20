@@ -1,5 +1,4 @@
-﻿using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Vault.Configuration;
 using Microsoft.AspNetCore.Http;
 
 namespace Abmes.DataCollector.Vault.WebAPI.Configuration;
@@ -10,7 +9,7 @@ public class DataCollectionNameProvider(
     public string GetDataCollectionName()
     {
         var result = httpContextAccessor.HttpContext?.Request.Headers["DataCollectionName"].ToString();
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(result);
+        ArgumentException.ThrowIfNullOrEmpty(result);
         return result;
     }
 }

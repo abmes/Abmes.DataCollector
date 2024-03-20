@@ -1,5 +1,4 @@
 ﻿using Abmes.DataCollector.Common.Storage;
-using Abmes.DataCollector.Utils;
 using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
@@ -25,8 +24,8 @@ public class AzureCommonStorage : IAzureCommonStorage
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string? loginName, string? loginSecret, string rootBase, string rootDir, string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)
     {
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(loginName);
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(loginSecret);
+        ArgumentException.ThrowIfNullOrEmpty(loginName);
+        ArgumentException.ThrowIfNullOrEmpty(loginSecret);
 
         return
             (await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, true, cancellationToken))
@@ -42,8 +41,8 @@ public class AzureCommonStorage : IAzureCommonStorage
         string? fileNamePrefix,
         CancellationToken cancellationToken)
     {
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(loginName);
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(loginSecret);
+        ArgumentException.ThrowIfNullOrEmpty(loginName);
+        ArgumentException.ThrowIfNullOrEmpty(loginSecret);
 
         return await InternalGetDataCollectionFileInfosAsync(loginName, loginSecret, rootBase, rootDir, dataCollectionName, fileNamePrefix, false, cancellationToken);
     }

@@ -22,7 +22,7 @@ public static class Ensure
     [return: NotNull]
     public static string NotNullOrEmpty([NotNull] string? argument, [CallerArgumentExpression(nameof(argument))] string? paramName = null)
     {
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(argument, paramName);
+        ArgumentException.ThrowIfNullOrEmpty(argument, paramName);
         return argument;
     }
 }

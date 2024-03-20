@@ -1,5 +1,4 @@
-﻿using Abmes.DataCollector.Utils;
-using System.Diagnostics.CodeAnalysis;
+﻿using System.Diagnostics.CodeAnalysis;
 using System.Text.RegularExpressions;
 
 namespace Abmes.DataCollector.Collector.Common.Misc;
@@ -9,8 +8,8 @@ public class DateTimeFormatter : IDateTimeFormatter
     [return: NotNullIfNotNull(nameof(format))]
     public string? FormatDateTime(string? format, string patternPrefix, string patternSuffix, DateTime dateTime)
     {
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(patternPrefix);
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(patternSuffix);
+        ArgumentException.ThrowIfNullOrEmpty(patternPrefix);
+        ArgumentException.ThrowIfNullOrEmpty(patternSuffix);
 
         if (string.IsNullOrEmpty(format))
         {

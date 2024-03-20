@@ -99,7 +99,7 @@ public class CollectItemsProvider(
                     }
                     else
                     {
-                        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(collectUrl);
+                        ArgumentException.ThrowIfNullOrEmpty(collectUrl);
 
                         if ((string.IsNullOrEmpty(queryFilter)) ||
                             (FileMaskUtils.FileNameMatchesFilter(collectFileInfo.Name, queryFilter)))

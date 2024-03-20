@@ -151,7 +151,7 @@ public class FileSystemDestination(
         var fullFileName = GetFullFileName(dataCollectionName, fileName);
 
         var directoryName = Path.GetDirectoryName(fullFileName);
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(directoryName);
+        ArgumentException.ThrowIfNullOrEmpty(directoryName);
 
         Directory.CreateDirectory(directoryName);
 

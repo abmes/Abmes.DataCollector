@@ -34,7 +34,7 @@ public class DataCollector(
 
         var prepared = collectorMode == CollectorMode.Collect && await dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
-        ArgumentExceptionExtensions.ThrowIfNullOrEmpty(dataCollectionConfig.CollectUrl);
+        ArgumentException.ThrowIfNullOrEmpty(dataCollectionConfig.CollectUrl);
 
         var collectItems =
             collectItemsProvider.GetCollectItems(
