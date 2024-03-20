@@ -195,19 +195,19 @@ public class DataCollector(
 
         var dailyFileNames =
                 files
-                .Where(x => x.RelativeDateInfo.RelativeDayNo.InRange(1, 6))
+                .Where(x => x.RelativeDateInfo.RelativeDayNo is >= 1 and <= 6)
                 .GroupBy(x => x.RelativeDateInfo.RelativeDayNo)
                 .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
         var weeklyFileNames =
                 files
-                .Where(x => x.RelativeDateInfo.RelativeWeekNo.InRange(1, 4))
+                .Where(x => x.RelativeDateInfo.RelativeWeekNo is >= 1 and <= 4)
                 .GroupBy(x => x.RelativeDateInfo.RelativeWeekNo)
                 .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
         var monthlyFileNames =
                 files
-                .Where(x => x.RelativeDateInfo.RelativeMonthNo.InRange(1, 3))
+                .Where(x => x.RelativeDateInfo.RelativeMonthNo is >= 1 and <= 3)
                 .GroupBy(x => x.RelativeDateInfo.RelativeMonthNo)
                 .SelectMany(x => x.OrderByDescending(y => y.IsNew).ThenBy(y => y.FilesDateTime).Select(y => y.FileNames).First());
 
