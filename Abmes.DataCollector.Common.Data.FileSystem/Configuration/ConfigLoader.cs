@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Configuration;
 using System.Text;
 
 namespace Abmes.DataCollector.Common.Data.FileSystem.Configuration;

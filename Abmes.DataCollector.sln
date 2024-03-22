@@ -9,7 +9,7 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Collector", "Collector", "{
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vault", "Vault", "{4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common", "Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj", "{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data", "Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj", "{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Common", "Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj", "{55611575-C016-4A27-9301-5196C79F4F29}"
 EndProject

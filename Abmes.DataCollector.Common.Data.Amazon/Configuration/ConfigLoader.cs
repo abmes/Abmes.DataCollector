@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Configuration;
 using Amazon.S3;
 using Amazon.S3.Model;
 using System.Text;

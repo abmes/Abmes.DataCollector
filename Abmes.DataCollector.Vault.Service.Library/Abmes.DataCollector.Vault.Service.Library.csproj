@@ -23,7 +23,7 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Azure\Abmes.DataCollector.Common.Data.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.FileSystem\Abmes.DataCollector.Common.Data.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Logging\Abmes.DataCollector.Common.Logging.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj" />

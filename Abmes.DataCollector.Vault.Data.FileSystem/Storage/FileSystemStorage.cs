@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Data.FileSystem.Storage;
-using Abmes.DataCollector.Common.Storage;
+using Abmes.DataCollector.Common.Data.Storage;
 using Abmes.DataCollector.Vault.Configuration;
 
 namespace Abmes.DataCollector.Vault.Data.FileSystem.Storage;

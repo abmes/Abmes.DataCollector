@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Configuration;
 using Abmes.DataCollector.Vault.Configuration;
 
 namespace Abmes.DataCollector.Vault.Common.Configuration;

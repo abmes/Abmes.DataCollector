@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Storage;
+﻿using Abmes.DataCollector.Common.Data.Storage;
 using Azure.Storage.Blobs;
 
 namespace Abmes.DataCollector.Common.Data.Azure.Storage;

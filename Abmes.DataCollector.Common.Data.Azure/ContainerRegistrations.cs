@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Data.Azure.Configuration;
 using Abmes.DataCollector.Common.Data.Azure.Storage;
-using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Common.Data.Configuration;
 using Autofac;
 
 namespace Abmes.DataCollector.Common.Data.Azure;

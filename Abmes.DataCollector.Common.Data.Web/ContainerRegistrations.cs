@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Configuration;
 using Autofac;
 using Abmes.DataCollector.Common.Data.Web.Configuration;
 

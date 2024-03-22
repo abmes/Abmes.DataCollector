@@ -2,7 +2,7 @@
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Services;
 using Abmes.DataCollector.Vault.Storage;
-using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Common.Data.Configuration;
 
 namespace Abmes.DataCollector.Vault.Logging;
 

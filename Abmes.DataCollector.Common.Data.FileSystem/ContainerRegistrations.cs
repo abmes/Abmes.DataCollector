@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Data.FileSystem.Configuration;
 using Abmes.DataCollector.Common.Data.FileSystem.Storage;
-using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Common.Data.Configuration;
 using Autofac;
 
 namespace Abmes.DataCollector.Common.Data.FileSystem;

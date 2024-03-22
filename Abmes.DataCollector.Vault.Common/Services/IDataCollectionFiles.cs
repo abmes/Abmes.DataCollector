@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Storage;
+﻿using Abmes.DataCollector.Common.Data.Storage;
 
 namespace Abmes.DataCollector.Vault.Services;
 

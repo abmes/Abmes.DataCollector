@@ -2,7 +2,7 @@
 using Abmes.DataCollector.Collector.ConsoleApp.Initialization;
 using Autofac;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Common.Data.Configuration;
 using Microsoft.Extensions.Configuration;
 
 namespace Abmes.DataCollector.Collector.ConsoleApp;
@@ -11,7 +11,7 @@ public static class ContainerRegistrations
 {
     public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
     {
-        Abmes.DataCollector.Common.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Common.Data.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);

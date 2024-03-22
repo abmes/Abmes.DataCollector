@@ -2,7 +2,7 @@
 using Microsoft.Extensions.Logging;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Common.Storage;
+using Abmes.DataCollector.Common.Data.Storage;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting;
 

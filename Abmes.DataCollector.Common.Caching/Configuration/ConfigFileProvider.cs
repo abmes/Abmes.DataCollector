@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Caching.Cache;
-using Abmes.DataCollector.Common.Configuration;
+using Abmes.DataCollector.Common.Data.Configuration;
 
 namespace Abmes.DataCollector.Common.Caching.Configuration;
 

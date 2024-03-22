@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Configuration;
 using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Common.Caching.Cache;

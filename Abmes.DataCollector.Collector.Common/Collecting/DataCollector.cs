@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Collector.Common.Misc;
-using Abmes.DataCollector.Common.Storage;
+using Abmes.DataCollector.Common.Data.Storage;
 using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
