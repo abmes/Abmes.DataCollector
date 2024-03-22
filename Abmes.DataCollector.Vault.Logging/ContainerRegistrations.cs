@@ -1,8 +1,8 @@
-﻿using Autofac;
+﻿using Abmes.DataCollector.Common.Data.Configuration;
 using Abmes.DataCollector.Vault.Configuration;
 using Abmes.DataCollector.Vault.Services;
 using Abmes.DataCollector.Vault.Storage;
-using Abmes.DataCollector.Common.Data.Configuration;
+using Autofac;
 
 namespace Abmes.DataCollector.Vault.Logging;
 

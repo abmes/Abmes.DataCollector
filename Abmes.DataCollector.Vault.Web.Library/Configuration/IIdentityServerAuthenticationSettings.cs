@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Vault.Service.Configuration;
+﻿namespace Abmes.DataCollector.Vault.Web.Library.Configuration;
 
 public interface IIdentityServerAuthenticationSettings
 {

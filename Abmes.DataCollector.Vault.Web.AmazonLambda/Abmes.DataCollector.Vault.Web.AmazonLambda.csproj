@@ -1,0 +1,22 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net8.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <WarningsAsErrors>nullable</WarningsAsErrors>
+    <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
+    <GenerateRuntimeConfigurationFiles>true</GenerateRuntimeConfigurationFiles>
+    <AWSProjectType>Lambda</AWSProjectType>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Amazon.Lambda.AspNetCoreServer.Hosting" Version="1.7.0" />
+    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Web.Library\Abmes.DataCollector.Vault.Web.Library.csproj" />
+  </ItemGroup>
+
+</Project>

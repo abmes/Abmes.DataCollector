@@ -3,7 +3,7 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Host.UseServiceProviderFactory(new Autofac.Extensions.DependencyInjection.AutofacServiceProviderFactory());
 
 // Manually create an instance of the Startup class
-var startup = new Abmes.DataCollector.Vault.Service.Startup(builder.Configuration);
+var startup = new Abmes.DataCollector.Vault.Web.Library.Startup(builder.Configuration);
 
 // Manually call ConfigureServices()
 startup.ConfigureServices(builder.Services);

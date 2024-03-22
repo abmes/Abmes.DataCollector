@@ -1,0 +1,160 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Transform": "AWS::Serverless-2016-10-31",
+  "Description": "An AWS Serverless Application that uses the ASP.NET Core framework running in Amazon Lambda.",
+
+  "Parameters": {
+    "LambdaName": {
+        "Type" : "String",
+        "Description" : "Lambda Function Name",
+        "MinLength" : "0"
+    },
+    "ApiName": {
+        "Type" : "String",
+        "Description" : "Api Gateway Api Name",
+        "MinLength" : "0"
+    },
+    "ApiDomainName": {
+        "Type" : "String",
+        "Description" : "Api Gateway Custom Domain Name",
+        "MinLength" : "0"
+    },
+    "ApiDomainCertificateArn": {
+        "Type" : "String",
+        "Description" : "CertificateArn",
+        "MinLength" : "0"
+    },
+    "Route53HostedZoneName": {
+        "Type" : "String",
+        "Description" : "Name of route53 hosted zone to add the domain to. Must include trailing dot",
+        "MinLength" : "0"
+    },
+    "AspNetCoreEnvironment": {
+        "Type" : "String",
+        "Description" : "ASPNETCORE_ENVIRONMENT: 'Development' or empty",
+        "MinLength" : "0"
+    },
+    "ConfigStorageType": {
+        "Type" : "String",
+        "Description" : "Amazon|Azure",
+        "MinLength" : "0"
+    },
+    "DownloadUrlExpiry": {
+        "Type" : "String",
+        "Description" : "Dowload Url Lifetime (hh:mm:ss)",
+        "MinLength" : "0"
+    },
+    "AmazonS3ConfigStorageBucketName": {
+        "Type" : "String",
+        "Description" : "S3 bucket name for config",
+        "MinLength" : "0"
+    },
+    "AmazonS3ListParallelism": {
+        "Type" : "String",
+        "Description" : "Number of parallel list operations",
+        "MinLength" : "0"
+    },
+    "IdentityServerAuthenticationSettingsAuthority": {
+        "Type" : "String",
+        "Description" : "Identity Service URL",
+        "MinLength" : "0"
+    },
+    "IdentityServerAuthenticationSettingsApiName": {
+        "Type" : "String",
+        "Description" : "Vault Api Name in Identity Service",
+        "MinLength" : "0"
+    },
+    "IdentityServerAuthenticationSettingsApiSecret": {
+        "Type" : "String",
+        "Description" : "Vault Api Secret in Identity Service",
+        "MinLength" : "0"
+    }
+  },
+
+  "Conditions": {},
+
+  "Resources": {
+
+    "AspNetCoreApi": {
+      "Type": "AWS::Serverless::Api",
+      "Properties": {
+        "Name": {"Ref": "ApiName"},
+        "Domain": {
+          "CertificateArn": {"Ref": "ApiDomainCertificateArn"},
+          "DomainName": {"Ref": "ApiDomainName"},
+          "EndpointConfiguration": "EDGE",
+          "Route53": {
+            "HostedZoneName": {"Ref": "Route53HostedZoneName"}
+          },
+          "SecurityPolicy": "TLS_1_2"
+        },
+        "EndpointConfiguration": {
+          "Type": "REGIONAL"
+        },
+        "StageName": "Prod",
+        "BinaryMediaTypes": [
+          "*~1*"
+        ]
+      }
+    },
+
+    "AspNetCoreFunction": {
+      "Type": "AWS::Serverless::Function",
+      "Properties": {
+        "FunctionName": {"Ref": "LambdaName"},
+        "Handler": "Abmes.DataCollector.Vault.Web.AmazonLambda",
+        "Runtime": "dotnet8",
+        "CodeUri": "",
+        "MemorySize": 1024,
+        "Timeout": 29,
+        "Role": null,
+        "Policies": [
+          "AmazonS3FullAccess"
+        ],
+        "Environment": {
+          "Variables": {
+            "AppSettings__ConfigStorageType": {"Ref": "ConfigStorageType"},
+            "AppSettings__DownloadUrlExpiry": {"Ref": "DownloadUrlExpiry"},
+            "AppSettings__AmazonS3ConfigStorageBucketName": {"Ref": "AmazonS3ConfigStorageBucketName"},
+            "AppSettings__AmazonS3ListParallelism": {"Ref": "AmazonS3ListParallelism"},
+            "IdentityServerAuthenticationSettings__Authority": {"Ref" : "IdentityServerAuthenticationSettingsAuthority"},
+            "IdentityServerAuthenticationSettings__ApiName": {"Ref" : "IdentityServerAuthenticationSettingsApiName"},
+            "IdentityServerAuthenticationSettings__ApiSecret": {"Ref" : "IdentityServerAuthenticationSettingsApiSecret"},
+            "ASPNETCORE_ENVIRONMENT": {"Ref" : "AspNetCoreEnvironment"}
+          }
+        },
+        "Events": {
+          "ProxyResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/{proxy+}",
+              "Method": "ANY",
+              "RestApiId": {
+                "Ref": "AspNetCoreApi"
+              }
+            }
+          },
+          "RootResource": {
+            "Type": "Api",
+            "Properties": {
+              "Path": "/",
+              "Method": "ANY",
+              "RestApiId": {
+                "Ref": "AspNetCoreApi"
+              }
+            }
+          }
+        }
+      }
+    }
+  },
+
+  "Outputs": {
+    "ApiURL": {
+        "Description": "API endpoint URL for Prod environment",
+        "Value": {
+          "Fn::Sub": "https://${AspNetCoreApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/"
+        }
+    }
+  }
+}
