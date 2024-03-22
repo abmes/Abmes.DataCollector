@@ -103,7 +103,7 @@
       "Properties": {
         "FunctionName": {"Ref": "LambdaName"},
         "Handler": "Abmes.DataCollector.Vault.AmazonLambda",
-        "Runtime": "dotnet6",
+        "Runtime": "dotnet8",
         "CodeUri": "",
         "MemorySize": 1024,
         "Timeout": 29,

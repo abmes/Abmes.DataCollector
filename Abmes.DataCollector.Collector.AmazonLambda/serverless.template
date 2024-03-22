@@ -560,7 +560,7 @@
       "Properties": {
         "FunctionName": { "Fn::Sub": "${ProjectBaseName}Lambda" },
         "Handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
-        "Runtime": "dotnet6",
+        "Runtime": "dotnet8",
         "CodeUri": "",
         "MemorySize": 512,
         "Timeout": 900,
