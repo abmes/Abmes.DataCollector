@@ -53,15 +53,12 @@ public class Startup(
                     options.DiscoveryPolicy.AuthorityValidationStrategy = new IdentityModel.Client.StringComparisonAuthorityValidationStrategy(StringComparison.OrdinalIgnoreCase);
                 });
 
-        services.AddAuthorization(options =>
-        {
-            options.AddPolicy("UserAllowedDataCollection", policy =>
+        services.AddAuthorizationBuilder()
+            .AddPolicy("UserAllowedDataCollection", policy =>
             {
                 policy.RequireAuthenticatedUser();
                 policy.Requirements.Add(new UserAllowedDataCollectionRequirement());
-            }
-            );
-        });
+            });
 
         services.AddSingleton<IAuthorizationHandler, UserAllowedDataCollectionHandler>();
 
