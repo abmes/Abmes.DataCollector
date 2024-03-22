@@ -47,7 +47,7 @@ public class FileSystemDestination(
 
         using (var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken))
         {
-            using var fileStream = new FileStream(fullFileName, FileMode.Create);
+            await using var fileStream = new FileStream(fullFileName, FileMode.Create);
             await ParallelCopy.CopyAsync(
                     (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
                     (buffer, ct) => async () => await fileStream.WriteAsync(buffer, ct),
@@ -56,7 +56,7 @@ public class FileSystemDestination(
                 );
         }
 
-        using var fileStream2 = new FileStream(fullFileName, FileMode.Open, FileAccess.Read);
+        await using var fileStream2 = new FileStream(fullFileName, FileMode.Open, FileAccess.Read);
 
         var newMD5 = await CopyUtils.GetMD5HashStringAsync(fileStream2, bufferSize, cancellationToken);
 
@@ -159,7 +159,7 @@ public class FileSystemDestination(
 
         Directory.CreateDirectory(directoryName);
 
-        using var fileStream = new FileStream(fullFileName, FileMode.Create);
+        await using var fileStream = new FileStream(fullFileName, FileMode.Create);
         await content.CopyToAsync(fileStream, cancellationToken);
     }
 }
