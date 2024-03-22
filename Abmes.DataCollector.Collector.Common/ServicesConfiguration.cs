@@ -12,12 +12,19 @@ public static class ServicesConfiguration
 {
     public static void Configure(IServiceCollection services, IConfiguration configuration)
     {
-        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector>(CollectItemsCollectorRetryingStrategyConfig);
-        services.AddPollyAsyncExecutionStrategy<CollectItemsProvider>(CollectItemsProviderRetryingStrategyConfig);
+        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectToDestinationMarker>(CollectItemsCollectorCollectToDestinationRetryingStrategyConfig);
+        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectItemsMarker>(ParallelOperationRetryingStrategyConfig);
+        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker>(ParallelOperationRetryingStrategyConfig);
+
+        services.AddPollyAsyncExecutionStrategy<CollectItemsProvider.IGetCollectItemsMarker>(CollectItemsProviderGetCollectItemsRetryingStrategyConfig);
+        services.AddPollyAsyncExecutionStrategy< CollectItemsProvider.IRedirectCollectItemsMarker> (ParallelOperationRetryingStrategyConfig);
+
         services.AddPollyAsyncExecutionStrategy<CollectUrlExtractor>(CollectUrlExtractorRetryingStrategyConfig);
+        
+        services.AddPollyAsyncExecutionStrategy<Collecting.DataCollector>(ParallelOperationRetryingStrategyConfig);
     }
 
-    private static void CollectItemsCollectorRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
+    private static void CollectItemsCollectorCollectToDestinationRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
     {
         builder
             .AddRetry(new RetryStrategyOptions
@@ -29,7 +36,7 @@ public static class ServicesConfiguration
             });
     }
 
-    private static void CollectItemsProviderRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
+    private static void CollectItemsProviderGetCollectItemsRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
     {
         builder
             .AddRetry(new RetryStrategyOptions
@@ -50,6 +57,18 @@ public static class ServicesConfiguration
                 BackoffType = DelayBackoffType.Constant,
                 Delay = TimeSpan.FromSeconds(10),  // todo: config
                 MaxRetryAttempts = 5  // todo: config
+            });
+    }
+
+    private static void ParallelOperationRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
+    {
+        builder
+            .AddRetry(new RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
+                BackoffType = DelayBackoffType.Linear,
+                Delay = TimeSpan.FromSeconds(30),  // todo: config
+                MaxRetryAttempts = 2  // todo: config
             });
     }
 }

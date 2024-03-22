@@ -1,9 +1,8 @@
-﻿using Abmes.DataCollector.Collector.Common.Destinations;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Collector.Common.Configuration;
-using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
@@ -13,6 +12,7 @@ public class DataCollector(
     ICollectItemsProvider collectItemsProvider,
     IFileNameProvider fileNameProvider,
     IDelay delay,
+    IAsyncExecutionStrategy<DataCollector> executionStrategy,
     ICollectItemsCollector collectItemsCollector) : IDataCollector
 {
     public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
@@ -83,34 +83,37 @@ public class DataCollector(
             : ([], collectionFileInfos);
     }
 
-    private static async Task<IEnumerable<CollectItem>> GetAcceptedCollectItemsAsync(IEnumerable<CollectItem> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+    private async Task<IEnumerable<CollectItem>> GetAcceptedCollectItemsAsync(IEnumerable<CollectItem> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<CollectItem>();
-
-        await ParallelUtils.ParallelEnumerateAsync(
-            collectItems,
-            Math.Max(1, maxDegreeOfParallelism),
-            async (collectItem, ct) =>
-            {
-                if (collectItem.CollectFileInfo is null)
-                {
-                    result.Add(collectItem);
-                }
-                else
-                {
-                    foreach (var destination in destinations)
-                    {
-                        if (await destination.AcceptsFileAsync(dataCollectionName, collectItem.CollectFileInfo.Name, collectItem.CollectFileInfo.Size, collectItem.CollectFileInfo.MD5, cancellationToken))
+        var result =
+            await collectItems.ParallelForEachAsync(
+                async (collectItem, ct2) =>
+                    await executionStrategy.ExecuteAsync(
+                        async (ct) =>
                         {
-                            result.Add(collectItem);
-                            break;
-                        }
-                    }
-                }
-            },
-            cancellationToken);
+                            if (collectItem.CollectFileInfo is null)
+                            {
+                                return collectItem;
+                            }
 
-        return result;
+                            foreach (var destination in destinations)
+                            {
+                                if (await destination.AcceptsFileAsync(dataCollectionName, collectItem.CollectFileInfo.Name, collectItem.CollectFileInfo.Size, collectItem.CollectFileInfo.MD5, ct))
+                                {
+                                    return collectItem;
+                                }
+                            }
+
+                            return null;
+                        },
+                        ct2),
+                Math.Max(1, maxDegreeOfParallelism),
+                cancellationToken);
+
+        return
+            result
+            .Where(collectItem => collectItem is not null)
+            .Select(collectItem => Ensure.NotNull(collectItem));
     }
 
     public async Task GarbageCollectDataAsync(DataCollectionConfig dataCollectionConfig, IEnumerable<string> newFileNames, IEnumerable<FileInfoData> collectionFileInfos, CancellationToken cancellationToken)

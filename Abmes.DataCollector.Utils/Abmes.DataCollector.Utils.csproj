@@ -8,8 +8,4 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
 
-  <ItemGroup>
-    <PackageReference Include="Polly" Version="8.3.1" />
-  </ItemGroup>
-
 </Project>

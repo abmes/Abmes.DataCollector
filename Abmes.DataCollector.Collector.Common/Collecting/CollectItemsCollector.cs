@@ -8,8 +8,14 @@ namespace Abmes.DataCollector.Collector.Common.Collecting;
 
 public class CollectItemsCollector(
     IFileNameProvider fileNameProvider,
-    IAsyncExecutionStrategy<CollectItemsCollector> executionStrategy) : ICollectItemsCollector
+    IAsyncExecutionStrategy<CollectItemsCollector.ICollectToDestinationMarker> collectToDestinationExecutionStrategy,
+    IAsyncExecutionStrategy<CollectItemsCollector.ICollectItemsMarker> collectItemsExecutionStrategy,
+    IAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker> garbageCollectTargetsExecutionStrategy) : ICollectItemsCollector
 {
+    public interface ICollectToDestinationMarker { }
+    public interface ICollectItemsMarker { }
+    public interface IGarbageCollectTargetsMarker { }
+
     private static readonly string[] _retryableErrorMessages = ["Gateway Timeout 504", "The request timed out"];
 
     public static bool IsRetryableCollectError(Exception e)
@@ -39,10 +45,12 @@ public class CollectItemsCollector(
 
         await CollectRouteAsync(new CollectItem(null, string.Empty), lockTargets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, cancellationToken);
 
-        await ParallelUtils.ParallelEnumerateAsync(
-            routes,
+        await routes.ParallelForEachAsync(
+            async (route, ct2) =>
+                await collectItemsExecutionStrategy.ExecuteAsync(
+                    async (ct) => await CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, ct),
+                    ct2),
             Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 0),
-            (route, ct) => CollectRouteAsync(route.CollectItem, route.Targets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, ct),
             cancellationToken);
 
         if (!failedDestinationGroups.IsEmpty)
@@ -118,12 +126,12 @@ public class CollectItemsCollector(
         ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles,
         CancellationToken cancellationToken)
     {
-        await executionStrategy.ExecuteAsync(
+        await collectToDestinationExecutionStrategy.ExecuteAsync(
             async (ct) =>
             {
                 if (string.IsNullOrEmpty(collectItem.CollectUrl))
                 {
-                    await destination.PutFileAsync(dataCollectionConfig.DataCollectionName, destinationFileName, new MemoryStream(), cancellationToken);
+                    await destination.PutFileAsync(dataCollectionConfig.DataCollectionName, destinationFileName, new MemoryStream(), ct);
                 }
                 else
                 {
@@ -142,7 +150,7 @@ public class CollectItemsCollector(
         completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId ?? "default"));
     }
 
-    private static async Task GarbageCollectFailedDestinationsAsync(
+    private async Task GarbageCollectFailedDestinationsAsync(
         IEnumerable<(IDestination Destination, string GroupId)> failedDestinationGroups,
         IEnumerable<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles,
         DataCollectionConfig dataCollectionConfig,
@@ -158,16 +166,18 @@ public class CollectItemsCollector(
         await GarbageCollectTargetsAsync(failedTargets, dataCollectionConfig, cancellationToken);
     }
 
-    private static async Task GarbageCollectTargetsAsync(
+    private async Task GarbageCollectTargetsAsync(
         IEnumerable<(IDestination Destination, IEnumerable<string> DestinationFileNames)> targets,
         DataCollectionConfig dataCollectionConfig,
         CancellationToken cancellationToken)
     {
-        await ParallelUtils.ParallelEnumerateAsync(
-            targets,
-            Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 1),
-            (target, ct) => GarbageCollectDestinationFilesAsync(target.Destination, dataCollectionConfig.DataCollectionName, target.DestinationFileNames, ct),
-            cancellationToken);
+        await targets.ParallelForEachAsync(
+            async (target, ct2) =>
+                await garbageCollectTargetsExecutionStrategy.ExecuteAsync(
+                    async (ct) => await GarbageCollectDestinationFilesAsync(target.Destination, dataCollectionConfig.DataCollectionName, target.DestinationFileNames, ct),
+                    ct2),
+                Math.Max(1, dataCollectionConfig.ParallelDestinationCount ?? 1),
+                cancellationToken);
     }
 
     private static async Task GarbageCollectDestinationFilesAsync(

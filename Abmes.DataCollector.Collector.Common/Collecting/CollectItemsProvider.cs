@@ -3,7 +3,6 @@ using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Microsoft.AspNetCore.Authentication;
-using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
 
@@ -13,9 +12,13 @@ public class CollectItemsProvider(
     ICollectUrlExtractor collectUrlsExtractor,
     IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
     IHttpClientFactory httpClientFactory,
-    IAsyncExecutionStrategy<CollectItemsProvider> executionStrategy,
+    IAsyncExecutionStrategy<CollectItemsProvider.IGetCollectItemsMarker> getCollectItemsExecutionStrategy,
+    IAsyncExecutionStrategy<CollectItemsProvider.IRedirectCollectItemsMarker> redirectCollectItemsExecutionStrategy,
     IEnumerable<ISimpleContentProvider> simpleContentProviders) : ICollectItemsProvider
 {
+    public interface IGetCollectItemsMarker { }
+    public interface IRedirectCollectItemsMarker { }
+
     private static readonly string[] DefaultNamePropertyNames = ["name", "fileName", "identifier"];
     private static readonly string[] DefaultSizePropertyNames = ["size", "length"];
     private static readonly string[] DefaultMD5PropertyNames = ["md5", "hash", "checksum"];
@@ -36,7 +39,7 @@ public class CollectItemsProvider(
             {
                 using var httpClient = httpClientFactory.CreateClient();
                 var jsonResult =
-                    await executionStrategy.ExecuteAsync(
+                    await getCollectItemsExecutionStrategy.ExecuteAsync(
                         async (ct) =>
                             await GetSimpleContentProvidersResultAsync(collectUrl[1..], ct) ??
                             await httpClient.GetStringAsync(collectUrl[1..], collectHeaders, null, null, ct),
@@ -168,24 +171,26 @@ public class CollectItemsProvider(
         string? identityServiceAccessToken,
         CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<CollectItem>();
+        return
+            await collectItems.ParallelForEachAsync(
+                async (collectItem, ct2) =>
+                    await redirectCollectItemsExecutionStrategy.ExecuteAsync(
+                        async (ct) =>
+                        {
+                            var urls = collectItem.CollectUrl.TrimStart('@').Split('|').ToList();
+                            var preliminaryUrls = urls.SkipLast(1);
+                            var lastUrl = urls.Last();
 
-        await ParallelUtils.ParallelEnumerateAsync(
-            collectItems,
-            Math.Max(1, maxDegreeOfParallelism),
-            async (collectItem, ct) =>
-            {
-                var urls = collectItem.CollectUrl.TrimStart('@').Split('|').ToList();
-                var preliminaryUrls = urls.SkipLast(1);
-                var lastUrl = urls.Last();
-                using var httpClient = httpClientFactory.CreateClient();
-                await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
-                var url = await collectUrlsExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
-                result.Add(new (collectItem.CollectFileInfo, url));
-            },
-            cancellationToken);
+                            using var httpClient = httpClientFactory.CreateClient();
+                            await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, ct);
 
-        return result;
+                            var url = await collectUrlsExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
+                            
+                            return new CollectItem(collectItem.CollectFileInfo, url);
+                        },
+                        ct2),
+                Math.Max(1, maxDegreeOfParallelism),
+                cancellationToken);
     }
 
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
