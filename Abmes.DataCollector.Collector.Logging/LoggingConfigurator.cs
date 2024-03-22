@@ -7,6 +7,6 @@ public static class LoggingConfigurator
 {
     public static void Configure(ILoggingBuilder loggingBuilder, IConfiguration configuration)
     {
-        Abmes.DataCollector.Collector.Amazon.LoggingConfigurator.Configure(loggingBuilder, configuration);
+        Abmes.DataCollector.Collector.Data.Amazon.LoggingConfigurator.Configure(loggingBuilder, configuration);
     }
 }
