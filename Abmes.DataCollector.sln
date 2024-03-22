@@ -55,7 +55,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Web", "Abmes.DataCollector.Collector.Data.Web\Abmes.DataCollector.Collector.Data.Web.csproj", "{61E2288B-F036-42DA-870A-E8052542717B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Console", "Abmes.DataCollector.Collector.Console\Abmes.DataCollector.Collector.Console.csproj", "{92826E73-BA24-4E9D-B55A-64CAF381DF42}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Console", "Abmes.DataCollector.Collector.Data.Console\Abmes.DataCollector.Collector.Data.Console.csproj", "{92826E73-BA24-4E9D-B55A-64CAF381DF42}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Service.Library", "Abmes.DataCollector.Collector.Service.Library\Abmes.DataCollector.Collector.Service.Library.csproj", "{CCB7FC6C-270B-40D8-8BE2-B1006F4579AB}"
 EndProject
