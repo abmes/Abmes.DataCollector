@@ -75,8 +75,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
             return moment.DateTime;
         }
 
-        //var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);  // use in .net6 as it supports IANA and remove TimeZoneConverter nuget package
-        var timeZoneInfo = TimeZoneConverter.TZConvert.GetTimeZoneInfo(timeZoneId);
+        var timeZoneInfo = TimeZoneInfo.FindSystemTimeZoneById(timeZoneId);
 
         return TimeZoneInfo.ConvertTime(moment, timeZoneInfo).DateTime;
     }
