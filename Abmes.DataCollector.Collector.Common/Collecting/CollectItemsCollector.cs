@@ -2,16 +2,23 @@
 using Abmes.DataCollector.Collector.Common.Destinations;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
-using Polly;
 using System.Collections.Concurrent;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
 public class CollectItemsCollector(
-    IFileNameProvider fileNameProvider) : ICollectItemsCollector
+    IFileNameProvider fileNameProvider,
+    IAsyncExecutionStrategy<CollectItemsCollector> executionStrategy) : ICollectItemsCollector
 {
+    private static readonly string[] _retryableErrorMessages = ["Gateway Timeout 504", "The request timed out"];
+
+    public static bool IsRetryableCollectError(Exception e)
+    {
+        return _retryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
+    }
+
     public async Task<IEnumerable<string>> CollectItemsAsync(
-        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
+        IEnumerable<CollectItem> collectItems,
         string dataCollectionName,
         IEnumerable<IDestination> destinations,
         DataCollectionConfig dataCollectionConfig,
@@ -30,7 +37,7 @@ public class CollectItemsCollector(
         var completeDestinationFiles = new ConcurrentBag<(IDestination Destination, string FileName, string GroupId)>();
         var failedDestinationGroups = new ConcurrentBag<(IDestination Destination, string GroupId)>();
 
-        await CollectRouteAsync(default, lockTargets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, cancellationToken);
+        await CollectRouteAsync(new CollectItem(null, string.Empty), lockTargets, dataCollectionConfig, completeDestinationFiles, failedDestinationGroups, cancellationToken);
 
         await ParallelUtils.ParallelEnumerateAsync(
             routes,
@@ -55,7 +62,7 @@ public class CollectItemsCollector(
         return completeDestinationFiles.Select(x => x.FileName).Distinct();
     }
 
-    private string GetDestinationFileName((FileInfoData? CollectFileInfo, string CollectUrl) collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
+    private string GetDestinationFileName(CollectItem collectItem, DataCollectionConfig dataCollectionConfig, IDestination destination, DateTimeOffset collectMoment)
     {
         return
             fileNameProvider.GenerateCollectDestinationFileName(
@@ -77,8 +84,8 @@ public class CollectItemsCollector(
             .Select(x => (x.Key.Destination, DestinationFileName: x.Key.DestinationDirName + "/" + fileNameProvider.LockFileName));
     }
 
-    private static async Task CollectRouteAsync(
-        (FileInfoData? CollectFileInfo, string CollectUrl) collectItem,
+    private async Task CollectRouteAsync(
+        CollectItem collectItem,
         IEnumerable<(IDestination Destination, string DestinationFileName)> targets,
         DataCollectionConfig dataCollectionConfig,
         ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles,
@@ -103,51 +110,36 @@ public class CollectItemsCollector(
         }
     }
 
-    private static async Task CollectToDestinationAsync(
-        (FileInfoData? CollectFileInfo, string CollectUrl) collectItem,
+    private async Task CollectToDestinationAsync(
+        CollectItem collectItem,
         IDestination destination,
         string destinationFileName,
         DataCollectionConfig dataCollectionConfig,
         ConcurrentBag<(IDestination Destination, string FileName, string GroupId)> completeDestinationFiles,
         CancellationToken cancellationToken)
     {
-        var tryNo = 1;
-        await Policy
-            .Handle<Exception>(e => IsRetryableCollectError(e))
-            .WaitAndRetryAsync(
-                2,
-                (x) => TimeSpan.FromSeconds(5),
-                (exception, timeSpan) => { tryNo++; })
-            .ExecuteAsync(
-                async (ct) =>
+        await executionStrategy.ExecuteAsync(
+            async (ct) =>
+            {
+                if (string.IsNullOrEmpty(collectItem.CollectUrl))
                 {
-                    if (string.IsNullOrEmpty(collectItem.CollectUrl))
-                    {
-                        await destination.PutFileAsync(dataCollectionConfig.DataCollectionName, destinationFileName, new MemoryStream(), cancellationToken);
-                    }
-                    else
-                    {
-                        await destination.CollectAsync(
-                            collectItem.CollectUrl,
-                            dataCollectionConfig.CollectHeaders,
-                            dataCollectionConfig.IdentityServiceClientInfo,
-                            dataCollectionConfig.DataCollectionName,
-                            destinationFileName, dataCollectionConfig.CollectTimeout ?? default,
-                            (dataCollectionConfig.CollectFinishWait ?? "false") == "true",
-                            tryNo,
-                            ct);
-                    }
-                },
-                cancellationToken);
+                    await destination.PutFileAsync(dataCollectionConfig.DataCollectionName, destinationFileName, new MemoryStream(), cancellationToken);
+                }
+                else
+                {
+                    await destination.CollectAsync(
+                        collectItem.CollectUrl,
+                        dataCollectionConfig.CollectHeaders,
+                        dataCollectionConfig.IdentityServiceClientInfo,
+                        dataCollectionConfig.DataCollectionName,
+                        destinationFileName, dataCollectionConfig.CollectTimeout ?? default,
+                        (dataCollectionConfig.CollectFinishWait ?? "false") == "true",
+                        ct);
+                }
+            },
+            cancellationToken);
 
         completeDestinationFiles.Add((destination, destinationFileName, collectItem.CollectFileInfo?.GroupId ?? "default"));
-    }
-
-    private static readonly string[] _retryableErrorMessages = ["Gateway Timeout 504", "The request timed out"];
-
-    private static bool IsRetryableCollectError(Exception e)
-    {
-        return _retryableErrorMessages.Any(x => e.Message.Contains(x, StringComparison.InvariantCultureIgnoreCase));
     }
 
     private static async Task GarbageCollectFailedDestinationsAsync(

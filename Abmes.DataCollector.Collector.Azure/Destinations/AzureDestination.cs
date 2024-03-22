@@ -24,7 +24,6 @@ public class AzureDestination(
         string fileName,
         TimeSpan timeout,
         bool finishWait,
-        int tryNo,
         CancellationToken cancellationToken)
     {
         var container = await GetContainerAsync(dataCollectionName, cancellationToken);

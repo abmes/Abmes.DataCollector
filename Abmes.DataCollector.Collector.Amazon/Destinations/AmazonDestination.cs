@@ -34,7 +34,6 @@ public class AmazonDestination(
         string fileName,
         TimeSpan timeout,
         bool finishWait,
-        int tryNo,
         CancellationToken cancellationToken)
     {
         using var httpClient = httpClientFactory.CreateClient();

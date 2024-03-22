@@ -1,6 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Common.Collecting;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
@@ -10,7 +9,7 @@ public class CollectItemsProvider(
     ILogger<CollectItemsProvider> logger,
     ICollectItemsProvider collectItemsProvider) : ICollectItemsProvider
 {
-    public IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
+    public async Task<IEnumerable<CollectItem>> GetCollectItemsAsync(
         string dataCollectionName,
         string? collectFileIdentifiersUrl,
         IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
@@ -24,7 +23,7 @@ public class CollectItemsProvider(
             logger.LogInformation("Started getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
             var result = 
-                    collectItemsProvider.GetCollectItems(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken)
+                    (await collectItemsProvider.GetCollectItemsAsync(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken))
                     .OrderBy(x => x.CollectFileInfo?.Name)  // todo: logging decorator should not alter behavior i.e. change the order of the result list
                     .ToList();
             
@@ -47,8 +46,8 @@ public class CollectItemsProvider(
         }
     }
 
-    public async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
-        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
+    public async Task<IEnumerable<CollectItem>> GetRedirectedCollectItemsAsync(
+        IEnumerable<CollectItem> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,

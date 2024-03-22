@@ -69,6 +69,8 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.FileSystem", "Abmes.DataCollector.Vault.FileSystem\Abmes.DataCollector.Vault.FileSystem.csproj", "{A07B5EDF-8612-44F6-9245-D3337E64E9FF}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Utils.Polly", "Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj", "{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -191,6 +193,10 @@ Global
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -225,6 +231,7 @@ Global
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 		{476A2904-7846-40D6-9C4A-EC21096DCD3F} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8AC6496B-CDC1-4994-ACE3-BEC0D616354E}

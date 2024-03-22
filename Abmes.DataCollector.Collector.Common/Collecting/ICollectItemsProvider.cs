@@ -1,11 +1,10 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Common.Storage;
 
 namespace Abmes.DataCollector.Collector.Common.Collecting;
 
 public interface ICollectItemsProvider
 {
-    IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
+    Task<IEnumerable<CollectItem>> GetCollectItemsAsync(
         string dataCollectionName,
         string? collectFileIdentifiersUrl,
         IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
@@ -14,8 +13,8 @@ public interface ICollectItemsProvider
         IdentityServiceClientInfo? identityServiceClientInfo,
         CancellationToken cancellationToken);
 
-    Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
-        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
+    Task<IEnumerable<CollectItem>> GetRedirectedCollectItemsAsync(
+        IEnumerable<CollectItem> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,

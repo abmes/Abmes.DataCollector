@@ -19,7 +19,6 @@ public class ConsoleDestination(
         string fileName,
         TimeSpan timeout,
         bool finishWait,
-        int tryNo,
         CancellationToken cancellationToken)
     {
         using var httpClient = httpClientFactory.CreateClient();

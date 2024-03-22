@@ -1,7 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Collecting;
 using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Common.Destinations;
-using Abmes.DataCollector.Common.Storage;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting;
@@ -10,7 +9,7 @@ public class CollectItemsCollector(
     ILogger<CollectItemsCollector> logger,
     ICollectItemsCollector collectItemsCollector) : ICollectItemsCollector
 {
-    public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
+    public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<CollectItem> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)
     {
         collectItems = collectItems.ToList().AsEnumerable();  // enumerate
 

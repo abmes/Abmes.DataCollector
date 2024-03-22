@@ -29,16 +29,13 @@ public class Destination(
         string fileName,
         TimeSpan timeout,
         bool finishWait,
-        int tryNo,
         CancellationToken cancellationToken)
     {
         try
         {
-            var actionName = (tryNo == 1) ? "Started" : "Retrying";
+            logger.LogInformation("Started collecting data '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
 
-            logger.LogInformation(actionName + " collecting data '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
-
-            await destination.CollectAsync(collectUrl, collectHeaders, collectIdentityServiceClientInfo, dataCollectionName, fileName, timeout, finishWait, tryNo, cancellationToken);
+            await destination.CollectAsync(collectUrl, collectHeaders, collectIdentityServiceClientInfo, dataCollectionName, fileName, timeout, finishWait, cancellationToken);
 
             logger.LogInformation("Finished collecting data '{fileName}' from data collection '{dataCollectionName}' to destination '{destinationId}'", fileName, dataCollectionName, DestinationConfig.DestinationId);
         }

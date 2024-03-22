@@ -29,7 +29,6 @@ public class FileSystemDestination(
         string fileName,
         TimeSpan timeout,
         bool finishWait,
-        int tryNo,
         CancellationToken cancellationToken)
     {
         int bufferSize = 1 * 1024 * 1024;

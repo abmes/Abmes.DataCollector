@@ -3,7 +3,6 @@ using Abmes.DataCollector.Collector.Common.Misc;
 using Abmes.DataCollector.Common.Storage;
 using Abmes.DataCollector.Utils;
 using Microsoft.AspNetCore.Authentication;
-using Polly;
 using System.Collections.Concurrent;
 using System.Text;
 using System.Text.Json;
@@ -14,6 +13,7 @@ public class CollectItemsProvider(
     ICollectUrlExtractor collectUrlsExtractor,
     IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
     IHttpClientFactory httpClientFactory,
+    IAsyncExecutionStrategy<CollectItemsProvider> executionStrategy,
     IEnumerable<ISimpleContentProvider> simpleContentProviders) : ICollectItemsProvider
 {
     private static readonly string[] DefaultNamePropertyNames = ["name", "fileName", "identifier"];
@@ -21,7 +21,7 @@ public class CollectItemsProvider(
     private static readonly string[] DefaultMD5PropertyNames = ["md5", "hash", "checksum"];
     private static readonly string[] DefaultGroupIdPropertyNames = ["group", "groupId"];
 
-    public IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> GetCollectItems(
+    public async Task<IEnumerable<CollectItem>> GetCollectItemsAsync(
         string dataCollectionName,
         string? collectFileIdentifiersUrl,
         IEnumerable<KeyValuePair<string, string>> collectFileIdentifiersHeaders,
@@ -36,15 +36,11 @@ public class CollectItemsProvider(
             {
                 using var httpClient = httpClientFactory.CreateClient();
                 var jsonResult =
-                    Policy
-                    .Handle<Exception>()
-                    .WaitAndRetry([TimeSpan.FromSeconds(5)])
-                    .Execute(
-                        ct =>
-                            GetSimpleContentProvidersResultAsync(collectUrl[1..], ct).Result ??
-                            httpClient.GetStringAsync(collectUrl[1..], collectHeaders, null, null, ct).Result,
-                        cancellationToken
-                    );
+                    await executionStrategy.ExecuteAsync(
+                        async (ct) =>
+                            await GetSimpleContentProvidersResultAsync(collectUrl[1..], ct) ??
+                            await httpClient.GetStringAsync(collectUrl[1..], collectHeaders, null, null, ct),
+                        cancellationToken);
 
                 var urlsString = HttpUtils.FixJsonResult(jsonResult);
 
@@ -52,15 +48,16 @@ public class CollectItemsProvider(
                 {
                     var urls = GetStrings(urlsString) ?? urlsString.Split(Environment.NewLine);
 
-                    foreach (var url in urls)
-                    {
-                        yield return (null, url);
-                    }
+                    return urls.Select(url => new CollectItem(null, url));
+                }
+                else
+                {
+                    return [];
                 }
             }
             else
             {
-                yield return (null, collectUrl);
+                return [new (null, collectUrl)];
             }
         }
         else
@@ -91,23 +88,30 @@ public class CollectItemsProvider(
 
                 var collectFileInfos = GetCollectFileInfos(collectFileIdentifiersJson, namePropertyNames, sizePropertyNames, md5PropertyNames, groupIdPropertyNames);
 
-                foreach (var collectFileInfo in collectFileInfos)
-                {
-                    if (HttpUtils.IsUrl(collectFileInfo.Name))
-                    {
-                        yield return (null, collectFileInfo.Name);
-                    }
-                    else
-                    {
-                        ArgumentException.ThrowIfNullOrEmpty(collectUrl);
-
-                        if ((string.IsNullOrEmpty(queryFilter)) ||
-                            (FileMaskUtils.FileNameMatchesFilter(collectFileInfo.Name, queryFilter)))
+                return
+                    collectFileInfos
+                    .Where(collectFileInfo =>
+                        HttpUtils.IsUrl(collectFileInfo.Name) ||
+                        string.IsNullOrEmpty(queryFilter) ||
+                        FileMaskUtils.FileNameMatchesFilter(collectFileInfo.Name, queryFilter)
+                    )
+                    .Select(collectFileInfo =>
                         {
-                            yield return (collectFileInfo, collectUrl.Replace("[filename]", collectFileInfo.Name, StringComparison.InvariantCultureIgnoreCase));
+                            if (HttpUtils.IsUrl(collectFileInfo.Name))
+                            {
+                                return new CollectItem(null, collectFileInfo.Name);
+                            }
+                            else
+                            {
+                                ArgumentException.ThrowIfNullOrEmpty(collectUrl);
+                                return new CollectItem(collectFileInfo, collectUrl.Replace("[filename]", collectFileInfo.Name, StringComparison.InvariantCultureIgnoreCase));
+                            }
                         }
-                    }
-                }
+                    );
+            }
+            else
+            {
+                return [];
             }
         }
     }
@@ -127,8 +131,8 @@ public class CollectItemsProvider(
         return null;
     }
 
-    public async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetRedirectedCollectItemsAsync(
-        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
+    public async Task<IEnumerable<CollectItem>> GetRedirectedCollectItemsAsync(
+        IEnumerable<CollectItem> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
@@ -156,15 +160,15 @@ public class CollectItemsProvider(
                 .Concat(redirectedCollectItems);
     }
 
-    private async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> RedirectCollectItemsAsync(
-        IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems,
+    private async Task<IEnumerable<CollectItem>> RedirectCollectItemsAsync(
+        IEnumerable<CollectItem> collectItems,
         string dataCollectionName,
         IEnumerable<KeyValuePair<string, string>> collectHeaders,
         int maxDegreeOfParallelism,
         string? identityServiceAccessToken,
         CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<(FileInfoData? CollectFileInfo, string CollectUrl)>();
+        var result = new ConcurrentBag<CollectItem>();
 
         await ParallelUtils.ParallelEnumerateAsync(
             collectItems,
@@ -177,7 +181,7 @@ public class CollectItemsProvider(
                 using var httpClient = httpClientFactory.CreateClient();
                 await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, cancellationToken);
                 var url = await collectUrlsExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
-                result.Add((collectItem.CollectFileInfo, url));
+                result.Add(new (collectItem.CollectFileInfo, url));
             },
             cancellationToken);
 

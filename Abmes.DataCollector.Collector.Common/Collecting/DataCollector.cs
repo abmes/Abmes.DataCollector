@@ -37,14 +37,14 @@ public class DataCollector(
         ArgumentException.ThrowIfNullOrEmpty(dataCollectionConfig.CollectUrl);
 
         var collectItems =
-            collectItemsProvider.GetCollectItems(
+            (await collectItemsProvider.GetCollectItemsAsync(
                 dataCollectionConfig.DataCollectionName,
                 dataCollectionConfig.CollectFileIdentifiersUrl,
                 dataCollectionConfig.CollectFileIdentifiersHeaders,
                 dataCollectionConfig.CollectUrl,
                 dataCollectionConfig.CollectHeaders,
                 dataCollectionConfig.IdentityServiceClientInfo,
-                cancellationToken)
+                cancellationToken))
             .ToList();
 
         var collectionFileInfos = collectItems.Where(x => x.CollectFileInfo is not null).Select(x => Ensure.NotNull(x.CollectFileInfo));
@@ -83,9 +83,9 @@ public class DataCollector(
             : ([], collectionFileInfos);
     }
 
-    private static async Task<IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)>> GetAcceptedCollectItemsAsync(IEnumerable<(FileInfoData? CollectFileInfo, string CollectUrl)> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
+    private static async Task<IEnumerable<CollectItem>> GetAcceptedCollectItemsAsync(IEnumerable<CollectItem> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, int maxDegreeOfParallelism, CancellationToken cancellationToken)
     {
-        var result = new ConcurrentBag<(FileInfoData? CollectFileInfo, string CollectUrl)>();
+        var result = new ConcurrentBag<CollectItem>();
 
         await ParallelUtils.ParallelEnumerateAsync(
             collectItems,
