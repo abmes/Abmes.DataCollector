@@ -19,9 +19,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Amazon", "Abmes.DataCollector.Collector.Data.Amazon\Abmes.DataCollector.Collector.Data.Amazon.csproj", "{91B96DD6-3A61-436C-8C6D-B9782A6E9430}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.ConsoleApp", "Abmes.DataCollector.Collector.ConsoleApp\Abmes.DataCollector.Collector.ConsoleApp.csproj", "{008B8852-C1E7-469D-A42B-D0220A772D89}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.App.ConsoleApp", "Abmes.DataCollector.Collector.App.ConsoleApp\Abmes.DataCollector.Collector.App.ConsoleApp.csproj", "{008B8852-C1E7-469D-A42B-D0220A772D89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.ConsoleApp.Library", "Abmes.DataCollector.Collector.ConsoleApp.Library\Abmes.DataCollector.Collector.ConsoleApp.Library.csproj", "{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.App.ConsoleApp.Library", "Abmes.DataCollector.Collector.App.ConsoleApp.Library\Abmes.DataCollector.Collector.App.ConsoleApp.Library.csproj", "{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Common", "Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj", "{C2C1C414-B5EA-4829-A5E1-882E930A58E9}"
 EndProject
@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Web.Library", "Abmes.DataCollector.Collector.Web.Library\Abmes.DataCollector.Collector.Web.Library.csproj", "{CCB7FC6C-270B-40D8-8BE2-B1006F4579AB}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.AmazonLambda", "Abmes.DataCollector.Collector.AmazonLambda\Abmes.DataCollector.Collector.AmazonLambda.csproj", "{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.App.AmazonLambda", "Abmes.DataCollector.Collector.App.AmazonLambda\Abmes.DataCollector.Collector.App.AmazonLambda.csproj", "{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.FileSystem", "Abmes.DataCollector.Collector.Data.FileSystem\Abmes.DataCollector.Collector.Data.FileSystem.csproj", "{B568D7B9-049A-43DE-8B0B-687B85511F2D}"
 EndProject
