@@ -1,5 +1,5 @@
 ﻿using Microsoft.Extensions.Logging;
-using Abmes.DataCollector.Collector.Common.Collecting;
+using Abmes.DataCollector.Collector.Services.Collecting;
 using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting;

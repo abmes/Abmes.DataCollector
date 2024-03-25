@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Data.Amazon.Collecting;
 using Abmes.DataCollector.Collector.Data.Amazon.Destinations;
-using Abmes.DataCollector.Collector.Common.Collecting;
-using Abmes.DataCollector.Collector.Common.Destinations;
+using Abmes.DataCollector.Collector.Services.Collecting;
+using Abmes.DataCollector.Collector.Services.Destinations;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 

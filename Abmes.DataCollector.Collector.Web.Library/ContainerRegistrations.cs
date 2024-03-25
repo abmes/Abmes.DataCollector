@@ -15,7 +15,7 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Collector.Data.Web.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Console.ContainerRegistrations.RegisterFor(builder);
 
-        Abmes.DataCollector.Collector.Common.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Collector.Services.ContainerRegistrations.RegisterFor(builder);
 
         Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);

@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Common.Destinations;
+﻿using Abmes.DataCollector.Collector.Services.Destinations;
 
 namespace Abmes.DataCollector.Collector.Logging.Destinations;
 

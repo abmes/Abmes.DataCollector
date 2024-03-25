@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Data.Web.Destinations;
-using Abmes.DataCollector.Collector.Common.Destinations;
+using Abmes.DataCollector.Collector.Services.Destinations;
 using Autofac;
 
 namespace Abmes.DataCollector.Collector.Data.Web;

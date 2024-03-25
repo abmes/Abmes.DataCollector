@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.App.ConsoleApp.Configuration;
 using Abmes.DataCollector.Collector.App.ConsoleApp.Initialization;
 using Autofac;
-using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
 using Microsoft.Extensions.Configuration;
 
@@ -22,7 +22,7 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Collector.Data.Web.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Console.ContainerRegistrations.RegisterFor(builder);
 
-        Abmes.DataCollector.Collector.Common.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Collector.Services.ContainerRegistrations.RegisterFor(builder);
 
         builder.RegisterType<MainService>().As<IMainService>();
         builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");

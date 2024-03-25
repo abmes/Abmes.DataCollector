@@ -1,8 +1,8 @@
 ﻿using Autofac;
-using Abmes.DataCollector.Collector.Common.Collecting;
-using Abmes.DataCollector.Collector.Common.Destinations;
-using Abmes.DataCollector.Collector.Common.Misc;
-using Abmes.DataCollector.Collector.Common.Configuration;
+using Abmes.DataCollector.Collector.Services.Collecting;
+using Abmes.DataCollector.Collector.Services.Destinations;
+using Abmes.DataCollector.Collector.Services.Misc;
+using Abmes.DataCollector.Collector.Services.Configuration;
 
 namespace Abmes.DataCollector.Collector.Logging;
 

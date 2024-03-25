@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Common.Misc;
+﻿using Abmes.DataCollector.Collector.Services.Configuration;
+using Abmes.DataCollector.Collector.Services.Misc;
 using Abmes.DataCollector.Utils;
 using System.Text.Json;
 
