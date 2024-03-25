@@ -9,7 +9,7 @@
   "region": "eu-central-1",
   "configuration": "Release",
   "s3-bucket": "abmes-deployments",
-  "s3-prefix": "Abmes.DataCollector.Collector.AmazonLambda/",
+  "s3-prefix": "Abmes.DataCollector.Collector.App.AmazonLambda/",
   "stack-name": "DataCollectorStack",
   "template": "serverless.template",
   "template-parameters": "\"ProjectBaseName\"=\"DataCollector\";\"ProjectBaseNameLower\"=\"datacollector\";\"OrganizationNameLower\"=\"abmes\";\"ContainerVpcId\"=\"vpc-123456789\";\"ContainerSubnets\"=\"subnet-123,subnet-456,subnet-789\";\"ShouldCreateLogGroups\"=\"True\";\"MetricsNamespace\"=\"AbmesMetrics\";\"AlarmsEmailAddress\"=\"some@email.address\";\"ScheduleRule1BaseName\"=\"Production\";\"ScheduleRule1ScheduleExpression\"=\"cron(...)\";\"ScheduleRule1Target\"=\"Container\";\"ScheduleRule1ConfigSetName\"=\"production\";\"ScheduleRule2BaseName\"=\"SampleWatcher\";\"ScheduleRule2ScheduleExpression\"=\"rate(...)\";\"ScheduleRule2Target\"=\"Lambda\";\"ScheduleRule2ConfigSetName\"=\"samplewatcher\";\"ConfigStorageType\"=\"Amazon|Azure\";\"AmazonS3ConfigStorageBucketName\"=\"abmes-datacollector-config\""

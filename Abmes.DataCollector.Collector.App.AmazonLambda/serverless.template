@@ -559,7 +559,7 @@
       "Type": "AWS::Serverless::Function",
       "Properties": {
         "FunctionName": { "Fn::Sub": "${ProjectBaseName}Lambda" },
-        "Handler": "Abmes.DataCollector.Collector.AmazonLambda::Abmes.DataCollector.Collector.AmazonLambda.Function::FunctionHandler",
+        "Handler": "Abmes.DataCollector.Collector.App.AmazonLambda::Abmes.DataCollector.Collector.App.AmazonLambda.Function::FunctionHandler",
         "Runtime": "dotnet8",
         "CodeUri": "",
         "MemorySize": 512,

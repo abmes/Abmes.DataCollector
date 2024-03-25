@@ -38,12 +38,12 @@ If already installed check if new version is available.
 
 Execute unit tests
 ```
-    cd "Abmes.DataCollector.Collector.AmazonLambda/test/Abmes.DataCollector.Collector.AmazonLambda.Tests"
+    cd "Abmes.DataCollector.Collector.App.AmazonLambda/test/Abmes.DataCollector.Collector.App.AmazonLambda.Tests"
     dotnet test
 ```
 
 Deploy function to AWS Lambda
 ```
-    cd "Abmes.DataCollector.Collector.AmazonLambda/src/Abmes.DataCollector.Collector.AmazonLambda"
+    cd "Abmes.DataCollector.Collector.App.AmazonLambda/src/Abmes.DataCollector.Collector.App.AmazonLambda"
     dotnet lambda deploy-function
 ```
