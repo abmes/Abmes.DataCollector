@@ -8,20 +8,23 @@ namespace Abmes.DataCollector.Collector.App.AmazonLambda;
 public class Function
 {
     [LambdaSerializer(typeof(Amazon.Lambda.Serialization.SystemTextJson.DefaultLambdaJsonSerializer))]
-    public void FunctionHandler(CollectorParams collectorParams)  // todo: async
+    public async Task FunctionHandlerAsync(CollectorParams collectorParams)
     {
         System.Console.WriteLine(collectorParams.CollectorMode);
         System.Console.WriteLine(collectorParams.ConfigSetName);
         System.Console.WriteLine(collectorParams.DataCollectionNames);
         System.Console.WriteLine(collectorParams.TimeFilter);
 
-        Abmes.DataCollector.Collector.App.Library.Initialization.Initializer
+        await Abmes.DataCollector.Collector.App.Library.Initialization.Initializer
             .GetMainService()
             .MainAsync(
-                bootstrapper => bootstrapper.SetConfig(collectorParams.ConfigSetName, collectorParams.DataCollectionNames, collectorParams.CollectorMode, collectorParams.TimeFilter),
+                bootstrapper => bootstrapper.SetConfig(
+                    collectorParams.ConfigSetName,
+                    collectorParams.DataCollectionNames,
+                    collectorParams.CollectorMode,
+                    collectorParams.TimeFilter),
                 0,
-                CancellationToken.None
-            )
-            .Wait();
+                default
+            );
     }
 }
