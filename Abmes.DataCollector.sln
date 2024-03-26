@@ -21,7 +21,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.App.ConsoleApp", "Abmes.DataCollector.Collector.App.ConsoleApp\Abmes.DataCollector.Collector.App.ConsoleApp.csproj", "{008B8852-C1E7-469D-A42B-D0220A772D89}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.App.ConsoleApp.Library", "Abmes.DataCollector.Collector.App.ConsoleApp.Library\Abmes.DataCollector.Collector.App.ConsoleApp.Library.csproj", "{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.App.Library", "Abmes.DataCollector.Collector.App.Library\Abmes.DataCollector.Collector.App.Library.csproj", "{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Common", "Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj", "{C2C1C414-B5EA-4829-A5E1-882E930A58E9}"
 EndProject
@@ -75,7 +75,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.Controllers", "Abmes.DataCollector.Vault.Web.Controllers\Abmes.DataCollector.Vault.Web.Controllers.csproj", "{A25D0A70-2E63-49B9-B8B5-434B189E6909}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Data", "Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj", "{AD1F487C-BA54-492A-A119-AD6EEEA5031E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data", "Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj", "{AD1F487C-BA54-492A-A119-AD6EEEA5031E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

@@ -13,8 +13,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.App.Library\Abmes.DataCollector.Collector.App.Library.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.App.ConsoleApp.Library\Abmes.DataCollector.Collector.App.ConsoleApp.Library.csproj" />
   </ItemGroup>
 
   <ItemGroup>
