@@ -1,11 +1,11 @@
-﻿using Abmes.DataCollector.Collector.App.ConsoleApp.Configuration;
-using Abmes.DataCollector.Collector.App.ConsoleApp.Initialization;
-using Autofac;
+﻿using Abmes.DataCollector.Collector.App.Library.Configuration;
+using Abmes.DataCollector.Collector.App.Library.Initialization;
 using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp;
+namespace Abmes.DataCollector.Collector.App.Library;
 
 public static class ContainerRegistrations
 {

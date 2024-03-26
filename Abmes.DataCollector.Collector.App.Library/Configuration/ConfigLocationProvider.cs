@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp.Configuration;
+namespace Abmes.DataCollector.Collector.App.Library.Configuration;
 
 public class ConfigLocationProvider(
     IBootstrapper bootstrapper) : IConfigLocationProvider

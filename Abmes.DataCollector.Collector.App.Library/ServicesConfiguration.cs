@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp;
+namespace Abmes.DataCollector.Collector.App.Library;
 
 public static class ServicesConfiguration
 {

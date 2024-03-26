@@ -3,7 +3,7 @@ using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Misc;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp.Initialization;
+namespace Abmes.DataCollector.Collector.App.Library.Initialization;
 
 public class MainService(
     IMainCollector mainCollector,

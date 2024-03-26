@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp.Initialization;
+namespace Abmes.DataCollector.Collector.App.Library.Initialization;
 
 public interface IMainService
 {

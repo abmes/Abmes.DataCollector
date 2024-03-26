@@ -6,7 +6,6 @@
     <Nullable>enable</Nullable>
     <WarningsAsErrors>nullable</WarningsAsErrors>
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
-    <RootNamespace>Abmes.DataCollector.Collector.App.ConsoleApp</RootNamespace>
   </PropertyGroup>
 
   <ItemGroup>

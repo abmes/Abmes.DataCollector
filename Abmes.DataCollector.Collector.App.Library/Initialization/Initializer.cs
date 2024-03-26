@@ -2,7 +2,7 @@
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp.Initialization;
+namespace Abmes.DataCollector.Collector.App.Library.Initialization;
 
 public static class Initializer
 {

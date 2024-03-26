@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
 
-namespace Abmes.DataCollector.Collector.App.ConsoleApp.Configuration;
+namespace Abmes.DataCollector.Collector.App.Library.Configuration;
 
 public class CollectorModeProvider(
     IBootstrapper bootstrapper) : ICollectorModeProvider
