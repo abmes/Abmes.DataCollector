@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
   </ItemGroup>
 

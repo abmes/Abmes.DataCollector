@@ -6,8 +6,7 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
 {
     public DataCollectionConfig GetConfig(DataCollectionConfig config, DataCollectionConfig template)
     {
-        return
-            new DataCollectionConfig
+        return new()
             {
                 DataCollectionName = MergeStringValue(config.DataCollectionName, template.DataCollectionName, config),
                 DataGroupName = MergeStringValue(config.DataGroupName, template.DataGroupName, config),
