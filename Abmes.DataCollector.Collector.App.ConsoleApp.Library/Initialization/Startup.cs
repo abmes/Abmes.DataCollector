@@ -16,14 +16,14 @@ public class Startup
             .AddJsonFile("appsettings.development.json", optional: true, reloadOnChange: true)
             .AddEnvironmentVariables();
 
-        Configuration = builder.Build();
+        configuration = builder.Build();
     }
 
-    private IConfiguration Configuration { get; }
+    private readonly IConfiguration configuration;
 
     public void ConfigureServices(IServiceCollection services)
     {
-        services.AddSingleton<IConfiguration>(Configuration);
+        services.AddSingleton(configuration);
 
         services.AddOptions();
         services.AddHttpClient();
@@ -32,10 +32,10 @@ public class Startup
             loggingBuilder.AddSimpleConsole();
             loggingBuilder.AddDebug();
 
-            LoggingConfigurator.Configure(loggingBuilder, Configuration);
+            LoggingConfigurator.Configure(loggingBuilder, configuration);
         });
 
-        ServicesConfiguration.Configure(services, Configuration);
+        ServicesConfiguration.Configure(services, configuration);
     }
 
     // ConfigureContainer is where you can register things directly
@@ -47,8 +47,8 @@ public class Startup
     public void ConfigureContainer(ContainerBuilder builder)
     {
         // Register your own things directly with Autofac
-        ContainerRegistrations.RegisterFor(builder, Configuration);
-        builder.RegisterInstance(Configuration).As<IConfiguration>();
+        ContainerRegistrations.RegisterFor(builder, configuration);
+        builder.RegisterInstance(configuration).As<IConfiguration>();
         //...
     }
 }

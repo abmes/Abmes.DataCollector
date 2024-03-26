@@ -36,7 +36,7 @@ public class MainService(
     {
         if (delaySeconds > 0)
         {
-            logger.LogInformation($"Exitting after {delaySeconds} seconds ...");
+            logger.LogInformation("Exitting after {delaySeconds} seconds ...", delaySeconds);
             Task.Delay(TimeSpan.FromSeconds(delaySeconds)).Wait();
         }
 

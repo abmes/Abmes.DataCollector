@@ -9,6 +9,9 @@ public class TimeFilterProvider(
     {
         var args = Environment.GetCommandLineArgs();
 
-        return string.IsNullOrEmpty(bootstrapper.TimeFilter) ? ((args.Length <= 4) ? string.Empty : args[4]) : bootstrapper.TimeFilter;
+        return
+            string.IsNullOrEmpty(bootstrapper.TimeFilter)
+            ? ((args.Length <= 4) ? string.Empty : args[4])
+            : bootstrapper.TimeFilter;
     }
 }
