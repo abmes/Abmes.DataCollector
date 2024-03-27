@@ -24,11 +24,12 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Data.Amazon\Abmes.DataCollector.Vault.Data.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Data.Azure\Abmes.DataCollector.Vault.Data.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Data.FileSystem\Abmes.DataCollector.Vault.Data.FileSystem.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Data\Abmes.DataCollector.Vault.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Logging\Abmes.DataCollector.Vault.Logging.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Services\Abmes.DataCollector.Vault.Services.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Web.Controllers\Abmes.DataCollector.Vault.Web.Controllers.csproj" />
   </ItemGroup>
 

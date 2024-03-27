@@ -1,8 +1,8 @@
-﻿using Microsoft.Extensions.Logging;
-using Abmes.DataCollector.Vault.Storage;
-using Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Storage;
 using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Common.Data.Storage;
+using Abmes.DataCollector.Vault.Data.Configuration;
+using Abmes.DataCollector.Vault.Data.Storage;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Logging.Storage;
 

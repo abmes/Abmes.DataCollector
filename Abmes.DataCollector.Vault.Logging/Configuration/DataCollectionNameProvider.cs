@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Vault.Configuration;
+using Abmes.DataCollector.Vault.Data.Configuration;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Logging.Configuration;

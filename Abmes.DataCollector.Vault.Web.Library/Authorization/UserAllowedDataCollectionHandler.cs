@@ -1,5 +1,4 @@
-﻿using Abmes.DataCollector.Vault.Common.Configuration;
-using Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Vault.Data.Configuration;
 using Microsoft.AspNetCore.Authorization;
 
 namespace Abmes.DataCollector.Vault.Web.Library.Authorization;

@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Vault.Data.Amazon.Storage;
-using Abmes.DataCollector.Vault.Storage;
+using Abmes.DataCollector.Vault.Data.Storage;
 using Autofac;
 
 namespace Abmes.DataCollector.Vault.Data.Amazon;

@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Vault.Data.Configuration;
 
 namespace Abmes.DataCollector.Vault.Data.Amazon.Storage;
 

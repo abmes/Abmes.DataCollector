@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Data.Azure.Storage;
 using Abmes.DataCollector.Common.Data.Storage;
-using Abmes.DataCollector.Vault.Configuration;
+using Abmes.DataCollector.Vault.Data.Configuration;
 using Azure.Storage;
 using Azure.Storage.Sas;
 

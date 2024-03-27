@@ -14,7 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Vault.Common\Abmes.DataCollector.Vault.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Services\Abmes.DataCollector.Vault.Services.csproj" />
   </ItemGroup>
 
 </Project>

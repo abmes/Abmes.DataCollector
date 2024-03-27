@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Vault.Configuration;
-using Abmes.DataCollector.Vault.Storage;
+﻿using Abmes.DataCollector.Vault.Data.Configuration;
+using Abmes.DataCollector.Vault.Data.Storage;
 
 namespace Abmes.DataCollector.Vault.Logging.Storage;
 

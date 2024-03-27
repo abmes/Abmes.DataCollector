@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Vault.Configuration;
+﻿using Abmes.DataCollector.Vault.Data.Configuration;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -12,10 +12,11 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
-        Abmes.DataCollector.Vault.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Vault.Data.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.Amazon.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Vault.Services.ContainerRegistrations.RegisterFor(builder);
 
         builder.RegisterType<Abmes.DataCollector.Vault.Web.Library.Configuration.DataCollectionNameProvider>().Named<IDataCollectionNameProvider>("base");
 
