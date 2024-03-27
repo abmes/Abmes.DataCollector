@@ -13,7 +13,7 @@ public static class ContainerRegistrations
 
         builder.RegisterType<Configuration.Caching.ConfigFileCache>().As<Configuration.Caching.IConfigFileCache>().SingleInstance();
 
-        builder.RegisterType<Configuration.Caching.ConfigFileProvider>().Named<IConfigProvider>("CachingDecorator");
+        builder.RegisterType<Configuration.Caching.CachingConfigFileProvider>().Named<IConfigProvider>("CachingDecorator");
         builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "logging").As<IConfigProvider>();
 
         builder.RegisterType<Configuration.Logging.ConfigProvider>().Named<IConfigProvider>("LoggingDecorator");

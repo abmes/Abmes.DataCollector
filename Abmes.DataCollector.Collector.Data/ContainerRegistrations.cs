@@ -17,7 +17,7 @@ public static class ContainerRegistrations
         builder.RegisterType<DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("base");
         builder.RegisterType<IdentityServiceHttpRequestConfigurator>().As<IIdentityServiceHttpRequestConfigurator>();
 
-        builder.RegisterType<Configuration.Logging.DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("LoggingDecorator");
+        builder.RegisterType<Configuration.Logging.LoggingDestinationsConfigProvider>().Named<IDestinationsConfigProvider>("LoggingDecorator");
         builder.RegisterDecorator<IDestinationsConfigProvider>((x, inner) => x.ResolveNamed<IDestinationsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDestinationsConfigProvider>();
 
         builder.RegisterType<Destinations.Logging.Destination>().As<Destinations.Logging.ILoggingDestination>();
