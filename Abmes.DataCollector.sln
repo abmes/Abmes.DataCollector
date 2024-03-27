@@ -13,8 +13,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Services", "Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj", "{55611575-C016-4A27-9301-5196C79F4F29}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Caching", "Abmes.DataCollector.Collector.Caching\Abmes.DataCollector.Collector.Caching.csproj", "{D0A0BD15-82F3-4160-AF20-20C69925FC01}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Logging", "Abmes.DataCollector.Collector.Logging\Abmes.DataCollector.Collector.Logging.csproj", "{5D2CBE49-2521-4498-832E-52A1B8313A88}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Amazon", "Abmes.DataCollector.Collector.Data.Amazon\Abmes.DataCollector.Collector.Data.Amazon.csproj", "{91B96DD6-3A61-436C-8C6D-B9782A6E9430}"
@@ -77,7 +75,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data", "Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj", "{AD1F487C-BA54-492A-A119-AD6EEEA5031E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Common", "Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj", "{BC814FB8-445E-46AB-8BF9-C7C31D6DCA46}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Common", "Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj", "{BC814FB8-445E-46AB-8BF9-C7C31D6DCA46}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -93,10 +91,6 @@ Global
 		{55611575-C016-4A27-9301-5196C79F4F29}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{55611575-C016-4A27-9301-5196C79F4F29}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{55611575-C016-4A27-9301-5196C79F4F29}.Release|Any CPU.Build.0 = Release|Any CPU
-		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{D0A0BD15-82F3-4160-AF20-20C69925FC01}.Release|Any CPU.Build.0 = Release|Any CPU
 		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{5D2CBE49-2521-4498-832E-52A1B8313A88}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -228,7 +222,6 @@ Global
 	GlobalSection(NestedProjects) = preSolution
 		{F38B6814-FDF9-4906-BBC9-43B6C308EA6B} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 		{55611575-C016-4A27-9301-5196C79F4F29} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
-		{D0A0BD15-82F3-4160-AF20-20C69925FC01} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{5D2CBE49-2521-4498-832E-52A1B8313A88} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{91B96DD6-3A61-436C-8C6D-B9782A6E9430} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{008B8852-C1E7-469D-A42B-D0220A772D89} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
