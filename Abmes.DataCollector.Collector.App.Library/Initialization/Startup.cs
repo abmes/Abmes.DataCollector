@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Logging;
+﻿using Abmes.DataCollector.Collector.Logging.Amazon;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

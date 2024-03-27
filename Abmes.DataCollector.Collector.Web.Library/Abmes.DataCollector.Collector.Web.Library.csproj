@@ -19,13 +19,12 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Azure\Abmes.DataCollector.Collector.Data.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Web\Abmes.DataCollector.Collector.Data.Web.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Logging\Abmes.DataCollector.Collector.Logging.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Logging.Amazon\Abmes.DataCollector.Collector.Logging.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Web.Controllers\Abmes.DataCollector.Collector.Web.Controllers.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Amazon\Abmes.DataCollector.Common.Data.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Azure\Abmes.DataCollector.Common.Data.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Logging\Abmes.DataCollector.Common.Logging.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
   </ItemGroup>
 

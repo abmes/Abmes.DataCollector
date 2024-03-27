@@ -34,9 +34,6 @@ public static class ContainerRegistrations
         builder.RegisterType<CollectorModeProvider>().As<ICollectorModeProvider>();
         builder.RegisterType<TimeFilterProvider>().As<ITimeFilterProvider>();
 
-        Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
-        Abmes.DataCollector.Collector.Logging.ContainerRegistrations.RegisterFor(builder);
-
         Abmes.DataCollector.Collector.Common.ContainerRegistrations.RegisterFor(builder);
     }
 }

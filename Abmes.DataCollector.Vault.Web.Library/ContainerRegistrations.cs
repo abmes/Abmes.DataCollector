@@ -19,7 +19,6 @@ public static class ContainerRegistrations
 
         builder.RegisterType<Abmes.DataCollector.Vault.Web.Library.Configuration.DataCollectionNameProvider>().Named<IDataCollectionNameProvider>("base");
 
-        Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Logging.ContainerRegistrations.RegisterFor(builder);
     }
 }

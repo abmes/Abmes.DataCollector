@@ -1,4 +1,4 @@
-using Abmes.DataCollector.Collector.Logging;
+using Abmes.DataCollector.Collector.Logging.Amazon;
 using Abmes.DataCollector.Utils.AspNetCore;
 using Autofac;
 using Microsoft.AspNetCore.Builder;

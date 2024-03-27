@@ -16,5 +16,7 @@ public static class ContainerRegistrations
         builder.RegisterType<Configuration.Caching.ConfigFileProvider>().Named<IConfigProvider>("CachingDecorator");
         builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("CachingDecorator", TypedParameter.From(inner)), "logging").As<IConfigProvider>();
 
+        builder.RegisterType<Configuration.Logging.ConfigProvider>().Named<IConfigProvider>("LoggingDecorator");
+        builder.RegisterDecorator<IConfigProvider>((x, inner) => x.ResolveNamed<IConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").Named<IConfigProvider>("logging");
     }
 }

@@ -9,5 +9,8 @@ public static class ContainerRegistrations
     {
         builder.RegisterType<Configuration.Caching.ConfigSetNameProvider>().Named<IConfigSetNameProvider>("CachingDecorator");
         builder.RegisterDecorator<IConfigSetNameProvider>((x, inner) => x.ResolveNamed<IConfigSetNameProvider>("CachingDecorator", TypedParameter.From(inner)), "logging").As<IConfigSetNameProvider>().SingleInstance();
+
+        builder.RegisterType<Configuration.Logging.ConfigSetNameProvider>().Named<IConfigSetNameProvider>("LoggingDecorator");
+        builder.RegisterDecorator<IConfigSetNameProvider>((x, inner) => x.ResolveNamed<IConfigSetNameProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").Named<IConfigSetNameProvider>("logging");
     }
 }
