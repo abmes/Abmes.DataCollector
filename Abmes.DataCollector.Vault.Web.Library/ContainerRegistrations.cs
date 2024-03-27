@@ -21,7 +21,5 @@ public static class ContainerRegistrations
 
         Abmes.DataCollector.Common.Logging.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Logging.ContainerRegistrations.RegisterFor(builder);
-
-        Abmes.DataCollector.Common.Caching.ContainerRegistrations.RegisterFor(builder);
     }
 }

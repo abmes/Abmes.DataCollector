@@ -18,7 +18,6 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Caching\Abmes.DataCollector.Common.Caching.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Amazon\Abmes.DataCollector.Common.Data.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Azure\Abmes.DataCollector.Common.Data.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.FileSystem\Abmes.DataCollector.Common.Data.FileSystem.csproj" />
