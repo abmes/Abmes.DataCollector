@@ -1,6 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
-using Abmes.DataCollector.Collector.Services.Collecting;
+﻿using Abmes.DataCollector.Collector.Services.Collecting;
 using Abmes.DataCollector.Utils;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Logging.Collecting;
 

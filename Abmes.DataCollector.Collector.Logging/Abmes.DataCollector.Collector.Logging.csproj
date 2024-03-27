@@ -9,6 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Amazon\Abmes.DataCollector.Collector.Data.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />

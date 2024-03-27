@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Destinations;
+﻿namespace Abmes.DataCollector.Collector.Data.Destinations;
 
 public interface IDestinationProvider
 {

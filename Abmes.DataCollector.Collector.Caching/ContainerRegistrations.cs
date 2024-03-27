@@ -1,5 +1,5 @@
-﻿using Autofac;
-using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
+using Autofac;
 
 namespace Abmes.DataCollector.Collector.Caching;
 

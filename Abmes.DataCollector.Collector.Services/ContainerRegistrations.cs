@@ -1,8 +1,8 @@
-﻿using Autofac;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Services.Collecting;
-using Abmes.DataCollector.Collector.Services.Destinations;
-using Abmes.DataCollector.Collector.Services.Misc;
 using Abmes.DataCollector.Collector.Services.Configuration;
+using Abmes.DataCollector.Collector.Services.Misc;
+using Autofac;
 
 namespace Abmes.DataCollector.Collector.Services;
 
@@ -10,10 +10,8 @@ public static class ContainerRegistrations
 {
     public static void RegisterFor(ContainerBuilder builder)
     {
-        builder.RegisterType<DestinationsJsonConfigProvider>().As<IDestinationsJsonConfigProvider>();
         builder.RegisterType<DataCollectionsJsonConfigProvider>().As<IDataCollectionsJsonConfigsProvider>();
-        builder.RegisterType<DestinationProvider>().As<IDestinationProvider>();
-        builder.RegisterType<DestinationResolverProvider>().As<IDestinationResolverProvider>();
+
         builder.RegisterType<MainCollector>().Named<IMainCollector>("base");
         builder.RegisterType<Collecting.DataCollector>().Named<IDataCollector>("base");
         builder.RegisterType<CollectItemsCollector>().Named<ICollectItemsCollector>("base");
@@ -27,8 +25,6 @@ public static class ContainerRegistrations
         builder.RegisterType<DateFormattedDataCollectionConfigProvider>().As<IDateFormattedDataCollectionConfigProvider>();
         builder.RegisterType<MergedDataCollectionConfigProvider>().As<IMergedDataCollectionConfigProvider>();
         builder.RegisterType<DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("base");
-        builder.RegisterType<DestinationsConfigProvider>().Named<IDestinationsConfigProvider>("base");
-        builder.RegisterType<IdentityServiceHttpRequestConfigurator>().As<IIdentityServiceHttpRequestConfigurator>();
 
         builder.RegisterType<Bootstrapper>().As<IBootstrapper>().SingleInstance();
         builder.RegisterType<BootstrapperConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");

@@ -1,5 +1,5 @@
-﻿using System.Text.Json;
-using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Utils;
+using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
 

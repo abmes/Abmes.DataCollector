@@ -1,9 +1,9 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Collector.Data.Configuration;
+using Abmes.DataCollector.Common.Data.Amazon.Storage;
+using Abmes.DataCollector.Utils;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;
-using Abmes.DataCollector.Common.Data.Amazon.Storage;
-using Abmes.DataCollector.Collector.Services.Configuration;
 using CommunityToolkit.HighPerformance;
 using Microsoft.Extensions.Logging;
 

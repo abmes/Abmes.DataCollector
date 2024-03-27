@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Common.Configuration;
 
 namespace Abmes.DataCollector.Collector.Caching.Configuration;
 

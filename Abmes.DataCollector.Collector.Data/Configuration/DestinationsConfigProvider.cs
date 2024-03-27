@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Data.Configuration;
 
-namespace Abmes.DataCollector.Collector.Services.Configuration;
+namespace Abmes.DataCollector.Collector.Data.Configuration;
 
 public class DestinationsConfigProvider(
     IDestinationsJsonConfigProvider destinationsJsonConfigProvider,

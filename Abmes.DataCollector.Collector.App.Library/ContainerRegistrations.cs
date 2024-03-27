@@ -1,5 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.App.Library.Configuration;
 using Abmes.DataCollector.Collector.App.Library.Initialization;
+using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
 using Autofac;
@@ -16,6 +17,8 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.Web.ContainerRegistrations.RegisterFor(builder);
+
+        Abmes.DataCollector.Collector.Data.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Collector.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);

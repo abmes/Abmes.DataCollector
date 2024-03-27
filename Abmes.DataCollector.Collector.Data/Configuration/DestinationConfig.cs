@@ -1,10 +1,6 @@
 ﻿using Abmes.DataCollector.Utils;
-using System.Text.Json.Serialization;
 
-namespace Abmes.DataCollector.Collector.Services.Configuration;
-
-[JsonConverter(typeof(JsonStringEnumConverter))]
-public enum GarbageCollectionMode { None, Waterfall, Excess }
+namespace Abmes.DataCollector.Collector.Data.Configuration;
 
 public record DestinationConfig
 (

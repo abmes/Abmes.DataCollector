@@ -14,6 +14,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Caching\Abmes.DataCollector.Collector.Caching.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Console\Abmes.DataCollector.Collector.Data.Console.csproj" />

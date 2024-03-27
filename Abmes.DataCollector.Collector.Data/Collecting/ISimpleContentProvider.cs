@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Collecting;
+﻿namespace Abmes.DataCollector.Collector.Data.Collecting;
 
 public interface ISimpleContentProvider
 {

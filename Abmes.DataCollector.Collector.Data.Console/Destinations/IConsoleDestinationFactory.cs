@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Data.Configuration;
 
 namespace Abmes.DataCollector.Collector.Data.Console.Destinations;
 

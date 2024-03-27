@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Services.Collecting;
-using Abmes.DataCollector.Collector.Services.Configuration;
+using Abmes.DataCollector.Collector.Data.Configuration;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 

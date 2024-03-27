@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Destinations;
+﻿using Abmes.DataCollector.Collector.Data.Destinations;
+using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Common.Data.Storage;
 using Abmes.DataCollector.Utils;
 using System.Collections.Concurrent;

@@ -10,6 +10,8 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Common.Data.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
+
+        Abmes.DataCollector.Collector.Data.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Collector.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Web.ContainerRegistrations.RegisterFor(builder);

@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Services.Destinations;
+﻿using Abmes.DataCollector.Collector.Data.Destinations;
 
 namespace Abmes.DataCollector.Collector.Data.Azure.Destinations;
 

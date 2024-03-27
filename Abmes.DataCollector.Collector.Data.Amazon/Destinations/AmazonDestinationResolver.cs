@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Destinations;
+﻿using Abmes.DataCollector.Collector.Data.Configuration;
+using Abmes.DataCollector.Collector.Data.Destinations;
 
 namespace Abmes.DataCollector.Collector.Data.Amazon.Destinations;
 

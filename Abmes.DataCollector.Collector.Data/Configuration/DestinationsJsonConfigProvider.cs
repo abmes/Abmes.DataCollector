@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Abmes.DataCollector.Collector.Services.Configuration;
+namespace Abmes.DataCollector.Collector.Data.Configuration;
 
 public class DestinationsJsonConfigProvider : IDestinationsJsonConfigProvider
 {

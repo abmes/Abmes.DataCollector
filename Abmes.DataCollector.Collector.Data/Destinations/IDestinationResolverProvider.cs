@@ -1,6 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Data.Configuration;
 
-namespace Abmes.DataCollector.Collector.Services.Destinations;
+namespace Abmes.DataCollector.Collector.Data.Destinations;
 
 public interface IDestinationResolverProvider
 {

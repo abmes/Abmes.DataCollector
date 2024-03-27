@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Configuration;
+﻿namespace Abmes.DataCollector.Collector.Data.Configuration;
 
 public interface IDestinationsConfigProvider
 {
