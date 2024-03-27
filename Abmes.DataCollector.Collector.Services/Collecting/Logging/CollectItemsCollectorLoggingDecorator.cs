@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
-public class CollectItemsCollector(
-    ILogger<CollectItemsCollector> logger,
+public class CollectItemsCollectorLoggingDecorator(
+    ILogger<CollectItemsCollectorLoggingDecorator> logger,
     ICollectItemsCollector collectItemsCollector) : ICollectItemsCollector
 {
     public async Task<IEnumerable<string>> CollectItemsAsync(IEnumerable<CollectItem> collectItems, string dataCollectionName, IEnumerable<IDestination> destinations, DataCollectionConfig dataCollectionConfig, DateTimeOffset collectMoment, CancellationToken cancellationToken)

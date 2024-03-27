@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Data.Configuration.Logging;
 
-public class LoggingDestinationsConfigProvider(
-    ILogger<LoggingDestinationsConfigProvider> logger,
+public class DestinationsConfigProviderLoggingDecorator(
+    ILogger<DestinationsConfigProviderLoggingDecorator> logger,
     IDestinationsConfigProvider destinationsConfigProvider) : IDestinationsConfigProvider
 {
     public async Task<IEnumerable<DestinationConfig>> GetDestinationsConfigAsync(string configSetName, CancellationToken cancellationToken)

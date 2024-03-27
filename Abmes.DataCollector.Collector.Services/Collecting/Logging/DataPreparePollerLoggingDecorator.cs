@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
-public class DataPreparePoller(
-    ILogger<DataPreparePoller> logger,
+public class DataPreparePollerLoggingDecorator(
+    ILogger<DataPreparePollerLoggingDecorator> logger,
     IDataPreparePoller dataPreparePoller) : IDataPreparePoller
 {
     public async Task<DataPrepareResult> GetDataPrepareResultAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, CancellationToken cancellationToken)

@@ -1,6 +1,6 @@
 ﻿namespace Abmes.DataCollector.Common.Data.Configuration.Caching;
 
-public class CachingConfigFileProvider(
+public class ConfigFileProviderCachingDecorator(
     IConfigProvider configFileProvider,
     IConfigFileCache configFileCache) : IConfigProvider
 {

@@ -4,8 +4,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
-public class DataPreparer(
-    ILogger<DataPreparer> logger,
+public class DataPreparerLoggingDecorator(
+    ILogger<DataPreparerLoggingDecorator> logger,
     IDataPreparer dataPreparer) : IDataPreparer
 {
     public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)

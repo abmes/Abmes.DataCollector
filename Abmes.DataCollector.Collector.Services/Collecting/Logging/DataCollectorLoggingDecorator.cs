@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
-public class DataCollector(
-    ILogger<DataCollector> logger,
+public class DataCollectorLoggingDecorator(
+    ILogger<DataCollectorLoggingDecorator> logger,
     IDataCollector dataCollector) : IDataCollector
 {
     public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)

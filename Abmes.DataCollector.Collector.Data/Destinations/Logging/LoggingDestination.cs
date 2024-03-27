@@ -4,9 +4,9 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Data.Destinations.Logging;
 
-public class Destination(
+public class LoggingDestination(
     IDestination destination,
-    ILogger<Destination> logger) : ILoggingDestination
+    ILogger<LoggingDestination> logger) : ILoggingDestination
 {
     public DestinationConfig DestinationConfig => destination.DestinationConfig;
 

@@ -5,8 +5,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
-public class MainCollector(
-    ILogger<MainCollector> logger,
+public class MainCollectorLoggingDecorator(
+    ILogger<MainCollectorLoggingDecorator> logger,
     IMainCollector collector,
     IConfigSetNameProvider configSetNameProvider,
     ICollectorModeProvider collectorModeProvider) : IMainCollector

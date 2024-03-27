@@ -1,6 +1,6 @@
 ﻿namespace Abmes.DataCollector.Collector.Common.Configuration.Caching;
 
-public class CachingConfigSetNameProvider(
+public class ConfigSetNameProviderCachingDecorator(
     IConfigSetNameProvider configSetNameProvider) : IConfigSetNameProvider
 {
     private string? _configSetName;

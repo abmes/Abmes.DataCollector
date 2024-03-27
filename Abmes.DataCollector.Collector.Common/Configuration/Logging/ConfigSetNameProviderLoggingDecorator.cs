@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Common.Configuration.Logging;
 
-public class LoggingConfigSetNameProvider(
-    ILogger<LoggingConfigSetNameProvider> logger,
+public class ConfigSetNameProviderLoggingDecorator(
+    ILogger<ConfigSetNameProviderLoggingDecorator> logger,
     IConfigSetNameProvider configSetNameProvider) : IConfigSetNameProvider
 {
     public string GetConfigSetName()

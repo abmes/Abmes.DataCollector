@@ -41,31 +41,31 @@ public static class ContainerRegistrations
         builder.RegisterType<DateFormattedDataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("DateFormattingDecorator");
         builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("DateFormattingDecorator", TypedParameter.From(inner)), "filtering").Named<IDataCollectionsConfigProvider>("dateFormatting");
 
-        builder.RegisterType<Collecting.Logging.MainCollector>().Named<IMainCollector>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.MainCollectorLoggingDecorator>().Named<IMainCollector>("LoggingDecorator");
         builder.RegisterDecorator<IMainCollector>((x, inner) => x.ResolveNamed<IMainCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IMainCollector>();
 
-        builder.RegisterType<Collecting.Logging.DataCollector>().Named<IDataCollector>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.DataCollectorLoggingDecorator>().Named<IDataCollector>("LoggingDecorator");
         builder.RegisterDecorator<IDataCollector>((x, inner) => x.ResolveNamed<IDataCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollector>();
 
-        builder.RegisterType<Collecting.Logging.CollectItemsCollector>().Named<ICollectItemsCollector>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.CollectItemsCollectorLoggingDecorator>().Named<ICollectItemsCollector>("LoggingDecorator");
         builder.RegisterDecorator<ICollectItemsCollector>((x, inner) => x.ResolveNamed<ICollectItemsCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectItemsCollector>();
 
-        builder.RegisterType<Collecting.Logging.DataPreparer>().Named<IDataPreparer>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.DataPreparerLoggingDecorator>().Named<IDataPreparer>("LoggingDecorator");
         builder.RegisterDecorator<IDataPreparer>((x, inner) => x.ResolveNamed<IDataPreparer>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataPreparer>();
 
-        builder.RegisterType<Collecting.Logging.DataPreparePoller>().Named<IDataPreparePoller>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.DataPreparePollerLoggingDecorator>().Named<IDataPreparePoller>("LoggingDecorator");
         builder.RegisterDecorator<IDataPreparePoller>((x, inner) => x.ResolveNamed<IDataPreparePoller>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataPreparePoller>();
 
-        builder.RegisterType<Collecting.Logging.CollectItemsProvider>().Named<ICollectItemsProvider>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.CollectItemsProviderLoggingDecorator>().Named<ICollectItemsProvider>("LoggingDecorator");
         builder.RegisterDecorator<ICollectItemsProvider>((x, inner) => x.ResolveNamed<ICollectItemsProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectItemsProvider>();
 
-        builder.RegisterType<Collecting.Logging.CollectUrlExtractor>().Named<ICollectUrlExtractor>("LoggingDecorator");
+        builder.RegisterType<Collecting.Logging.CollectUrlExtractorLoggingDecorator>().Named<ICollectUrlExtractor>("LoggingDecorator");
         builder.RegisterDecorator<ICollectUrlExtractor>((x, inner) => x.ResolveNamed<ICollectUrlExtractor>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectUrlExtractor>();
 
-        builder.RegisterType<Configuration.Logging.DataCollectionsConfigProvider>().Named<IDataCollectionsConfigProvider>("LoggingDecorator");
+        builder.RegisterType<Configuration.Logging.DataCollectionsConfigProviderLoggingDecorator>().Named<IDataCollectionsConfigProvider>("LoggingDecorator");
         builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "dateFormatting").As<IDataCollectionsConfigProvider>();
 
-        builder.RegisterType<Misc.Logging.Delay>().Named<IDelay>("LoggingDecorator");
+        builder.RegisterType<Misc.Logging.DelayLoggingDecorator>().Named<IDelay>("LoggingDecorator");
         builder.RegisterDecorator<IDelay>((x, inner) => x.ResolveNamed<IDelay>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDelay>();
     }
 }

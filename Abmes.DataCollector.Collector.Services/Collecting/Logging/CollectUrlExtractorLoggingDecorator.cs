@@ -3,8 +3,8 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
-public class CollectUrlExtractor(
-    ILogger<CollectUrlExtractor> logger,
+public class CollectUrlExtractorLoggingDecorator(
+    ILogger<CollectUrlExtractorLoggingDecorator> logger,
     ICollectUrlExtractor collectUrlExtractor) : ICollectUrlExtractor
 {
     public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string? collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string? identityServiceAccessToken, CancellationToken cancellationToken)
