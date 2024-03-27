@@ -8,6 +8,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Web.Library;
 
@@ -26,7 +27,10 @@ public class Startup(
 
         services.AddOptions();
         services.AddHttpClient();
-        services.AddLogging();
+        services.AddLogging(loggingBuilder =>
+        {
+            loggingBuilder.AddSimpleConsole();
+        });
 
         var identityServerAuthenticationSettings = 
                 configuration
