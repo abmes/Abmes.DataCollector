@@ -25,8 +25,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data.Amazon", "Abmes.DataCollector.Common.Data.Amazon\Abmes.DataCollector.Common.Data.Amazon.csproj", "{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Logging", "Abmes.DataCollector.Vault.Logging\Abmes.DataCollector.Vault.Logging.csproj", "{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.Amazon", "Abmes.DataCollector.Vault.Data.Amazon\Abmes.DataCollector.Vault.Data.Amazon.csproj", "{1B611AFE-974E-48D0-B9F3-264C07C49B62}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.Library", "Abmes.DataCollector.Vault.Web.Library\Abmes.DataCollector.Vault.Web.Library.csproj", "{82B7438F-DFF6-472D-B704-F8C60BED092A}"
@@ -73,7 +71,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Common", "Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj", "{BC814FB8-445E-46AB-8BF9-C7C31D6DCA46}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Data", "Abmes.DataCollector.Vault.Data\Abmes.DataCollector.Vault.Data.csproj", "{DEE23059-08E6-4FFA-9D4A-E5A04D25B7E3}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data", "Abmes.DataCollector.Vault.Data\Abmes.DataCollector.Vault.Data.csproj", "{DEE23059-08E6-4FFA-9D4A-E5A04D25B7E3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -113,10 +111,6 @@ Global
 		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}.Release|Any CPU.Build.0 = Release|Any CPU
-		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D}.Release|Any CPU.Build.0 = Release|Any CPU
 		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{1B611AFE-974E-48D0-B9F3-264C07C49B62}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -222,7 +216,6 @@ Global
 		{8347C7A7-1DFC-4D0F-95D8-87C92517C1BA} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{C2C1C414-B5EA-4829-A5E1-882E930A58E9} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{4B9208C6-8ED8-4553-99D9-63AB35C8B66F} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
-		{E448994D-DA9B-4A8D-A2D7-A70E6E85A45D} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{1B611AFE-974E-48D0-B9F3-264C07C49B62} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{82B7438F-DFF6-472D-B704-F8C60BED092A} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{5CE75F34-60D7-4389-9A57-563DC897D283} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
