@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Data.Configuration;
 using Abmes.DataCollector.Collector.Data.Destinations;
-using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
+using Abmes.DataCollector.Collector.Services.Abstractions;
 using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Misc;
 using Abmes.DataCollector.Common;

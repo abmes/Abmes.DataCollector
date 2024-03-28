@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Services.Abstractions.Collecting;
-using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions;
+using Abmes.DataCollector.Collector.Services.Abstractions.AppConfig;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Abmes.DataCollector.Collector.Web.Controllers;

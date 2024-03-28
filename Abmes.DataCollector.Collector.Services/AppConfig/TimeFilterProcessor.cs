@@ -1,6 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Services.Abstractions.Misc;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions.AppConfig;
 
-namespace Abmes.DataCollector.Collector.Services.Misc;
+namespace Abmes.DataCollector.Collector.Services.AppConfig;
 
 public class TimeFilterProcessor : ITimeFilterProcessor
 {
@@ -22,16 +22,16 @@ public class TimeFilterProcessor : ITimeFilterProcessor
     {
         var timeFilterParts = timeFilter.Split(':');
 
-        if ((timeFilterParts.Length == 0) || (timeFilterParts.Length > 3))
+        if (timeFilterParts.Length == 0 || timeFilterParts.Length > 3)
         {
             InvalidTimeFilterError(timeFilter);
         }
 
-        var timeZoneId = (timeFilterParts.Length == 3) ? timeFilterParts[2] : "";
+        var timeZoneId = timeFilterParts.Length == 3 ? timeFilterParts[2] : "";
         var timeZoneDateTime = GetTimeZoneDateTime(moment, timeZoneId);
 
-        return 
-            TimeInMultiRange(timeZoneDateTime.Hour, timeFilterParts[0]) && 
+        return
+            TimeInMultiRange(timeZoneDateTime.Hour, timeFilterParts[0]) &&
             TimeInMultiRange(timeZoneDateTime.Minute, timeFilterParts[1]);
     }
 
@@ -52,15 +52,15 @@ public class TimeFilterProcessor : ITimeFilterProcessor
 
         var rangeParts = range.Split('-');
 
-        if ((rangeParts.Length == 1) &&
-            (int.TryParse(rangeParts[0], out var value)))
+        if (rangeParts.Length == 1 &&
+            int.TryParse(rangeParts[0], out var value))
         {
-            return (x == value);
+            return x == value;
         }
 
-        if ((rangeParts.Length == 2) &&
-            (int.TryParse(rangeParts[0], out var start)) &&
-            (int.TryParse(rangeParts[1], out var end)))
+        if (rangeParts.Length == 2 &&
+            int.TryParse(rangeParts[0], out var start) &&
+            int.TryParse(rangeParts[1], out var end))
         {
             return (start <= x) && (x <= end);
         }

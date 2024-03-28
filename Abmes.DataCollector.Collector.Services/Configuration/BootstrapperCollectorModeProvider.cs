@@ -1,8 +1,9 @@
-﻿using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions;
+using Abmes.DataCollector.Collector.Services.Abstractions.AppConfig;
 
 namespace Abmes.DataCollector.Collector.Services.Configuration;
 
-public class BootstrapperCollectorModeProvider(  // todo: this should be in web.library
+public class BootstrapperCollectorModeProvider(
     IBootstrapper bootstrapper) : ICollectorModeProvider
 {
     public CollectorMode GetCollectorMode()

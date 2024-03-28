@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Abstractions.Misc;
+﻿namespace Abmes.DataCollector.Collector.Services.Abstractions.AppConfig;
 
 public interface ITimeFilterProcessor
 {

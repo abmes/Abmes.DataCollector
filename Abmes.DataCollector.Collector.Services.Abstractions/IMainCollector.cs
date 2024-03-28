@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Abstractions.Collecting;
+﻿namespace Abmes.DataCollector.Collector.Services.Abstractions;
 
 public interface IMainCollector
 {

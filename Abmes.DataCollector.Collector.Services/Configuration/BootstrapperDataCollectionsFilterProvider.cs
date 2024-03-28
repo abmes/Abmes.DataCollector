@@ -1,8 +1,8 @@
-﻿using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions.AppConfig;
 
 namespace Abmes.DataCollector.Collector.Services.Configuration;
 
-public class BootstrapperDataCollectionsFilterProvider(  // todo: this should be in web.library
+public class BootstrapperDataCollectionsFilterProvider(
     IBootstrapper bootstrapper) : IDataCollectionsFilterProvider
 {
     public async Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken)
