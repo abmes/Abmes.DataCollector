@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Data.Collecting;
 using Abmes.DataCollector.Collector.Data.Configuration;
 using Abmes.DataCollector.Collector.Data.Misc;
-using Abmes.DataCollector.Common.Data.Storage;
+using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
 using Microsoft.AspNetCore.Authentication;
 using System.Text;

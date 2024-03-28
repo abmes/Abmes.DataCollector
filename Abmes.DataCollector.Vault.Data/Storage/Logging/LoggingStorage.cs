@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Storage;
+﻿using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Data.Configuration;
 using Microsoft.Extensions.Logging;

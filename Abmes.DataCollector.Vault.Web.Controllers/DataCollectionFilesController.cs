@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Storage;
+﻿using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Vault.Services;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;

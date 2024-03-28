@@ -1,6 +1,6 @@
 ﻿using System.Text.Json.Serialization;
 
-namespace Abmes.DataCollector.Common.Data.Storage;
+namespace Abmes.DataCollector.Common;
 
 public record FileInfoData
 (

@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Common.Data.Storage;
+using Abmes.DataCollector.Common;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
 
