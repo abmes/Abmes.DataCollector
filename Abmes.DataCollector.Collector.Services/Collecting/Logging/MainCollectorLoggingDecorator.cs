@@ -14,7 +14,7 @@ public class MainCollectorLoggingDecorator(
 {
     private static string ResultPrefix(bool result)
     {
-        return (result ? "Finished" : "ERRORS occured when");
+        return result ? "Finished" : "ERRORS occured when";
     }
 
     public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
@@ -28,7 +28,7 @@ public class MainCollectorLoggingDecorator(
         {
             IEnumerable<string> result;
 
-            logger.LogInformation($"[{configSetName}] Started {mode}ing data collections.");
+            logger.LogInformation("[{configSetName}] Started {mode}ing data collections.", configSetName, mode);
 
             var watch = System.Diagnostics.Stopwatch.StartNew();
             try
@@ -40,15 +40,20 @@ public class MainCollectorLoggingDecorator(
                 watch.Stop();
             }
 
-            var failedDataCollectionNames = result.Any() ? " (" + string.Join(",", result) + ")" : null;
+            var failedDataCollectionNames = result.Any() ? $" ({string.Join(",", result)})" : null;
 
-            logger.LogInformation($"[{configSetName}] {ResultPrefix(!result.Any())} {mode}ing data collections{failedDataCollectionNames}. Elapsed time: {watch.Elapsed}");
+            logger.LogInformation(
+                "[{configSetName}] {resultPrefix} {mode}ing data collections{failedDataCollectionNames}. Elapsed time: {elapsed}",
+                configSetName, ResultPrefix(!result.Any()), mode, failedDataCollectionNames, watch.Elapsed);
 
             return result;
         }
         catch (Exception e)
         {
-            logger.LogCritical($"[{configSetName}] " + ResultPrefix(false) + " {mode}ing data collections: {errorMessage}", mode, e.GetAggregateMessages());
+            logger.LogCritical(
+                "[{configSetName}] {resultPrefix} {mode}ing data collections: {errorMessage}",
+                configSetName, ResultPrefix(false), mode, e.GetAggregateMessages());
+
             throw;
         }
     }

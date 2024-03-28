@@ -10,7 +10,7 @@ public class DelayLoggingDecorator(
     {
         if (timeSpan.TotalSeconds > 0)
         {
-            logger.LogInformation($"Waiting {reason} for {timeSpan.TotalSeconds} seconds ...");
+            logger.LogInformation("Waiting {reason} for {seconds} seconds ...", reason, timeSpan.TotalSeconds);
         }
 
         await delay.DelayAsync(timeSpan, reason, cancellationToken);

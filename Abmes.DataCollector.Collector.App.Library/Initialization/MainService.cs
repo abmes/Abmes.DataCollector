@@ -26,7 +26,7 @@ public class MainService(
         }
         catch (Exception e)
         {
-            logger.LogCritical(e, e.Message);
+            logger.LogCritical(e, "{message}", e.Message);
             return DelayedExitCode(1, exitDelaySeconds);
         }
     }

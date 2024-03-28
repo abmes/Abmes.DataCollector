@@ -40,7 +40,7 @@ public class DataPreparePollerLoggingDecorator(
         }
         catch (Exception e)
         {
-            logger.LogCritical($"Error getting data name for prepare status polling: {pollUrl}; {e.GetAggregateMessages()}");
+            logger.LogCritical("Error getting data name for prepare status polling: {pollUrl}; {aggregateMessages}", pollUrl, e.GetAggregateMessages());
             return "<unknown>";
         }
     }

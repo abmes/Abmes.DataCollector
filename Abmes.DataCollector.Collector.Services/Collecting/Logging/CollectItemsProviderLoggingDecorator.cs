@@ -28,19 +28,23 @@ public class CollectItemsProviderLoggingDecorator(
             
             logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
-            logger.LogInformation($"Retrieved {result.Count} collect items for data collection '{dataCollectionName}'", dataCollectionName);
+            logger.LogInformation("Retrieved {count} collect items for data collection '{dataCollectionName}'", result.Count, dataCollectionName);
 
             foreach (var collectItem in result)
             {
-                logger.LogInformation(collectItem.CollectFileInfo?.Name);
+                logger.LogInformation("{collectItemName}", collectItem.CollectFileInfo?.Name);
             }
 
             return result;
         }
         catch (Exception e)
         {
-            logger.LogCritical("Error getting collect items for data collection '{dataCollectionName}': {errorMessage}", dataCollectionName, e.GetAggregateMessages());
-            logger.LogCritical(e.StackTrace);
+            logger.LogCritical(
+                "Error getting collect items for data collection '{dataCollectionName}': {errorMessage}",
+                dataCollectionName, e.GetAggregateMessages());
+
+            logger.LogCritical("{stack}", e.StackTrace);
+
             throw;
         }
     }
