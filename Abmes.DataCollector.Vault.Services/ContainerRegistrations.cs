@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using Abmes.DataCollector.Vault.Services.Abstractions;
+using Autofac;
 
 namespace Abmes.DataCollector.Vault.Services;
 

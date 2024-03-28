@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common;
 
-namespace Abmes.DataCollector.Vault.Services;
+namespace Abmes.DataCollector.Vault.Services.Abstractions;
 
 public interface IDataCollectionFiles
 {
