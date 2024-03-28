@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Data.Configuration;
 
-namespace Abmes.DataCollector.Vault.Data.Configuration;
+namespace Abmes.DataCollector.Vault.Services.Configuration;
 
 public class UsersProvider(
     IUsersJsonProvider usersJsonProvider,

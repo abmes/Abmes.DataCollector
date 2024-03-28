@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Vault.Data.Configuration.Logging;
+namespace Abmes.DataCollector.Vault.Services.Configuration.Logging;
 
 public class DataCollectionNameProviderLoggingDecorator(
     ILogger<DataCollectionNameProviderLoggingDecorator> logger,

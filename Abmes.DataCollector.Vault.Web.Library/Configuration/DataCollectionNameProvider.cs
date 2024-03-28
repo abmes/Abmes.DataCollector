@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Vault.Data.Configuration;
+﻿using Abmes.DataCollector.Vault.Services.Configuration;
 using Microsoft.AspNetCore.Http;
 
 namespace Abmes.DataCollector.Vault.Web.Library.Configuration;

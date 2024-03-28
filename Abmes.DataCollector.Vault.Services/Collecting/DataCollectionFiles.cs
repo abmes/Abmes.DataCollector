@@ -1,10 +1,10 @@
 ﻿using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Common.Data.Storage;
-using Abmes.DataCollector.Vault.Data.Configuration;
 using Abmes.DataCollector.Vault.Data.Storage;
 using Abmes.DataCollector.Vault.Services.Abstractions;
+using Abmes.DataCollector.Vault.Services.Configuration;
 
-namespace Abmes.DataCollector.Vault.Services;
+namespace Abmes.DataCollector.Vault.Services.Collecting;
 
 public class DataCollectionFiles(
     IDataCollectionNameProvider dataCollectionNameProvider,
@@ -16,9 +16,9 @@ public class DataCollectionFiles(
     private bool FileHasMaxAge(string fileName, TimeSpan? maxAge)
     {
         return
-            (!maxAge.HasValue) ||
+            !maxAge.HasValue ||
             string.IsNullOrEmpty(fileName) ||
-            (fileNameProvider.DataCollectionFileNameToDateTime(fileName).Add(maxAge.Value) > DateTimeOffset.UtcNow);
+            fileNameProvider.DataCollectionFileNameToDateTime(fileName).Add(maxAge.Value) > DateTimeOffset.UtcNow;
     }
 
     private async Task<IEnumerable<(IStorage Storage, IEnumerable<FileInfoData> FileInfos)>> InternalGetStorageFileInfosAsync(string? fileNamePrefix, TimeSpan? maxAge, CancellationToken cancellationToken)
@@ -45,7 +45,7 @@ public class DataCollectionFiles(
 
     private async Task<IEnumerable<(IStorage Storage, IEnumerable<T> Items)>> GetStorageItemsAsync<T>(string? storageType, Func<IStorage, Task<IEnumerable<T>>> getItemsFunc, CancellationToken cancellationToken)
     {
-        var storages = 
+        var storages =
             (await storageProvider.GetStoragesAsync(cancellationToken))
             .Where(x => string.IsNullOrEmpty(storageType) || string.Equals(x.StorageConfig.StorageType, storageType, StringComparison.InvariantCultureIgnoreCase));
 
@@ -134,7 +134,7 @@ public class DataCollectionFiles(
     public async Task<IEnumerable<string>> GetFileNamesAsync(string? prefix, TimeSpan? maxAge, CancellationToken cancellationToken)
     {
         var storageFileNames = await InternalGetStorageFileNamesAsync(prefix, null, maxAge, cancellationToken);
-        return 
+        return
             storageFileNames
                 .Where(x => x.FileNames.Any())
                 .Select(x => x.FileNames)
@@ -150,7 +150,7 @@ public class DataCollectionFiles(
     {
         var storageFileNames = await InternalGetStorageFileNamesAsync(fileName, storageType, null, cancellationToken);
 
-        var storage = 
+        var storage =
             storageFileNames
                 .Where(x => x.FileNames.Any())
                 .Select(x => x.Storage)
@@ -163,7 +163,7 @@ public class DataCollectionFiles(
 
     public async Task<IEnumerable<string>> GetDownloadUrlsAsync(string? fileNamePrefix, string? storageType, CancellationToken cancellationToken)
     {
-        var storageFileNames = await InternalGetStorageFileNamesAsync(fileNamePrefix, storageType,  null, cancellationToken);
+        var storageFileNames = await InternalGetStorageFileNamesAsync(fileNamePrefix, storageType, null, cancellationToken);
 
         var (storage, fileNames) = storageFileNames.Where(x => x.FileNames.Any()).FirstOrDefault();
 

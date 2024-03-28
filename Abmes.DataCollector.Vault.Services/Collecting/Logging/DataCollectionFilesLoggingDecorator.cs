@@ -3,7 +3,7 @@ using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Services.Abstractions;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Vault.Services.Logging;
+namespace Abmes.DataCollector.Vault.Services.Collecting.Logging;
 
 public class DataCollectionFilesLoggingDecorator(
     ILogger<DataCollectionFilesLoggingDecorator> logger,

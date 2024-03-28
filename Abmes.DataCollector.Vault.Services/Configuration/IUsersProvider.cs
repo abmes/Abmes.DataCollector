@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Vault.Data.Configuration;
+﻿namespace Abmes.DataCollector.Vault.Services.Configuration;
 
 public interface IUsersProvider
 {
