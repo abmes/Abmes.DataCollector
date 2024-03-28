@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Configuration;
+﻿namespace Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
 
 public interface IBootstrapper
 {

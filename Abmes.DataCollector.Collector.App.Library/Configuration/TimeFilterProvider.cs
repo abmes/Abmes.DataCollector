@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
+using Abmes.DataCollector.Collector.Services.Configuration;
 
 namespace Abmes.DataCollector.Collector.App.Library.Configuration;
 

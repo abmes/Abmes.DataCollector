@@ -1,6 +1,8 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
 
-public class BootstrapperTimeFilterProvider(
+namespace Abmes.DataCollector.Collector.Services.Configuration;
+
+public class BootstrapperTimeFilterProvider(  // todo: this should be in web.library
     IBootstrapper bootstrapper) : ITimeFilterProvider
 {
     public string GetTimeFilter()

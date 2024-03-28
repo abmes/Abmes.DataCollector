@@ -8,12 +8,4 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
 
-  <ItemGroup>
-    <FrameworkReference Include="Microsoft.AspNetCore.App" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Abstractions\Abmes.DataCollector.Collector.Services.Abstractions.csproj" />
-  </ItemGroup>
-
 </Project>

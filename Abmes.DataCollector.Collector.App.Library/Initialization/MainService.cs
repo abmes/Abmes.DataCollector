@@ -1,6 +1,7 @@
-﻿using Abmes.DataCollector.Collector.Services.Collecting;
+﻿using Abmes.DataCollector.Collector.Services.Abstractions.Collecting;
+using Abmes.DataCollector.Collector.Services.Abstractions.Configuration;
+using Abmes.DataCollector.Collector.Services.Abstractions.Misc;
 using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Misc;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.App.Library.Initialization;

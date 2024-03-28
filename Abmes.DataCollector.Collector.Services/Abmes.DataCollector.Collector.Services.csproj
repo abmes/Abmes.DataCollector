@@ -11,6 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Abstractions\Abmes.DataCollector.Collector.Services.Abstractions.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj" />
