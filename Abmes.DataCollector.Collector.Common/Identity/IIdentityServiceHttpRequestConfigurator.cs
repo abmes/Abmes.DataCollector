@@ -1,6 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Data.Configuration;
-
-namespace Abmes.DataCollector.Collector.Data.Misc;
+﻿namespace Abmes.DataCollector.Collector.Common.Identity;
 
 public interface IIdentityServiceHttpRequestConfigurator
 {

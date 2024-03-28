@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Data.Configuration;
+﻿using Abmes.DataCollector.Collector.Common.Identity;
+using Abmes.DataCollector.Collector.Data.Configuration;
 
 namespace Abmes.DataCollector.Collector.Data.Destinations;
 

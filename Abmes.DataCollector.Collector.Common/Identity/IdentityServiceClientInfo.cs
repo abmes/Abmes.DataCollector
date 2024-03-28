@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Data.Configuration;
+﻿namespace Abmes.DataCollector.Collector.Common.Identity;
 
 public record IdentityServiceClientInfo
 (

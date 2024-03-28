@@ -1,9 +1,7 @@
-﻿using Abmes.DataCollector.Collector.Data.Collecting;
-using Abmes.DataCollector.Collector.Data.Configuration;
-using Abmes.DataCollector.Collector.Data.Misc;
+﻿using Abmes.DataCollector.Collector.Common.Identity;
+using Abmes.DataCollector.Collector.Data.Collecting;
 using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
-using Microsoft.AspNetCore.Authentication;
 using System.Text;
 using System.Text.Json;
 
@@ -231,10 +229,10 @@ public class CollectItemsProvider(
             var hasResult = false;
             foreach (var file in files.RootElement.EnumerateArray())
             {
-                var name = namePropertyNames.Select(x => file.GetString(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var sizestr = sizePropertyNames.Select(x => file.GetString(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var md5 = md5PropertyNames.Select(x => file.GetString(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var groupId = groupIdPropertyNames.Select(x => file.GetString(x)).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var name = namePropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var sizestr = sizePropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var md5 = md5PropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var groupId = groupIdPropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(name))
                 {
