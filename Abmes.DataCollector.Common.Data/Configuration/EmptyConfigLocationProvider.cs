@@ -1,6 +1,6 @@
 ﻿namespace Abmes.DataCollector.Common.Data.Configuration;
 
-public class EmptyConfigLocationProvider : IConfigLocationProvider  // todo: this should be in vault.web. library and maybe in collector.web.library
+public class EmptyConfigLocationProvider : IConfigLocationProvider
 {
     public string? GetConfigLocation()
     {
