@@ -229,10 +229,10 @@ public class CollectItemsProvider(
             var hasResult = false;
             foreach (var file in files.RootElement.EnumerateArray())
             {
-                var name = namePropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var sizestr = sizePropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var md5 = md5PropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var groupId = groupIdPropertyNames.Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var name = namePropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var sizestr = sizePropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var md5 = md5PropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var groupId = groupIdPropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(name))
                 {
