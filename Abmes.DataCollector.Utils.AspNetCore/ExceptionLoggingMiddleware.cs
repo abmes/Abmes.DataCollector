@@ -21,7 +21,7 @@ public class ExceptionLoggingMiddleware(
 
     private bool Log(Exception exception)
     {
-        loggerFactory.CreateLogger("Errors").LogError(0, exception, "{aggregateMessages}", exception.GetAggregateMessages());
+        loggerFactory.CreateLogger("Errors").LogError(0, exception, "{messages}", exception.GetAggregateMessages());
         return false;
     }
 }
