@@ -1,10 +1,66 @@
 ﻿using System.Buffers;
-using System.Security.Cryptography;
+using System.Threading.Channels;
 
 namespace Abmes.DataCollector.Utils;
 
 public static class CopyUtils
 {
+    public static async Task ParallelCopyAsync(
+        Func<Memory<byte>, CancellationToken, ValueTask<int>> copyReadAsyncFunc,
+        Func<ReadOnlyMemory<byte>, CancellationToken, ValueTask> copyWriteAsyncFunc,
+        int bufferSize,
+        CancellationToken cancellationToken)
+    {
+        ArgumentExceptionExtensions.ThrowIf(bufferSize <= 0);
+
+        using var mem0 = MemoryPool<byte>.Shared.Rent(bufferSize);
+        using var mem1 = MemoryPool<byte>.Shared.Rent(bufferSize);
+        using var mem2 = MemoryPool<byte>.Shared.Rent(bufferSize);
+        using var mem3 = MemoryPool<byte>.Shared.Rent(bufferSize);
+
+        var buffers = new[] { mem0.Memory, mem1.Memory, mem2.Memory, mem3.Memory };
+
+        // reader and writer should each have its own buffer that is not in the channel and should not use the same buffer thus the -2
+        var channel = Channel.CreateBounded<(int BufferIndex, int ByteCount)>(buffers.Length - 2);
+
+        var readTask = Task.Run(
+            async () =>
+            {
+                var bufferIndex = 0;
+                while (true)
+                {
+                    var bytesRead = await FillBufferAsync(buffers[bufferIndex], copyReadAsyncFunc, cancellationToken);
+
+                    if (bytesRead > 0)
+                    {
+                        await channel.Writer.WriteAsync((bufferIndex, bytesRead), cancellationToken);
+                    }
+
+                    if (bytesRead < buffers[bufferIndex].Length)
+                    {
+                        break;
+                    }
+
+                    bufferIndex = (bufferIndex + 1) % buffers.Length;
+                }
+
+                channel.Writer.Complete();
+            },
+            cancellationToken);
+
+        var writeTask = Task.Run(
+            async () =>
+            {
+                await foreach (var item in channel.Reader.ReadAllAsync(cancellationToken))
+                {
+                    await copyWriteAsyncFunc(buffers[item.BufferIndex][..item.ByteCount], cancellationToken);
+                }
+            },
+            cancellationToken);
+
+        await Task.WhenAll(readTask, writeTask);
+    }
+
     public static async ValueTask<int> FillBufferAsync(
         Memory<byte> buffer,
         Func<Memory<byte>, CancellationToken, ValueTask<int>> readTask,
@@ -25,71 +81,5 @@ public static class CopyUtils
         }
 
         return totalBytesRead;
-    }
-
-    public static byte[] GetMD5Hash(ReadOnlyMemory<byte> buffer)
-    {
-        var hasher = GetMD5Hasher();
-        AppendMDHasherData(hasher, buffer);
-        return GetMD5Hash(hasher);
-    }
-
-    public static string? GetMD5HashString(ReadOnlyMemory<byte> buffer)
-    {
-        return GetMD5HashString(GetMD5Hash(buffer));
-    }
-
-    public static async Task<string?> GetMD5HashStringAsync(Stream stream, int bufferSize, CancellationToken cancellationToken)
-    {
-        var hasher = GetMD5Hasher();
-
-        using var mem = MemoryPool<byte>.Shared.Rent(bufferSize);
-        var buffer = mem.Memory;
-        while (true)
-        {
-            var bytesRead = await FillBufferAsync(buffer, stream.ReadAsync, cancellationToken);
-
-            if (bytesRead == 0)
-            {
-                break;
-            }
-
-            AppendMDHasherData(hasher, buffer[..bytesRead]);
-        }
-
-        return GetMD5HashString(hasher);
-    }
-
-    public static IncrementalHash GetMD5Hasher()
-    {
-        return IncrementalHash.CreateHash(HashAlgorithmName.MD5);
-    }
-
-    public static void AppendMDHasherData(IncrementalHash hasher, ReadOnlyMemory<byte> buffer)
-    {
-        hasher.AppendData(buffer.Span);
-    }
-
-    public static byte[] GetMD5Hash(IncrementalHash hasher)
-    {
-        return hasher.GetHashAndReset();
-    }
-
-    public static string? GetMD5HashString(IncrementalHash hasher)
-    {
-        return GetMD5HashString(GetMD5Hash(hasher));
-    }
-
-    public static string? GetMD5HashString(byte[]? md5Hash)
-    {
-        return (md5Hash is null) || (md5Hash.Length == 0) ? null : Convert.ToBase64String(md5Hash, 0, 16);
-    }
-
-    public static async Task<string> GetStreamMD5Async(Stream stream, CancellationToken cancellationToken)
-    {
-        using var md5 = MD5.Create();
-        var hash = await md5.ComputeHashAsync(stream, cancellationToken);
-
-        return Convert.ToBase64String(hash);
     }
 }

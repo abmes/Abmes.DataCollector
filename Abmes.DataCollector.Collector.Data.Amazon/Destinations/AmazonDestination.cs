@@ -23,7 +23,7 @@ public class AmazonDestination(
     private static string? ContentMD5(HttpResponseMessage response)
     {
         return
-            CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5)
+            MD5Utils.GetMD5HashString(response.Content.Headers.ContentMD5)
             ??
             response.Headers.Where(x => x.Key.Equals("x-amz-meta-content-md5", StringComparison.InvariantCultureIgnoreCase)).Select(z => z.Value.FirstOrDefault()).FirstOrDefault();
     }
@@ -71,22 +71,22 @@ public class AmazonDestination(
         var initResponse = await amazonS3.InitiateMultipartUploadAsync(initiateRequest, cancellationToken);
         try
         {
-            using var blobHasher = validateMD5 ? CopyUtils.GetMD5Hasher() : null;
+            using var blobHasher = validateMD5 ? MD5Utils.GetMD5Hasher() : null;
 
             var partSize = 10 * 1024 * 1024;  // todo: config
             var partNo = 1;
 
-            await ParallelCopy.CopyAsync(
+            await CopyUtils.ParallelCopyAsync(
                 sourceStream.ReadAsync,
                 async (buffer, ct) =>
                 {
-                    var blockMD5Hash = CopyUtils.GetMD5HashString(buffer);
+                    var blockMD5Hash = MD5Utils.GetMD5HashString(buffer);
 
                     if (validateMD5)
                     {
                         ArgumentNullException.ThrowIfNull(blobHasher);
 
-                        CopyUtils.AppendMDHasherData(blobHasher, buffer);
+                        MD5Utils.AppendMDHasherData(blobHasher, buffer);
                     }
 
                     using var ms = buffer.AsStream();
@@ -117,7 +117,7 @@ public class AmazonDestination(
             {
                 ArgumentNullException.ThrowIfNull(blobHasher);
 
-                var blobHash = CopyUtils.GetMD5HashString(blobHasher);
+                var blobHash = MD5Utils.GetMD5HashString(blobHasher);
 
                 if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != blobHash))
                 {

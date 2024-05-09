@@ -67,7 +67,7 @@ public class AzureDestination(
 
     private static string? ContentMD5(HttpResponseMessage response)
     {
-        return CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5);
+        return MD5Utils.GetMD5HashString(response.Content.Headers.ContentMD5);
     }
 
     private async Task CopyFromUrlToBlob(
@@ -103,20 +103,20 @@ public class AzureDestination(
     {
         var blob = container.GetBlockBlobClient(blobName);
 
-        var blobHasher = CopyUtils.GetMD5Hasher();
+        var blobHasher = MD5Utils.GetMD5Hasher();
 
         var blockIDs = new List<string>();
         var blockNumber = 0;
 
-        await ParallelCopy.CopyAsync(
+        await CopyUtils.ParallelCopyAsync(
             sourceStream.ReadAsync,
             async (buffer, ct) =>
             {
                 var blockId = GetBlockId(blockNumber);
                 blockIDs.Add(blockId);
 
-                var blockMD5Hash = CopyUtils.GetMD5Hash(buffer);
-                CopyUtils.AppendMDHasherData(blobHasher, buffer);
+                var blockMD5Hash = MD5Utils.GetMD5Hash(buffer);
+                MD5Utils.AppendMDHasherData(blobHasher, buffer);
 
                 using var ms = buffer.AsStream();
                 await blob.StageBlockAsync(blockId, ms, blockMD5Hash, null, null, ct);
@@ -127,9 +127,9 @@ public class AzureDestination(
             cancellationToken
         );
 
-        var blobHash = CopyUtils.GetMD5Hash(blobHasher);
+        var blobHash = MD5Utils.GetMD5Hash(blobHasher);
 
-        if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != CopyUtils.GetMD5HashString(blobHash)))
+        if ((!string.IsNullOrEmpty(sourceMD5)) && (sourceMD5 != MD5Utils.GetMD5HashString(blobHash)))
         {
             throw new Exception("Invalid destination MD5");
         }

@@ -20,7 +20,7 @@ public class FileSystemDestination(
 
     private static string? ContentMD5(HttpResponseMessage response)
     {
-        return CopyUtils.GetMD5HashString(response.Content.Headers.ContentMD5);
+        return MD5Utils.GetMD5HashString(response.Content.Headers.ContentMD5);
     }
 
     public async Task CollectAsync(
@@ -50,7 +50,7 @@ public class FileSystemDestination(
         using (var sourceStream = await response.Content.ReadAsStreamAsync(cancellationToken))
         {
             await using var fileStream = new FileStream(fullFileName, FileMode.Create);
-            await ParallelCopy.CopyAsync(
+            await CopyUtils.ParallelCopyAsync(
                 sourceStream.ReadAsync,
                 fileStream.WriteAsync,
                 bufferSize,
@@ -60,7 +60,7 @@ public class FileSystemDestination(
 
         await using var fileStream2 = new FileStream(fullFileName, FileMode.Open, FileAccess.Read);
 
-        var newMD5 = await CopyUtils.GetMD5HashStringAsync(fileStream2, bufferSize, cancellationToken);
+        var newMD5 = await MD5Utils.GetMD5HashStringAsync(fileStream2, bufferSize, cancellationToken);
 
         if ((!string.IsNullOrEmpty(sourceMD5)) &&
             (!string.Equals(newMD5, sourceMD5, StringComparison.InvariantCultureIgnoreCase)))
