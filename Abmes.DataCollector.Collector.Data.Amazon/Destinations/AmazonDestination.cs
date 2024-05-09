@@ -2,6 +2,7 @@
 using Abmes.DataCollector.Collector.Data.Configuration;
 using Abmes.DataCollector.Common.Data.Amazon.Storage;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Utils.Net;
 using Amazon.S3;
 using Amazon.S3.Model;
 using Amazon.S3.Transfer;

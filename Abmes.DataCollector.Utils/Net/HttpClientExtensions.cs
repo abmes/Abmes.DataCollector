@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Headers;
 using System.Text;
 
-namespace Abmes.DataCollector.Utils;
+namespace Abmes.DataCollector.Utils.Net;
 
 public static class HttpClientExtensions
 {
@@ -13,7 +13,7 @@ public static class HttpClientExtensions
         TimeSpan? timeout = null,
         CancellationToken cancellationToken = default)
     {
-        return await GetStringAsync(httpClient, url, HttpMethod.Get, null, null, headers, accept, timeout, null, cancellationToken);
+        return await httpClient.GetStringAsync(url, HttpMethod.Get, null, null, headers, accept, timeout, null, cancellationToken);
     }
 
     public static async Task<string> GetStringAsync(
@@ -29,8 +29,7 @@ public static class HttpClientExtensions
         CancellationToken cancellationToken = default)
     {
         using var response =
-            await SendAsync(
-                httpClient,
+            await httpClient.SendAsync(
                 url,
                 httpMethod,
                 body,
@@ -108,7 +107,7 @@ public static class HttpClientExtensions
     {
         foreach (var u in urls.SkipLast(1))
         {
-            using var _ = await SendAsync(httpClient, u, httpMethod, headers: headers, cancellationToken: cancellationToken);
+            using var _ = await httpClient.SendAsync(u, httpMethod, headers: headers, cancellationToken: cancellationToken);
         }
     }
 }

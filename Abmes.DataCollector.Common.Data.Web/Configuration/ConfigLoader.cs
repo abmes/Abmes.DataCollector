@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common.Data.Configuration;
-using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Utils.Net;
 
 namespace Abmes.DataCollector.Common.Data.Web.Configuration;
 

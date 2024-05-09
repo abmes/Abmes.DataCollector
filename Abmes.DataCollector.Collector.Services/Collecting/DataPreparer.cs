@@ -1,6 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Misc;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Utils.Net;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
 

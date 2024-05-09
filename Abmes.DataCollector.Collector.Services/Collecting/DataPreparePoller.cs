@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Utils.Net;
 using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;

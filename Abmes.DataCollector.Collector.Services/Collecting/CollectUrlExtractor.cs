@@ -1,5 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Identity;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Utils.Net;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;

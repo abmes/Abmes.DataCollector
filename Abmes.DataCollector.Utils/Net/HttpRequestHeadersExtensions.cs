@@ -1,6 +1,6 @@
 ﻿using System.Net.Http.Headers;
 
-namespace Abmes.DataCollector.Utils;
+namespace Abmes.DataCollector.Utils.Net;
 
 public static class HttpRequestHeadersExtensions
 {

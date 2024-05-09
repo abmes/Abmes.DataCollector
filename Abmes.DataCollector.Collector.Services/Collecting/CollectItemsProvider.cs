@@ -2,6 +2,7 @@
 using Abmes.DataCollector.Collector.Data.Collecting;
 using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
+using Abmes.DataCollector.Utils.Net;
 using System.Text;
 using System.Text.Json;
 
