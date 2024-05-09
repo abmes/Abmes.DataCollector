@@ -51,11 +51,11 @@ public class FileSystemDestination(
         {
             await using var fileStream = new FileStream(fullFileName, FileMode.Create);
             await ParallelCopy.CopyAsync(
-                    (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                    (buffer, ct) => async () => await fileStream.WriteAsync(buffer, ct),
-                    bufferSize,
-                    cancellationToken
-                );
+                async (buffer, ct) => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                fileStream.WriteAsync,
+                bufferSize,
+                cancellationToken
+            );
         }
 
         await using var fileStream2 = new FileStream(fullFileName, FileMode.Open, FileAccess.Read);

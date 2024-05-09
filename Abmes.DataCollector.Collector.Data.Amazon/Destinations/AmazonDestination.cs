@@ -77,8 +77,8 @@ public class AmazonDestination(
             var partNo = 1;
 
             await ParallelCopy.CopyAsync(
-                (buffer, ct) => async () => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
-                (buffer, ct) => async () =>
+                async (buffer, ct) => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                async (buffer, ct) =>
                 {
                     var blockMD5Hash = CopyUtils.GetMD5HashString(buffer);
 

@@ -1,12 +1,13 @@
 ﻿using System.Buffers;
+using System.Threading.Channels;
 
 namespace Abmes.DataCollector.Utils;
 
 public static class ParallelCopy
 {
     public static async Task CopyAsync(
-        Func<Memory<byte>, CancellationToken, Func<Task<int>>> copyReadTaskFunc,
-        Func<ReadOnlyMemory<byte>, CancellationToken, Func<Task>> copyWriteTaskFunc,
+        Func<Memory<byte>, CancellationToken, ValueTask<int>> copyReadAsyncFunc,
+        Func<ReadOnlyMemory<byte>, CancellationToken, ValueTask> copyWriteAsyncFunc,
         int bufferSize,
         CancellationToken cancellationToken)
     {
@@ -14,28 +15,46 @@ public static class ParallelCopy
 
         using var mem0 = MemoryPool<byte>.Shared.Rent(bufferSize);
         using var mem1 = MemoryPool<byte>.Shared.Rent(bufferSize);
+        using var mem2 = MemoryPool<byte>.Shared.Rent(bufferSize);
+        using var mem3 = MemoryPool<byte>.Shared.Rent(bufferSize);
 
-        var buffers = new[] { mem0.Memory, mem1.Memory };
+        var buffers = new[] { mem0.Memory, mem1.Memory, mem2.Memory, mem3.Memory };
 
-        var bufferIndex = 0;
-        var writeTask = Task.CompletedTask;
-        while (true)
-        {
-            // .net 6 changed some behavior. now Task.Run(func) is needed. Skipping it serializes the execution
-            var readTask = Task.Run(copyReadTaskFunc(buffers[bufferIndex], cancellationToken), cancellationToken);
+        // reader and writer should each have its own buffer that is not in the channel and should not use the same buffer thus the -2
+        var channel = Channel.CreateBounded<(int BufferIndex, int ByteCount)>(buffers.Length-2);
 
-            await Task.WhenAll(readTask, writeTask);
-
-            int bytesRead = readTask.Result;
-
-            if (bytesRead == 0)
+        var readTask = Task.Run(
+            async () =>
             {
-                break;
-            }
+                var bufferIndex = 0;
+                while (true)
+                {
+                    var bytesRead = await copyReadAsyncFunc(buffers[bufferIndex], cancellationToken);
 
-            writeTask = Task.Run(copyWriteTaskFunc(buffers[bufferIndex][..bytesRead], cancellationToken), cancellationToken);
-            // careful - do not capture this variable by ref in a lambda as its value changes
-            bufferIndex = 1 - bufferIndex;
-        }
+                    if (bytesRead == 0)
+                    {
+                        break;
+                    }
+
+                    await channel.Writer.WriteAsync((bufferIndex, bytesRead), cancellationToken);
+                
+                    bufferIndex = (bufferIndex + 1) % buffers.Length;
+                }
+
+                channel.Writer.Complete();
+            },
+            cancellationToken);
+
+        var writeTask = Task.Run(
+            async () =>
+            {
+                await foreach (var item in channel.Reader.ReadAllAsync(cancellationToken))
+                {
+                    await copyWriteAsyncFunc(buffers[item.BufferIndex][..item.ByteCount], cancellationToken);
+                }
+            },
+            cancellationToken);
+
+        await Task.WhenAll(readTask, writeTask);
     }
 }
