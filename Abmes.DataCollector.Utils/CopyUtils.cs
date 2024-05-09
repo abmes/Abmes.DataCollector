@@ -95,4 +95,12 @@ public static class CopyUtils
     {
         return (md5Hash is null) || (md5Hash.Length == 0) ? null : Convert.ToBase64String(md5Hash, 0, 16);
     }
+
+    public static async Task<string> GetStreamMD5Async(Stream stream, CancellationToken cancellationToken)
+    {
+        using var md5 = MD5.Create();
+        var hash = await md5.ComputeHashAsync(stream, cancellationToken);
+
+        return Convert.ToBase64String(hash);
+    }
 }
