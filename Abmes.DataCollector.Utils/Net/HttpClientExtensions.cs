@@ -110,4 +110,20 @@ public static class HttpClientExtensions
             using var _ = await httpClient.SendAsync(u, httpMethod, headers: headers, cancellationToken: cancellationToken);
         }
     }
+
+    public static async Task<string> ProxiedGetStringAsync(
+        this HttpClient httpClient,
+        string httpProxyUrl,
+        string httpProxyForwardUrlHeaderName,
+        string url,
+        IEnumerable<KeyValuePair<string, string>>? headers = null,
+        string? accept = null,
+        TimeSpan? timeout = null,
+        CancellationToken cancellationToken = default)
+    {
+        headers ??= [];
+        headers = headers.Append(new (httpProxyForwardUrlHeaderName, url));
+
+        return await httpClient.GetStringAsync(httpProxyUrl, headers, accept, timeout, cancellationToken);
+    }
 }
