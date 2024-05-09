@@ -5,9 +5,9 @@ namespace Abmes.DataCollector.Utils;
 
 public static class CopyUtils
 {
-    private static async Task<int> FillBufferAsync(
+    private static async ValueTask<int> FillBufferAsync(
         Memory<byte> buffer,
-        Func<Memory<byte>, CancellationToken, Task<int>> readTask,
+        Func<Memory<byte>, CancellationToken, ValueTask<int>> readTask,
         CancellationToken cancellationToken)
     {
         int bytesRead;
@@ -27,15 +27,9 @@ public static class CopyUtils
         return totalBytesRead;
     }
 
-    public static async Task<int> ReadStreamMaxBufferAsync(
-        Memory<byte> buffer,
-        Stream stream,
-        CancellationToken cancellationToken)
+    public static async Task<int> ReadStreamMaxBufferAsync(Memory<byte> buffer, Stream stream, CancellationToken cancellationToken)
     {
-        return await FillBufferAsync(
-            buffer,
-            async (buf, ct) => await stream.ReadAsync(buf, ct),
-            cancellationToken);
+        return await FillBufferAsync(buffer, stream.ReadAsync, cancellationToken);
     }
 
     public static byte[] GetMD5Hash(ReadOnlyMemory<byte> buffer)
