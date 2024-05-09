@@ -109,7 +109,7 @@ public class AzureDestination(
         var blockNumber = 0;
 
         await ParallelCopy.CopyAsync(
-            async (buffer, ct) => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+            sourceStream.ReadAsync,
             async (buffer, ct) =>
             {
                 var blockId = GetBlockId(blockNumber);

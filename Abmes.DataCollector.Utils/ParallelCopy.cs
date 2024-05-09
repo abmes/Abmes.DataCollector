@@ -29,7 +29,7 @@ public static class ParallelCopy
                 var bufferIndex = 0;
                 while (true)
                 {
-                    var bytesRead = await copyReadAsyncFunc(buffers[bufferIndex], cancellationToken);
+                    var bytesRead = await CopyUtils.FillBufferAsync(buffers[bufferIndex], copyReadAsyncFunc, cancellationToken);
 
                     if (bytesRead == 0)
                     {

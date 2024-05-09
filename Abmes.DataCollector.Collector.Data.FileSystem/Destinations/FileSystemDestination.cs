@@ -51,7 +51,7 @@ public class FileSystemDestination(
         {
             await using var fileStream = new FileStream(fullFileName, FileMode.Create);
             await ParallelCopy.CopyAsync(
-                async (buffer, ct) => await CopyUtils.ReadStreamMaxBufferAsync(buffer, sourceStream, ct),
+                sourceStream.ReadAsync,
                 fileStream.WriteAsync,
                 bufferSize,
                 cancellationToken
