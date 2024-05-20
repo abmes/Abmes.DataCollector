@@ -8,6 +8,7 @@ namespace Abmes.DataCollector.Vault.Services.Collecting;
 
 public class DataCollectionFiles(
     IDataCollectionNameProvider dataCollectionNameProvider,
+    TimeProvider timeProvider,
     IStoragesProvider storageProvider,
     IFileNameProvider fileNameProvider) : IDataCollectionFiles
 {
@@ -18,7 +19,7 @@ public class DataCollectionFiles(
         return
             !maxAge.HasValue ||
             string.IsNullOrEmpty(fileName) ||
-            fileNameProvider.DataCollectionFileNameToDateTime(fileName).Add(maxAge.Value) > DateTimeOffset.UtcNow;
+            fileNameProvider.DataCollectionFileNameToDateTime(fileName).Add(maxAge.Value) > timeProvider.GetUtcNow();
     }
 
     private async Task<IEnumerable<(IStorage Storage, IEnumerable<FileInfoData> FileInfos)>> InternalGetStorageFileInfosAsync(string? fileNamePrefix, TimeSpan? maxAge, CancellationToken cancellationToken)

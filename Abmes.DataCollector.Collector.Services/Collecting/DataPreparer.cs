@@ -7,6 +7,7 @@ namespace Abmes.DataCollector.Collector.Services.Collecting;
 
 public class DataPreparer(
     IDataPreparePoller dataPreparePoller,
+    TimeProvider timeProvider,
     IDelay delay,
     IHttpClientFactory httpClientFactory) : IDataPreparer
 {
@@ -53,7 +54,7 @@ public class DataPreparer(
             return;
         }
 
-        var startTime = DateTimeOffset.UtcNow;
+        var startTime = timeProvider.GetUtcNow();
         DataPrepareResult prepareResult;
 
         while (true)
@@ -72,7 +73,7 @@ public class DataPreparer(
 
             if ((!prepareResult.Finished) &&
                 ((prepareDuration ?? default).TotalMilliseconds > 0) && 
-                (DateTimeOffset.UtcNow.Subtract(startTime) > prepareDuration))
+                (timeProvider.GetUtcNow().Subtract(startTime) > prepareDuration))
             {
                 throw new Exception($"Prepare timed out. ({prepareDuration.Value.TotalSeconds} seconds)");
             }

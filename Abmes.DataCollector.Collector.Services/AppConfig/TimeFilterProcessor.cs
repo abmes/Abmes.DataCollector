@@ -2,7 +2,8 @@
 
 namespace Abmes.DataCollector.Collector.Services.AppConfig;
 
-public class TimeFilterProcessor : ITimeFilterProcessor
+public class TimeFilterProcessor(
+    TimeProvider timeProvider) : ITimeFilterProcessor
 {
     public bool TimeFilterAccepted(string timeFilter)
     {
@@ -13,7 +14,7 @@ public class TimeFilterProcessor : ITimeFilterProcessor
 
         var timeFilters = timeFilter.Split(';');
 
-        var moment = DateTimeOffset.Now;
+        var moment = timeProvider.GetUtcNow();
 
         return timeFilters.Any(x => SingleTimeFilterAccepted(x, moment));
     }

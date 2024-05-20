@@ -12,6 +12,8 @@ public static class ServicesConfiguration
 {
     public static void Configure(IServiceCollection services, IConfiguration configuration)
     {
+        services.AddSingleton<TimeProvider>(TimeProvider.System);
+
         services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectToDestinationMarker>(CollectItemsCollectorCollectToDestinationRetryingStrategyConfig);
         services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectItemsMarker>(ParallelOperationRetryingStrategyConfig);
         services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker>(ParallelOperationRetryingStrategyConfig);

@@ -8,6 +8,7 @@ namespace Abmes.DataCollector.Vault.Data.Azure.Storage;
 
 public class AzureStorage(
     StorageConfig storageConfig,
+    TimeProvider timeProvider,
     IVaultAppSettings vaultAppSettings,
     IAzureCommonStorage azureCommonStorage) : IAzureStorage
 {
@@ -23,8 +24,8 @@ public class AzureStorage(
             BlobContainerName = containerName,
             BlobName = blobName,
             Resource = "b",
-            StartsOn = DateTimeOffset.UtcNow.AddMinutes(-1),
-            ExpiresOn = DateTimeOffset.UtcNow.Add(vaultAppSettings.DownloadUrlExpiry)
+            StartsOn = timeProvider.GetUtcNow().AddMinutes(-1),
+            ExpiresOn = timeProvider.GetUtcNow().Add(vaultAppSettings.DownloadUrlExpiry)
         };
         sasBuilder.SetPermissions(BlobSasPermissions.Read);
 

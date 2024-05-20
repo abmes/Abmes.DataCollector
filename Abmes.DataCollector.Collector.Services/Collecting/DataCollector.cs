@@ -15,6 +15,7 @@ public class DataCollector(
     ICollectItemsProvider collectItemsProvider,
     IFileNameProvider fileNameProvider,
     IDelay delay,
+    TimeProvider timeProvider,
     IAsyncExecutionStrategy<DataCollector> executionStrategy,
     ICollectItemsCollector collectItemsCollector) : IDataCollector
 {
@@ -33,7 +34,7 @@ public class DataCollector(
             await delay.DelayAsync(dataCollectionConfig.InitialDelay ?? default, $"initial delay for Data '{dataCollectionConfig.DataCollectionName}'", cancellationToken);
         }
 
-        var collectMoment = DateTimeOffset.Now;
+        var collectMoment = timeProvider.GetUtcNow();
 
         var prepared = collectorMode == CollectorMode.Collect && await dataPreparer.PrepareDataAsync(dataCollectionConfig, cancellationToken);
 
@@ -183,7 +184,7 @@ public class DataCollector(
 
     private IEnumerable<string> GetWaterfallGarbageDataCollectionFileNames(IEnumerable<string> dataCollectionFileNames, IEnumerable<string> newFileNames)
     {
-        var now = DateTimeOffset.UtcNow;
+        var now = timeProvider.GetUtcNow();
 
         var files =
                 dataCollectionFileNames

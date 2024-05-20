@@ -8,6 +8,7 @@ namespace Abmes.DataCollector.Vault.Data.Amazon.Storage;
 
 public class AmazonStorage(
     StorageConfig storageConfig,
+    TimeProvider timeProvider,
     IVaultAppSettings vaultAppSettings,
     IAmazonS3 amazonS3,
     IAmazonCommonStorage amazonCommonStorage) : IAmazonStorage
@@ -21,7 +22,7 @@ public class AmazonStorage(
             BucketName = StorageConfig.RootBase(),
             Key = StorageConfig.RootDir('/', true) + dataCollectionName + "/" + fileName,
             Verb = HttpVerb.GET,
-            Expires = DateTime.UtcNow.Add(vaultAppSettings.DownloadUrlExpiry)
+            Expires = timeProvider.GetUtcNow().Add(vaultAppSettings.DownloadUrlExpiry).DateTime
         };
 
         string result = amazonS3.GetPreSignedURL(request);

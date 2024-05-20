@@ -63,6 +63,8 @@ public class Startup(
 
         services.AddSingleton<IAuthorizationHandler, UserAllowedDataCollectionHandler>();
 
+        services.AddSingleton<TimeProvider>(TimeProvider.System);
+
         ServicesConfiguration.Configure(services, configuration);
     }
 
