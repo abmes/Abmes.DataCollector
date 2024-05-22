@@ -19,7 +19,11 @@ public class DataPreparePollerLoggingDecorator(
 
             logger.LogInformation("Finished prepare status polling for data '{dataCollectionName}'", dataCollectionName);
 
-            var status = (result.Finished ? "Finished" : "Not finished");
+            var status =
+                result.Finished
+                ? "Finished"
+                : "Not finished";
+
             logger.LogInformation("Prepare status for data '{dataCollectionName}': {status}", dataCollectionName, status);
 
             return result;

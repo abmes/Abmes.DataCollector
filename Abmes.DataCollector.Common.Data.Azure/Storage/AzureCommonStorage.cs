@@ -63,9 +63,15 @@ public class AzureCommonStorage : IAzureCommonStorage
             return [];
         }
 
-        var prefix = string.IsNullOrEmpty(rootBase) ? null : (rootDir + dataCollectionName + "/");
+        var prefix =
+            string.IsNullOrEmpty(rootBase)
+            ? null
+            : rootDir + dataCollectionName + "/";
 
-        var prefixSections = string.IsNullOrEmpty(prefix) ? 0 : (prefix.TrimEnd('/').Split('/').Length);
+        var prefixSections =
+            string.IsNullOrEmpty(prefix)
+            ? 0
+            : prefix.TrimEnd('/').Split('/').Length;
 
         var blobTraits = namesOnly ? BlobTraits.None : BlobTraits.Metadata;
 

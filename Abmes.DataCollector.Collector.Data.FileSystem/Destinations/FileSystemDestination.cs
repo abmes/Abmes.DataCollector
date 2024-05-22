@@ -125,7 +125,10 @@ public class FileSystemDestination(
     {
         var md5FileName = GetMD5FileName(fullFileName);
 
-        return File.Exists(md5FileName) ? await File.ReadAllTextAsync(md5FileName, cancellationToken) : null;
+        return
+            File.Exists(md5FileName)
+            ? await File.ReadAllTextAsync(md5FileName, cancellationToken)
+            : null;
     }
 
     public async Task<bool> AcceptsFileAsync(string dataCollectionName, string name, long? size, string? md5, CancellationToken cancellationToken)

@@ -14,7 +14,10 @@ public class MainCollectorLoggingDecorator(
 {
     private static string ResultPrefix(bool result)
     {
-        return result ? "Finished" : "ERRORS occured when";
+        return
+            result
+            ? "Finished"
+            : "ERRORS occured when";
     }
 
     public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
@@ -40,7 +43,10 @@ public class MainCollectorLoggingDecorator(
                 watch.Stop();
             }
 
-            var failedDataCollectionNames = result.Any() ? $" ({string.Join(",", result)})" : null;
+            var failedDataCollectionNames =
+                result.Any()
+                ? $" ({string.Join(",", result)})"
+                : null;
 
             logger.LogInformation(
                 "[{configSetName}] {resultPrefix} {mode}ing data collections{failedDataCollectionNames}. Elapsed time: {elapsed}",

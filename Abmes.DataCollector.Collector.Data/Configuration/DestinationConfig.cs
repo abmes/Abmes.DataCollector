@@ -34,17 +34,14 @@ public record DestinationConfig
         {
             _identityServiceClientInfo ??=
                 string.IsNullOrEmpty(IdentityServiceUrl)
-                ?
-                null
-                :
-                new IdentityServiceClientInfo(
+                ? null
+                : new IdentityServiceClientInfo(
                     Url: Ensure.NotNullOrEmpty(IdentityServiceUrl),
                     ClientId: Ensure.NotNullOrEmpty(IdentityServiceClientId),
                     ClientSecret: Ensure.NotNullOrEmpty(IdentityServiceClientSecret),
                     Scope: IdentityServiceScope,
                     UserName: Ensure.NotNullOrEmpty(LoginName),
-                    UserPassword: Ensure.NotNullOrEmpty(LoginSecret)
-                );
+                    UserPassword: Ensure.NotNullOrEmpty(LoginSecret));
 
             return _identityServiceClientInfo;
         }

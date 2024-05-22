@@ -11,9 +11,11 @@ public class DataCollectionsFilterProvider(
         var args = Environment.GetCommandLineArgs();
 
         var result =
-            string.IsNullOrEmpty(bootstrapper.DataCollectionNames)
-            ? ((args.Length > 2) ? args[2] : string.Empty)
-            : bootstrapper.DataCollectionNames;
+            !string.IsNullOrEmpty(bootstrapper.DataCollectionNames)
+            ? bootstrapper.DataCollectionNames
+            : args.Length > 2
+                ? args[2]
+                : string.Empty;
 
         return await Task.FromResult(result);
     }

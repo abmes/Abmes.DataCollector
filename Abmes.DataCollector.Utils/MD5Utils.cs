@@ -60,7 +60,10 @@ public static class MD5Utils
 
     public static string? GetMD5HashString(byte[]? md5Hash)
     {
-        return (md5Hash is null) || (md5Hash.Length == 0) ? null : Convert.ToBase64String(md5Hash, 0, 16);
+        return
+            (md5Hash is null) || (md5Hash.Length == 0)
+            ? null
+            : Convert.ToBase64String(md5Hash, 0, 16);
     }
 
     public static async Task<string> GetStreamMD5Async(Stream stream, CancellationToken cancellationToken)

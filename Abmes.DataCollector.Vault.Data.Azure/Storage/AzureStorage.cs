@@ -16,7 +16,11 @@ public class AzureStorage(
 
     public async Task<string> GetDataCollectionFileDownloadUrlAsync(string dataCollectionName, string fileName, CancellationToken cancellationToken)
     {
-        var containerName = string.IsNullOrEmpty(StorageConfig.Root) ? dataCollectionName : StorageConfig.RootBase();
+        var containerName =
+            string.IsNullOrEmpty(StorageConfig.Root)
+            ? dataCollectionName
+            : StorageConfig.RootBase();
+
         var blobName = GetBlobName(dataCollectionName, fileName);
 
         var sasBuilder = new BlobSasBuilder()
@@ -45,7 +49,10 @@ public class AzureStorage(
 
     private string GetBlobName(string dataCollectionName, string fileName)
     {
-        return string.IsNullOrEmpty(StorageConfig.Root) ? fileName : (StorageConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
+        return
+            string.IsNullOrEmpty(StorageConfig.Root)
+            ? fileName
+            : StorageConfig.RootDir('/', true) + dataCollectionName + "/" + fileName;
     }
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, string? fileNamePrefix, CancellationToken cancellationToken)

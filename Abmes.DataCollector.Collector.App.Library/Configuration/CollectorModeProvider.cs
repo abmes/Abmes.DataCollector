@@ -12,8 +12,10 @@ public class CollectorModeProvider(
         var args = Environment.GetCommandLineArgs();
 
         return
-            (bootstrapper.CollectorMode != CollectorMode.None) ?
-            bootstrapper.CollectorMode :
-            ((args.Length > 3) ? Enum.Parse<CollectorMode>(args[3], true) : CollectorMode.Collect);
+            bootstrapper.CollectorMode != CollectorMode.None
+            ? bootstrapper.CollectorMode
+            : args.Length > 3
+                ? Enum.Parse<CollectorMode>(args[3], true)
+                : CollectorMode.Collect;
     }
 }

@@ -44,7 +44,10 @@ public class AzureDestination(
 
     private string GetBlobName(string dataCollectionName, string fileName)
     {
-        return string.IsNullOrEmpty(DestinationConfig.Root) ? fileName : (DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName);
+        return
+            string.IsNullOrEmpty(DestinationConfig.Root)
+            ? fileName
+            : DestinationConfig.RootDir('/', true) + dataCollectionName + "/" + fileName;
     }
 
     private async Task SmartCopyToBlobAsync(

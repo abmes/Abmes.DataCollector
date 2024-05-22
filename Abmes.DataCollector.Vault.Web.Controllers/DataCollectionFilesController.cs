@@ -12,7 +12,10 @@ public class DataCollectionFilesController(
 {
     private static TimeSpan? ParseTimeSpan(string? value)
     {
-        return string.IsNullOrEmpty(value) ? null : TimeSpan.Parse(value);
+        return
+            string.IsNullOrEmpty(value)
+            ? null
+            : TimeSpan.Parse(value);
     }
 
     // GET DataCollectionFiles/GetFiles?prefix=xyz&maxAge=0:2:0

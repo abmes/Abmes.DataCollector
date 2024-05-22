@@ -10,9 +10,9 @@ public class ConfigProvider(
         var configLocation = configLocationProvider.GetConfigLocation();
 
         return
-            string.IsNullOrEmpty(configLocation) ?
-            await GetConfigContentFromStorageAsync(configName, cancellationToken) :
-            await GetConfigContentFromLocationAsync(configName, configLocation, cancellationToken);
+            string.IsNullOrEmpty(configLocation)
+            ? await GetConfigContentFromStorageAsync(configName, cancellationToken)
+            : await GetConfigContentFromLocationAsync(configName, configLocation, cancellationToken);
     }
 
     private async Task<string> GetConfigContentFromLocationAsync(string configName, string configLocation, CancellationToken cancellationToken)

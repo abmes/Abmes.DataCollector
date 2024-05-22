@@ -25,7 +25,7 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
                 CollectParallelFileCount = config.CollectParallelFileCount ?? template.CollectParallelFileCount,
                 CollectTimeout = config.CollectTimeout ?? template.CollectTimeout,
                 CollectFinishWait = config.CollectFinishWait ?? template.CollectFinishWait,
-                DestinationIds = (config.DestinationIds is null) || (!config.DestinationIds.Any()) ? template.DestinationIds : config.DestinationIds,
+                DestinationIds = (config.DestinationIds is null || !config.DestinationIds.Any()) ? template.DestinationIds : config.DestinationIds,
                 ParallelDestinationCount = config.ParallelDestinationCount ?? template.ParallelDestinationCount,
                 MaxFileCount = config.MaxFileCount?? template.MaxFileCount,
                 LoginName = MergeStringValue(config.LoginName, template.LoginName, config),

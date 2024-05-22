@@ -69,7 +69,10 @@ public class FileSystemCommonStorage : IFileSystemCommonStorage
 
         var fileSize = new FileInfo(fullFileName).Length;
 
-        var md5 = File.Exists(GetMD5FileName(fullFileName)) ? await File.ReadAllTextAsync(GetMD5FileName(fullFileName), cancellationToken) : null;
+        var md5 =
+            File.Exists(GetMD5FileName(fullFileName))
+            ? await File.ReadAllTextAsync(GetMD5FileName(fullFileName), cancellationToken)
+            : null;
 
         return new FileInfoData(relativeFileName, fileSize, md5, string.Join("/", relativeFileName.Split('/').SkipLast(1)), StorageType);
     }

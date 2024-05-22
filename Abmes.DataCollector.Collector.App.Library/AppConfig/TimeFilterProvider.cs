@@ -11,7 +11,9 @@ public class TimeFilterProvider(
 
         return
             string.IsNullOrEmpty(bootstrapper.TimeFilter)
-            ? ((args.Length <= 4) ? string.Empty : args[4])
+            ? args.Length <= 4
+                ? string.Empty
+                : args[4]
             : bootstrapper.TimeFilter;
     }
 }

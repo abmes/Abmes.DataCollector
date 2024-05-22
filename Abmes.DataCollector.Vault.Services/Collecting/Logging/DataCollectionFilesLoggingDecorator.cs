@@ -144,6 +144,9 @@ public class DataCollectionFilesLoggingDecorator(
 
     private static string FromStorageType(string? storageType)
     {
-        return string.IsNullOrEmpty(storageType) ? string.Empty : $" from {storageType}";
+        return
+            string.IsNullOrEmpty(storageType)
+            ? string.Empty
+            : $" from {storageType}";
     }
 }

@@ -73,7 +73,10 @@ public class CollectItemsProvider(
 
             var queryUrl = selector.First();
 
-            var queryPropertyNames = (selector.Length ==  2) ? selector.Last().Split(',', ';') : [];
+            var queryPropertyNames =
+                selector.Length ==  2
+                ? selector.Last().Split(',', ';')
+                : [];
 
             var queryNamePropertyName = queryPropertyNames.FirstOrDefault();
             var querySizePropertyName = queryPropertyNames.Skip(1).FirstOrDefault();
@@ -147,11 +150,9 @@ public class CollectItemsProvider(
         var redirectableCollectItems = collectItemsList.Where(x => x.CollectUrl.StartsWith('@'));
 
         var identityServiceAccessToken =
-            (identityServiceClientInfo is null)
-            ?
-            null
-            :
-            await identityServiceHttpRequestConfigurator.GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
+            identityServiceClientInfo is null
+            ? null
+            : await identityServiceHttpRequestConfigurator.GetIdentityServiceAccessTokenAsync(identityServiceClientInfo, cancellationToken);
 
         var redirectedCollectItems =
             await RedirectCollectItemsAsync(

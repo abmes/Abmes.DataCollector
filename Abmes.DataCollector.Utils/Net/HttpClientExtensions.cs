@@ -78,7 +78,10 @@ public static class HttpClientExtensions
 
         if (!string.IsNullOrEmpty(body))
         {
-            request.Content = string.IsNullOrEmpty(bodyMediaType) ? new StringContent(body) : new StringContent(body, Encoding.UTF8, bodyMediaType);
+            request.Content =
+                string.IsNullOrEmpty(bodyMediaType)
+                ? new StringContent(body)
+                : new StringContent(body, Encoding.UTF8, bodyMediaType);
         }
 
         if (content is not null)

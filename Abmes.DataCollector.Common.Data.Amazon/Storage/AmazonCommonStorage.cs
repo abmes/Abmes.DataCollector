@@ -86,7 +86,10 @@ public class AmazonCommonStorage(
 
         var response = await amazonS3.GetObjectMetadataAsync(request, cancellationToken);
 
-        var md5 = !string.IsNullOrEmpty(response.Headers.ContentMD5) ? response.Headers.ContentMD5 : response.Metadata["x-amz-meta-content-md5"];
+        var md5 =
+            !string.IsNullOrEmpty(response.Headers.ContentMD5)
+            ? response.Headers.ContentMD5
+            : response.Metadata["x-amz-meta-content-md5"];
 
         return new FileInfoData(name, response.Headers.ContentLength, md5, string.Join("/", name.Split('/').SkipLast(1)), StorageType);
     }

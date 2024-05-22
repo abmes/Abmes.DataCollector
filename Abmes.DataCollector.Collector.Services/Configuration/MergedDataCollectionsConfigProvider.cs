@@ -12,10 +12,8 @@ public class MergedDataCollectionsConfigProvider(
 
         return
             template is null
-            ?
-            dataCollectionsConfig
-            :
-            dataCollectionsConfig
+            ? dataCollectionsConfig
+            : dataCollectionsConfig
                 .Where(x => x.DataCollectionName != "*")
                 .Select(x => mergedDataCollectionConfigProvider.GetConfig(x, template));
     }

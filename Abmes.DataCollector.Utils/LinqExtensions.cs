@@ -230,7 +230,10 @@ public static class LinqExtensions
     {
         var elements = source.Take(2).ToArray();
 
-        return (elements.Length == 1) ? elements[0] : default;
+        return
+            elements.Length == 1
+            ? elements[0]
+            : default;
     }
 
     /// <summary>
@@ -248,7 +251,10 @@ public static class LinqExtensions
     {
         var elements = source.Take(2).ToArray();
 
-        return (elements.Length == 1) ? elements[0] : default;
+        return
+            elements.Length == 1
+            ? elements[0]
+            : default;
     }
 
     /// <summary>

@@ -22,12 +22,9 @@ public static class ExceptionExtensions
     {
         return
             exception is AggregateException e
-            ?
-            string.Join(
+            ? string.Join(
                 Environment.NewLine,
-                e.InnerExceptions.Select(x => x.GetAggregateMessages())
-            )
-            :
-            exception.GetInnerMessages();
+                e.InnerExceptions.Select(x => x.GetAggregateMessages()))
+            : exception.GetInnerMessages();
     }
 }
