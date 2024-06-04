@@ -1,9 +1,8 @@
-﻿using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Options;
+﻿using Microsoft.Extensions.Options;
 
-namespace Abmes.DataCollector.Utils.DependencyInjection;
+namespace Microsoft.Extensions.DependencyInjection;
 
-public static class ServiceCollectionExtensions
+public static class AdapterServiceCollectionExtensions
 {
     public static IServiceCollection AddFactoryFunc<TService>(this IServiceCollection services) where TService : class
     {
@@ -22,6 +21,6 @@ public static class ServiceCollectionExtensions
 
     public static IServiceCollection AddOptionsAdapter<TTo, TFrom>(this IServiceCollection services) where TTo : class where TFrom : class, TTo, new()
     {
-        return services.AddAdapter<TTo, IOptions<TFrom>>(OptionsAdapter.Adapt);
+        return services.AddAdapter<TTo, IOptions<TFrom>>(o => o.Value);
     }
 }
