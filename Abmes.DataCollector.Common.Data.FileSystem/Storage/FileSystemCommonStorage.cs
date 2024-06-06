@@ -1,6 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Storage;
-
-namespace Abmes.DataCollector.Common.Data.FileSystem.Storage;
+﻿namespace Abmes.DataCollector.Common.Data.FileSystem.Storage;
 
 public class FileSystemCommonStorage : IFileSystemCommonStorage
 {

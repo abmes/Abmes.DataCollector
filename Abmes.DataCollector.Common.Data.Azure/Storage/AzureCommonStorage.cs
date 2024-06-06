@@ -1,5 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Storage;
-using Azure.Storage.Blobs;
+﻿using Azure.Storage.Blobs;
 using Azure.Storage.Blobs.Models;
 
 namespace Abmes.DataCollector.Common.Data.Azure.Storage;
