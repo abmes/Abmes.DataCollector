@@ -1,5 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Identity;
 using Abmes.DataCollector.Collector.Data.Configuration;
+using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Utils.Net;
 
 namespace Abmes.DataCollector.Collector.Data.Console.Destinations;
@@ -61,16 +62,8 @@ public class ConsoleDestination(
 
     public async Task PutFileAsync(string dataCollectionName, string fileName, Stream content, CancellationToken cancellationToken)
     {
-        using var reader = new StreamReader(content);
-        while (true)  // EndOfStream is synchronous - do not use it!
+        await foreach (var line in content.ReadAllLinesAsync(cancellationToken))
         {
-            var line = await reader.ReadLineAsync(cancellationToken);
-
-            if (line is null)
-            {
-                break;
-            }
-
             System.Console.WriteLine(line);
         }
     }
