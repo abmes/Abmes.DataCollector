@@ -5,6 +5,73 @@ namespace Abmes.DataCollector.Utils.Net;
 
 public static class HttpClientExtensions
 {
+    public static async Task<HttpResponseMessage> CheckedSendAsync(
+        this HttpClient httpClient,
+        HttpRequestMessage request,
+        HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.SendAsync(request, httpCompletionOption, cancellationToken);
+
+        await response.CheckSuccessAsync(cancellationToken);
+
+        return response;
+    }
+
+    public static async Task<HttpResponseMessage> CheckedGetAsync(
+        this HttpClient httpClient,
+        string url,
+        HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead,
+        IEnumerable<KeyValuePair<string, string>>? headers = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        if (headers is not null)
+        {
+            request.Headers.AddValues(headers);
+        }
+
+        return await httpClient.CheckedSendAsync(request, httpCompletionOption, cancellationToken);
+    }
+
+    public static async Task<HttpResponseMessage> GetAsync(
+        this HttpClient httpClient,
+        string url,
+        HttpCompletionOption httpCompletionOption = HttpCompletionOption.ResponseContentRead,
+        IEnumerable<KeyValuePair<string, string>>? headers = null,
+        CancellationToken cancellationToken = default)
+    {
+        using var request = new HttpRequestMessage(HttpMethod.Get, url);
+
+        if (headers is not null)
+        {
+            request.Headers.AddValues(headers);
+        }
+
+        return await httpClient.SendAsync(request, httpCompletionOption, cancellationToken);
+    }
+
+    public static async Task<string> CheckedGetStringAsync(
+        this HttpClient httpClient,
+        string url,
+        IEnumerable<KeyValuePair<string, string>>? headers = null,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.CheckedGetAsync(url, headers: headers, cancellationToken: cancellationToken);
+        return await response.Content.ReadAsStringAsync(cancellationToken);
+    }
+
+    public static async Task<Stream> CheckedGetStreamAsync(
+        this HttpClient httpClient,
+        string url,
+        IEnumerable<KeyValuePair<string, string>>? headers = null,
+        CancellationToken cancellationToken = default)
+    {
+        var response = await httpClient.CheckedGetAsync(url, HttpCompletionOption.ResponseHeadersRead, headers, cancellationToken);
+        return await response.Content.ReadAsStreamAsync(cancellationToken);
+    }
+
     public static async Task<string> GetStringAsync(
         this HttpClient httpClient,
         string url,
