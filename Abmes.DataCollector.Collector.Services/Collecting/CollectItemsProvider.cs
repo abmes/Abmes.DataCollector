@@ -232,13 +232,12 @@ public class CollectItemsProvider(
             foreach (var file in files.RootElement.EnumerateArray())
             {
                 var name = namePropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
-                var sizestr = sizePropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
+                var size = sizePropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetInt64()).FirstOrDefault();
                 var md5 = md5PropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
                 var groupId = groupIdPropertyNames.Where(x => file.TryGetProperty(x, out _)).Select(x => file.GetProperty(x).GetString()).Where(x => !string.IsNullOrEmpty(x)).FirstOrDefault();
 
                 if (!string.IsNullOrEmpty(name))
                 {
-                    var size = long.TryParse(sizestr, out var outsize) ? (long?)outsize : null;
                     groupId = !string.IsNullOrEmpty(groupId) ? groupId : "-";
 
                     hasResult = true;
