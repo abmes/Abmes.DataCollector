@@ -9,6 +9,7 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
     <RuntimeIdentifiers>win-x64;linux-x64</RuntimeIdentifiers>
     <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
     <LangVersion>latest</LangVersion>
   </PropertyGroup>
 
