@@ -1,4 +1,6 @@
-﻿using System.Net.Http.Headers;
+﻿using System.Diagnostics.CodeAnalysis;
+using System.Net.Http.Headers;
+using System.Net.Http.Json;
 using System.Text;
 
 namespace Abmes.DataCollector.Utils.Net;
@@ -195,5 +197,53 @@ public static class HttpClientExtensions
         headers = headers.Append(new (httpProxyForwardUrlHeaderName, url));
 
         return await httpClient.GetStringAsync(httpProxyUrl, headers, accept, timeout, cancellationToken);
+    }
+
+    public static async Task<TValue?> GetNullableFromJsonAsync<TValue>(
+        this HttpClient client,
+        [StringSyntax("Uri")] string? requestUri,
+        CancellationToken cancellationToken)
+        where TValue : class?
+    {
+        var response = await client.GetAsync(requestUri, cancellationToken);
+
+        await response.CheckSuccessAsync(cancellationToken);
+
+        return
+            (response.Content.Headers.ContentLength == 0)
+            ? null
+            : await response.Content.ReadFromJsonAsync<TValue>(cancellationToken);
+    }
+
+    public static async Task<TResult?> GetNullableFromPostAsJsonAsync<TResult, TValue>(
+        this HttpClient client,
+        [StringSyntax("Uri")] string? requestUri,
+        TValue value,
+        CancellationToken cancellationToken)
+        where TResult : class?
+    {
+        var response = await client.PostAsJsonAsync(requestUri, value, cancellationToken);
+        response.EnsureSuccessStatusCode();
+
+        return
+            (response.Content.Headers.ContentLength == 0)
+            ? null
+            : await response.Content.ReadFromJsonAsync<TResult>(cancellationToken);
+    }
+
+    public static async Task<IEnumerable<TResultItem>> GetEnumerableFromPostAsJsonAsync<TResultItem, TValue>(
+        this HttpClient client,
+        [StringSyntax("Uri")] string? requestUri,
+        TValue value,
+        CancellationToken cancellationToken)
+    {
+        var response = await client.PostAsJsonAsync(requestUri, value, cancellationToken);
+
+        await response.CheckSuccessAsync(cancellationToken);
+
+        return
+            (response.Content.Headers.ContentLength == 0)
+            ? []
+            : await response.Content.ReadFromJsonAsync<IEnumerable<TResultItem>>(cancellationToken) ?? [];
     }
 }

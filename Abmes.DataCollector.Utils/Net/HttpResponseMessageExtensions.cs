@@ -7,7 +7,25 @@ public static class HttpResponseMessageExtensions
         if (!response.IsSuccessStatusCode)
         {
             var errorMessage = await response.Content.ReadAsStringAsync(cancellationToken);
-            throw new HttpRequestException($"{response.ReasonPhrase} {(int)response.StatusCode}" + Environment.NewLine + errorMessage);
+
+            string? userExceptionMessage;
+            try
+            {
+                userExceptionMessage = System.Text.Json.JsonDocument.Parse(errorMessage).RootElement.GetProperty("error").GetString();
+            }
+            catch (System.Text.Json.JsonException)
+            {
+                userExceptionMessage = null;
+            }
+
+            if (!string.IsNullOrEmpty(userExceptionMessage))
+            {
+                throw new UserException(userExceptionMessage);
+            }
+            else
+            {
+                throw new HttpRequestException($"{response.ReasonPhrase} {(int)response.StatusCode}" + Environment.NewLine + errorMessage);
+            }
         }
     }
 }
