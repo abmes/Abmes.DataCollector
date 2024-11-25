@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Vault.Data.Storage;
+﻿using Abmes.DataCollector.Vault.Services.Ports.Storage;
 
 namespace Abmes.DataCollector.Vault.Data.Amazon.Storage;
 

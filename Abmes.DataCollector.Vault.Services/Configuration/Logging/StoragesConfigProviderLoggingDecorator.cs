@@ -1,6 +1,7 @@
-﻿using Microsoft.Extensions.Logging;
+﻿using Abmes.DataCollector.Vault.Services.Ports.Configuration;
+using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Vault.Data.Configuration.Logging;
+namespace Abmes.DataCollector.Vault.Services.Configuration.Logging;
 
 public class StoragesConfigProviderLoggingDecorator(
     ILogger<StoragesConfigProviderLoggingDecorator> logger,

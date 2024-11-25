@@ -13,6 +13,7 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Data\Abmes.DataCollector.Vault.Data.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj" />
   </ItemGroup>
 
 </Project>

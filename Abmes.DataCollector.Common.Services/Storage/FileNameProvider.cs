@@ -1,6 +1,6 @@
 ﻿using System.Globalization;
 
-namespace Abmes.DataCollector.Common.Data.Storage;
+namespace Abmes.DataCollector.Common.Services.Storage;
 
 public class FileNameProvider : IFileNameProvider
 {
@@ -16,7 +16,7 @@ public class FileNameProvider : IFileNameProvider
 
         if (generateFileNames)
         {
-            var ext = System.IO.Path.GetExtension(fileName);
+            var ext = Path.GetExtension(fileName);
             fileName = $"{dataCollectionName}-{time}{ext}";
         }
 
@@ -53,7 +53,7 @@ public class FileNameProvider : IFileNameProvider
 
         try
         {
-            var dateTimeParts = System.IO.Path.GetFileNameWithoutExtension(fileName).Split('-').Reverse().Take(4).Reverse();
+            var dateTimeParts = Path.GetFileNameWithoutExtension(fileName).Split('-').Reverse().Take(4).Reverse();
 
             var dateString = string.Join("-", dateTimeParts.Take(3));
 

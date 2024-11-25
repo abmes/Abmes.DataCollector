@@ -1,8 +1,9 @@
 ﻿using Abmes.DataCollector.Common;
-using Abmes.DataCollector.Common.Data.Storage;
-using Abmes.DataCollector.Vault.Data.Storage;
+using Abmes.DataCollector.Common.Services.Storage;
 using Abmes.DataCollector.Vault.Services.Configuration;
 using Abmes.DataCollector.Vault.Services.Contracts;
+using Abmes.DataCollector.Vault.Services.Ports.Storage;
+using Abmes.DataCollector.Vault.Services.Storage;
 
 namespace Abmes.DataCollector.Vault.Services.Collecting;
 

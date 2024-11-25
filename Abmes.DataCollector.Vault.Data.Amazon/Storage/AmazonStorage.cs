@@ -1,6 +1,7 @@
 ﻿using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Common.Data.Amazon.Storage;
 using Abmes.DataCollector.Vault.Data.Configuration;
+using Abmes.DataCollector.Vault.Services.Ports.Configuration;
 using Amazon.S3;
 using Amazon.S3.Model;
 

@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Common.Data.FileSystem.Storage;
-using Abmes.DataCollector.Vault.Data.Configuration;
+using Abmes.DataCollector.Vault.Services.Ports.Configuration;
 
 namespace Abmes.DataCollector.Vault.Data.FileSystem.Storage;
 

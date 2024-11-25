@@ -32,6 +32,7 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.FileSystem\Abmes.DataCollector.Common.Data.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Web\Abmes.DataCollector.Common.Data.Web.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Services.DI\Abmes.DataCollector.Common.Services.DI.csproj" />
   </ItemGroup>
 
 </Project>

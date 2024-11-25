@@ -1,6 +1,7 @@
-﻿using Abmes.DataCollector.Vault.Data.Configuration;
+﻿using Abmes.DataCollector.Vault.Services.Configuration;
+using Abmes.DataCollector.Vault.Services.Ports.Storage;
 
-namespace Abmes.DataCollector.Vault.Data.Storage;
+namespace Abmes.DataCollector.Vault.Services.Storage;
 
 public class StoragesProvider(
     IStoragesConfigProvider storageConfigProvider,

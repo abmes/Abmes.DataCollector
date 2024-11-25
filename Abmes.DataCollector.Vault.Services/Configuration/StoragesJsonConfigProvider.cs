@@ -1,6 +1,7 @@
-﻿using System.Text.Json;
+﻿using Abmes.DataCollector.Vault.Services.Ports.Configuration;
+using System.Text.Json;
 
-namespace Abmes.DataCollector.Vault.Data.Configuration;
+namespace Abmes.DataCollector.Vault.Services.Configuration;
 
 public class StoragesJsonConfigProvider : IStoragesJsonConfigProvider
 {

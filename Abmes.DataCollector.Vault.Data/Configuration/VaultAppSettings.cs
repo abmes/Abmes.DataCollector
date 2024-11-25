@@ -8,5 +8,5 @@ public record VaultAppSettings : IVaultAppSettings
     // non-nullble properties can be checked like this: https://stackoverflow.com/questions/64784374/c-sharp-9-records-validation
     public TimeSpan? DownloadUrlExpiry { get; init; }
 
-    TimeSpan IVaultAppSettings.DownloadUrlExpiry => Ensure.NotNull<TimeSpan>(DownloadUrlExpiry);
+    TimeSpan IVaultAppSettings.DownloadUrlExpiry => Ensure.NotNull(DownloadUrlExpiry);
 }

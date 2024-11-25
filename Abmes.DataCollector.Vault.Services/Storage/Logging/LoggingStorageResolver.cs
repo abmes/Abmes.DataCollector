@@ -1,6 +1,7 @@
-﻿using Abmes.DataCollector.Vault.Data.Configuration;
+﻿using Abmes.DataCollector.Vault.Services.Ports.Configuration;
+using Abmes.DataCollector.Vault.Services.Ports.Storage;
 
-namespace Abmes.DataCollector.Vault.Data.Storage.Logging;
+namespace Abmes.DataCollector.Vault.Services.Storage.Logging;
 
 public class LoggingStorageResolver(
     IStorageResolver storageResolver,

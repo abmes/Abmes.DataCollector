@@ -1,7 +1,8 @@
 ﻿using Abmes.DataCollector.Utils;
 
-namespace Abmes.DataCollector.Vault.Data.Configuration;
+namespace Abmes.DataCollector.Vault.Services.Ports.Configuration;
 
+// todo: this can be simplified in .net 9 by takibng advantage of non-nullable and required property checking when deserializing from json
 public record StorageConfig
 {
     private string? _storageType;
@@ -11,6 +12,7 @@ public record StorageConfig
     public string? LoginSecret { get; init; }
     public string? Root { get; init; }
 
+    // todo: make these methods extension methods
     public string RootBase()
     {
         return Root?.Split('/', '\\').FirstOrDefault() ?? string.Empty;
@@ -25,7 +27,7 @@ public record StorageConfig
 
         var result = string.Join(separator, Root.Split('/', '\\').Skip(1));
 
-        if (includeTrailingSeparator && (!string.IsNullOrEmpty(result)))
+        if (includeTrailingSeparator && !string.IsNullOrEmpty(result))
         {
             result += separator;
         }

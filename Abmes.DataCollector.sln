@@ -79,7 +79,19 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.S
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.WebApi", "Abmes.DataCollector.Vault.Web.WebApi\Abmes.DataCollector.Vault.Web.WebApi.csproj", "{DB948BC8-A146-4F6C-A62B-A7CE58E67207}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Services.Contracts", "Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj", "{B21CA8FA-33E2-4FD5-B31A-9361EC011513}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Services.Contracts", "Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj", "{B21CA8FA-33E2-4FD5-B31A-9361EC011513}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Services.Ports", "Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj", "{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Services.DI", "Abmes.DataCollector.Vault.Services.DI\Abmes.DataCollector.Vault.Services.DI.csproj", "{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Services.Ports", "Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj", "{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Services.DI", "Abmes.DataCollector.Collector.Services.DI\Abmes.DataCollector.Collector.Services.DI.csproj", "{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Services", "Abmes.DataCollector.Common.Services\Abmes.DataCollector.Common.Services.csproj", "{B1F42953-0FD0-48A3-940D-48FF3490F77D}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Services.DI", "Abmes.DataCollector.Common.Services.DI\Abmes.DataCollector.Common.Services.DI.csproj", "{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -227,6 +239,30 @@ Global
 		{B21CA8FA-33E2-4FD5-B31A-9361EC011513}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B21CA8FA-33E2-4FD5-B31A-9361EC011513}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B21CA8FA-33E2-4FD5-B31A-9361EC011513}.Release|Any CPU.Build.0 = Release|Any CPU
+		{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}.Release|Any CPU.Build.0 = Release|Any CPU
+		{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B1F42953-0FD0-48A3-940D-48FF3490F77D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B1F42953-0FD0-48A3-940D-48FF3490F77D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B1F42953-0FD0-48A3-940D-48FF3490F77D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B1F42953-0FD0-48A3-940D-48FF3490F77D}.Release|Any CPU.Build.0 = Release|Any CPU
+		{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -267,6 +303,12 @@ Global
 		{1CF640A5-87EE-4B78-9DBA-6B18969855AD} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{DB948BC8-A146-4F6C-A62B-A7CE58E67207} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{B21CA8FA-33E2-4FD5-B31A-9361EC011513} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{7C8191DA-066B-476D-8DCB-8D234DDBB0A9} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
+		{FFC23DDD-3AF9-4601-9D37-7F33A74F4653} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{B1F42953-0FD0-48A3-940D-48FF3490F77D} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
+		{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8AC6496B-CDC1-4994-ACE3-BEC0D616354E}

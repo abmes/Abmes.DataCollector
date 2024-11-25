@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Vault.Data.Azure.Storage;
-using Abmes.DataCollector.Vault.Data.Storage;
+using Abmes.DataCollector.Vault.Services.Ports.Storage;
 using Autofac;
 
 namespace Abmes.DataCollector.Vault.Data.Azure;

@@ -1,9 +1,10 @@
 ﻿using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Vault.Data.Configuration;
+using Abmes.DataCollector.Vault.Services.Ports.Configuration;
+using Abmes.DataCollector.Vault.Services.Ports.Storage;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Vault.Data.Storage.Logging;
+namespace Abmes.DataCollector.Vault.Services.Storage.Logging;
 
 public class LoggingStorage(
     IStorage storage,
@@ -17,7 +18,7 @@ public class LoggingStorage(
         {
             logger.LogInformation("Started getting data '{dataCollectionName}' file names", dataCollectionName);
 
-            var result =  await storage.GetDataCollectionFileNamesAsync(dataCollectionName, fileNamePrefix, cancellationToken);
+            var result = await storage.GetDataCollectionFileNamesAsync(dataCollectionName, fileNamePrefix, cancellationToken);
 
             logger.LogInformation("Finished getting data '{dataCollectionName}' file names", dataCollectionName);
 
