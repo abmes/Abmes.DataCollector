@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Utils;
 
-namespace Abmes.DataCollector.Vault.Services.Configuration;
+namespace Abmes.DataCollector.Vault.Services.Users;
 
 public record User
 {

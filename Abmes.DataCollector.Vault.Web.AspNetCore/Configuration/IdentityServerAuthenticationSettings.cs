@@ -1,8 +1,8 @@
 ﻿using Abmes.DataCollector.Utils;
 
-namespace Abmes.DataCollector.Vault.Web.Library.Configuration;
+namespace Abmes.DataCollector.Vault.Web.AspNetCore.Configuration;
 
-public record IdentityServerAuthenticationSettings: IIdentityServerAuthenticationSettings
+public record IdentityServerAuthenticationSettings : IIdentityServerAuthenticationSettings
 {
     // todo: .net 7 should support positional record types with non-nullble properties for options
     public string? Authority { get; init; }

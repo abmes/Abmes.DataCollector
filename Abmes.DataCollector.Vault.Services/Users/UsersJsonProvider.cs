@@ -1,6 +1,6 @@
 ﻿using System.Text.Json;
 
-namespace Abmes.DataCollector.Vault.Services.Configuration;
+namespace Abmes.DataCollector.Vault.Services.Users;
 
 public class UsersJsonProvider : IUsersJsonProvider
 {

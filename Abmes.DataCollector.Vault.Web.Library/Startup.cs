@@ -1,6 +1,6 @@
 using Abmes.DataCollector.Utils.AspNetCore;
-using Abmes.DataCollector.Vault.Web.Library.Authorization;
-using Abmes.DataCollector.Vault.Web.Library.Configuration;
+using Abmes.DataCollector.Vault.Web.AspNetCore.Authorization;
+using Abmes.DataCollector.Vault.Web.AspNetCore.Configuration;
 using Autofac;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;

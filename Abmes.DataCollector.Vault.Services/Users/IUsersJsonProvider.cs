@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Vault.Services.Configuration;
+﻿namespace Abmes.DataCollector.Vault.Services.Users;
 
 public interface IUsersJsonProvider
 {

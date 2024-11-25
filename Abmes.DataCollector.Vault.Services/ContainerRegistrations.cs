@@ -3,8 +3,10 @@ using Abmes.DataCollector.Vault.Services.Collecting;
 using Abmes.DataCollector.Vault.Services.Collecting.Logging;
 using Abmes.DataCollector.Vault.Services.Configuration;
 using Abmes.DataCollector.Vault.Services.Contracts;
+using Abmes.DataCollector.Vault.Services.Ports.Configuration;
 using Abmes.DataCollector.Vault.Services.Ports.Storage;
 using Abmes.DataCollector.Vault.Services.Storage;
+using Abmes.DataCollector.Vault.Services.Users;
 using Autofac;
 
 namespace Abmes.DataCollector.Vault.Services;
@@ -41,5 +43,6 @@ public static class ContainerRegistrations
         builder.RegisterType<Configuration.Logging.StoragesConfigProviderLoggingDecorator>().Named<IStoragesConfigProvider>("LoggingDecorator");
         builder.RegisterDecorator<IStoragesConfigProvider>((x, inner) => x.ResolveNamed<IStoragesConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IStoragesConfigProvider>();
 
+        builder.RegisterType<UserService>().As<IUserService>();
     }
 }

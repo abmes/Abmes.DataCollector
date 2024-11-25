@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Vault.Web.Library.Configuration;
+﻿namespace Abmes.DataCollector.Vault.Web.AspNetCore.Configuration;
 
 public interface IIdentityServerAuthenticationSettings
 {
