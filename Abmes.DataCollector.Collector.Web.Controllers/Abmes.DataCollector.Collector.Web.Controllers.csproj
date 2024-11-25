@@ -13,7 +13,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Abstractions\Abmes.DataCollector.Collector.Services.Abstractions.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj" />
   </ItemGroup>
 
 </Project>

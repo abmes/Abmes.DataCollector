@@ -2,8 +2,8 @@
 using Abmes.DataCollector.Collector.App.Library.Configuration;
 using Abmes.DataCollector.Collector.App.Library.Initialization;
 using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Services.Abstractions.AppConfig;
 using Abmes.DataCollector.Collector.Services.Configuration;
+using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
 using Abmes.DataCollector.Common.Data.Configuration;
 using Autofac;
 using Microsoft.Extensions.Configuration;

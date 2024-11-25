@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Common.Configuration;
-using Abmes.DataCollector.Collector.Services.Abstractions;
 using Abmes.DataCollector.Collector.Services.Configuration;
+using Abmes.DataCollector.Collector.Services.Contracts;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
 
