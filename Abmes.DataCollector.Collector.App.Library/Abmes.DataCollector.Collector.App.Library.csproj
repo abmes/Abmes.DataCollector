@@ -17,9 +17,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Common\Abmes.DataCollector.Collector.Common.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Data\Abmes.DataCollector.Collector.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Console\Abmes.DataCollector.Collector.Data.Console.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Amazon\Abmes.DataCollector.Collector.Data.Amazon.csproj" />

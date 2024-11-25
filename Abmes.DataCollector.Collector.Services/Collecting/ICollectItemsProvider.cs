@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Common.Identity;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
 

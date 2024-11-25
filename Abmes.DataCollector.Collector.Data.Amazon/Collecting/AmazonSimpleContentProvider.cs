@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Data.Collecting;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
 using Amazon.S3;
 using Amazon.S3.Model;
 

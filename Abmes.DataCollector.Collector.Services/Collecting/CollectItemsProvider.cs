@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Common.Identity;
-using Abmes.DataCollector.Collector.Data.Collecting;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
+using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Utils.Net;

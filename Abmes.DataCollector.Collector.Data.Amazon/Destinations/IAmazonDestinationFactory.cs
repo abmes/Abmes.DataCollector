@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Data.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 
 namespace Abmes.DataCollector.Collector.Data.Amazon.Destinations;
 

@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Common.Identity;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 

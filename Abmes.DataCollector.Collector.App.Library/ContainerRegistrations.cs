@@ -1,9 +1,9 @@
 ﻿using Abmes.DataCollector.Collector.App.Library.AppConfig;
 using Abmes.DataCollector.Collector.App.Library.Configuration;
 using Abmes.DataCollector.Collector.App.Library.Initialization;
-using Abmes.DataCollector.Collector.Common.Configuration;
 using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
+using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
 using Autofac;
 using Microsoft.Extensions.Configuration;
@@ -21,14 +21,11 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Common.Data.Web.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Services.DI.ContainerRegistrations.RegisterFor(builder);
 
-        Abmes.DataCollector.Collector.Data.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Collector.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Web.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Console.ContainerRegistrations.RegisterFor(builder);
-
-        Abmes.DataCollector.Collector.Services.ContainerRegistrations.RegisterFor(builder);
 
         builder.RegisterType<MainService>().As<IMainService>();
         builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");
@@ -37,6 +34,6 @@ public static class ContainerRegistrations
         builder.RegisterType<CollectorModeProvider>().As<ICollectorModeProvider>();
         builder.RegisterType<TimeFilterProvider>().As<ITimeFilterProvider>();
 
-        Abmes.DataCollector.Collector.Common.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Collector.Services.ContainerRegistrations.RegisterFor(builder);
     }
 }
