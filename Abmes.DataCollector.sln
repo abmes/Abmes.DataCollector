@@ -75,7 +75,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common", "Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj", "{56DC5DE5-42D8-497E-9A6E-A7B7D28E4222}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Services.Abstractions", "Abmes.DataCollector.Vault.Services.Abstractions\Abmes.DataCollector.Vault.Services.Abstractions.csproj", "{1CF640A5-87EE-4B78-9DBA-6B18969855AD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Services.Contracts", "Abmes.DataCollector.Vault.Services.Contracts\Abmes.DataCollector.Vault.Services.Contracts.csproj", "{1CF640A5-87EE-4B78-9DBA-6B18969855AD}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.WebApi", "Abmes.DataCollector.Vault.Web.WebApi\Abmes.DataCollector.Vault.Web.WebApi.csproj", "{DB948BC8-A146-4F6C-A62B-A7CE58E67207}"
 EndProject

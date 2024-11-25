@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common;
-using Abmes.DataCollector.Vault.Services.Abstractions;
+using Abmes.DataCollector.Vault.Services.Contracts;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 

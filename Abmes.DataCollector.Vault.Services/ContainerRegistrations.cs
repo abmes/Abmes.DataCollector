@@ -1,7 +1,7 @@
-﻿using Abmes.DataCollector.Vault.Services.Abstractions;
-using Abmes.DataCollector.Vault.Services.Collecting;
+﻿using Abmes.DataCollector.Vault.Services.Collecting;
 using Abmes.DataCollector.Vault.Services.Collecting.Logging;
 using Abmes.DataCollector.Vault.Services.Configuration;
+using Abmes.DataCollector.Vault.Services.Contracts;
 using Autofac;
 
 namespace Abmes.DataCollector.Vault.Services;
