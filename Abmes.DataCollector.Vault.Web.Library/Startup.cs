@@ -1,5 +1,5 @@
+using Abmes.DataCollector.Vault.Data.AspNetCore;
 using Abmes.DataCollector.Vault.Web.AspNetCore;
-using Alvecta.Vector.CurrencyRates.Data.AspNetCore.DI;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

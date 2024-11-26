@@ -9,10 +9,6 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Autofac.Extensions.DependencyInjection" Version="9.0.0" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Web.Library\Abmes.DataCollector.Vault.Web.Library.csproj" />
   </ItemGroup>
 
