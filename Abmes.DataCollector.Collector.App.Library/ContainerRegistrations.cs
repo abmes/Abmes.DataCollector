@@ -5,6 +5,7 @@ using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
+using Abmes.DataCollector.Common.Data.Web;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -18,7 +19,7 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
-        Abmes.DataCollector.Common.Data.Web.ContainerRegistrations.RegisterFor(builder);
+        CommonDataWebStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Common.Services.DI.ContainerRegistrations.RegisterFor(builder);
 
         Abmes.DataCollector.Collector.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);

@@ -21,6 +21,7 @@ public static class AdapterServiceCollectionExtensions
 
     public static IServiceCollection AddOptionsAdapter<TTo, TFrom>(this IServiceCollection services) where TTo : class where TFrom : class, TTo, new()
     {
+        services.AddOptions();
         return services.AddAdapter<TTo, IOptions<TFrom>>(o => o.Value);
     }
 }

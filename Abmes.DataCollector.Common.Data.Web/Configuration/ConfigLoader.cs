@@ -3,6 +3,7 @@ using Abmes.DataCollector.Utils.Net;
 
 namespace Abmes.DataCollector.Common.Data.Web.Configuration;
 
+// todo: move it to Collector as it is not used by Vault so it is not common
 public class ConfigLoader(
     IHttpClientFactory httpClientFactory) : IConfigLoader
 {

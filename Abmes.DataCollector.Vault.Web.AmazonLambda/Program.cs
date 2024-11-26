@@ -19,7 +19,7 @@ var app = builder.Build();
 
 
 // Call Configure(), passing in the dependencies
-startup.Configure(app, app.Environment);
+startup.Configure(app, app, app.Environment);
 
 
 app.Run();

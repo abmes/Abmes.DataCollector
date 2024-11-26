@@ -13,8 +13,14 @@
   </ItemGroup>
 
   <ItemGroup>
+    <PackageReference Include="IdentityModel.AspNetCore.OAuth2Introspection" Version="6.2.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Contracts\Abmes.DataCollector.Vault.Services.Contracts.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Vault.Web.Controllers\Abmes.DataCollector.Vault.Web.Controllers.csproj" />
   </ItemGroup>
 
 </Project>
