@@ -12,7 +12,6 @@
     <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common.Services\Abmes.DataCollector.Common.Services.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils.DependencyInjection\Abmes.DataCollector.Utils.DependencyInjection.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Contracts\Abmes.DataCollector.Vault.Services.Contracts.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj" />

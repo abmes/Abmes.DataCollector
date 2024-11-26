@@ -1,4 +1,5 @@
 using Abmes.DataCollector.Vault.Data.AspNetCore;
+using Abmes.DataCollector.Vault.Services.DI;
 using Abmes.DataCollector.Vault.Web.AspNetCore;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
@@ -27,6 +28,7 @@ public class Startup(
         Abmes.DataCollector.Common.Data.FileSystem.ServicesConfiguration.Configure(services, configuration);
         Data.ServicesConfiguration.Configure(services, configuration);
         VaultAspNetCoreAppStartup.ConfigureServices(services, configuration);
+        VaultServicesStartup.ConfigureServices(services, configuration);
     }
 
     // ConfigureContainer is where you can register things directly
@@ -47,7 +49,7 @@ public class Startup(
         Abmes.DataCollector.Vault.Data.Amazon.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
-        Abmes.DataCollector.Vault.Services.ContainerRegistrations.RegisterFor(builder);
+        VaultServicesStartup.ConfigureContainer(builder);
 
         builder.RegisterInstance(configuration).As<IConfiguration>();
     }

@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Common.Data.Configuration;
-using Abmes.DataCollector.Vault.Services.Collecting;
 using Abmes.DataCollector.Vault.Services.Collecting.Logging;
+using Abmes.DataCollector.Vault.Services.Collecting;
 using Abmes.DataCollector.Vault.Services.Configuration;
 using Abmes.DataCollector.Vault.Services.Contracts;
 using Abmes.DataCollector.Vault.Services.Ports.Configuration;
@@ -8,12 +8,18 @@ using Abmes.DataCollector.Vault.Services.Ports.Storage;
 using Abmes.DataCollector.Vault.Services.Storage;
 using Abmes.DataCollector.Vault.Services.Users;
 using Autofac;
+using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
-namespace Abmes.DataCollector.Vault.Services;
+namespace Abmes.DataCollector.Vault.Services.DI;
 
-public static class ContainerRegistrations
+public static class VaultServicesStartup
 {
-    public static void RegisterFor(ContainerBuilder builder)
+    public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
+    {
+    }
+
+    public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<DataCollectionFiles>().Named<IDataCollectionFiles>("base");
 
@@ -38,7 +44,7 @@ public static class ContainerRegistrations
         builder.RegisterType<StoragesConfigProvider>().Named<IStoragesConfigProvider>("base");
         builder.RegisterType<StoragesJsonConfigProvider>().As<IStoragesJsonConfigProvider>();
 
-        builder.RegisterType<EmptyConfigLocationProvider>().As<IConfigLocationProvider>();
+        builder.RegisterType<EmptyConfigLocationProvider>().As<IConfigLocationProvider>();  // todo: move somewhere else and remove dependency on Common.Data
 
         builder.RegisterType<Configuration.Logging.StoragesConfigProviderLoggingDecorator>().Named<IStoragesConfigProvider>("LoggingDecorator");
         builder.RegisterDecorator<IStoragesConfigProvider>((x, inner) => x.ResolveNamed<IStoragesConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IStoragesConfigProvider>();
