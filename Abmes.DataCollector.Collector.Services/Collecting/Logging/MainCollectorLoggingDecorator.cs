@@ -1,5 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Contracts;
+﻿using Abmes.DataCollector.Collector.Services.Contracts;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;

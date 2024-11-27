@@ -1,3 +1,4 @@
+using Abmes.DataCollector.Collector.Services.Contracts;
 using Amazon.Lambda.Core;
 
 // Assembly attribute to enable the Lambda function's JSON input to be converted into a .NET class.
@@ -17,14 +18,6 @@ public class Function
 
         await Abmes.DataCollector.Collector.App.Library.Initialization.Initializer
             .GetMainService()
-            .MainAsync(
-                bootstrapper => bootstrapper.SetConfig(
-                    collectorParams.ConfigSetName,
-                    collectorParams.DataCollectionNames,
-                    collectorParams.CollectorMode,
-                    collectorParams.TimeFilter),
-                0,
-                default
-            );
+            .MainAsync(collectorParams, 0, CancellationToken.None);
     }
 }

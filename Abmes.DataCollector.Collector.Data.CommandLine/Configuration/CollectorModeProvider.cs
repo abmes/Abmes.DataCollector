@@ -1,11 +1,11 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Contracts;
-using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
+﻿using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
+using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 
-namespace Abmes.DataCollector.Collector.App.Library.Configuration;
+namespace Abmes.DataCollector.Collector.Data.CommandLine.Configuration;
 
 public class CollectorModeProvider(
-    IBootstrapper bootstrapper) : ICollectorModeProvider
+    IBootstrapper bootstrapper)
+    : ICollectorModeProvider
 {
     public CollectorMode GetCollectorMode()
     {

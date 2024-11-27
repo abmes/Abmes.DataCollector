@@ -1,5 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Contracts;
+using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;

@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.App.AmazonLambda;
+﻿namespace Abmes.DataCollector.Collector.Services.Contracts;
 
 public record CollectorParams
 {

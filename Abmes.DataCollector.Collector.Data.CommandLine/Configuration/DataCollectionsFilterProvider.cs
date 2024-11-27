@@ -1,10 +1,11 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
+﻿using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
+using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 
-namespace Abmes.DataCollector.Collector.App.Library.Configuration;
+namespace Abmes.DataCollector.Collector.Data.CommandLine.Configuration;
 
 public class DataCollectionsFilterProvider(
-    IBootstrapper bootstrapper) : IDataCollectionsFilterProvider
+    IBootstrapper bootstrapper)
+    : IDataCollectionsFilterProvider
 {
     public async Task<string> GetDataCollectionsFilterAsync(CancellationToken cancellationToken)
     {

@@ -1,4 +1,5 @@
-﻿using Autofac;
+﻿using Abmes.DataCollector.Collector.Services.Contracts;
+using Autofac;
 using Autofac.Extensions.DependencyInjection;
 using Microsoft.Extensions.DependencyInjection;
 

@@ -1,21 +1,30 @@
-﻿using Abmes.DataCollector.Collector.Services.Contracts;
-using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
+﻿using Abmes.DataCollector.Collector.Services.AppConfig;
+using Abmes.DataCollector.Collector.Services.Contracts;
+using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.App.Library.Initialization;
+namespace Abmes.DataCollector.Collector.Services;
 
 public class MainService(
     IMainCollector mainCollector,
     IBootstrapper bootstrapper,
     ITimeFilterProvider timeFilterProvider,
     ITimeFilterProcessor timeFilterProcessor,
-    ILogger<MainService> logger) : IMainService
+    ILogger<MainService> logger)
+    : IMainService
 {
-    public async Task<int> MainAsync(Action<IBootstrapper>? bootstrap, int exitDelaySeconds, CancellationToken cancellationToken)
+    public async Task<int> MainAsync(CollectorParams? collectorParams, int exitDelaySeconds, CancellationToken cancellationToken)
     {
         try
         {
-            bootstrap?.Invoke(bootstrapper);
+            if (collectorParams != null)
+            {
+                bootstrapper.SetConfig(
+                    collectorParams.ConfigSetName,
+                    collectorParams.DataCollectionNames,
+                    collectorParams.CollectorMode,
+                    collectorParams.TimeFilter);
+            }
 
             if (timeFilterProcessor.TimeFilterAccepted(timeFilterProvider.GetTimeFilter()))
             {

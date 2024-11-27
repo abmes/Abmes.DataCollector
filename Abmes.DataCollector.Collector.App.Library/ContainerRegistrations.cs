@@ -1,8 +1,8 @@
-﻿using Abmes.DataCollector.Collector.App.Library.AppConfig;
-using Abmes.DataCollector.Collector.App.Library.Configuration;
-using Abmes.DataCollector.Collector.App.Library.Initialization;
-using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
+﻿using Abmes.DataCollector.Collector.Data.CommandLine.AppConfig;
+using Abmes.DataCollector.Collector.Data.CommandLine.Configuration;
+using Abmes.DataCollector.Collector.Services;
+using Abmes.DataCollector.Collector.Services.Contracts;
+using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Common.Data.Configuration;
 using Abmes.DataCollector.Common.Data.Web;

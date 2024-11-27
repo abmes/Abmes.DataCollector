@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Contracts;
 using Abmes.DataCollector.Collector.Services.Destinations;
 using Abmes.DataCollector.Collector.Services.Misc;
+using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Common.Services.Storage;

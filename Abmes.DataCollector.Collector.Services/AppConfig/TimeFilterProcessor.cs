@@ -1,6 +1,4 @@
-﻿using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
-
-namespace Abmes.DataCollector.Collector.Services.AppConfig;
+﻿namespace Abmes.DataCollector.Collector.Services.AppConfig;
 
 public class TimeFilterProcessor(
     TimeProvider timeProvider) : ITimeFilterProcessor

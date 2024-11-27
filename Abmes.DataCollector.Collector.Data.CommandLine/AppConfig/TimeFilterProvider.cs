@@ -1,6 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Services.Contracts.AppConfig;
+﻿using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 
-namespace Abmes.DataCollector.Collector.App.Library.AppConfig;
+namespace Abmes.DataCollector.Collector.Data.CommandLine.AppConfig;
 
 public class TimeFilterProvider(
     IBootstrapper bootstrapper) : ITimeFilterProvider
