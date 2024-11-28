@@ -180,6 +180,7 @@ public static class HttpClientExtensions
         foreach (var u in urls.SkipLast(1))
         {
             using var _ = await httpClient.SendAsync(u, httpMethod, headers: headers, cancellationToken: cancellationToken);
+            // todo: what if response is not OK?
         }
     }
 

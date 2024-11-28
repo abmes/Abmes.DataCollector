@@ -43,6 +43,7 @@ public class WebDestination(
             timeout,
             (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
             cancellationToken: cancellationToken);
+        // todo: what if response is not OK?
     }
 
     public async Task<IEnumerable<string>> GetDataCollectionFileNamesAsync(string dataCollectionName, CancellationToken cancellationToken)
@@ -73,6 +74,7 @@ public class WebDestination(
             HttpMethod.Post,
             requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
             cancellationToken: cancellationToken);
+        // todo: what if response is not OK?
     }
 
     private string? GetEndpointUrl(string? endpoint, string dataCollectionName, string? fileName)
@@ -123,5 +125,6 @@ public class WebDestination(
             content: content,
             requestConfiguratorTask: (request, ct) => identityServiceHttpRequestConfigurator.ConfigAsync(request, DestinationConfig.IdentityServiceClientInfo, ct),
             cancellationToken: cancellationToken);
+        // todo: what if response is not OK?
     }
 }

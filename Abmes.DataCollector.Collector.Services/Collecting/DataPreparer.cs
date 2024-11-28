@@ -45,6 +45,7 @@ public class DataPreparer(
         using var httpClient = httpClientFactory.CreateClient();
         await httpClient.SendManyAsync(preliminaryUrls, new HttpMethod(prepareHttpMethod), prepareHeaders, cancellationToken);
         using var _ = await httpClient.SendAsync(lastUrl, new HttpMethod(prepareHttpMethod), headers: prepareHeaders, timeout: TimeSpan.FromMinutes(5), cancellationToken: cancellationToken);
+        // todo: what if response is not OK?
     }
 
     private async Task WaitPrepareToFinishAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, TimeSpan? pollInterval, TimeSpan? prepareDuration, CancellationToken cancellationToken)

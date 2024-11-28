@@ -37,6 +37,7 @@ public class FileSystemDestination(
 
         using var httpClient = httpClientFactory.CreateClient();
         using var response = await httpClient.SendAsync(collectUrl, HttpMethod.Get, collectUrl, null, null, collectHeaders, null, timeout, null, HttpCompletionOption.ResponseHeadersRead, cancellationToken);
+        // todo: what if response is not OK?
         var sourceMD5 = ContentMD5(response);
 
         var fullFileName = GetFullFileName(dataCollectionName, fileName);
