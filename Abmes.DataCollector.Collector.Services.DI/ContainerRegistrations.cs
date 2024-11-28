@@ -3,7 +3,6 @@ using Abmes.DataCollector.Collector.Services.Collecting;
 using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Configuration.ConfigSetName.Caching;
 using Abmes.DataCollector.Collector.Services.Configuration.ConfigSetName.Logging;
-using Abmes.DataCollector.Collector.Services.Contracts;
 using Abmes.DataCollector.Collector.Services.Destinations;
 using Abmes.DataCollector.Collector.Services.Destinations.Configuration;
 using Abmes.DataCollector.Collector.Services.Destinations.Configuration.Logging;

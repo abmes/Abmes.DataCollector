@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Contracts;
+﻿namespace Abmes.DataCollector.Collector.Services.Collecting;
 
 public interface IMainCollector
 {
