@@ -14,6 +14,6 @@ public static class ServicesConfiguration
         Abmes.DataCollector.Common.Data.FileSystem.ServicesConfiguration.Configure(services, configuration);
         CommonDataWebStartup.ConfigureServices(services, configuration);
 
-        Services.DI.ServicesConfiguration.Configure(services, configuration);
+        Services.DI.ServicesConfiguration.Configure(services);
     }
 }

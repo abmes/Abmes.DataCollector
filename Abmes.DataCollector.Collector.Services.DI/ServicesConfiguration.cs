@@ -1,6 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Services.Collecting;
 using Abmes.DataCollector.Utils.Polly;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;
 using Polly.DependencyInjection;
@@ -10,7 +9,7 @@ namespace Abmes.DataCollector.Collector.Services.DI;
 
 public static class ServicesConfiguration
 {
-    public static void Configure(IServiceCollection services, IConfiguration configuration)
+    public static void Configure(IServiceCollection services)
     {
         services.AddSingleton(TimeProvider.System);
 
