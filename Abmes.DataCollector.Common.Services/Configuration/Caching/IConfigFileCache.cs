@@ -1,4 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.Data.Configuration.Caching;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
+
+namespace Abmes.DataCollector.Common.Services.Configuration.Caching;
 
 public interface IConfigFileCache
 {

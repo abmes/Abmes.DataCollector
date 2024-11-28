@@ -1,6 +1,5 @@
-﻿using Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Vault.Services.Collecting;
 using Abmes.DataCollector.Vault.Services.Collecting.Logging;
-using Abmes.DataCollector.Vault.Services.Collecting;
 using Abmes.DataCollector.Vault.Services.Configuration;
 using Abmes.DataCollector.Vault.Services.Contracts;
 using Abmes.DataCollector.Vault.Services.Ports.Configuration;
@@ -43,8 +42,6 @@ public static class VaultServicesStartup
 
         builder.RegisterType<StoragesConfigProvider>().Named<IStoragesConfigProvider>("base");
         builder.RegisterType<StoragesJsonConfigProvider>().As<IStoragesJsonConfigProvider>();
-
-        builder.RegisterType<EmptyConfigLocationProvider>().As<IConfigLocationProvider>();  // todo: move somewhere else and remove dependency on Common.Data
 
         builder.RegisterType<Configuration.Logging.StoragesConfigProviderLoggingDecorator>().Named<IStoragesConfigProvider>("LoggingDecorator");
         builder.RegisterDecorator<IStoragesConfigProvider>((x, inner) => x.ResolveNamed<IStoragesConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IStoragesConfigProvider>();

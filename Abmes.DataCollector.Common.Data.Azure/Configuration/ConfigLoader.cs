@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
 using Azure.Storage.Blobs;
 using Microsoft.Extensions.Configuration;
 
@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Common.Data.Azure.Configuration;
 
 public class ConfigLoader(
     IConfiguration configuration,
-    IAzureAppSettings azureAppSettings) : IConfigLoader
+    IAzureAppSettings azureAppSettings)
+    : IConfigLoader
 {
     private const string AzureConfigStorageConnectionStringName = "AzureConfigStorage";
 

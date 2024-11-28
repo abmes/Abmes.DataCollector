@@ -1,6 +1,7 @@
-﻿using System.Collections.Concurrent;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
+using System.Collections.Concurrent;
 
-namespace Abmes.DataCollector.Common.Data.Configuration.Caching;
+namespace Abmes.DataCollector.Common.Services.Configuration.Caching;
 
 public class ConfigFileCache : IConfigFileCache
 {

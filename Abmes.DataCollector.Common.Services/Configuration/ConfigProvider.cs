@@ -1,9 +1,12 @@
-﻿namespace Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
+
+namespace Abmes.DataCollector.Common.Services.Configuration;
 
 public class ConfigProvider(
     IEnumerable<IConfigLoader> configLoaders,
     ICommonAppSettings commonAppSettings,
-    IConfigLocationProvider configLocationProvider) : IConfigProvider
+    IConfigLocationProvider configLocationProvider)
+    : IConfigProvider
 {
     public async Task<string> GetConfigContentAsync(string configName, CancellationToken cancellationToken)
     {
@@ -26,7 +29,7 @@ public class ConfigProvider(
     }
 
     private async Task<string> GetConfigContentFromStorageAsync(string configName, CancellationToken cancellationToken)
-    { 
+    {
         ArgumentException.ThrowIfNullOrEmpty(commonAppSettings.ConfigStorageType);
 
         var configLoader = configLoaders.Where(x => x.CanLoadFromStorage(commonAppSettings.ConfigStorageType)).FirstOrDefault();

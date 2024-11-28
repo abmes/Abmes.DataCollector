@@ -7,7 +7,7 @@ public static class ContainerRegistrations
 {
     public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
     {
-        Abmes.DataCollector.Common.Data.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Common.Data.Configuration.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Services.DI.ContainerRegistrations.RegisterFor(builder);
@@ -17,6 +17,6 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Collector.Data.Web.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Console.ContainerRegistrations.RegisterFor(builder);
 
-        Abmes.DataCollector.Collector.Services.ContainerRegistrations.RegisterFor(builder);
+        Services.DI.ContainerRegistrations.RegisterFor(builder);
     }
 }

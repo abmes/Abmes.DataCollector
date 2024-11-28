@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
 using Amazon.S3;
 using Amazon.S3.Model;
 using System.Text;
@@ -7,7 +7,8 @@ namespace Abmes.DataCollector.Common.Data.Amazon.Configuration;
 
 public class ConfigLoader(
     IAmazonAppSettings amazonAppSettings,
-    IAmazonS3 amazonS3) : IConfigLoader
+    IAmazonS3 amazonS3)
+    : IConfigLoader
 {
     private const string S3LocationPrefix = "s3://";
 

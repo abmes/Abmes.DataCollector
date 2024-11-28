@@ -1,10 +1,11 @@
-﻿using Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
 using System.Text;
 
 namespace Abmes.DataCollector.Common.Data.FileSystem.Configuration;
 
 public class ConfigLoader(
-    IFileSystemAppSettings fileSystemAppSettings) : IConfigLoader
+    IFileSystemAppSettings fileSystemAppSettings)
+    : IConfigLoader
 {
     public bool CanLoadFromStorage(string storageType)
     {

@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
 
 namespace Abmes.DataCollector.Collector.Services.Configuration;
 

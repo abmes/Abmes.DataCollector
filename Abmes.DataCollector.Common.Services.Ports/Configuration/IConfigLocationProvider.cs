@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Common.Data.Configuration;
+﻿namespace Abmes.DataCollector.Common.Services.Ports.Configuration;
 
 public interface IConfigLocationProvider
 {

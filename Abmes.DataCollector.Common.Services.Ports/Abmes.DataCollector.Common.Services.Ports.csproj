@@ -8,8 +8,4 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
-  </ItemGroup>
-
 </Project>

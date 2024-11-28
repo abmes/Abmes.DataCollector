@@ -8,4 +8,15 @@
     <DisableTransitiveProjectReferences>true</DisableTransitiveProjectReferences>
   </PropertyGroup>
 
+  <ItemGroup>
+    <PackageReference Include="Autofac" Version="8.0.0" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj" />
+  </ItemGroup>
+
 </Project>

@@ -11,12 +11,11 @@
   <ItemGroup>
     <PackageReference Include="Autofac" Version="8.0.0" />
     <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions" Version="8.0.0" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="8.0.1" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Contracts\Abmes.DataCollector.Vault.Services.Contracts.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Vault.Services\Abmes.DataCollector.Vault.Services.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Common.Services.Ports\Abmes.DataCollector.Common.Services.Ports.csproj" />
   </ItemGroup>
 
 </Project>

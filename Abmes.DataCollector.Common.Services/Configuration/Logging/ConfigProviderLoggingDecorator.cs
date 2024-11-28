@@ -1,7 +1,8 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
+using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Common.Data.Configuration.Logging;
+namespace Abmes.DataCollector.Common.Services.Configuration.Logging;
 
 public class ConfigProviderLoggingDecorator(
     ILogger<ConfigProviderLoggingDecorator> logger,

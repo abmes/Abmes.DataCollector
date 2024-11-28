@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
-using Abmes.DataCollector.Common.Data.Configuration;
+using Abmes.DataCollector.Common.Services.Ports.Configuration;
 
 namespace Abmes.DataCollector.Collector.Data.CommandLine.Configuration;
 

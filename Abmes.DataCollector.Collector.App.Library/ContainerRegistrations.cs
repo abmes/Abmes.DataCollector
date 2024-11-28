@@ -4,8 +4,8 @@ using Abmes.DataCollector.Collector.Services;
 using Abmes.DataCollector.Collector.Services.Contracts;
 using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
-using Abmes.DataCollector.Common.Data.Configuration;
 using Abmes.DataCollector.Common.Data.Web;
+using Abmes.DataCollector.Common.Services.Ports.Configuration;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 
@@ -15,7 +15,7 @@ public static class ContainerRegistrations
 {
     public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
     {
-        Abmes.DataCollector.Common.Data.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Common.Data.Configuration.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
@@ -35,6 +35,6 @@ public static class ContainerRegistrations
         builder.RegisterType<CollectorModeProvider>().As<ICollectorModeProvider>();
         builder.RegisterType<TimeFilterProvider>().As<ITimeFilterProvider>();
 
-        Abmes.DataCollector.Collector.Services.ContainerRegistrations.RegisterFor(builder);
+        Services.DI.ContainerRegistrations.RegisterFor(builder);
     }
 }

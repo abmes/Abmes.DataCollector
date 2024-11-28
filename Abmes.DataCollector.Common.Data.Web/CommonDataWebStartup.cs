@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Common.Data.Configuration;
-using Abmes.DataCollector.Common.Data.Web.Configuration;
+﻿using Abmes.DataCollector.Common.Data.Web.Configuration;
+using Abmes.DataCollector.Common.Services.Ports.Configuration;
 using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;

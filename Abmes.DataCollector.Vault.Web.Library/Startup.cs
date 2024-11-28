@@ -22,10 +22,11 @@ public class Startup(
         services.AddSingleton<TimeProvider>(TimeProvider.System);
 
         VaultAspNetCoreDataStartup.ConfigureServices(services, configuration);
-        Abmes.DataCollector.Common.Data.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Common.Data.Configuration.ServicesConfiguration.Configure(services, configuration);
         Abmes.DataCollector.Common.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
         Abmes.DataCollector.Common.Data.Azure.ServicesConfiguration.Configure(services, configuration);
         Abmes.DataCollector.Common.Data.FileSystem.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Vault.Data.Empty.ServicesConfiguration.Configure(services, configuration);
         Data.ServicesConfiguration.Configure(services, configuration);
         VaultAspNetCoreAppStartup.ConfigureServices(services, configuration);
         VaultServicesStartup.ConfigureServices(services, configuration);
@@ -39,7 +40,7 @@ public class Startup(
     // "Without ConfigureContainer" mechanism shown later.
     public void ConfigureContainer(ContainerBuilder builder)
     {
-        Abmes.DataCollector.Common.Data.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Common.Data.Configuration.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.RegisterFor(builder, configuration);
         Abmes.DataCollector.Common.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Common.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
@@ -49,6 +50,7 @@ public class Startup(
         Abmes.DataCollector.Vault.Data.Amazon.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.Azure.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Vault.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Vault.Data.Empty.ContainerRegistrations.RegisterFor(builder);
         VaultServicesStartup.ConfigureContainer(builder);
 
         builder.RegisterInstance(configuration).As<IConfiguration>();

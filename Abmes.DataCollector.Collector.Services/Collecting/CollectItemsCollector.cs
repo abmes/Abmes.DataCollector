@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
-using Abmes.DataCollector.Common.Services.Storage;
+using Abmes.DataCollector.Common.Services.Ports.Storage;
 using Abmes.DataCollector.Utils;
 using System.Collections.Concurrent;
 

@@ -16,7 +16,7 @@ using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Autofac;
 
-namespace Abmes.DataCollector.Collector.Services;
+namespace Abmes.DataCollector.Collector.Services.DI;
 
 public static class ContainerRegistrations
 {

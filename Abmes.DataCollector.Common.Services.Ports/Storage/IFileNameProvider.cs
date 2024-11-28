@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Common.Services.Storage;
+﻿namespace Abmes.DataCollector.Common.Services.Ports.Storage;
 
 public interface IFileNameProvider
 {

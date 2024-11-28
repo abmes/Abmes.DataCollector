@@ -1,4 +1,6 @@
-﻿namespace Abmes.DataCollector.Common.Data.Configuration;
+﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
+
+namespace Abmes.DataCollector.Vault.Data.Empty.Configuration;
 
 public class EmptyConfigLocationProvider : IConfigLocationProvider
 {

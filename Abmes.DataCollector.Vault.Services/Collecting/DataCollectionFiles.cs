@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Common;
-using Abmes.DataCollector.Common.Services.Storage;
+using Abmes.DataCollector.Common.Services.Ports.Storage;
 using Abmes.DataCollector.Vault.Services.Contracts;
 using Abmes.DataCollector.Vault.Services.Ports.Configuration;
 using Abmes.DataCollector.Vault.Services.Ports.Storage;
@@ -11,7 +11,8 @@ public class DataCollectionFiles(
     IDataCollectionNameProvider dataCollectionNameProvider,
     TimeProvider timeProvider,
     IStoragesProvider storageProvider,
-    IFileNameProvider fileNameProvider) : IDataCollectionFiles
+    IFileNameProvider fileNameProvider)
+    : IDataCollectionFiles
 {
     private readonly string _dataCollectionName = dataCollectionNameProvider.GetDataCollectionName();
 
