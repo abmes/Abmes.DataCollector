@@ -1,8 +1,9 @@
-﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
+using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class CollectItemsProviderLoggingDecorator(
     ILogger<CollectItemsProviderLoggingDecorator> logger,
@@ -21,11 +22,11 @@ public class CollectItemsProviderLoggingDecorator(
         {
             logger.LogInformation("Started getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
-            var result = 
+            var result =
                     (await collectItemsProvider.GetCollectItemsAsync(dataCollectionName, collectFileIdentifiersUrl, collectFileIdentifiersHeaders, collectUrl, collectHeaders, identityServiceClientInfo, cancellationToken))
                     .OrderBy(x => x.CollectFileInfo?.Name)  // todo: logging decorator should not alter behavior i.e. change the order of the result list
                     .ToList();
-            
+
             logger.LogInformation("Finished getting collect items for data collection '{dataCollectionName}'", dataCollectionName);
 
             logger.LogInformation("Retrieved {count} collect items for data collection '{dataCollectionName}'", result.Count, dataCollectionName);

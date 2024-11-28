@@ -1,10 +1,11 @@
-﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
+﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
+using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Abmes.DataCollector.Utils;
 using IdentityModel.Client;
 using System.Net;
 using System.Net.Http.Headers;
 
-namespace Abmes.DataCollector.Collector.Services.Identity;
+namespace Abmes.DataCollector.Collector.Data.Http.Identity;
 
 public class IdentityServiceHttpRequestConfigurator(
     IHttpClientFactory httpClientFactory) : IIdentityServiceHttpRequestConfigurator

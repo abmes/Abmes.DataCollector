@@ -7,12 +7,11 @@ using Abmes.DataCollector.Collector.Services.Destinations;
 using Abmes.DataCollector.Collector.Services.Destinations.Configuration;
 using Abmes.DataCollector.Collector.Services.Destinations.Configuration.Logging;
 using Abmes.DataCollector.Collector.Services.Destinations.Logging;
-using Abmes.DataCollector.Collector.Services.Identity;
 using Abmes.DataCollector.Collector.Services.Misc;
 using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
-using Abmes.DataCollector.Collector.Services.Ports.Identity;
+using Abmes.DataCollector.Collector.Services.Ports.Misc;
 using Autofac;
 
 namespace Abmes.DataCollector.Collector.Services.DI;
@@ -26,10 +25,6 @@ public static class ContainerRegistrations
         builder.RegisterType<MainCollector>().Named<IMainCollector>("base");
         builder.RegisterType<Collecting.DataCollector>().Named<IDataCollector>("base");
         builder.RegisterType<CollectItemsCollector>().Named<ICollectItemsCollector>("base");
-        builder.RegisterType<DataPreparer>().Named<IDataPreparer>("base");
-        builder.RegisterType<DataPreparePoller>().Named<IDataPreparePoller>("base");
-        builder.RegisterType<CollectItemsProvider>().Named<ICollectItemsProvider>("base");
-        builder.RegisterType<CollectUrlExtractor>().Named<ICollectUrlExtractor>("base");
         builder.RegisterType<Delay>().Named<IDelay>("base");
         builder.RegisterType<DateTimeFormatter>().As<IDateTimeFormatter>();
         builder.RegisterType<TimeFilterProcessor>().As<ITimeFilterProcessor>();
@@ -61,18 +56,6 @@ public static class ContainerRegistrations
         builder.RegisterType<Collecting.Logging.CollectItemsCollectorLoggingDecorator>().Named<ICollectItemsCollector>("LoggingDecorator");
         builder.RegisterDecorator<ICollectItemsCollector>((x, inner) => x.ResolveNamed<ICollectItemsCollector>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectItemsCollector>();
 
-        builder.RegisterType<Collecting.Logging.DataPreparerLoggingDecorator>().Named<IDataPreparer>("LoggingDecorator");
-        builder.RegisterDecorator<IDataPreparer>((x, inner) => x.ResolveNamed<IDataPreparer>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataPreparer>();
-
-        builder.RegisterType<Collecting.Logging.DataPreparePollerLoggingDecorator>().Named<IDataPreparePoller>("LoggingDecorator");
-        builder.RegisterDecorator<IDataPreparePoller>((x, inner) => x.ResolveNamed<IDataPreparePoller>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataPreparePoller>();
-
-        builder.RegisterType<Collecting.Logging.CollectItemsProviderLoggingDecorator>().Named<ICollectItemsProvider>("LoggingDecorator");
-        builder.RegisterDecorator<ICollectItemsProvider>((x, inner) => x.ResolveNamed<ICollectItemsProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectItemsProvider>();
-
-        builder.RegisterType<Collecting.Logging.CollectUrlExtractorLoggingDecorator>().Named<ICollectUrlExtractor>("LoggingDecorator");
-        builder.RegisterDecorator<ICollectUrlExtractor>((x, inner) => x.ResolveNamed<ICollectUrlExtractor>("LoggingDecorator", TypedParameter.From(inner)), "base").As<ICollectUrlExtractor>();
-
         builder.RegisterType<Configuration.Logging.DataCollectionsConfigProviderLoggingDecorator>().Named<IDataCollectionsConfigProvider>("LoggingDecorator");
         builder.RegisterDecorator<IDataCollectionsConfigProvider>((x, inner) => x.ResolveNamed<IDataCollectionsConfigProvider>("LoggingDecorator", TypedParameter.From(inner)), "dateFormatting").As<IDataCollectionsConfigProvider>();
 
@@ -98,7 +81,5 @@ public static class ContainerRegistrations
 
         builder.RegisterType<ConfigSetNameProviderLoggingDecorator>().Named<IConfigSetNameProvider>("LoggingDecorator");
         builder.RegisterDecorator<IConfigSetNameProvider>((x, inner) => x.ResolveNamed<IConfigSetNameProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").Named<IConfigSetNameProvider>("logging");
-
-        builder.RegisterType<IdentityServiceHttpRequestConfigurator>().As<IIdentityServiceHttpRequestConfigurator>();
     }
 }

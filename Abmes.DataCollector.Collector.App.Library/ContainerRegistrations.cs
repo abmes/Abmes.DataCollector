@@ -27,6 +27,7 @@ public static class ContainerRegistrations
         Abmes.DataCollector.Collector.Data.FileSystem.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Web.ContainerRegistrations.RegisterFor(builder);
         Abmes.DataCollector.Collector.Data.Console.ContainerRegistrations.RegisterFor(builder);
+        Abmes.DataCollector.Collector.Data.Http.ContainerRegistrations.RegisterFor(builder);
 
         builder.RegisterType<MainService>().As<IMainService>();
         builder.RegisterType<ConfigSetNameProvider>().Named<IConfigSetNameProvider>("base");

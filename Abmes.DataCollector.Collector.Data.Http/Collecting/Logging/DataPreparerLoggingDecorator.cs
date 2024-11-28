@@ -1,8 +1,9 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
+using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class DataPreparerLoggingDecorator(
     ILogger<DataPreparerLoggingDecorator> logger,

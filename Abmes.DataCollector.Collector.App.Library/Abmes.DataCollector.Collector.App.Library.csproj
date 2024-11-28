@@ -18,6 +18,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.CommandLine\Abmes.DataCollector.Collector.Data.CommandLine.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Http\Abmes.DataCollector.Collector.Data.Http.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.DI\Abmes.DataCollector.Collector.Services.DI.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />

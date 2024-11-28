@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting;
+namespace Abmes.DataCollector.Collector.Services.Ports.Collecting;
 
 public interface ICollectItemsProvider
 {

@@ -17,11 +17,6 @@ public static class ServicesConfiguration
         services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectItemsMarker>(ParallelOperationRetryingStrategyConfig);
         services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker>(ParallelOperationRetryingStrategyConfig);
 
-        services.AddPollyAsyncExecutionStrategy<CollectItemsProvider.IGetCollectItemsMarker>(CollectItemsProviderGetCollectItemsRetryingStrategyConfig);
-        services.AddPollyAsyncExecutionStrategy<CollectItemsProvider.IRedirectCollectItemsMarker>(ParallelOperationRetryingStrategyConfig);
-
-        services.AddPollyAsyncExecutionStrategy<CollectUrlExtractor>(CollectUrlExtractorRetryingStrategyConfig);
-
         services.AddPollyAsyncExecutionStrategy<Collecting.DataCollector>(ParallelOperationRetryingStrategyConfig);
     }
 
@@ -34,30 +29,6 @@ public static class ServicesConfiguration
                 BackoffType = DelayBackoffType.Constant,
                 Delay = TimeSpan.FromSeconds(5),  // todo: config
                 MaxRetryAttempts = 2  // todo: config
-            });
-    }
-
-    private static void CollectItemsProviderGetCollectItemsRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
-    {
-        builder
-            .AddRetry(new RetryStrategyOptions
-            {
-                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
-                BackoffType = DelayBackoffType.Constant,
-                Delay = TimeSpan.FromSeconds(5),  // todo: config
-                MaxRetryAttempts = 1  // todo: config
-            });
-    }
-
-    private static void CollectUrlExtractorRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
-    {
-        builder
-            .AddRetry(new RetryStrategyOptions
-            {
-                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
-                BackoffType = DelayBackoffType.Constant,
-                Delay = TimeSpan.FromSeconds(10),  // todo: config
-                MaxRetryAttempts = 5  // todo: config
             });
     }
 

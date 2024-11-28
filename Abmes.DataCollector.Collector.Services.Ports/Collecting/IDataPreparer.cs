@@ -1,6 +1,6 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting;
+namespace Abmes.DataCollector.Collector.Services.Ports.Collecting;
 
 public interface IDataPreparer
 {

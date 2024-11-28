@@ -1,4 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Ports.Identity;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
+
+namespace Abmes.DataCollector.Collector.Data.Common.Identity;
 
 public interface IIdentityServiceHttpRequestConfigurator
 {

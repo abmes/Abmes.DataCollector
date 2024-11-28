@@ -1,4 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Services.Misc;
+using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Abmes.DataCollector.Collector.Services.Configuration;

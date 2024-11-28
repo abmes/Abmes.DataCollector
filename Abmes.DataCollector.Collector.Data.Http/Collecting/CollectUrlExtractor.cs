@@ -1,9 +1,9 @@
-﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
+﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Utils.Net;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting;
 
 public class CollectUrlExtractor(
     IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
@@ -21,7 +21,7 @@ public class CollectUrlExtractor(
 
                     using var httpClient = httpClientFactory.CreateClient();
 
-                    var collectUrlsJson = 
+                    var collectUrlsJson =
                         await httpClient.GetStringAsync(
                             sourceUrl,
                             HttpMethod.Get,

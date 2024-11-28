@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class DataPreparePollerLoggingDecorator(
     ILogger<DataPreparePollerLoggingDecorator> logger,

@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Configuration;
+using Abmes.DataCollector.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Configuration.Logging;

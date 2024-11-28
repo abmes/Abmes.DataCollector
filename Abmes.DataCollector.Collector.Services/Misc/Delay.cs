@@ -1,4 +1,6 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Misc;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Misc;
+
+namespace Abmes.DataCollector.Collector.Services.Misc;
 
 public class Delay : IDelay
 {

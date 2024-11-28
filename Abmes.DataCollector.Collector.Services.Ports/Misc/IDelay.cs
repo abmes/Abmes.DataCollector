@@ -1,4 +1,4 @@
-﻿namespace Abmes.DataCollector.Collector.Services.Misc;
+﻿namespace Abmes.DataCollector.Collector.Services.Ports.Misc;
 
 public interface IDelay
 {

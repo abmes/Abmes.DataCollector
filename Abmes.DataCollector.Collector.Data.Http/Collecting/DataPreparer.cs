@@ -1,9 +1,10 @@
-﻿using Abmes.DataCollector.Collector.Services.Configuration;
-using Abmes.DataCollector.Collector.Services.Misc;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
+using Abmes.DataCollector.Collector.Services.Ports.Configuration;
+using Abmes.DataCollector.Collector.Services.Ports.Misc;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Utils.Net;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting;
 
 public class DataPreparer(
     IDataPreparePoller dataPreparePoller,
@@ -72,9 +73,9 @@ public class DataPreparer(
                 prepareResult = new DataPrepareResult(Finished: false, HasErrors: true);
             }
 
-            if ((!prepareResult.Finished) &&
-                ((prepareDuration ?? default).TotalMilliseconds > 0) && 
-                (timeProvider.GetUtcNow().Subtract(startTime) > prepareDuration))
+            if (!prepareResult.Finished &&
+                (prepareDuration ?? default).TotalMilliseconds > 0 &&
+                timeProvider.GetUtcNow().Subtract(startTime) > prepareDuration)
             {
                 throw new Exception($"Prepare timed out. ({prepareDuration.Value.TotalSeconds} seconds)");
             }

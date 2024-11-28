@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Abmes.DataCollector.Utils;
 
-namespace Abmes.DataCollector.Collector.Services.Configuration;
+namespace Abmes.DataCollector.Collector.Services.Ports.Configuration;
 
 public record DataCollectionConfig
 {
@@ -44,7 +44,7 @@ public record DataCollectionConfig
 
 
     private IdentityServiceClientInfo? _identityServiceClientInfo;
-    public IdentityServiceClientInfo? IdentityServiceClientInfo 
+    public IdentityServiceClientInfo? IdentityServiceClientInfo
     {
         get
         {

@@ -1,4 +1,5 @@
-﻿using System.Text.Json;
+﻿using Abmes.DataCollector.Collector.Services.Ports.Configuration;
+using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Services.Configuration;
 

@@ -11,6 +11,8 @@ public static class ServicesConfiguration
         Abmes.DataCollector.Common.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
         Abmes.DataCollector.Common.Data.Azure.ServicesConfiguration.Configure(services, configuration);
 
+        Abmes.DataCollector.Collector.Data.Http.ServicesConfiguration.Configure(services);
+
         Services.DI.ServicesConfiguration.Configure(services);
     }
 }

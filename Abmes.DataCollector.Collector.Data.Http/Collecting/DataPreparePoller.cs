@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Utils.Net;
 using System.Text.Json;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting;
 
 public class DataPreparePoller(
     IHttpClientFactory httpClientFactory) : IDataPreparePoller

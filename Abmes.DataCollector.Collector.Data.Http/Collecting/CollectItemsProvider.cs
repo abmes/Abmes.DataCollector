@@ -1,4 +1,5 @@
-﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
+﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
+using Abmes.DataCollector.Collector.Services.Ports.Collecting;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
 using Abmes.DataCollector.Common;
 using Abmes.DataCollector.Utils;
@@ -6,7 +7,7 @@ using Abmes.DataCollector.Utils.Net;
 using System.Text;
 using System.Text.Json;
 
-namespace Abmes.DataCollector.Collector.Services.Collecting;
+namespace Abmes.DataCollector.Collector.Data.Http.Collecting;
 
 public class CollectItemsProvider(
     ICollectUrlExtractor collectUrlsExtractor,
@@ -60,21 +61,21 @@ public class CollectItemsProvider(
             }
             else
             {
-                return [new (null, collectUrl)];
+                return [new(null, collectUrl)];
             }
         }
         else
         {
             var query = collectFileIdentifiersUrl.Split("@");
 
-            var queryFilter = (query.Length > 1 ? query.First() : null);
+            var queryFilter = query.Length > 1 ? query.First() : null;
 
             var selector = query.Last().Split("|");
 
             var queryUrl = selector.First();
 
             var queryPropertyNames =
-                selector.Length ==  2
+                selector.Length == 2
                 ? selector.Last().Split(',', ';')
                 : [];
 
@@ -186,7 +187,7 @@ public class CollectItemsProvider(
                             await httpClient.SendManyAsync(preliminaryUrls, HttpMethod.Get, null, ct);
 
                             var url = await collectUrlsExtractor.ExtractCollectUrlAsync(dataCollectionName, collectItem.CollectFileInfo?.Name, lastUrl, collectHeaders, identityServiceAccessToken, ct);
-                            
+
                             return new CollectItem(collectItem.CollectFileInfo, url);
                         },
                         ct2),
