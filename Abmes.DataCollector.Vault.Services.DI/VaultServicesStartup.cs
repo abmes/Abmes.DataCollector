@@ -20,10 +20,10 @@ public static class VaultServicesStartup
 
     public static void ConfigureContainer(ContainerBuilder builder)
     {
-        builder.RegisterType<DataCollectionFiles>().Named<IDataCollectionFiles>("base");
+        builder.RegisterType<DataCollectionFilesService>().Named<IDataCollectionFilesService>("base");
 
-        builder.RegisterType<DataCollectionFilesLoggingDecorator>().Named<IDataCollectionFiles>("LoggingDecorator");
-        builder.RegisterDecorator<IDataCollectionFiles>((x, inner) => x.ResolveNamed<IDataCollectionFiles>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollectionFiles>();
+        builder.RegisterType<DataCollectionFilesServiceLoggingDecorator>().Named<IDataCollectionFilesService>("LoggingDecorator");
+        builder.RegisterDecorator<IDataCollectionFilesService>((x, inner) => x.ResolveNamed<IDataCollectionFilesService>("LoggingDecorator", TypedParameter.From(inner)), "base").As<IDataCollectionFilesService>();
 
         builder.RegisterType<UsersProvider>().As<IUsersProvider>();
         builder.RegisterType<UsersJsonProvider>().As<IUsersJsonProvider>();

@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Vault.Web.Controllers;
 [Authorize(Policy = "UserAllowedDataCollection")]
 [Route("[controller]")]
 public class DataCollectionFilesController(
-    IDataCollectionFiles dataCollectionFiles) : ControllerBase
+    IDataCollectionFilesService dataCollectionFilesService)
+    : ControllerBase
 {
     private static TimeSpan? ParseTimeSpan(string? value)
     {
@@ -23,7 +24,7 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<IEnumerable<FileInfoData>> GetFileInfosAsync([FromQuery] string? prefix, [FromQuery] string? maxAge, CancellationToken cancellationToken)
     {
-        return await dataCollectionFiles.GetFileInfosAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
+        return await dataCollectionFilesService.GetFileInfosAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
     }
 
     // GET DataCollectionFiles/GetFiles/latest
@@ -31,7 +32,7 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<IEnumerable<FileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken)
     {
-        return await dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
+        return await dataCollectionFilesService.GetLatestFileInfosAsync(cancellationToken);
     }
 
     // GET DataCollectionFiles/GetFiles?prefix=xyz&maxAge=0:2:0
@@ -39,7 +40,7 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<IEnumerable<string>> GetFileNamesAsync([FromQuery] string? prefix, [FromQuery] string? maxAge, CancellationToken cancellationToken)
     {
-        return await dataCollectionFiles.GetFileNamesAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
+        return await dataCollectionFilesService.GetFileNamesAsync(prefix, ParseTimeSpan(maxAge), cancellationToken);
     }
 
     // GET DataCollectionFiles/GetFiles/latest
@@ -47,7 +48,7 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<IEnumerable<string>> GetLatestFileNamesAsync(CancellationToken cancellationToken)
     {
-        return await dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
+        return await dataCollectionFilesService.GetLatestFileNamesAsync(cancellationToken);
     }
 
     // GET DataCollectionFiles/GetDownloadUrl?fileName=some-file.zip&storageType=Amazon
@@ -57,7 +58,7 @@ public class DataCollectionFilesController(
     {
         ArgumentException.ThrowIfNullOrEmpty(fileName);
 
-        return await dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
+        return await dataCollectionFilesService.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
     }
 
     // GET DataCollectionFiles/GetDownloadUrls?fileNamePrefix=xyz&storageType=Amazon
@@ -65,7 +66,7 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<IEnumerable<string>> GetDownloadUrlsAsync([FromQuery] string? fileNamePrefix, [FromQuery] string? storageType, CancellationToken cancellationToken)
     {
-        return await dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
+        return await dataCollectionFilesService.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
     }
 
     // GET DataCollectionFiles/GetDownloadUrl/latest?storageType=Amazon
@@ -73,6 +74,6 @@ public class DataCollectionFilesController(
     [HttpGet]
     public async Task<IEnumerable<string>> GetLatestDownloadUrls([FromQuery] string? storageType, CancellationToken cancellationToken)
     {
-        return await dataCollectionFiles.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
+        return await dataCollectionFilesService.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
     }
 }

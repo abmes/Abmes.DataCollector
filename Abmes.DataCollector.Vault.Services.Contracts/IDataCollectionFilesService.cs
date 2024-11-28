@@ -2,7 +2,7 @@
 
 namespace Abmes.DataCollector.Vault.Services.Contracts;
 
-public interface IDataCollectionFiles
+public interface IDataCollectionFilesService
 {
     Task<IEnumerable<FileInfoData>> GetFileInfosAsync(string? prefix, TimeSpan? maxAge, CancellationToken cancellationToken);
     Task<IEnumerable<FileInfoData>> GetLatestFileInfosAsync(CancellationToken cancellationToken);

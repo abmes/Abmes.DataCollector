@@ -7,12 +7,12 @@ using Abmes.DataCollector.Vault.Services.Storage;
 
 namespace Abmes.DataCollector.Vault.Services.Collecting;
 
-public class DataCollectionFiles(
+public class DataCollectionFilesService(
     IDataCollectionNameProvider dataCollectionNameProvider,
     TimeProvider timeProvider,
     IStoragesProvider storageProvider,
     IFileNameProvider fileNameProvider)
-    : IDataCollectionFiles
+    : IDataCollectionFilesService
 {
     private readonly string _dataCollectionName = dataCollectionNameProvider.GetDataCollectionName();
 

@@ -5,9 +5,10 @@ using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Services.Collecting.Logging;
 
-public class DataCollectionFilesLoggingDecorator(
-    ILogger<DataCollectionFilesLoggingDecorator> logger,
-    IDataCollectionFiles dataCollectionFiles) : IDataCollectionFiles
+public class DataCollectionFilesServiceLoggingDecorator(
+    ILogger<DataCollectionFilesServiceLoggingDecorator> logger,
+    IDataCollectionFilesService dataCollectionFilesService)
+    : IDataCollectionFilesService
 {
     public async Task<string> GetDownloadUrlAsync(string fileName, string? storageType, CancellationToken cancellationToken)
     {
@@ -15,7 +16,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
 
-            var result = await dataCollectionFiles.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
+            var result = await dataCollectionFilesService.GetDownloadUrlAsync(fileName, storageType, cancellationToken);
 
             logger.LogInformation("Finished getting download url" + FromStorageType(storageType) + " for file '{fileName}'", fileName);
 
@@ -34,7 +35,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting download urls" + FromStorageType(storageType) + " for file name prefix'{fileNamePrefix}'", fileNamePrefix);
 
-            var result = await dataCollectionFiles.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
+            var result = await dataCollectionFilesService.GetDownloadUrlsAsync(fileNamePrefix, storageType, cancellationToken);
 
             logger.LogInformation("Finished getting download urls" + FromStorageType(storageType) + " for file name prefix '{fileNamePrefix}'", fileNamePrefix);
 
@@ -53,7 +54,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting file infos");
 
-            var result = await dataCollectionFiles.GetFileInfosAsync(prefix, maxAge, cancellationToken);
+            var result = await dataCollectionFilesService.GetFileInfosAsync(prefix, maxAge, cancellationToken);
 
             logger.LogInformation("Finished getting file infos");
 
@@ -72,7 +73,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting file names");
 
-            var result = await dataCollectionFiles.GetFileNamesAsync(prefix, maxAge, cancellationToken);
+            var result = await dataCollectionFilesService.GetFileNamesAsync(prefix, maxAge, cancellationToken);
 
             logger.LogInformation("Finished getting file names");
 
@@ -91,7 +92,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting latest download url" + FromStorageType(storageType));
 
-            var result = await dataCollectionFiles.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
+            var result = await dataCollectionFilesService.GetLatestDownloadUrlsAsync(storageType, cancellationToken);
 
             logger.LogInformation("Finished getting latest download url" + FromStorageType(storageType));
 
@@ -110,7 +111,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting latest file infos");
 
-            var result = await dataCollectionFiles.GetLatestFileInfosAsync(cancellationToken);
+            var result = await dataCollectionFilesService.GetLatestFileInfosAsync(cancellationToken);
 
             logger.LogInformation("Finished getting latest file infos");
 
@@ -129,7 +130,7 @@ public class DataCollectionFilesLoggingDecorator(
         {
             logger.LogInformation("Started getting latest file names");
 
-            var result = await dataCollectionFiles.GetLatestFileNamesAsync(cancellationToken);
+            var result = await dataCollectionFilesService.GetLatestFileNamesAsync(cancellationToken);
 
             logger.LogInformation("Finished getting latest file names");
 
