@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Shared.Services.Ports.Configuration;
 using Abmes.DataCollector.Utils.Net;
 
-namespace Abmes.DataCollector.Shared.Data.Web.Configuration;
+namespace Abmes.DataCollector.Collector.Data.Web.Configuration;
 
 // todo: move it to Collector as it is not used by Vault so it is not common
 public class ConfigLoader(

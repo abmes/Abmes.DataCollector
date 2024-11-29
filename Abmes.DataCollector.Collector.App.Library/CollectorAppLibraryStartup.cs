@@ -4,7 +4,6 @@ using Abmes.DataCollector.Collector.Services;
 using Abmes.DataCollector.Collector.Services.Contracts;
 using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
-using Abmes.DataCollector.Shared.Data.Web;
 using Abmes.DataCollector.Shared.Services.Ports.Configuration;
 using Autofac;
 using Microsoft.Extensions.Configuration;
@@ -20,11 +19,11 @@ public static class CollectorAppLibraryStartup
         Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureServices(services, configuration);
         Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureServices(services, configuration);
         Abmes.DataCollector.Shared.Data.FileSystem.SharedFileSystemDataStartup.ConfigureServices(services, configuration);
-        SharedWebDataStartup.ConfigureServices(services, configuration);
 
         Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureServices(services);
 
         Abmes.DataCollector.Collector.Data.Http.CollectorHttpDataStartup.ConfigureSrvices(services);
+        Abmes.DataCollector.Collector.Data.Web.CollectorWebDataStartup.ConfigureServices(services, configuration);
 
         Services.DI.CollectorServicesStartup.ConfigureServices(services);
     }
@@ -35,7 +34,6 @@ public static class CollectorAppLibraryStartup
         Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureContainer(builder, configuration);
         Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Shared.Data.FileSystem.SharedFileSystemDataStartup.ConfigureContainer(builder);
-        SharedWebDataStartup.ConfigureContainer(builder);
 
         Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureContainer(builder);
 

@@ -57,8 +57,6 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.FileSystem", "Abmes.DataCollector.Shared.Data.FileSystem\Abmes.DataCollector.Shared.Data.FileSystem.csproj", "{90DC4BFB-8A73-4869-B00F-F497E12221B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.Web", "Abmes.DataCollector.Shared.Data.Web\Abmes.DataCollector.Shared.Data.Web.csproj", "{476A2904-7846-40D6-9C4A-EC21096DCD3F}"
-EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.FileSystem", "Abmes.DataCollector.Vault.Data.FileSystem\Abmes.DataCollector.Vault.Data.FileSystem.csproj", "{A07B5EDF-8612-44F6-9245-D3337E64E9FF}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.Polly", "Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj", "{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}"
@@ -77,33 +75,33 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Services.Contracts", "Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj", "{B21CA8FA-33E2-4FD5-B31A-9361EC011513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Services.Ports", "Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj", "{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Services.Ports", "Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj", "{DD7E20AD-BDE7-46B6-99F7-B949E0EB6D9D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Services.DI", "Abmes.DataCollector.Vault.Services.DI\Abmes.DataCollector.Vault.Services.DI.csproj", "{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Services.DI", "Abmes.DataCollector.Vault.Services.DI\Abmes.DataCollector.Vault.Services.DI.csproj", "{7C8191DA-066B-476D-8DCB-8D234DDBB0A9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Services.Ports", "Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj", "{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Services.Ports", "Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj", "{FFC23DDD-3AF9-4601-9D37-7F33A74F4653}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Services.DI", "Abmes.DataCollector.Collector.Services.DI\Abmes.DataCollector.Collector.Services.DI.csproj", "{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Services.DI", "Abmes.DataCollector.Collector.Services.DI\Abmes.DataCollector.Collector.Services.DI.csproj", "{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Services", "Abmes.DataCollector.Shared.Services\Abmes.DataCollector.Shared.Services.csproj", "{B1F42953-0FD0-48A3-940D-48FF3490F77D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Services", "Abmes.DataCollector.Shared.Services\Abmes.DataCollector.Shared.Services.csproj", "{B1F42953-0FD0-48A3-940D-48FF3490F77D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Services.DI", "Abmes.DataCollector.Shared.Services.DI\Abmes.DataCollector.Shared.Services.DI.csproj", "{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Services.DI", "Abmes.DataCollector.Shared.Services.DI\Abmes.DataCollector.Shared.Services.DI.csproj", "{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Web.AspNetCore", "Abmes.DataCollector.Vault.Web.AspNetCore\Abmes.DataCollector.Vault.Web.AspNetCore.csproj", "{768CEECA-056A-46B8-89AC-F25FE36ED3F8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.AspNetCore", "Abmes.DataCollector.Vault.Web.AspNetCore\Abmes.DataCollector.Vault.Web.AspNetCore.csproj", "{768CEECA-056A-46B8-89AC-F25FE36ED3F8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Data.AspNetCore", "Abmes.DataCollector.Vault.Data.AspNetCore\Abmes.DataCollector.Vault.Data.AspNetCore.csproj", "{A9C849D3-0870-44A8-ADE7-D2C3A62FAC63}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.AspNetCore", "Abmes.DataCollector.Vault.Data.AspNetCore\Abmes.DataCollector.Vault.Data.AspNetCore.csproj", "{A9C849D3-0870-44A8-ADE7-D2C3A62FAC63}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Data.CommandLine", "Abmes.DataCollector.Collector.Data.CommandLine\Abmes.DataCollector.Collector.Data.CommandLine.csproj", "{B8F8F04F-CD84-4199-860D-A4D325AF4D02}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.CommandLine", "Abmes.DataCollector.Collector.Data.CommandLine\Abmes.DataCollector.Collector.Data.CommandLine.csproj", "{B8F8F04F-CD84-4199-860D-A4D325AF4D02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Services.Ports", "Abmes.DataCollector.Shared.Services.Ports\Abmes.DataCollector.Shared.Services.Ports.csproj", "{D13DA9F0-F0D9-4727-A4A5-B4A8739FEB4E}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Services.Ports", "Abmes.DataCollector.Shared.Services.Ports\Abmes.DataCollector.Shared.Services.Ports.csproj", "{D13DA9F0-F0D9-4727-A4A5-B4A8739FEB4E}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Data.Empty", "Abmes.DataCollector.Vault.Data.Empty\Abmes.DataCollector.Vault.Data.Empty.csproj", "{9FAB83AE-75D1-494A-B638-981BB3E71AE7}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.Empty", "Abmes.DataCollector.Vault.Data.Empty\Abmes.DataCollector.Vault.Data.Empty.csproj", "{9FAB83AE-75D1-494A-B638-981BB3E71AE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Data.Configuration", "Abmes.DataCollector.Shared.Data.Configuration\Abmes.DataCollector.Shared.Data.Configuration.csproj", "{48DDA08D-C3E4-46FA-BA86-A687962B3566}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.Configuration", "Abmes.DataCollector.Shared.Data.Configuration\Abmes.DataCollector.Shared.Data.Configuration.csproj", "{48DDA08D-C3E4-46FA-BA86-A687962B3566}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Data.Http", "Abmes.DataCollector.Collector.Data.Http\Abmes.DataCollector.Collector.Data.Http.csproj", "{5F6805F4-0A76-4F37-951D-5620F86F97D8}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Http", "Abmes.DataCollector.Collector.Data.Http\Abmes.DataCollector.Collector.Data.Http.csproj", "{5F6805F4-0A76-4F37-951D-5620F86F97D8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Data.Common", "Abmes.DataCollector.Collector.Data.Common\Abmes.DataCollector.Collector.Data.Common.csproj", "{C5DA6A4F-4492-4113-A5BF-0750679BEB7B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Common", "Abmes.DataCollector.Collector.Data.Common\Abmes.DataCollector.Collector.Data.Common.csproj", "{C5DA6A4F-4492-4113-A5BF-0750679BEB7B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -203,10 +201,6 @@ Global
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9}.Release|Any CPU.Build.0 = Release|Any CPU
-		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{476A2904-7846-40D6-9C4A-EC21096DCD3F}.Release|Any CPU.Build.0 = Release|Any CPU
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -327,7 +321,6 @@ Global
 		{6357B0FD-3E44-4BB9-92E4-2DA91BD1685B} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{B568D7B9-049A-43DE-8B0B-687B85511F2D} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{90DC4BFB-8A73-4869-B00F-F497E12221B9} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
-		{476A2904-7846-40D6-9C4A-EC21096DCD3F} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 		{A07B5EDF-8612-44F6-9245-D3337E64E9FF} = {4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}
 		{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
 		{D684DE53-C547-4AAF-9E9C-2FCABD885917} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
