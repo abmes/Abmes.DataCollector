@@ -22,8 +22,12 @@ public static class CollectorAppLibraryStartup
 
         Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureServices(services);
 
-        Abmes.DataCollector.Collector.Data.Http.CollectorHttpDataStartup.ConfigureSrvices(services);
+        Abmes.DataCollector.Collector.Data.Amazon.CollectorAmazonDataStartup.ConfigureSrvices(services);
+        Abmes.DataCollector.Collector.Data.Azure.CollectorAzureDataStartup.ConfigureSrvices(services);
+        Abmes.DataCollector.Collector.Data.FileSystem.CollectorFileSystemDataStartup.ConfigureSrvices(services);
         Abmes.DataCollector.Collector.Data.Web.CollectorWebDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Collector.Data.Console.CollectorConsoleDataStartup.ConfigureSrvices(services);
+        Abmes.DataCollector.Collector.Data.Http.CollectorHttpDataStartup.ConfigureSrvices(services);
 
         Services.DI.CollectorServicesStartup.ConfigureServices(services);
     }

@@ -4,11 +4,16 @@ using Abmes.DataCollector.Collector.Services.Ports.Collecting;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Autofac;
 using Microsoft.Extensions.Configuration;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Abmes.DataCollector.Collector.Data.Amazon;
 
 public static class CollectorAmazonDataStartup
 {
+    public static void ConfigureSrvices(IServiceCollection services)
+    {
+    }
+
     public static void ConfigureContainer(ContainerBuilder builder, IConfiguration configuration)
     {
         if (Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.IsAmazonRegistrationNeeded(configuration))
