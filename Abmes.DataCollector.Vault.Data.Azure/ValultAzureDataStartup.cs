@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Abmes.DataCollector.Vault.Data.Azure;
 
-public static class ValultAzureDataStartup
+public static class VaultAzureDataStartup
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {

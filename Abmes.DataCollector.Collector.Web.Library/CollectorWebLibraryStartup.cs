@@ -1,4 +1,14 @@
-﻿using Autofac;
+﻿using Abmes.DataCollector.Collector.Data.Amazon;
+using Abmes.DataCollector.Collector.Data.Azure;
+using Abmes.DataCollector.Collector.Data.Console;
+using Abmes.DataCollector.Collector.Data.Http;
+using Abmes.DataCollector.Collector.Data.Web;
+using Abmes.DataCollector.Collector.Services.DI;
+using Abmes.DataCollector.Shared.Data.Amazon;
+using Abmes.DataCollector.Shared.Data.Azure;
+using Abmes.DataCollector.Shared.Data.Configuration;
+using Abmes.DataCollector.Shared.Services.DI;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,35 +18,35 @@ public static class CollectorWebLibraryStartup
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
-        Abmes.DataCollector.Shared.Data.Configuration.SharedConfigurationDataStartup.ConfigureServices(services, configuration);
-        Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureServices(services, configuration);
-        Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureServices(services, configuration);
+        SharedConfigurationDataStartup.ConfigureServices(services, configuration);
+        SharedAmazonDataStartup.ConfigureServices(services, configuration);
+        SharedAzureDataStartup.ConfigureServices(services, configuration);
 
-        Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureServices(services);
+        SharedServicesStartup.ConfigureServices(services);
 
-        Abmes.DataCollector.Collector.Data.Amazon.CollectorAmazonDataStartup.ConfigureSrvices(services);
-        Abmes.DataCollector.Collector.Data.Azure.CollectorAzureDataStartup.ConfigureSrvices(services);
-        Abmes.DataCollector.Collector.Data.Web.CollectorWebDataStartup.ConfigureServices(services, configuration);
-        Abmes.DataCollector.Collector.Data.Console.CollectorConsoleDataStartup.ConfigureSrvices(services);
-        Abmes.DataCollector.Collector.Data.Http.CollectorHttpDataStartup.ConfigureSrvices(services);
+        CollectorAmazonDataStartup.ConfigureSrvices(services);
+        CollectorAzureDataStartup.ConfigureSrvices(services);
+        CollectorWebDataStartup.ConfigureServices(services, configuration);
+        CollectorConsoleDataStartup.ConfigureSrvices(services);
+        CollectorHttpDataStartup.ConfigureSrvices(services);
 
-        Services.DI.CollectorServicesStartup.ConfigureServices(services);
+        CollectorServicesStartup.ConfigureServices(services);
     }
 
     public static void ConfigureContainer(ContainerBuilder builder, IConfiguration configuration)
     {
-        Abmes.DataCollector.Shared.Data.Configuration.SharedConfigurationDataStartup.ConfigureContainer(builder);
-        Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureContainer(builder, configuration);
-        Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureContainer(builder);
+        SharedConfigurationDataStartup.ConfigureContainer(builder);
+        SharedAmazonDataStartup.ConfigureContainer(builder, configuration);
+        SharedAzureDataStartup.ConfigureContainer(builder);
 
-        Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureContainer(builder);
+        SharedServicesStartup.ConfigureContainer(builder);
 
-        Abmes.DataCollector.Collector.Data.Amazon.CollectorAmazonDataStartup.ConfigureContainer(builder, configuration);
-        Abmes.DataCollector.Collector.Data.Azure.CollectorAzureDataStartup.ConfigureContainer(builder);
-        Abmes.DataCollector.Collector.Data.Web.CollectorWebDataStartup.ConfigureContainer(builder);
-        Abmes.DataCollector.Collector.Data.Console.CollectorConsoleDataStartup.ConfigureContainer(builder);
-        Abmes.DataCollector.Collector.Data.Http.CollectorHttpDataStartup.ConfigureContainer(builder);
+        CollectorAmazonDataStartup.ConfigureContainer(builder, configuration);
+        CollectorAzureDataStartup.ConfigureContainer(builder);
+        CollectorWebDataStartup.ConfigureContainer(builder);
+        CollectorConsoleDataStartup.ConfigureContainer(builder);
+        CollectorHttpDataStartup.ConfigureContainer(builder);
 
-        Services.DI.CollectorServicesStartup.ConfigureContainer(builder);
+        CollectorServicesStartup.ConfigureContainer(builder);
     }
 }
