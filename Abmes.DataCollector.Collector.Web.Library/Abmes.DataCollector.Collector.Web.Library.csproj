@@ -20,7 +20,6 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Web\Abmes.DataCollector.Collector.Data.Web.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Logging.Amazon\Abmes.DataCollector.Collector.Logging.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.DI\Abmes.DataCollector.Collector.Services.DI.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Web.Controllers\Abmes.DataCollector.Collector.Web.Controllers.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Amazon\Abmes.DataCollector.Shared.Data.Amazon.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Azure\Abmes.DataCollector.Shared.Data.Azure.csproj" />

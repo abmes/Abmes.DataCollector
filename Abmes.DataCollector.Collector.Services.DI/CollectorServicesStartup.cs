@@ -3,6 +3,7 @@ using Abmes.DataCollector.Collector.Services.Collecting;
 using Abmes.DataCollector.Collector.Services.Configuration;
 using Abmes.DataCollector.Collector.Services.Configuration.ConfigSetName.Caching;
 using Abmes.DataCollector.Collector.Services.Configuration.ConfigSetName.Logging;
+using Abmes.DataCollector.Collector.Services.Contracts;
 using Abmes.DataCollector.Collector.Services.Destinations;
 using Abmes.DataCollector.Collector.Services.Destinations.Configuration;
 using Abmes.DataCollector.Collector.Services.Destinations.Configuration.Logging;
@@ -15,9 +16,9 @@ using Abmes.DataCollector.Collector.Services.Ports.Misc;
 using Abmes.DataCollector.Utils.Polly;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 using Polly.DependencyInjection;
 using Polly.Retry;
-using Polly;
 
 namespace Abmes.DataCollector.Collector.Services.DI;
 
@@ -121,5 +122,7 @@ public static class CollectorServicesStartup
 
         builder.RegisterType<ConfigSetNameProviderLoggingDecorator>().Named<IConfigSetNameProvider>("LoggingDecorator");
         builder.RegisterDecorator<IConfigSetNameProvider>((x, inner) => x.ResolveNamed<IConfigSetNameProvider>("LoggingDecorator", TypedParameter.From(inner)), "base").Named<IConfigSetNameProvider>("logging");
+
+        builder.RegisterType<MainService>().As<IMainService>();
     }
 }
