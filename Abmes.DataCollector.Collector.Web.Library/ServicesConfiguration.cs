@@ -7,9 +7,9 @@ public static class ServicesConfiguration
 {
     public static void Configure(IServiceCollection services, IConfiguration configuration)
     {
-        Abmes.DataCollector.Common.Data.Configuration.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Common.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Common.Data.Azure.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.Configuration.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.Azure.ServicesConfiguration.Configure(services, configuration);
 
         Abmes.DataCollector.Collector.Data.Http.ServicesConfiguration.Configure(services);
 

@@ -3,13 +3,13 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.3.32819.101
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{B6EB5572-088B-4FE8-8A3A-B274D674645F}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Shared", "Shared", "{B6EB5572-088B-4FE8-8A3A-B274D674645F}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Collector", "Collector", "{1687A416-C25F-4BAF-BE33-F4646A08711C}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Vault", "Vault", "{4BCBEEAC-2D33-49E7-92EF-E2F0CB016B04}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data", "Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj", "{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data", "Abmes.DataCollector.Shared.Data\Abmes.DataCollector.Shared.Data.csproj", "{F38B6814-FDF9-4906-BBC9-43B6C308EA6B}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Services", "Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj", "{55611575-C016-4A27-9301-5196C79F4F29}"
 EndProject
@@ -23,7 +23,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Services", "Abmes.DataCollector.Vault.Services\Abmes.DataCollector.Vault.Services.csproj", "{C2C1C414-B5EA-4829-A5E1-882E930A58E9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data.Amazon", "Abmes.DataCollector.Common.Data.Amazon\Abmes.DataCollector.Common.Data.Amazon.csproj", "{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.Amazon", "Abmes.DataCollector.Shared.Data.Amazon\Abmes.DataCollector.Shared.Data.Amazon.csproj", "{4B9208C6-8ED8-4553-99D9-63AB35C8B66F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.Amazon", "Abmes.DataCollector.Vault.Data.Amazon\Abmes.DataCollector.Vault.Data.Amazon.csproj", "{1B611AFE-974E-48D0-B9F3-264C07C49B62}"
 EndProject
@@ -39,7 +39,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.D
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.AmazonLambda", "Abmes.DataCollector.Vault.Web.AmazonLambda\Abmes.DataCollector.Vault.Web.AmazonLambda.csproj", "{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data.Azure", "Abmes.DataCollector.Common.Data.Azure\Abmes.DataCollector.Common.Data.Azure.csproj", "{8CAF5FB0-D2DA-44B6-A610-25B27D071091}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.Azure", "Abmes.DataCollector.Shared.Data.Azure\Abmes.DataCollector.Shared.Data.Azure.csproj", "{8CAF5FB0-D2DA-44B6-A610-25B27D071091}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Azure", "Abmes.DataCollector.Collector.Data.Azure\Abmes.DataCollector.Collector.Data.Azure.csproj", "{A43E57E3-F256-4607-B295-7F9E345D83B3}"
 EndProject
@@ -55,9 +55,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.FileSystem", "Abmes.DataCollector.Collector.Data.FileSystem\Abmes.DataCollector.Collector.Data.FileSystem.csproj", "{B568D7B9-049A-43DE-8B0B-687B85511F2D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data.FileSystem", "Abmes.DataCollector.Common.Data.FileSystem\Abmes.DataCollector.Common.Data.FileSystem.csproj", "{90DC4BFB-8A73-4869-B00F-F497E12221B9}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.FileSystem", "Abmes.DataCollector.Shared.Data.FileSystem\Abmes.DataCollector.Shared.Data.FileSystem.csproj", "{90DC4BFB-8A73-4869-B00F-F497E12221B9}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common.Data.Web", "Abmes.DataCollector.Common.Data.Web\Abmes.DataCollector.Common.Data.Web.csproj", "{476A2904-7846-40D6-9C4A-EC21096DCD3F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.Data.Web", "Abmes.DataCollector.Shared.Data.Web\Abmes.DataCollector.Shared.Data.Web.csproj", "{476A2904-7846-40D6-9C4A-EC21096DCD3F}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.FileSystem", "Abmes.DataCollector.Vault.Data.FileSystem\Abmes.DataCollector.Vault.Data.FileSystem.csproj", "{A07B5EDF-8612-44F6-9245-D3337E64E9FF}"
 EndProject
@@ -69,7 +69,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.W
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data", "Abmes.DataCollector.Vault.Data\Abmes.DataCollector.Vault.Data.csproj", "{DEE23059-08E6-4FFA-9D4A-E5A04D25B7E3}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Common", "Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj", "{56DC5DE5-42D8-497E-9A6E-A7B7D28E4222}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared", "Abmes.DataCollector.Shared\Abmes.DataCollector.Shared.csproj", "{56DC5DE5-42D8-497E-9A6E-A7B7D28E4222}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Services.Contracts", "Abmes.DataCollector.Vault.Services.Contracts\Abmes.DataCollector.Vault.Services.Contracts.csproj", "{1CF640A5-87EE-4B78-9DBA-6B18969855AD}"
 EndProject
@@ -85,9 +85,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collect
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Services.DI", "Abmes.DataCollector.Collector.Services.DI\Abmes.DataCollector.Collector.Services.DI.csproj", "{134389BD-FEFC-4A6B-99FB-BAFCD1E654FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Services", "Abmes.DataCollector.Common.Services\Abmes.DataCollector.Common.Services.csproj", "{B1F42953-0FD0-48A3-940D-48FF3490F77D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Services", "Abmes.DataCollector.Shared.Services\Abmes.DataCollector.Shared.Services.csproj", "{B1F42953-0FD0-48A3-940D-48FF3490F77D}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Services.DI", "Abmes.DataCollector.Common.Services.DI\Abmes.DataCollector.Common.Services.DI.csproj", "{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Services.DI", "Abmes.DataCollector.Shared.Services.DI\Abmes.DataCollector.Shared.Services.DI.csproj", "{0AB3F89C-1224-4D6D-8BB1-37BD13A1210D}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Web.AspNetCore", "Abmes.DataCollector.Vault.Web.AspNetCore\Abmes.DataCollector.Vault.Web.AspNetCore.csproj", "{768CEECA-056A-46B8-89AC-F25FE36ED3F8}"
 EndProject
@@ -95,11 +95,11 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.D
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Data.CommandLine", "Abmes.DataCollector.Collector.Data.CommandLine\Abmes.DataCollector.Collector.Data.CommandLine.csproj", "{B8F8F04F-CD84-4199-860D-A4D325AF4D02}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Services.Ports", "Abmes.DataCollector.Common.Services.Ports\Abmes.DataCollector.Common.Services.Ports.csproj", "{D13DA9F0-F0D9-4727-A4A5-B4A8739FEB4E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Services.Ports", "Abmes.DataCollector.Shared.Services.Ports\Abmes.DataCollector.Shared.Services.Ports.csproj", "{D13DA9F0-F0D9-4727-A4A5-B4A8739FEB4E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Vault.Data.Empty", "Abmes.DataCollector.Vault.Data.Empty\Abmes.DataCollector.Vault.Data.Empty.csproj", "{9FAB83AE-75D1-494A-B638-981BB3E71AE7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Common.Data.Configuration", "Abmes.DataCollector.Common.Data.Configuration\Abmes.DataCollector.Common.Data.Configuration.csproj", "{48DDA08D-C3E4-46FA-BA86-A687962B3566}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Shared.Data.Configuration", "Abmes.DataCollector.Shared.Data.Configuration\Abmes.DataCollector.Shared.Data.Configuration.csproj", "{48DDA08D-C3E4-46FA-BA86-A687962B3566}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.DataCollector.Collector.Data.Http", "Abmes.DataCollector.Collector.Data.Http\Abmes.DataCollector.Collector.Data.Http.csproj", "{5F6805F4-0A76-4F37-951D-5620F86F97D8}"
 EndProject

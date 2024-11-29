@@ -1,5 +1,5 @@
-﻿using Abmes.DataCollector.Common;
-using Abmes.DataCollector.Common.Services.Ports.Storage;
+﻿using Abmes.DataCollector.Shared;
+using Abmes.DataCollector.Shared.Services.Ports.Storage;
 using Abmes.DataCollector.Vault.Services.Contracts;
 using Abmes.DataCollector.Vault.Services.Ports.Configuration;
 using Abmes.DataCollector.Vault.Services.Ports.Storage;

@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
-using Abmes.DataCollector.Common;
+using Abmes.DataCollector.Shared;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
 

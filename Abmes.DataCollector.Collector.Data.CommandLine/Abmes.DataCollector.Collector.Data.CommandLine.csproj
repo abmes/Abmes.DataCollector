@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Services.Ports\Abmes.DataCollector.Common.Services.Ports.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Services.Ports\Abmes.DataCollector.Shared.Services.Ports.csproj" />
   </ItemGroup>
 
 </Project>

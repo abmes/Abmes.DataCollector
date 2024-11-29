@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common;
+﻿using Abmes.DataCollector.Shared;
 
 namespace Abmes.DataCollector.Vault.Services.Contracts;
 

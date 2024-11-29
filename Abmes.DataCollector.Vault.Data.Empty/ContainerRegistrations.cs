@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Services.Ports.Configuration;
+﻿using Abmes.DataCollector.Shared.Services.Ports.Configuration;
 using Abmes.DataCollector.Vault.Data.Empty.Configuration;
 using Autofac;
 

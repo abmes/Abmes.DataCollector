@@ -11,7 +11,7 @@ public static class ContainerRegistrations
 {
     public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
     {
-        if (Abmes.DataCollector.Common.Data.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
+        if (Abmes.DataCollector.Shared.Data.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
         {
             builder.RegisterType<AmazonDestination>().As<IAmazonDestination>();
             builder.RegisterType<AmazonDestinationResolver>().Named<IDestinationResolver>("base");

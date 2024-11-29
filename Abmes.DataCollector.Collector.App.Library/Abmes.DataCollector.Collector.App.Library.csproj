@@ -29,14 +29,14 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.FileSystem\Abmes.DataCollector.Collector.Data.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Web\Abmes.DataCollector.Collector.Data.Web.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Logging.Amazon\Abmes.DataCollector.Collector.Logging.Amazon.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Amazon\Abmes.DataCollector.Common.Data.Amazon.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Azure\Abmes.DataCollector.Common.Data.Azure.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Configuration\Abmes.DataCollector.Common.Data.Configuration.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data.FileSystem\Abmes.DataCollector.Common.Data.FileSystem.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Web\Abmes.DataCollector.Common.Data.Web.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Services.DI\Abmes.DataCollector.Common.Services.DI.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Services.Ports\Abmes.DataCollector.Common.Services.Ports.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Amazon\Abmes.DataCollector.Shared.Data.Amazon.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Azure\Abmes.DataCollector.Shared.Data.Azure.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Configuration\Abmes.DataCollector.Shared.Data.Configuration.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.FileSystem\Abmes.DataCollector.Shared.Data.FileSystem.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Web\Abmes.DataCollector.Shared.Data.Web.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data\Abmes.DataCollector.Shared.Data.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Services.DI\Abmes.DataCollector.Shared.Services.DI.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Services.Ports\Abmes.DataCollector.Shared.Services.Ports.csproj" />
   </ItemGroup>
 
 </Project>

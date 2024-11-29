@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Common.Data.Web;
+﻿using Abmes.DataCollector.Shared.Data.Web;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -8,10 +8,10 @@ public static class ServicesConfiguration
 {
     public static void Configure(IServiceCollection services, IConfiguration configuration)
     {
-        Abmes.DataCollector.Common.Data.Configuration.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Common.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Common.Data.Azure.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Common.Data.FileSystem.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.Configuration.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.Azure.ServicesConfiguration.Configure(services, configuration);
+        Abmes.DataCollector.Shared.Data.FileSystem.ServicesConfiguration.Configure(services, configuration);
         CommonDataWebStartup.ConfigureServices(services, configuration);
 
         Abmes.DataCollector.Collector.Data.Http.ServicesConfiguration.Configure(services);

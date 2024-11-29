@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
-using Abmes.DataCollector.Common.Data.Azure.Storage;
+using Abmes.DataCollector.Shared.Data.Azure.Storage;
 using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Utils.Net;
 using Azure.Storage.Blobs;

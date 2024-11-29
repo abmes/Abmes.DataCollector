@@ -9,9 +9,9 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data.Amazon\Abmes.DataCollector.Common.Data.Amazon.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common.Data\Abmes.DataCollector.Common.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Common\Abmes.DataCollector.Common.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Amazon\Abmes.DataCollector.Shared.Data.Amazon.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared.Data\Abmes.DataCollector.Shared.Data.csproj" />
+    <ProjectReference Include="..\Abmes.DataCollector.Shared\Abmes.DataCollector.Shared.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Data\Abmes.DataCollector.Vault.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Ports\Abmes.DataCollector.Vault.Services.Ports.csproj" />
   </ItemGroup>

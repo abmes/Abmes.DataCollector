@@ -4,8 +4,8 @@ using Abmes.DataCollector.Collector.Services.Ports.Collecting;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Misc;
-using Abmes.DataCollector.Common;
-using Abmes.DataCollector.Common.Services.Ports.Storage;
+using Abmes.DataCollector.Shared;
+using Abmes.DataCollector.Shared.Services.Ports.Storage;
 using Abmes.DataCollector.Utils;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting;
