@@ -5,11 +5,16 @@ using Abmes.DataCollector.Shared.Services.Ports.Configuration;
 using Abmes.DataCollector.Shared.Services.Ports.Storage;
 using Abmes.DataCollector.Shared.Services.Storage;
 using Autofac;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Abmes.DataCollector.Shared.Services.DI;
 
 public static class SharedServicesStartup
 {
+    public static void ConfigureServices(IServiceCollection services)
+    {
+    }
+
     public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<FileNameProvider>().As<IFileNameProvider>();

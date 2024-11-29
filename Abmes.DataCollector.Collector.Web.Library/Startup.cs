@@ -29,7 +29,7 @@ public class Startup(
             LoggingConfigurator.Configure(loggingBuilder, configuration);
         });
 
-        ServicesConfiguration.Configure(services, configuration);
+        CollectorWebLibraryStartup.ConfigureServices(services, configuration);
     }
 
     // ConfigureContainer is where you can register things directly
@@ -41,7 +41,7 @@ public class Startup(
     public void ConfigureContainer(ContainerBuilder builder)
     {
         // Register your own things directly with Autofac
-        ContainerRegistrations.RegisterFor(builder, configuration);
+        CollectorWebLibraryStartup.ConfigureContainer(builder, configuration);
         builder.RegisterInstance(configuration).As<IConfiguration>();
         //...
     }

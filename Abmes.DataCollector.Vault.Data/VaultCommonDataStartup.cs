@@ -1,4 +1,5 @@
 ﻿using Abmes.DataCollector.Vault.Data.Configuration;
+using Autofac;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,5 +11,9 @@ public static class VaultCommonDataStartup
     {
         services.Configure<VaultAppSettings>(configuration.GetSection("AppSettings"));
         services.AddOptionsAdapter<IVaultAppSettings, VaultAppSettings>();
+    }
+
+    public static void ConfigureContainer(ContainerBuilder builder)
+    {
     }
 }

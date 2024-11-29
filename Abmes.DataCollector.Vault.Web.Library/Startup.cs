@@ -21,13 +21,20 @@ public class Startup(
 
         services.AddSingleton<TimeProvider>(TimeProvider.System);
 
-        VaultAspNetCoreDataStartup.ConfigureServices(services, configuration);
         Abmes.DataCollector.Shared.Data.Configuration.SharedConfigurationDataStartup.ConfigureServices(services, configuration);
         Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureServices(services, configuration);
         Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureServices(services, configuration);
         Abmes.DataCollector.Shared.Data.FileSystem.SharedFileSystemDataStartup.ConfigureServices(services, configuration);
-        Abmes.DataCollector.Vault.Data.Empty.VaultEmptyDataStartup.ConfigureServices(services, configuration);
+
+        Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureServices(services);
+
         Data.VaultCommonDataStartup.ConfigureServices(services, configuration);
+        VaultAspNetCoreDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Vault.Data.Amazon.VaultAmazonDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Vault.Data.Azure.ValultAzureDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Vault.Data.FileSystem.VaultFileSystemDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Vault.Data.Empty.VaultEmptyDataStartup.ConfigureServices(services, configuration);
+
         VaultAspNetCoreAppStartup.ConfigureServices(services, configuration);
         VaultServicesStartup.ConfigureServices(services, configuration);
     }
@@ -44,13 +51,16 @@ public class Startup(
         Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureContainer(builder, configuration);
         Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Shared.Data.FileSystem.SharedFileSystemDataStartup.ConfigureContainer(builder);
+
         Abmes.DataCollector.Shared.Services.DI.SharedServicesStartup.ConfigureContainer(builder);
 
+        Data.VaultCommonDataStartup.ConfigureContainer(builder);
         VaultAspNetCoreDataStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Vault.Data.Amazon.VaultAmazonDataStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Vault.Data.Azure.ValultAzureDataStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Vault.Data.FileSystem.VaultFileSystemDataStartup.ConfigureContainer(builder);
         Abmes.DataCollector.Vault.Data.Empty.VaultEmptyDataStartup.ConfigureContainer(builder);
+
         VaultServicesStartup.ConfigureContainer(builder);
 
         builder.RegisterInstance(configuration).As<IConfiguration>();
