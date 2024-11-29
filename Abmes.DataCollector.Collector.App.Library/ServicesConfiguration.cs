@@ -8,14 +8,14 @@ public static class ServicesConfiguration
 {
     public static void Configure(IServiceCollection services, IConfiguration configuration)
     {
-        Abmes.DataCollector.Shared.Data.Configuration.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Shared.Data.Amazon.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Shared.Data.Azure.ServicesConfiguration.Configure(services, configuration);
-        Abmes.DataCollector.Shared.Data.FileSystem.ServicesConfiguration.Configure(services, configuration);
-        CommonDataWebStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Shared.Data.Configuration.SharedConfigurationDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Shared.Data.Azure.SharedAzureDataStartup.ConfigureServices(services, configuration);
+        Abmes.DataCollector.Shared.Data.FileSystem.SharedFileSystemDataStartup.ConfigureServices(services, configuration);
+        SharedWebDataStartup.ConfigureServices(services, configuration);
 
-        Abmes.DataCollector.Collector.Data.Http.ServicesConfiguration.Configure(services);
+        Abmes.DataCollector.Collector.Data.Http.CollectorHttpDataStartup.ConfigureSrvices(services);
 
-        Services.DI.ServicesConfiguration.Configure(services);
+        Services.DI.CollectorServicesStartup.ConfigureServices(services);
     }
 }

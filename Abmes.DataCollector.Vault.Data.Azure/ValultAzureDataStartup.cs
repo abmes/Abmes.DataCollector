@@ -4,9 +4,9 @@ using Autofac;
 
 namespace Abmes.DataCollector.Vault.Data.Azure;
 
-public static class ContainerRegistrations
+public static class ValultAzureDataStartup
 {
-    public static void RegisterFor(ContainerBuilder builder)
+    public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<AzureStorage>().As<IAzureStorage>();
         builder.RegisterType<AzureStorageResolver>().Named<IStorageResolver>("base");

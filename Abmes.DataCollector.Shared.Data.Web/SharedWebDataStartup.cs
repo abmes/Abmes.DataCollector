@@ -6,7 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Abmes.DataCollector.Shared.Data.Web;
 
-public static class CommonDataWebStartup
+public static class SharedWebDataStartup
 {
     public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {

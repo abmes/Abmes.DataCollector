@@ -4,9 +4,9 @@ using Autofac;
 
 namespace Abmes.DataCollector.Collector.Data.Web;
 
-public static class ContainerRegistrations
+public static class CollectorWebDataStartup
 {
-    public static void RegisterFor(ContainerBuilder builder)
+    public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<WebDestination>().As<IWebDestination>();
         builder.RegisterType<WebDestinationResolver>().Named<IDestinationResolver>("base");

@@ -4,9 +4,9 @@ using Autofac;
 
 namespace Abmes.DataCollector.Collector.Data.Console;
 
-public static class ContainerRegistrations
+public static class CollectorConsoleDataStartup
 {
-    public static void RegisterFor(ContainerBuilder builder)
+    public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<ConsoleDestination>().As<IConsoleDestination>();
         builder.RegisterType<ConsoleDestinationResolver>().Named<IDestinationResolver>("base");

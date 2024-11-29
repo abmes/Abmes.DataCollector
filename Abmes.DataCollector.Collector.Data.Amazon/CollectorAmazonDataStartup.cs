@@ -7,11 +7,11 @@ using Microsoft.Extensions.Configuration;
 
 namespace Abmes.DataCollector.Collector.Data.Amazon;
 
-public static class ContainerRegistrations
+public static class CollectorAmazonDataStartup
 {
-    public static void RegisterFor(ContainerBuilder builder, IConfiguration configuration)
+    public static void ConfigureContainer(ContainerBuilder builder, IConfiguration configuration)
     {
-        if (Abmes.DataCollector.Shared.Data.Amazon.ContainerRegistrations.AmazonRegistrationNeeded(configuration))
+        if (Abmes.DataCollector.Shared.Data.Amazon.SharedAmazonDataStartup.IsAmazonRegistrationNeeded(configuration))
         {
             builder.RegisterType<AmazonDestination>().As<IAmazonDestination>();
             builder.RegisterType<AmazonDestinationResolver>().Named<IDestinationResolver>("base");

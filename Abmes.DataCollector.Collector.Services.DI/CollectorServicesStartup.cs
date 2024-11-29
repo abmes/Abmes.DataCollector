@@ -12,13 +12,53 @@ using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Misc;
+using Abmes.DataCollector.Utils.Polly;
 using Autofac;
+using Microsoft.Extensions.DependencyInjection;
+using Polly.DependencyInjection;
+using Polly.Retry;
+using Polly;
 
 namespace Abmes.DataCollector.Collector.Services.DI;
 
-public static class ContainerRegistrations
+public static class CollectorServicesStartup
 {
-    public static void RegisterFor(ContainerBuilder builder)
+    public static void ConfigureServices(IServiceCollection services)
+    {
+        services.AddSingleton(TimeProvider.System);
+
+        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectToDestinationMarker>(CollectItemsCollectorCollectToDestinationRetryingStrategyConfig);
+        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.ICollectItemsMarker>(ParallelOperationRetryingStrategyConfig);
+        services.AddPollyAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker>(ParallelOperationRetryingStrategyConfig);
+
+        services.AddPollyAsyncExecutionStrategy<Collecting.DataCollector>(ParallelOperationRetryingStrategyConfig);
+    }
+
+    private static void CollectItemsCollectorCollectToDestinationRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
+    {
+        builder
+            .AddRetry(new RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<Exception>(CollectItemsCollector.IsRetryableCollectError),
+                BackoffType = DelayBackoffType.Constant,
+                Delay = TimeSpan.FromSeconds(5),  // todo: config
+                MaxRetryAttempts = 2  // todo: config
+            });
+    }
+
+    private static void ParallelOperationRetryingStrategyConfig(ResiliencePipelineBuilder builder, AddResiliencePipelineContext<Type> context)
+    {
+        builder
+            .AddRetry(new RetryStrategyOptions
+            {
+                ShouldHandle = new PredicateBuilder().Handle<Exception>(),
+                BackoffType = DelayBackoffType.Linear,
+                Delay = TimeSpan.FromSeconds(30),  // todo: config
+                MaxRetryAttempts = 2  // todo: config
+            });
+    }
+
+    public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<DataCollectionsJsonConfigProvider>().As<IDataCollectionsJsonConfigsProvider>();
 

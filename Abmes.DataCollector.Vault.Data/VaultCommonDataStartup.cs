@@ -4,9 +4,9 @@ using Microsoft.Extensions.DependencyInjection;
 
 namespace Abmes.DataCollector.Vault.Data;
 
-public static class ServicesConfiguration
+public static class VaultCommonDataStartup
 {
-    public static void Configure(IServiceCollection services, IConfiguration configuration)
+    public static void ConfigureServices(IServiceCollection services, IConfiguration configuration)
     {
         services.Configure<VaultAppSettings>(configuration.GetSection("AppSettings"));
         services.AddOptionsAdapter<IVaultAppSettings, VaultAppSettings>();

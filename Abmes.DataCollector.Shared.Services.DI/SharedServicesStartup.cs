@@ -8,9 +8,9 @@ using Autofac;
 
 namespace Abmes.DataCollector.Shared.Services.DI;
 
-public static class ContainerRegistrations
+public static class SharedServicesStartup
 {
-    public static void RegisterFor(ContainerBuilder builder)
+    public static void ConfigureContainer(ContainerBuilder builder)
     {
         builder.RegisterType<FileNameProvider>().As<IFileNameProvider>();
 
