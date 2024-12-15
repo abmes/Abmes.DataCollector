@@ -9,7 +9,7 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Polly.Extensions" Version="8.4.0" />
+    <PackageReference Include="Polly.Extensions" Version="8.5.0" />
   </ItemGroup>
 
   <ItemGroup>
