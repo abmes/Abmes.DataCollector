@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Http;
 namespace Abmes.DataCollector.Vault.Data.AspNetCore;
 
 public class DataCollectionNameProvider(
-    IHttpContextAccessor httpContextAccessor) : IDataCollectionNameProvider
+    IHttpContextAccessor httpContextAccessor)
+    : IDataCollectionNameProvider
 {
     public string GetDataCollectionName()
     {

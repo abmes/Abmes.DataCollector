@@ -14,7 +14,8 @@ namespace Abmes.DataCollector.Collector.Data.Azure.Destinations;
 public class AzureDestination(
     DestinationConfig destinationConfig,
     IAzureCommonStorage azureCommonStorage,
-    IHttpClientFactory httpClientFactory) : IAzureDestination
+    IHttpClientFactory httpClientFactory)
+    : IAzureDestination
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 

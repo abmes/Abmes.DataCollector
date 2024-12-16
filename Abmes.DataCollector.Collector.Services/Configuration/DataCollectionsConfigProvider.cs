@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Collector.Services.Configuration;
 
 public class DataCollectionsConfigProvider(
     IDataCollectionsJsonConfigsProvider dataCollectJsonConfigsProvider,
-    IConfigProvider configProvider) : IDataCollectionsConfigProvider
+    IConfigProvider configProvider)
+    : IDataCollectionsConfigProvider
 {
     private const string DataCollectionsConfigFileName = "DataCollectionsConfig.json";
 

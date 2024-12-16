@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Data.FileSystem.Destinations;
 
 public class FileSystemDestinationResolver(
-    IFileSystemDestinationFactory FileSystemDestinationFactory) : IDestinationResolver
+    IFileSystemDestinationFactory FileSystemDestinationFactory)
+    : IDestinationResolver
 {
     public bool CanResolve(DestinationConfig destinationConfig)
     {

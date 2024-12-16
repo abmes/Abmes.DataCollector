@@ -4,7 +4,8 @@ namespace Abmes.DataCollector.Vault.Services.Users;
 
 public class UsersProvider(
     IUsersJsonProvider usersJsonProvider,
-    IConfigProvider configProvider) : IUsersProvider
+    IConfigProvider configProvider)
+    : IUsersProvider
 {
     private const string UsersConfigName = "Users.json";
 

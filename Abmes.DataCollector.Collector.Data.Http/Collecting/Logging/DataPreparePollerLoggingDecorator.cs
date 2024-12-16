@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class DataPreparePollerLoggingDecorator(
     ILogger<DataPreparePollerLoggingDecorator> logger,
-    IDataPreparePoller dataPreparePoller) : IDataPreparePoller
+    IDataPreparePoller dataPreparePoller)
+    : IDataPreparePoller
 {
     public async Task<DataPrepareResult> GetDataPrepareResultAsync(string pollUrl, IEnumerable<KeyValuePair<string, string>> pollHeaders, CancellationToken cancellationToken)
     {

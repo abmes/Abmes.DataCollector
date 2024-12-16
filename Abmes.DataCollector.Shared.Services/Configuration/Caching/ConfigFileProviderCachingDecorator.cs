@@ -4,7 +4,8 @@ namespace Abmes.DataCollector.Shared.Services.Configuration.Caching;
 
 public class ConfigFileProviderCachingDecorator(
     IConfigProvider configFileProvider,
-    IConfigFileCache configFileCache) : IConfigProvider
+    IConfigFileCache configFileCache)
+    : IConfigProvider
 {
     public async Task<string> GetConfigContentAsync(string fileName, CancellationToken cancellationToken)
     {

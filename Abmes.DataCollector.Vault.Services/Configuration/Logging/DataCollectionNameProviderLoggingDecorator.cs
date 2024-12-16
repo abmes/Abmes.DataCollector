@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Vault.Services.Configuration.Logging;
 
 public class DataCollectionNameProviderLoggingDecorator(
     ILogger<DataCollectionNameProviderLoggingDecorator> logger,
-    IDataCollectionNameProvider dataCollectionNameProvider) : IDataCollectionNameProvider
+    IDataCollectionNameProvider dataCollectionNameProvider)
+    : IDataCollectionNameProvider
 {
     public string GetDataCollectionName()
     {

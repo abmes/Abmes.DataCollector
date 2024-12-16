@@ -7,7 +7,8 @@ namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class CollectItemsProviderLoggingDecorator(
     ILogger<CollectItemsProviderLoggingDecorator> logger,
-    ICollectItemsProvider collectItemsProvider) : ICollectItemsProvider
+    ICollectItemsProvider collectItemsProvider)
+    : ICollectItemsProvider
 {
     public async Task<IEnumerable<CollectItem>> GetCollectItemsAsync(
         string dataCollectionName,

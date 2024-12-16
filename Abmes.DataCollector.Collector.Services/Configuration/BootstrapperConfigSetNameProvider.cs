@@ -4,7 +4,8 @@ using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 namespace Abmes.DataCollector.Collector.Services.Configuration;
 
 public class BootstrapperConfigSetNameProvider(
-    IBootstrapper bootstrapper) : IConfigSetNameProvider
+    IBootstrapper bootstrapper)
+    : IConfigSetNameProvider
 {
     public string GetConfigSetName()
     {

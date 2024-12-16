@@ -7,7 +7,8 @@ namespace Abmes.DataCollector.Collector.Services.Destinations.Logging;
 
 public class LoggingDestination(
     IDestination destination,
-    ILogger<LoggingDestination> logger) : ILoggingDestination
+    ILogger<LoggingDestination> logger)
+    : ILoggingDestination
 {
     public DestinationConfig DestinationConfig => destination.DestinationConfig;
 

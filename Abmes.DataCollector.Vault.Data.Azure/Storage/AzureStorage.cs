@@ -11,7 +11,8 @@ public class AzureStorage(
     StorageConfig storageConfig,
     TimeProvider timeProvider,
     IVaultAppSettings vaultAppSettings,
-    IAzureCommonStorage azureCommonStorage) : IAzureStorage
+    IAzureCommonStorage azureCommonStorage)
+    : IAzureStorage
 {
     public StorageConfig StorageConfig => storageConfig;
 

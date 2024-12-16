@@ -12,7 +12,8 @@ public class CollectItemsCollector(
     IFileNameProvider fileNameProvider,
     IAsyncExecutionStrategy<CollectItemsCollector.ICollectToDestinationMarker> collectToDestinationExecutionStrategy,
     IAsyncExecutionStrategy<CollectItemsCollector.ICollectItemsMarker> collectItemsExecutionStrategy,
-    IAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker> garbageCollectTargetsExecutionStrategy) : ICollectItemsCollector
+    IAsyncExecutionStrategy<CollectItemsCollector.IGarbageCollectTargetsMarker> garbageCollectTargetsExecutionStrategy)
+    : ICollectItemsCollector
 {
     public interface ICollectToDestinationMarker { }
     public interface ICollectItemsMarker { }

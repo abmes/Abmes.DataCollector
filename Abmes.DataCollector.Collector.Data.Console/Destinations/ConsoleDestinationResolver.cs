@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Data.Console.Destinations;
 
 public class ConsoleDestinationResolver(
-    IConsoleDestinationFactory webDestinationFactory) : IDestinationResolver
+    IConsoleDestinationFactory webDestinationFactory)
+    : IDestinationResolver
 {
     public bool CanResolve(DestinationConfig destinationConfig)
     {

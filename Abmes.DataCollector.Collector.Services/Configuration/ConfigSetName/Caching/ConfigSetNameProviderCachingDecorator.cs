@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Services.Configuration.ConfigSetName.Caching;
 
 public class ConfigSetNameProviderCachingDecorator(
-    IConfigSetNameProvider configSetNameProvider) : IConfigSetNameProvider
+    IConfigSetNameProvider configSetNameProvider)
+    : IConfigSetNameProvider
 {
     private string? _configSetName;
 

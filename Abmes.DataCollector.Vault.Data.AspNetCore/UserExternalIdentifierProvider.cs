@@ -4,7 +4,8 @@ using Microsoft.AspNetCore.Http;
 namespace Abmes.DataCollector.Vault.Data.AspNetCore;
 
 public class UserExternalIdentifierProvider(
-    IHttpContextAccessor httpContextAccessor) : IUserExternalIdentifierProvider
+    IHttpContextAccessor httpContextAccessor)
+    : IUserExternalIdentifierProvider
 {
     public async Task<string> GetUserExternalIdentifierAsync(CancellationToken cancellationToken)
     {

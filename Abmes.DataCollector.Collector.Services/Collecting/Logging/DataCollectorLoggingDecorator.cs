@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
 public class DataCollectorLoggingDecorator(
     ILogger<DataCollectorLoggingDecorator> logger,
-    IDataCollector dataCollector) : IDataCollector
+    IDataCollector dataCollector)
+    : IDataCollector
 {
     public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {

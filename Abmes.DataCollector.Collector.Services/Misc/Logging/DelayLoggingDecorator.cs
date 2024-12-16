@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Collector.Services.Misc.Logging;
 
 public class DelayLoggingDecorator(
     ILogger<DelayLoggingDecorator> logger,
-    IDelay delay) : IDelay
+    IDelay delay)
+    : IDelay
 {
     public async Task DelayAsync(TimeSpan timeSpan, string reason, CancellationToken cancellationToken)
     {

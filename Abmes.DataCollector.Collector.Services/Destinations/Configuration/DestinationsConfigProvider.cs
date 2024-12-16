@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Collector.Services.Destinations.Configuration;
 
 public class DestinationsConfigProvider(
     IDestinationsJsonConfigProvider destinationsJsonConfigProvider,
-    IConfigProvider configProvider) : IDestinationsConfigProvider
+    IConfigProvider configProvider)
+    : IDestinationsConfigProvider
 {
     private const string DestinationsConfigFileName = "DestinationsConfig.json";
 

@@ -8,7 +8,8 @@ namespace Abmes.DataCollector.Vault.Services.Storage.Logging;
 
 public class LoggingStorage(
     IStorage storage,
-    ILogger<LoggingStorage> logger) : ILoggingStorage
+    ILogger<LoggingStorage> logger)
+    : ILoggingStorage
 {
     public StorageConfig StorageConfig => storage.StorageConfig;
 

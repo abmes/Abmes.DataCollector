@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Data.Azure.Destinations;
 
 public class AzureDestinationResolver(
-    IAzureDestinationFactory AzureDestinationFactory) : IDestinationResolver
+    IAzureDestinationFactory AzureDestinationFactory)
+    : IDestinationResolver
 {
     public bool CanResolve(DestinationConfig destinationConfig)
     {

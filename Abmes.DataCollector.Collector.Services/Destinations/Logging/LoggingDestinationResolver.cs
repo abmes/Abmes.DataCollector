@@ -4,7 +4,8 @@ namespace Abmes.DataCollector.Collector.Services.Destinations.Logging;
 
 public class LoggingDestinationResolver(
     IDestinationResolver destinationResolver,
-    ILoggingDestinationFactory loggingDestinationFactory) : IDestinationResolver
+    ILoggingDestinationFactory loggingDestinationFactory)
+    : IDestinationResolver
 {
     public bool CanResolve(DestinationConfig destinationConfig)
     {

@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Vault.Data.FileSystem.Storage;
 
 public class FileSystemStorage(
     StorageConfig storageConfig,
-    IFileSystemCommonStorage fileSystemCommonStorage) : IFileSystemStorage
+    IFileSystemCommonStorage fileSystemCommonStorage)
+    : IFileSystemStorage
 {
     public StorageConfig StorageConfig => storageConfig;
 

@@ -8,7 +8,8 @@ using System.Net.Http.Headers;
 namespace Abmes.DataCollector.Collector.Data.Http.Identity;
 
 public class IdentityServiceHttpRequestConfigurator(
-    IHttpClientFactory httpClientFactory) : IIdentityServiceHttpRequestConfigurator
+    IHttpClientFactory httpClientFactory)
+    : IIdentityServiceHttpRequestConfigurator
 {
     public async Task ConfigAsync(HttpRequestMessage request, IdentityServiceClientInfo? identityServiceClientInfo, CancellationToken cancellationToken)
     {

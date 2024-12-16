@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Vault.Services.Storage.Logging;
 
 public class LoggingStorageResolver(
     IStorageResolver storageResolver,
-    ILoggingStorageFactory loggingStorageFactory) : IStorageResolver
+    ILoggingStorageFactory loggingStorageFactory)
+    : IStorageResolver
 {
     public bool CanResolve(StorageConfig storageConfig)
     {

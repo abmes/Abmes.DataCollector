@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Vault.Services.Configuration.Logging;
 
 public class StoragesConfigProviderLoggingDecorator(
     ILogger<StoragesConfigProviderLoggingDecorator> logger,
-    IStoragesConfigProvider destinationsConfigProvider) : IStoragesConfigProvider
+    IStoragesConfigProvider destinationsConfigProvider)
+    : IStoragesConfigProvider
 {
     public async Task<IEnumerable<StorageConfig>> GetStorageConfigsAsync(CancellationToken cancellationToken)
     {

@@ -5,7 +5,8 @@ using Amazon.S3.Model;
 namespace Abmes.DataCollector.Collector.Data.Amazon.Collecting;
 
 public class AmazonSimpleContentProvider(
-    IAmazonS3 amazonS3) : ISimpleContentProvider
+    IAmazonS3 amazonS3)
+    : ISimpleContentProvider
 {
     private const string S3LocationPrefix = "s3://";
 

@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Data.Amazon.Destinations;
 
 public class AmazonDestinationResolver(
-    IAmazonDestinationFactory amazonDestinationFactory) : IDestinationResolver
+    IAmazonDestinationFactory amazonDestinationFactory)
+    : IDestinationResolver
 {
     public bool CanResolve(DestinationConfig destinationConfig)
     {

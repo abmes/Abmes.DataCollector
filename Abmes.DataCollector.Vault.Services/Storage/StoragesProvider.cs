@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Vault.Services.Storage;
 
 public class StoragesProvider(
     IStoragesConfigProvider storageConfigProvider,
-    IStorageProvider storageProvider) : IStoragesProvider
+    IStorageProvider storageProvider)
+    : IStoragesProvider
 {
     public async Task<IEnumerable<IStorage>> GetStoragesAsync(CancellationToken cancellationToken)
     {

@@ -4,7 +4,8 @@ using System.Text.Json;
 namespace Abmes.DataCollector.Collector.Data.Http.Collecting;
 
 public class DataPreparePoller(
-    IHttpClientFactory httpClientFactory) : IDataPreparePoller
+    IHttpClientFactory httpClientFactory)
+    : IDataPreparePoller
 {
     private static readonly JsonSerializerOptions _jsonSerializerOptions = new() { PropertyNameCaseInsensitive = true };
 

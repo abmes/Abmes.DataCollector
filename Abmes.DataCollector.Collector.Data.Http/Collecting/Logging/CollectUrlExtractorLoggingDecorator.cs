@@ -5,7 +5,8 @@ namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class CollectUrlExtractorLoggingDecorator(
     ILogger<CollectUrlExtractorLoggingDecorator> logger,
-    ICollectUrlExtractor collectUrlExtractor) : ICollectUrlExtractor
+    ICollectUrlExtractor collectUrlExtractor)
+    : ICollectUrlExtractor
 {
     public async Task<string> ExtractCollectUrlAsync(string dataCollectionName, string? collectFileIdentifier, string sourceUrl, IEnumerable<KeyValuePair<string, string>> headers, string? identityServiceAccessToken, CancellationToken cancellationToken)
     {

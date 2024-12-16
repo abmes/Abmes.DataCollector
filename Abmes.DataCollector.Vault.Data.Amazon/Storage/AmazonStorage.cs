@@ -12,7 +12,8 @@ public class AmazonStorage(
     TimeProvider timeProvider,
     IVaultAppSettings vaultAppSettings,
     IAmazonS3 amazonS3,
-    IAmazonCommonStorage amazonCommonStorage) : IAmazonStorage
+    IAmazonCommonStorage amazonCommonStorage)
+    : IAmazonStorage
 {
     public StorageConfig StorageConfig => storageConfig;
 

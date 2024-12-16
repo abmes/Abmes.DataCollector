@@ -9,7 +9,8 @@ namespace Abmes.DataCollector.Collector.Data.Web.Destinations;
 public class WebDestination(
     DestinationConfig destinationConfig,
     IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-    IHttpClientFactory httpClientFactory) : IWebDestination
+    IHttpClientFactory httpClientFactory)
+    : IWebDestination
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 

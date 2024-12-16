@@ -16,7 +16,8 @@ public class AmazonDestination(
     IAmazonS3 amazonS3,
     IAmazonCommonStorage amazonCommonStorage,
     IHttpClientFactory httpClientFactory,
-    ILogger<AmazonDestination> logger) : IAmazonDestination
+    ILogger<AmazonDestination> logger)
+    : IAmazonDestination
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 

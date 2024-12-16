@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Collector.Services.Configuration;
 
 public class DateFormattedDataCollectionConfigProvider(
     TimeProvider timeProvider,
-    IDateTimeFormatter dateTimeFormatter) : IDateFormattedDataCollectionConfigProvider
+    IDateTimeFormatter dateTimeFormatter)
+    : IDateFormattedDataCollectionConfigProvider
 {
     public DataCollectionConfig GetConfig(DataCollectionConfig config)
     {

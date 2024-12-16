@@ -4,7 +4,8 @@ using Abmes.DataCollector.Vault.Services.Ports.Storage;
 namespace Abmes.DataCollector.Vault.Data.FileSystem.Storage;
 
 public class FileSystemStorageResolver(
-    IFileSystemStorageFactory fileSystemStorageFactory) : IStorageResolver
+    IFileSystemStorageFactory fileSystemStorageFactory)
+    : IStorageResolver
 {
     public bool CanResolve(StorageConfig storageConfig)
     {

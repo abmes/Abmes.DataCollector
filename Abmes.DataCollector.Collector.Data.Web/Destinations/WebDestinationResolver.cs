@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Data.Web.Destinations;
 
 public class WebDestinationResolver(
-    IWebDestinationFactory webDestinationFactory) : IDestinationResolver
+    IWebDestinationFactory webDestinationFactory)
+    : IDestinationResolver
 {
     public bool CanResolve(DestinationConfig destinationConfig)
     {

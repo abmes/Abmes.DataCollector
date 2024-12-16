@@ -8,7 +8,8 @@ public class MainCollector(
     IConfigSetNameProvider configSetNameProvider,
     IDataCollectionsConfigProvider dataCollectionsConfigProvider,
     IDataCollector dataCollector,
-    ICollectorModeProvider collectorModeProvider) : IMainCollector
+    ICollectorModeProvider collectorModeProvider)
+    : IMainCollector
 {
     public async Task<IEnumerable<string>> CollectAsync(CancellationToken cancellationToken)
     {

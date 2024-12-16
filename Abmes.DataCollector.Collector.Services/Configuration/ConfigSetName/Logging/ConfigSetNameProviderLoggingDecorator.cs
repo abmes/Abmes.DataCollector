@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Collector.Services.Configuration.ConfigSetName.Log
 
 public class ConfigSetNameProviderLoggingDecorator(
     ILogger<ConfigSetNameProviderLoggingDecorator> logger,
-    IConfigSetNameProvider configSetNameProvider) : IConfigSetNameProvider
+    IConfigSetNameProvider configSetNameProvider)
+    : IConfigSetNameProvider
 {
     public string GetConfigSetName()
     {

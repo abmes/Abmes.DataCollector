@@ -19,7 +19,8 @@ public class DataCollector(
     IDelay delay,
     TimeProvider timeProvider,
     IAsyncExecutionStrategy<DataCollector> executionStrategy,
-    ICollectItemsCollector collectItemsCollector) : IDataCollector
+    ICollectItemsCollector collectItemsCollector)
+    : IDataCollector
 {
     public async Task<(IEnumerable<string> NewFileNames, IEnumerable<FileInfoData> CollectionFileInfos)> CollectDataAsync(CollectorMode collectorMode, DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {

@@ -4,7 +4,8 @@ using Abmes.DataCollector.Vault.Services.Ports.Storage;
 namespace Abmes.DataCollector.Vault.Services.Storage;
 
 public class StorageProvider(
-    IStorageResolverProvider storageResolverProvider) : IStorageProvider
+    IStorageResolverProvider storageResolverProvider)
+    : IStorageProvider
 {
     public IStorage GetStorage(StorageConfig storageConfig)
     {

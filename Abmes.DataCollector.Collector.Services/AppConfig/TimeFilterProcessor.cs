@@ -1,7 +1,8 @@
 ﻿namespace Abmes.DataCollector.Collector.Services.AppConfig;
 
 public class TimeFilterProcessor(
-    TimeProvider timeProvider) : ITimeFilterProcessor
+    TimeProvider timeProvider)
+    : ITimeFilterProcessor
 {
     public bool TimeFilterAccepted(string timeFilter)
     {

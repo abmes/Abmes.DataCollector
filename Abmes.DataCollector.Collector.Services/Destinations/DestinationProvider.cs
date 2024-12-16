@@ -7,7 +7,8 @@ namespace Abmes.DataCollector.Collector.Services.Destinations;
 public class DestinationProvider(
     IDestinationsConfigProvider destinationsConfigProvider,
     IConfigSetNameProvider configSetNameProvider,
-    IDestinationResolverProvider destinationResolverProvider) : IDestinationProvider
+    IDestinationResolverProvider destinationResolverProvider)
+    : IDestinationProvider
 {
     public async Task<IDestination> GetDestinationAsync(string destinationId, CancellationToken cancellationToken)
     {

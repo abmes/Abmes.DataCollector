@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Services.Destinations;
 
 public class DestinationResolverProvider(
-    IEnumerable<IDestinationResolver> destinationResolvers) : IDestinationResolverProvider
+    IEnumerable<IDestinationResolver> destinationResolvers)
+    : IDestinationResolverProvider
 {
     public IDestinationResolver GetResolver(DestinationConfig destinationConfig)
     {

@@ -4,7 +4,8 @@ using Abmes.DataCollector.Vault.Services.Ports.Storage;
 namespace Abmes.DataCollector.Vault.Data.Amazon.Storage;
 
 public class AmazonStorageResolver(
-    IAmazonStorageFactory amazonStorageFactory) : IStorageResolver
+    IAmazonStorageFactory amazonStorageFactory)
+    : IStorageResolver
 {
     public bool CanResolve(StorageConfig storageConfig)
     {

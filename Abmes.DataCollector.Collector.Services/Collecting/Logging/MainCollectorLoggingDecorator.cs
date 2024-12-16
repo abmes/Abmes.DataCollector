@@ -8,7 +8,8 @@ public class MainCollectorLoggingDecorator(
     ILogger<MainCollectorLoggingDecorator> logger,
     IMainCollector collector,
     IConfigSetNameProvider configSetNameProvider,
-    ICollectorModeProvider collectorModeProvider) : IMainCollector
+    ICollectorModeProvider collectorModeProvider)
+    : IMainCollector
 {
     private static string ResultPrefix(bool result)
     {

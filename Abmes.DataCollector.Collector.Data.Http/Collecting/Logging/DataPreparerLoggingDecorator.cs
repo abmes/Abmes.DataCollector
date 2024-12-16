@@ -7,7 +7,8 @@ namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 
 public class DataPreparerLoggingDecorator(
     ILogger<DataPreparerLoggingDecorator> logger,
-    IDataPreparer dataPreparer) : IDataPreparer
+    IDataPreparer dataPreparer)
+    : IDataPreparer
 {
     public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {

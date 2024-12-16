@@ -9,7 +9,8 @@ namespace Abmes.DataCollector.Collector.Data.FileSystem.Destinations;
 public class FileSystemDestination(
     DestinationConfig destinationConfig,
     IFileSystemCommonStorage fileSystemCommonStorage,
-    IHttpClientFactory httpClientFactory) : IFileSystemDestination
+    IHttpClientFactory httpClientFactory)
+    : IFileSystemDestination
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 

@@ -9,7 +9,8 @@ namespace Abmes.DataCollector.Collector.Data.Console.Destinations;
 public class ConsoleDestination(
     DestinationConfig destinationConfig,
     IIdentityServiceHttpRequestConfigurator identityServiceHttpRequestConfigurator,
-    IHttpClientFactory httpClientFactory) : IConsoleDestination
+    IHttpClientFactory httpClientFactory)
+    : IConsoleDestination
 {
     public DestinationConfig DestinationConfig => destinationConfig;
 

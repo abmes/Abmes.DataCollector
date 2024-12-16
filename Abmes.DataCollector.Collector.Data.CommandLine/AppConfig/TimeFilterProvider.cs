@@ -3,7 +3,8 @@
 namespace Abmes.DataCollector.Collector.Data.CommandLine.AppConfig;
 
 public class TimeFilterProvider(
-    IBootstrapper bootstrapper) : ITimeFilterProvider
+    IBootstrapper bootstrapper)
+    : ITimeFilterProvider
 {
     public string GetTimeFilter()
     {

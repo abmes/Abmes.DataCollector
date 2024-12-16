@@ -4,7 +4,8 @@ using Abmes.DataCollector.Vault.Services.Ports.Storage;
 namespace Abmes.DataCollector.Vault.Data.Azure.Storage;
 
 public class AzureStorageResolver(
-    IAzureStorageFactory AzureStorageFactory) : IStorageResolver
+    IAzureStorageFactory AzureStorageFactory)
+    : IStorageResolver
 {
     public bool CanResolve(StorageConfig storageConfig)
     {

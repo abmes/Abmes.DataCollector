@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Collector.Services.Destinations.Configuration.Logg
 
 public class DestinationsConfigProviderLoggingDecorator(
     ILogger<DestinationsConfigProviderLoggingDecorator> logger,
-    IDestinationsConfigProvider destinationsConfigProvider) : IDestinationsConfigProvider
+    IDestinationsConfigProvider destinationsConfigProvider)
+    : IDestinationsConfigProvider
 {
     public async Task<IEnumerable<DestinationConfig>> GetDestinationsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {

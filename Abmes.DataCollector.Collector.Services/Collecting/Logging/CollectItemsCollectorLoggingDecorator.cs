@@ -7,7 +7,8 @@ namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
 
 public class CollectItemsCollectorLoggingDecorator(
     ILogger<CollectItemsCollectorLoggingDecorator> logger,
-    ICollectItemsCollector collectItemsCollector) : ICollectItemsCollector
+    ICollectItemsCollector collectItemsCollector)
+    : ICollectItemsCollector
 {
     public async Task<IEnumerable<string>> CollectItemsAsync(
         IEnumerable<CollectItem> collectItems,

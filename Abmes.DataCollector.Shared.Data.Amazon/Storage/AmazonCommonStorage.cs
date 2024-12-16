@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Shared.Data.Amazon.Storage;
 
 public class AmazonCommonStorage(
     IAmazonAppSettings amazonAppSettings,
-    IAmazonS3 amazonS3) : IAmazonCommonStorage
+    IAmazonS3 amazonS3)
+    : IAmazonCommonStorage
 {
     public string StorageType => "Amazon";
 

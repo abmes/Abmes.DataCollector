@@ -10,7 +10,8 @@ public class DataPreparer(
     IDataPreparePoller dataPreparePoller,
     TimeProvider timeProvider,
     IDelay delay,
-    IHttpClientFactory httpClientFactory) : IDataPreparer
+    IHttpClientFactory httpClientFactory)
+    : IDataPreparer
 {
     public async Task<bool> PrepareDataAsync(DataCollectionConfig dataCollectionConfig, CancellationToken cancellationToken)
     {

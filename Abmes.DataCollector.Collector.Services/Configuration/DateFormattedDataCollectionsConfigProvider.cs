@@ -4,7 +4,8 @@ namespace Abmes.DataCollector.Collector.Services.Configuration;
 
 public class DateFormattedDataCollectionsConfigProvider(
     IDateFormattedDataCollectionConfigProvider dateFormattedDataCollectionConfigProvider,
-    IDataCollectionsConfigProvider dataCollectionsConfigProvider) : IDataCollectionsConfigProvider
+    IDataCollectionsConfigProvider dataCollectionsConfigProvider)
+    : IDataCollectionsConfigProvider
 {
     public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {

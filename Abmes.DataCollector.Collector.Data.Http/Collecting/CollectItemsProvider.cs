@@ -16,7 +16,8 @@ public class CollectItemsProvider(
     IHttpClientFactory httpClientFactory,
     IAsyncExecutionStrategy<CollectItemsProvider.IGetCollectItemsMarker> getCollectItemsExecutionStrategy,
     IAsyncExecutionStrategy<CollectItemsProvider.IRedirectCollectItemsMarker> redirectCollectItemsExecutionStrategy,
-    IEnumerable<ISimpleContentProvider> simpleContentProviders) : ICollectItemsProvider
+    IEnumerable<ISimpleContentProvider> simpleContentProviders)
+    : ICollectItemsProvider
 {
     public interface IGetCollectItemsMarker { }
     public interface IRedirectCollectItemsMarker { }

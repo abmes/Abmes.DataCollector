@@ -4,7 +4,8 @@ namespace Abmes.DataCollector.Collector.Services.Configuration;
 
 public class MergedDataCollectionsConfigProvider(
     IDataCollectionsConfigProvider dataCollectionsConfigProvider,
-    IMergedDataCollectionConfigProvider mergedDataCollectionConfigProvider) : IDataCollectionsConfigProvider
+    IMergedDataCollectionConfigProvider mergedDataCollectionConfigProvider)
+    : IDataCollectionsConfigProvider
 {
     public async Task<IEnumerable<DataCollectionConfig>> GetDataCollectionsConfigAsync(string configSetName, CancellationToken cancellationToken)
     {

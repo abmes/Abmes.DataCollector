@@ -6,7 +6,8 @@ namespace Abmes.DataCollector.Shared.Services.Configuration.Logging;
 
 public class ConfigProviderLoggingDecorator(
     ILogger<ConfigProviderLoggingDecorator> logger,
-    IConfigProvider configProvider) : IConfigProvider
+    IConfigProvider configProvider)
+    : IConfigProvider
 {
     public async Task<string> GetConfigContentAsync(string fileName, CancellationToken cancellationToken)
     {
