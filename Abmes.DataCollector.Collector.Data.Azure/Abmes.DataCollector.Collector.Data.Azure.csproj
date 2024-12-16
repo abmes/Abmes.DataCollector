@@ -17,7 +17,8 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Azure\Abmes.DataCollector.Shared.Data.Azure.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data\Abmes.DataCollector.Shared.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.Net\Abmes.Utils.Net.csproj" />
+    <ProjectReference Include="..\Abmes.Utils\Abmes.Utils.csproj" />
   </ItemGroup>
 
 </Project>

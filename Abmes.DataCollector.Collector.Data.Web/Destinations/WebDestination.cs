@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
-using Abmes.DataCollector.Utils.Net;
+using Abmes.Utils.Net;
 using System.Text.Json;
 
 namespace Abmes.DataCollector.Collector.Data.Web.Destinations;

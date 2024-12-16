@@ -13,7 +13,6 @@ using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Misc;
-using Abmes.DataCollector.Utils.Polly;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
 using Polly;

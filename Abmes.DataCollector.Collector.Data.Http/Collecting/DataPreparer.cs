@@ -1,8 +1,8 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.Collecting;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Collector.Services.Ports.Misc;
-using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Utils.Net;
+using Abmes.Utils;
+using Abmes.Utils.Net;
 
 namespace Abmes.DataCollector.Collector.Data.Http.Collecting;
 

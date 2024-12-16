@@ -3,12 +3,11 @@ using Abmes.DataCollector.Collector.Data.Http.Collecting;
 using Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;
 using Abmes.DataCollector.Collector.Data.Http.Identity;
 using Abmes.DataCollector.Collector.Services.Ports.Collecting;
-using Abmes.DataCollector.Utils.Polly;
 using Autofac;
 using Microsoft.Extensions.DependencyInjection;
+using Polly;
 using Polly.DependencyInjection;
 using Polly.Retry;
-using Polly;
 
 namespace Abmes.DataCollector.Collector.Data.Http;
 

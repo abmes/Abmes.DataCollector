@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.Utils;
 
 namespace Abmes.DataCollector.Shared.Data.Azure.Configuration;
 

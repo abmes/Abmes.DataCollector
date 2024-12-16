@@ -17,10 +17,10 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Services.Contracts\Abmes.DataCollector.Vault.Services.Contracts.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Vault.Web.Controllers\Abmes.DataCollector.Vault.Web.Controllers.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.AspNetCore\Abmes.Utils.AspNetCore.csproj" />
+    <ProjectReference Include="..\Abmes.Utils\Abmes.Utils.csproj" />
   </ItemGroup>
 
 </Project>

@@ -31,11 +31,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.W
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Utils", "Utils", "{CC26CD81-5225-4FF3-9971-78075F4FFA9D}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils", "Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj", "{5CE75F34-60D7-4389-9A57-563DC897D283}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.Utils", "Abmes.Utils\Abmes.Utils.csproj", "{5CE75F34-60D7-4389-9A57-563DC897D283}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.AspNetCore", "Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj", "{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.Utils.AspNetCore", "Abmes.Utils.AspNetCore\Abmes.Utils.AspNetCore.csproj", "{855E1AEE-ACBE-4041-A6F3-D3CD4ED45946}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.DependencyInjection", "Abmes.DataCollector.Utils.DependencyInjection\Abmes.DataCollector.Utils.DependencyInjection.csproj", "{957384E8-CFA1-4A5E-9721-BC60B64BED01}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.Utils.DependencyInjection", "Abmes.Utils.DependencyInjection\Abmes.Utils.DependencyInjection.csproj", "{957384E8-CFA1-4A5E-9721-BC60B64BED01}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Web.AmazonLambda", "Abmes.DataCollector.Vault.Web.AmazonLambda\Abmes.DataCollector.Vault.Web.AmazonLambda.csproj", "{AE5A34BE-F853-4AB7-8BDB-9E9ACF07D45B}"
 EndProject
@@ -59,7 +59,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Shared.
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Vault.Data.FileSystem", "Abmes.DataCollector.Vault.Data.FileSystem\Abmes.DataCollector.Vault.Data.FileSystem.csproj", "{A07B5EDF-8612-44F6-9245-D3337E64E9FF}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Utils.Polly", "Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj", "{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.Utils.ExecutionStrategy", "Abmes.Utils.ExecutionStrategy\Abmes.Utils.ExecutionStrategy.csproj", "{2D5CD6D6-5B35-40DC-BB58-36212E2CAE56}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Web.Controllers", "Abmes.DataCollector.Collector.Web.Controllers\Abmes.DataCollector.Collector.Web.Controllers.csproj", "{D684DE53-C547-4AAF-9E9C-2FCABD885917}"
 EndProject
@@ -102,6 +102,14 @@ EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Http", "Abmes.DataCollector.Collector.Data.Http\Abmes.DataCollector.Collector.Data.Http.csproj", "{5F6805F4-0A76-4F37-951D-5620F86F97D8}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Abmes.DataCollector.Collector.Data.Common", "Abmes.DataCollector.Collector.Data.Common\Abmes.DataCollector.Collector.Data.Common.csproj", "{C5DA6A4F-4492-4113-A5BF-0750679BEB7B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.Utils.Options.DependencyInjection", "Abmes.Utils.Options.DependencyInjection\Abmes.Utils.Options.DependencyInjection.csproj", "{41893CF4-D1EE-43E9-9098-5365FAC6E36F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.Utils.ExecutionStrategy.Abstractions", "Abmes.Utils.ExecutionStrategy.Abstractions\Abmes.Utils.ExecutionStrategy.Abstractions.csproj", "{D1EFAB04-3779-4EA6-A03A-E1AB1861A08B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.Utils.Json", "Abmes.Utils.Json\Abmes.Utils.Json.csproj", "{93CBAFAD-9E96-4A07-BE10-88EFBE02710F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Abmes.Utils.Net", "Abmes.Utils.Net\Abmes.Utils.Net.csproj", "{B8DEFEBA-DC0F-442B-85D5-209C8987475F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -293,6 +301,22 @@ Global
 		{C5DA6A4F-4492-4113-A5BF-0750679BEB7B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{C5DA6A4F-4492-4113-A5BF-0750679BEB7B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{C5DA6A4F-4492-4113-A5BF-0750679BEB7B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{41893CF4-D1EE-43E9-9098-5365FAC6E36F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{41893CF4-D1EE-43E9-9098-5365FAC6E36F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{41893CF4-D1EE-43E9-9098-5365FAC6E36F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{41893CF4-D1EE-43E9-9098-5365FAC6E36F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1EFAB04-3779-4EA6-A03A-E1AB1861A08B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1EFAB04-3779-4EA6-A03A-E1AB1861A08B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1EFAB04-3779-4EA6-A03A-E1AB1861A08B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1EFAB04-3779-4EA6-A03A-E1AB1861A08B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{93CBAFAD-9E96-4A07-BE10-88EFBE02710F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{93CBAFAD-9E96-4A07-BE10-88EFBE02710F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{93CBAFAD-9E96-4A07-BE10-88EFBE02710F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{93CBAFAD-9E96-4A07-BE10-88EFBE02710F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B8DEFEBA-DC0F-442B-85D5-209C8987475F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B8DEFEBA-DC0F-442B-85D5-209C8987475F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B8DEFEBA-DC0F-442B-85D5-209C8987475F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B8DEFEBA-DC0F-442B-85D5-209C8987475F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -344,6 +368,10 @@ Global
 		{48DDA08D-C3E4-46FA-BA86-A687962B3566} = {B6EB5572-088B-4FE8-8A3A-B274D674645F}
 		{5F6805F4-0A76-4F37-951D-5620F86F97D8} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
 		{C5DA6A4F-4492-4113-A5BF-0750679BEB7B} = {1687A416-C25F-4BAF-BE33-F4646A08711C}
+		{41893CF4-D1EE-43E9-9098-5365FAC6E36F} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
+		{D1EFAB04-3779-4EA6-A03A-E1AB1861A08B} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
+		{93CBAFAD-9E96-4A07-BE10-88EFBE02710F} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
+		{B8DEFEBA-DC0F-442B-85D5-209C8987475F} = {CC26CD81-5225-4FF3-9971-78075F4FFA9D}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {8AC6496B-CDC1-4994-ACE3-BEC0D616354E}

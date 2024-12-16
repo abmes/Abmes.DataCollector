@@ -18,8 +18,10 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Data.Common\Abmes.DataCollector.Collector.Data.Common.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared\Abmes.DataCollector.Shared.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.ExecutionStrategy.Abstractions\Abmes.Utils.ExecutionStrategy.Abstractions.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.ExecutionStrategy\Abmes.Utils.ExecutionStrategy.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.Net\Abmes.Utils.Net.csproj" />
+    <ProjectReference Include="..\Abmes.Utils\Abmes.Utils.csproj" />
   </ItemGroup>
 
 </Project>

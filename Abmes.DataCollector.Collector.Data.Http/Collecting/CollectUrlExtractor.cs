@@ -1,6 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
-using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Utils.Net;
+using Abmes.Utils;
+using Abmes.Utils.ExecutionStrategy;
+using Abmes.Utils.Net;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Data.Http.Collecting;

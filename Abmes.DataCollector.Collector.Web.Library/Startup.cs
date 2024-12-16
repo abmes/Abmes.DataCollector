@@ -1,5 +1,6 @@
 using Abmes.DataCollector.Collector.Logging.Amazon;
-using Abmes.DataCollector.Utils.AspNetCore;
+using Abmes.Utils.AspNetCore;
+using Abmes.Utils.AspNetCore.ExceptionHandling;
 using Autofac;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

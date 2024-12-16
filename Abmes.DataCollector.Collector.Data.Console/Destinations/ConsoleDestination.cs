@@ -1,8 +1,8 @@
 ﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
 using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
-using Abmes.DataCollector.Utils;
-using Abmes.DataCollector.Utils.Net;
+using Abmes.Utils;
+using Abmes.Utils.Net;
 
 namespace Abmes.DataCollector.Collector.Data.Console.Destinations;
 

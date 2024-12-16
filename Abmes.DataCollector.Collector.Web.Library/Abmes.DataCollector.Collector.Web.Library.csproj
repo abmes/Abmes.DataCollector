@@ -26,7 +26,7 @@
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.Configuration\Abmes.DataCollector.Shared.Data.Configuration.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data\Abmes.DataCollector.Shared.Data.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Services.DI\Abmes.DataCollector.Shared.Services.DI.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils.AspNetCore\Abmes.DataCollector.Utils.AspNetCore.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.AspNetCore\Abmes.Utils.AspNetCore.csproj" />
   </ItemGroup>
 
 </Project>

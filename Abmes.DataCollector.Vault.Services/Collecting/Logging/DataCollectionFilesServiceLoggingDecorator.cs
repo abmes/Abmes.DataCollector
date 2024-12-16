@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Shared;
-using Abmes.DataCollector.Utils;
 using Abmes.DataCollector.Vault.Services.Contracts;
+using Abmes.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Vault.Services.Collecting.Logging;

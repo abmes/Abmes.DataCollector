@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Shared.Services.Ports.Configuration;
-using Abmes.DataCollector.Utils.Net;
+using Abmes.Utils.Net;
 
 namespace Abmes.DataCollector.Collector.Data.Web.Configuration;
 

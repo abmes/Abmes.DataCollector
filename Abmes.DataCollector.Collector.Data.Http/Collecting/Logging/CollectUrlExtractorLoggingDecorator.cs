@@ -1,4 +1,4 @@
-﻿using Abmes.DataCollector.Utils;
+﻿using Abmes.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Data.Http.Collecting.Logging;

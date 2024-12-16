@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <TargetFramework>net8.0</TargetFramework>
@@ -16,7 +16,8 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data.FileSystem\Abmes.DataCollector.Shared.Data.FileSystem.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Shared.Data\Abmes.DataCollector.Shared.Data.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.Net\Abmes.Utils.Net.csproj" />
+    <ProjectReference Include="..\Abmes.Utils\Abmes.Utils.csproj" />
   </ItemGroup>
 
 </Project>

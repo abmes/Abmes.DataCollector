@@ -1,5 +1,5 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.Identity;
-using Abmes.DataCollector.Utils;
+using Abmes.Utils;
 
 namespace Abmes.DataCollector.Collector.Services.Ports.Configuration;
 

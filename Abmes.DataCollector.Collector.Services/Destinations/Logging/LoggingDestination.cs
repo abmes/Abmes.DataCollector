@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.Destinations;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
-using Abmes.DataCollector.Utils;
+using Abmes.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Destinations.Logging;

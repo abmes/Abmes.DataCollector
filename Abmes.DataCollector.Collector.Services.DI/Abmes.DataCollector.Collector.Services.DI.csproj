@@ -16,7 +16,7 @@
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Contracts\Abmes.DataCollector.Collector.Services.Contracts.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services.Ports\Abmes.DataCollector.Collector.Services.Ports.csproj" />
     <ProjectReference Include="..\Abmes.DataCollector.Collector.Services\Abmes.DataCollector.Collector.Services.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils.Polly\Abmes.DataCollector.Utils.Polly.csproj" />
+    <ProjectReference Include="..\Abmes.Utils.ExecutionStrategy\Abmes.Utils.ExecutionStrategy.csproj" />
   </ItemGroup>
 
 </Project>

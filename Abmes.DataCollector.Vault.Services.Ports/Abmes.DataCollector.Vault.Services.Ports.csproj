@@ -10,7 +10,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Abmes.DataCollector.Shared\Abmes.DataCollector.Shared.csproj" />
-    <ProjectReference Include="..\Abmes.DataCollector.Utils\Abmes.DataCollector.Utils.csproj" />
+    <ProjectReference Include="..\Abmes.Utils\Abmes.Utils.csproj" />
   </ItemGroup>
 
 </Project>

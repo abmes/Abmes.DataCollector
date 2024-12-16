@@ -1,6 +1,6 @@
 ﻿using Abmes.DataCollector.Collector.Data.Common.Identity;
 using Abmes.DataCollector.Collector.Services.Ports.Identity;
-using Abmes.DataCollector.Utils;
+using Abmes.Utils;
 using IdentityModel.Client;
 using System.Net;
 using System.Net.Http.Headers;

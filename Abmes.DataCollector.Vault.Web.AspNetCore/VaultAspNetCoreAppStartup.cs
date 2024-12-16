@@ -1,6 +1,6 @@
-﻿using Abmes.DataCollector.Utils.AspNetCore;
-using Abmes.DataCollector.Vault.Web.AspNetCore.Authorization;
+﻿using Abmes.DataCollector.Vault.Web.AspNetCore.Authorization;
 using Abmes.DataCollector.Vault.Web.AspNetCore.Configuration;
+using Abmes.Utils.AspNetCore.ExceptionHandling;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;

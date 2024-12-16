@@ -1,7 +1,7 @@
 ﻿using Abmes.DataCollector.Collector.Services.Ports.AppConfig;
 using Abmes.DataCollector.Collector.Services.Ports.Configuration;
 using Abmes.DataCollector.Shared;
-using Abmes.DataCollector.Utils;
+using Abmes.Utils;
 using Microsoft.Extensions.Logging;
 
 namespace Abmes.DataCollector.Collector.Services.Collecting.Logging;
