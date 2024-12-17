@@ -9,7 +9,10 @@ public class Cdnizer<T>(
 
     private static string Librarize(string relativePath)
     {
-        return $"/_content/{typeof(T).Assembly.GetName().Name}/{relativePath.TrimStart('/')}";
+        return
+            relativePath.StartsWith('/')
+            ? relativePath
+            : $"/_content/{typeof(T).Assembly.GetName().Name}/{relativePath.TrimStart('/')}";
     }
 
     private string Cdnize(string relativePath)
