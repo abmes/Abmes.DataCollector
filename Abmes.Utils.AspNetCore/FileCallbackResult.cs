@@ -23,11 +23,12 @@ public class FileCallbackResult(
     }
 
     private sealed class FileCallbackResultExecutor(
-        ILoggerFactory loggerFactory) : FileResultExecutorBase(CreateLogger<FileCallbackResultExecutor>(loggerFactory))
+        ILoggerFactory loggerFactory)
+        : FileResultExecutorBase(CreateLogger<FileCallbackResultExecutor>(loggerFactory))
     {
         public async Task ExecuteAsync(ActionContext context, FileCallbackResult result)
         {
-            SetHeadersAndLog(context, result, null, true);
+            SetHeadersAndLog(context, result, null, false);
             await result._callback(context.HttpContext.Response.Body, context);
         }
     }

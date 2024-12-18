@@ -1,14 +1,9 @@
 ﻿namespace Abmes.Utils.UserExceptions;
 
-public class UserAuthorizationException : UserException
+public class UserAuthorizationException(string message) : UserException(message)
 {
     public UserAuthorizationException()
-        : base("User has no rights for this operation")
-    {
-    }
-
-    public UserAuthorizationException(string message)
-        : base(message)
+        : this("User has no rights for this operation")
     {
     }
 }
