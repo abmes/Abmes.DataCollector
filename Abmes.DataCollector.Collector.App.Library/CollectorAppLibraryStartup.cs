@@ -54,8 +54,9 @@ public static class CollectorAppLibraryStartup
         CollectorWebDataStartup.ConfigureContainer(builder);
         CollectorConsoleDataStartup.ConfigureContainer(builder);
         CollectorHttpDataStartup.ConfigureContainer(builder);
-        CollectorCommandLineDataStartup.ConfigureContainer(builder);
 
         CollectorServicesStartup.ConfigureContainer(builder);
+
+        CollectorCommandLineDataStartup.ConfigureContainer(builder);
     }
 }
