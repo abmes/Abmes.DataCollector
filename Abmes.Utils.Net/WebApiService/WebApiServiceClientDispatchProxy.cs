@@ -135,6 +135,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
 
         var result = await response.Content.ReadFromJsonAsync<TResponse>(WebApiServiceHelper.JsonSerializerOptions, cancellationToken);
         return Ensure.NotNull(result);
+        // todo: recursively check non-nullable properties of result for null - in .net 9 use JsonSerializerOptions.RespectNullableAnnotations
     }
 
     public async Task DoInvokeWithRequestWithoutResponseAsync<TRequest>(string methodName, TRequest request, CancellationToken cancellationToken)
@@ -173,5 +174,6 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
 
         var result = await response.Content.ReadFromJsonAsync<TResponse>(WebApiServiceHelper.JsonSerializerOptions, cancellationToken);
         return Ensure.NotNull(result);
+        // todo: recursively check non-nullable properties of result for null - in .net 9 use JsonSerializerOptions.RespectNullableAnnotations
     }
 }

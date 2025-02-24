@@ -109,6 +109,7 @@ public static class WebApiServiceEndpointRouteBuilderExtensions
         {
             WebApiServiceHelper.CheckIsAsyncMethodWithRequestWithoutResponse(method);
             ArgumentNullException.ThrowIfNull(request);  // method is dynamically invoked, so we need to check request here
+            // todo: recursively check non-nullable properties of request for null - in .net 9 use JsonSerializerOptions.RespectNullableAnnotations
 
             await (Task)Ensure.NotNull(method.Invoke(instance, [request, cancellationToken]));
         }
@@ -119,6 +120,7 @@ public static class WebApiServiceEndpointRouteBuilderExtensions
         {
             WebApiServiceHelper.CheckIsAsyncMethodWithRequestWithResponse(method);
             ArgumentNullException.ThrowIfNull(request);  // method is dynamically invoked, so we need to check request here
+            // todo: recursively check non-nullable properties of request for null - in .net 9 use JsonSerializerOptions.RespectNullableAnnotations
 
             var result = await (Task<TResponse>)Ensure.NotNull(method.Invoke(instance, [request, cancellationToken]));
 
