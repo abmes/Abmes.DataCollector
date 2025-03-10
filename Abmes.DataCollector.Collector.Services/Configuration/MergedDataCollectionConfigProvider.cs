@@ -44,13 +44,13 @@ public class MergedDataCollectionConfigProvider : IMergedDataCollectionConfigPro
         var result = config.Values ?? [];
 
         return
-            result.Concat(
-                [
-                    new ("DataCollectionName", config.DataCollectionName),
-                    new ("DataGroupName", config.DataGroupName ?? string.Empty),
-                    new ("LoginName", config.LoginName ?? string.Empty),
-                    new ("LoginSecret", config.LoginSecret ?? string.Empty)
-                ]);
+        [
+            .. result,
+            new ("DataCollectionName", config.DataCollectionName),
+            new ("DataGroupName", config.DataGroupName ?? string.Empty),
+            new ("LoginName", config.LoginName ?? string.Empty),
+            new ("LoginSecret", config.LoginSecret ?? string.Empty)
+        ];
     }
 
     [return: NotNullIfNotNull(nameof(value))]
