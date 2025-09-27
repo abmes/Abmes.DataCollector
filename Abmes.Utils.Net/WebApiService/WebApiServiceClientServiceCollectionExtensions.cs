@@ -1,4 +1,4 @@
-﻿using Abmes.Utils.Net.WebApiService;
+﻿using Alvecta.Utils.Net.WebApiService;
 
 namespace Microsoft.Extensions.DependencyInjection;
 
@@ -20,6 +20,7 @@ public static class WebApiServiceClientServiceCollectionExtensions
                         provider.GetRequiredService<IHttpClientFactory>(),
                         httpClientName ?? typeof(TServiceInterface).Name,
                         relativeUrl ?? typeof(TServiceInterface).Name,
+                        null,
                         ignoreSynchronousMethodsAndProperties));
     }
 }

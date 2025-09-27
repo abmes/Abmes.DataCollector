@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Reflection;
 
-namespace Abmes.Utils.Net.WebApiService;
+namespace Alvecta.Utils.Net.WebApiService;
 
 public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
     where TServiceInterface : class  // TServiceInterface must be an interface
@@ -15,6 +15,9 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
     private string RelativeUrl => Ensure.NotNull(_relativeUrl);
     private string? _relativeUrl;
 
+    private string? SingleMethodNameToMap => _singleMethodNameToMap;
+    private string? _singleMethodNameToMap;
+
     private bool IgnoreSynchronousMethodsAndProperties => Ensure.NotNull(_ignoreSynchronousMethodsAndProperties);
     private bool? _ignoreSynchronousMethodsAndProperties;
 
@@ -22,6 +25,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
         IHttpClientFactory httpClientFactory,
         string httpClientName,
         string relativeUrl,
+        string? singleMethodNameToMap,
         bool ignoreSynchronousMethodsAndProperties)
     {
         ArgumentExceptionExtensions.ThrowIf(_httpClientFactory is not null);
@@ -32,6 +36,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
         _httpClientFactory = httpClientFactory;
         _httpClientName = httpClientName;
         _relativeUrl = relativeUrl;
+        _singleMethodNameToMap = singleMethodNameToMap;
         _ignoreSynchronousMethodsAndProperties = ignoreSynchronousMethodsAndProperties;
     }
 
@@ -39,13 +44,14 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
         IHttpClientFactory httpClientFactory,
         string httpClientName,
         string relativeUrl,
+        string? singleMethodNameToMap,
         bool ignoreSynchronousMethodsAndProperties)
     {
         WebApiServiceHelper.CheckTypeIsInterfaceAndAllMethodsHaveGoodSignatureAndName<TServiceInterface>(ignoreSynchronousMethodsAndProperties);
 
         var proxy = Create<TServiceInterface, WebApiServiceClientDispatchProxy<TServiceInterface>>() as WebApiServiceClientDispatchProxy<TServiceInterface>;
         ArgumentNullException.ThrowIfNull(proxy);
-        proxy.SetDependencies(httpClientFactory, httpClientName, relativeUrl, ignoreSynchronousMethodsAndProperties);
+        proxy.SetDependencies(httpClientFactory, httpClientName, relativeUrl, singleMethodNameToMap, ignoreSynchronousMethodsAndProperties);
         return Ensure.NotNull(proxy as TServiceInterface);
     }
 
@@ -53,6 +59,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
     {
         ArgumentNullException.ThrowIfNull(targetMethod);
         ArgumentExceptionExtensions.ThrowIf(WebApiServiceHelper.IsPropertyGetterOrSetter(targetMethod));
+        ArgumentExceptionExtensions.ThrowIf(SingleMethodNameToMap is not null && targetMethod.Name != SingleMethodNameToMap);
 
         if (targetMethod.DeclaringType == typeof(IDisposable) && targetMethod.Name == nameof(IDisposable.Dispose))
         {
@@ -113,7 +120,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
 
         using var response =
             await httpClient.PostAsync(
-                $"{RelativeUrl}/{WebApiServiceHelper.StripAsyncSuffix(methodName)}",
+                GetMethodUrl(methodName),
                 null,
                 cancellationToken);
 
@@ -127,7 +134,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
 
         using var response =
             await httpClient.PostAsync(
-                $"{RelativeUrl}/{WebApiServiceHelper.StripAsyncSuffix(methodName)}",
+                GetMethodUrl(methodName),
                 null,
                 cancellationToken);
 
@@ -147,7 +154,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
 
         using var response =
             await httpClient.PostAsJsonNonChunkedAsync(
-                $"{RelativeUrl}/{WebApiServiceHelper.StripAsyncSuffix(methodName)}",
+                GetMethodUrl(methodName),
                 request,
                 WebApiServiceHelper.JsonSerializerOptions,
                 cancellationToken);
@@ -165,7 +172,7 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
 
         using var response =
             await httpClient.PostAsJsonNonChunkedAsync(
-                $"{RelativeUrl}/{WebApiServiceHelper.StripAsyncSuffix(methodName)}",
+                GetMethodUrl(methodName),
                 request,
                 WebApiServiceHelper.JsonSerializerOptions,
                 cancellationToken);
@@ -175,5 +182,13 @@ public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
         var result = await response.Content.ReadFromJsonAsync<TResponse>(WebApiServiceHelper.JsonSerializerOptions, cancellationToken);
         return Ensure.NotNull(result);
         // todo: recursively check non-nullable properties of result for null - in .net 9 use JsonSerializerOptions.RespectNullableAnnotations
+    }
+
+    private string GetMethodUrl(string methodName)
+    {
+        return
+            methodName == SingleMethodNameToMap
+            ? RelativeUrl
+            : $"{RelativeUrl}/{WebApiServiceHelper.StripAsyncSuffix(methodName)}";
     }
 }
