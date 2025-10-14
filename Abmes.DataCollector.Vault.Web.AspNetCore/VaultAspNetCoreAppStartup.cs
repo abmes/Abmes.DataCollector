@@ -1,6 +1,7 @@
 ﻿using Abmes.DataCollector.Vault.Web.AspNetCore.Authorization;
 using Abmes.DataCollector.Vault.Web.AspNetCore.Configuration;
 using Abmes.Utils.AspNetCore.ExceptionHandling;
+using Duende.AspNetCore.Authentication.OAuth2Introspection;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -27,9 +28,9 @@ public static class VaultAspNetCoreAppStartup
         ArgumentNullException.ThrowIfNull(identityServerAuthenticationSettings);
 
         services
-            .AddAuthentication(IdentityModel.AspNetCore.OAuth2Introspection.OAuth2IntrospectionDefaults.AuthenticationScheme)
+            .AddAuthentication(OAuth2IntrospectionDefaults.AuthenticationScheme)
             .AddOAuth2Introspection(
-                IdentityModel.AspNetCore.OAuth2Introspection.OAuth2IntrospectionDefaults.AuthenticationScheme,
+                OAuth2IntrospectionDefaults.AuthenticationScheme,
                 options =>
                 {
                     options.Authority = identityServerAuthenticationSettings.Authority;
@@ -38,7 +39,7 @@ public static class VaultAspNetCoreAppStartup
                     options.ClientId = identityServerAuthenticationSettings.ApiName;
                     options.ClientSecret = identityServerAuthenticationSettings.ApiSecret;
 
-                    options.DiscoveryPolicy.AuthorityValidationStrategy = new IdentityModel.Client.StringComparisonAuthorityValidationStrategy(StringComparison.OrdinalIgnoreCase);
+                    options.DiscoveryPolicy.AuthorityValidationStrategy = new Duende.IdentityModel.Client.StringComparisonAuthorityValidationStrategy(StringComparison.OrdinalIgnoreCase);
                 });
 
         services.AddAuthorizationBuilder()
