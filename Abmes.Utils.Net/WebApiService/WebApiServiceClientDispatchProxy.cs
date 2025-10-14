@@ -1,7 +1,7 @@
 ﻿using System.Net.Http.Json;
 using System.Reflection;
 
-namespace Alvecta.Utils.Net.WebApiService;
+namespace Abmes.Utils.Net.WebApiService;
 
 public class WebApiServiceClientDispatchProxy<TServiceInterface> : DispatchProxy
     where TServiceInterface : class  // TServiceInterface must be an interface

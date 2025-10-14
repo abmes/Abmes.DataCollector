@@ -1,4 +1,4 @@
-﻿using Alvecta.Utils.Net.WebApiService;
+﻿using Abmes.Utils.Net.WebApiService;
 
 namespace Microsoft.Extensions.DependencyInjection;
 

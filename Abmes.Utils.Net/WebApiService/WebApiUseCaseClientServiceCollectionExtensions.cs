@@ -1,5 +1,5 @@
-﻿using Alvecta.Utils;
-using Alvecta.Utils.Net.WebApiService;
+﻿using Abmes.Utils;
+using Abmes.Utils.Net.WebApiService;
 using System.Diagnostics.CodeAnalysis;
 
 namespace Microsoft.Extensions.DependencyInjection;
